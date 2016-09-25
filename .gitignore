@@ -1,0 +1,54 @@
+# IntelliJ
+.idea/
+*.iml
+*.iws
+src/META-INF/
+out/
+doc/
+
+# Java
+res/options/*
+res/savegames/*
+res/maps/*
+res/profiles/*
+*.json
+*.class
+hs_err_pid*
+javadoc/*
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# some random things
+build/*
+build-tools/*
+*~
+*#
+log*
+*.orig
+*.remote
+log.txt
+.*
+*.txt
+*.dot
+run.sh
+src/*/analysis/
+src/*/lexer/
+src/*/node/
+src/*/parser/
+*.toc
+*.aux
+*.blg
+*.lof
+*.lot
+*.out
+*.gz
+*.log
+*.bbl
+*.lol
+*.pdf
+*.jar
+de/*
