@@ -1,9 +1,10 @@
 package GrammarSimulator;
 
+
 /**
  * Created by fabian on 06.08.16.
  */
-public interface Symbol {
+public interface Symbol  {
     /**
      * Returns the symbol's name.
      *

@@ -386,33 +386,29 @@ public class GrammarUtil {
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
         HashSet<Nonterminal> result = new HashSet<>();
         boolean changed = true;
-
+        boolean isNullable = true;
 
         while(changed) {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+                    isNullable=true;
                     for (int i = 0; i < symbolList.size(); i++) {
-
-                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda")) && !result.contains(nonterminal)) {
-                            //If the current symbol is the empty word, add the current nonterminal to the nullable-set.
-                            //result.add(nonterminal);
-                            changed = true;
-                        } else if (result.contains(symbolList.get(i)) && !result.contains(nonterminal)) {
-                            //If the current symbol is in the nullable-set, add the current nonterminal to the nullable-set.
-                           // result.add(nonterminal);
-                            changed = true;
+                        // if the symbol is nullable, set changed to true and go on with next
+                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda"))) {
+                            isNullable = isNullable & true;
+                        } else if(result.contains(symbolList.get(i))){
+                           isNullable=isNullable & true;
                         } else {
-                            //If the current symbol is neither the empty word, nor nullable, this means that the current
-                            //symbolList is not nullable. So, the we go on with the next list.
-                            changed=false;
-                            break;
+                            isNullable=false;
                         }
                     }
-                    if(changed) {
+                    if(isNullable && !result.contains(nonterminal)) {
                         result.add(nonterminal);
+                        changed=true;
                     }
                 }
+
             }
         }
 

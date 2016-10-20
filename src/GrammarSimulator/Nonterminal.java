@@ -1,12 +1,13 @@
 package GrammarSimulator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by fabian on 06.08.16.
  */
-public class Nonterminal implements Symbol {
+public class Nonterminal implements Symbol, Serializable {
 
     /**
      * The nonterminal's name.

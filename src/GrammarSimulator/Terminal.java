@@ -1,9 +1,11 @@
 package GrammarSimulator;
 
+import java.io.Serializable;
+
 /**
  * Created by fabian on 06.08.16.
  */
-public class Terminal implements Symbol {
+public class Terminal implements Symbol, Serializable {
 
     /**
      * The terminal's name.
