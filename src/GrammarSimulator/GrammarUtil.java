@@ -386,24 +386,28 @@ public class GrammarUtil {
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
         HashSet<Nonterminal> result = new HashSet<>();
         boolean changed = true;
-        boolean isNullable = true;
+        boolean nullable = true;
 
         while(changed) {
             changed = false;
+
+
+
+
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
-                    isNullable=true;
+                    nullable=true;
                     for (int i = 0; i < symbolList.size(); i++) {
                         // if the symbol is nullable, set changed to true and go on with next
                         if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda"))) {
-                            isNullable = isNullable & true;
+                            nullable = nullable & true;
                         } else if(result.contains(symbolList.get(i))){
-                           isNullable=isNullable & true;
+                           nullable=nullable & true;
                         } else {
-                            isNullable=false;
+                            nullable=false;
                         }
                     }
-                    if(isNullable && !result.contains(nonterminal)) {
+                    if(nullable && !result.contains(nonterminal)) {
                         result.add(nonterminal);
                         changed=true;
                     }
