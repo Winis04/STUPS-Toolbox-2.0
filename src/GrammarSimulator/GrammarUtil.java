@@ -377,6 +377,7 @@ public class GrammarUtil {
     }
 
     /**
+     * CHANGE: does not work. Das Symbol darf nur hinzugefügt
      * Calculates the nullable-set of a given grammar.
      *
      * @param grammar The grammar.
@@ -386,24 +387,30 @@ public class GrammarUtil {
         HashSet<Nonterminal> result = new HashSet<>();
         boolean changed = true;
 
+
         while(changed) {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
                     for (int i = 0; i < symbolList.size(); i++) {
+
                         if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda")) && !result.contains(nonterminal)) {
                             //If the current symbol is the empty word, add the current nonterminal to the nullable-set.
-                            result.add(nonterminal);
+                            //result.add(nonterminal);
                             changed = true;
                         } else if (result.contains(symbolList.get(i)) && !result.contains(nonterminal)) {
                             //If the current symbol is in the nullable-set, add the current nonterminal to the nullable-set.
-                            result.add(nonterminal);
+                           // result.add(nonterminal);
                             changed = true;
                         } else {
                             //If the current symbol is neither the empty word, nor nullable, this means that the current
                             //symbolList is not nullable. So, the we go on with the next list.
+                            changed=false;
                             break;
                         }
+                    }
+                    if(changed) {
+                        result.add(nonterminal);
                     }
                 }
             }
