@@ -48,4 +48,5 @@ public class Nonterminal implements Symbol, Serializable {
     public HashSet<ArrayList<Symbol>> getSymbolLists() {
         return symbolLists;
     }
+
 }
