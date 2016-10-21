@@ -30,8 +30,8 @@ public class Grammar {
      */
     public Grammar() {
         Terminal terminal = new Terminal("a");
-        ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
-        this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
+        ArrayList<Symbol> symbolList = new ArrayList<Symbol>(Arrays.asList(terminal));
+        this.startSymbol = new Nonterminal("S", new HashSet(symbolList));
         this.terminals = new HashSet<>(Arrays.asList(terminal));
         this.nullSymbol=new Terminal("epsilon");
         this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
@@ -99,5 +99,23 @@ public class Grammar {
             }
         }
         return null;
+    }
+    public HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt) {
+        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+        HashSet<ArrayList<Symbol>> res=new HashSet<>();
+        for(ArrayList<Symbol> list : tmp) {
+            boolean allNull=true;
+            for(Symbol sym : list) {
+                if(sym.equals(this.getNullSymbol())) {
+                    allNull=allNull & true;
+                } else {
+                    allNull=false;
+                }
+            }
+            if(allNull==false) {
+                res.add(list);
+            }
+        }
+        return res;
     }
 }

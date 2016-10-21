@@ -12,11 +12,11 @@ import sun.util.resources.cldr.zh.CalendarData_zh_Hans_HK;
 
 import javax.swing.plaf.synth.SynthButtonUI;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.lang.reflect.Array;
+import java.security.cert.CollectionCertStoreParameters;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 06.08.16.
@@ -579,7 +579,24 @@ public class GrammarUtil {
 
         return result;
     }
-
+    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+        HashSet<ArrayList<Symbol>> res=new HashSet<>();
+        for(ArrayList<Symbol> list : tmp) {
+            boolean allNull=true;
+            for(Symbol sym : list) {
+                if(sym.equals(g.getNullSymbol())) {
+                    allNull=allNull & true;
+                } else {
+                    allNull=false;
+                }
+            }
+            if(allNull==false) {
+                res.add(list);
+            }
+        }
+        return res;
+    }
     /**
      * Calculates the LL-Parsing-Table for a given grammar.
      *
@@ -651,5 +668,20 @@ public class GrammarUtil {
 
         return result;
     }
+    public static void removeUnneccesaryEpsilons(Grammar g) {
+        for(Nonterminal nt : g.getNonterminals()) {
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(g.getNullSymbol())).collect(Collectors.toList());
+                if(temp.size()!=0) {
+                    list.clear();
+                    list.addAll(temp);
+                } else {
+                    list.clear();;
+                    list.add(g.getNullSymbol());
+                }
+            }
+        }
+    }
+
 }
 

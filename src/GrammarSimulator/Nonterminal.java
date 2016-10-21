@@ -40,6 +40,11 @@ public class Nonterminal implements Symbol, Serializable {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Symbol s) {
+        return (s instanceof  Nonterminal && s.getName().equals(name));
+    }
+
     /**
      * Getter-method for {@link #symbolLists}.
      *

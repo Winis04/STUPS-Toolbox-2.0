@@ -42,37 +42,53 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         System.out.printf("First Step:\nnullable = {%s}\n",nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
-            for(Nonterminal nonterminal : grammar.getNonterminals()) {
-                Queue<ArrayList<Symbol>> queue=new LinkedList<>();
-                queue.addAll(nonterminal.getSymbolLists());
-                boolean changed=true;
-                while(changed) {
-                    changed=false;
-                    ArrayList<Symbol> current=queue.poll();
-                    ArrayList<Symbol> newRightSide=new ArrayList<>();
+        for(Nonterminal nonterminal : grammar.getNonterminals()) {
+            Queue<ArrayList<Symbol>> queue = new LinkedList<>();
+
+            queue.addAll(GrammarUtil.getSymbolListsWithoutEmptyRules(nonterminal, grammar));
+            if (!queue.isEmpty()) {
+                boolean changed = true;
+                HashSet<ArrayList<Symbol>> alreadySeen=new HashSet<>();
+                while (changed) {
+                    changed = false;
+                    ArrayList<Symbol> current = queue.poll();
+
+                    ArrayList<Symbol> newRightSide = new ArrayList<>();
                     newRightSide.addAll(current);
-                    HashSet<ArrayList<Symbol>> toAdd=new HashSet<>();
-                    for(int i=0;i<current.size();i++) {
-                        if(nullable.contains(current.get(i))) {
-                            newRightSide.set(i,grammar.getNullSymbol());
-                            if(queue.contains(newRightSide)) {
-                                newRightSide.set(i,current.get(i));
+                    HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
+                    for (int i = 0; i < current.size(); i++) {
+                        if (nullable.contains(current.get(i))) {
+                            newRightSide.set(i, grammar.getNullSymbol());
+                            if (queue.contains(newRightSide)) {
+                                newRightSide.set(i, current.get(i));
                             } else {
                                 queue.add(newRightSide);
                                 queue.add(current);
-                                changed=true;
+                                alreadySeen.add(newRightSide);
+                                alreadySeen.add(current);
+                                changed = true;
                                 break;
                             }
                         }
                     }
-                    if(!changed) {
-                        queue.add(current);
+                    if (!changed) {
+                        if(alreadySeen.contains(current)) {
+                            queue.add(current);
+                        } else {
+                            queue.add(current);
+                            alreadySeen.add(current);
+                            changed=true;
+                        }
+
                     }
                 }
                 nonterminal.getSymbolLists().clear();
                 nonterminal.getSymbolLists().addAll(queue);
             }
-
+        }
+        GrammarUtil.removeUnneccesaryEpsilons(grammar);
+        System.out.println("Step 2");
+        GrammarUtil.print(grammar);
         return null;
     }
     private boolean addNewRules(ArrayList<Integer> positions, ArrayList<Symbol> rightSide, HashSet<ArrayList<Symbol>> res) {
