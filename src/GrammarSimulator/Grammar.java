@@ -95,22 +95,12 @@ public class Grammar {
         }
         return null;
     }
-    public HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt) {
-        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
-        HashSet<ArrayList<Symbol>> res=new HashSet<>();
-        for(ArrayList<Symbol> list : tmp) {
-            boolean allNull=true;
-            for(Symbol sym : list) {
-                if(sym.equals(this.getNullSymbol())) {
-                    allNull=allNull & true;
-                } else {
-                    allNull=false;
-                }
-            }
-            if(allNull==false) {
-                res.add(list);
-            }
-        }
-        return res;
+
+    public void setTerminals(HashSet<Terminal> terminals) {
+        this.terminals = terminals;
+    }
+
+    public void setNonterminals(HashSet<Nonterminal> nonterminals) {
+        this.nonterminals = nonterminals;
     }
 }

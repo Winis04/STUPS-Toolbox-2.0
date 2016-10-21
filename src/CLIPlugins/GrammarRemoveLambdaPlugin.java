@@ -43,39 +43,47 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
+            //contains all rules for this nonterminal which need to be edited
             Queue<ArrayList<Symbol>> queue = new LinkedList<>();
 
             queue.addAll(GrammarUtil.getSymbolListsWithoutEmptyRules(nonterminal, grammar));
             if (!queue.isEmpty()) {
                 boolean changed = true;
+                //contains every rule that is already edited
                 HashSet<ArrayList<Symbol>> alreadySeen=new HashSet<>();
-                while (changed) {
+                while (changed && !queue.isEmpty()) { //stop, if there is no change anymore
                     changed = false;
+                    // gets the current head of the queue and removes it
                     ArrayList<Symbol> current = queue.poll();
 
                     ArrayList<Symbol> newRightSide = new ArrayList<>();
                     newRightSide.addAll(current);
                     HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
                     for (int i = 0; i < current.size(); i++) {
+                        // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
                         if (nullable.contains(current.get(i))) {
                             newRightSide.set(i, grammar.getNullSymbol());
                             if (queue.contains(newRightSide)) {
-                                newRightSide.set(i, current.get(i));
+                                // if the queue already contains this new Rule, undo the changes and go on with the rule
+                                newRightSide.set(i, current.get(i)); // --> no change
                             } else {
+                                //if not, add the rule and after it the current rule. go on
                                 queue.add(newRightSide);
                                 queue.add(current);
+                                // both rules are now added to the alreadySeen List
                                 alreadySeen.add(newRightSide);
                                 alreadySeen.add(current);
-                                changed = true;
+                                changed = true; //--> change
                                 break;
                             }
                         }
                     }
+                    // if nothing was changed, check if the rule was already seen
                     if (!changed) {
+                        // if yes, add it at the end
                         if(alreadySeen.contains(current)) {
                             queue.add(current);
                         } else {
-                            queue.add(current);
                             alreadySeen.add(current);
                             changed=true;
                         }
@@ -84,34 +92,21 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
                 }
                 nonterminal.getSymbolLists().clear();
                 nonterminal.getSymbolLists().addAll(queue);
+                nonterminal.getSymbolLists().addAll(alreadySeen);
             }
         }
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         System.out.println("Step 2:");
         GrammarUtil.print(grammar);
-        GrammarUtil.removeLambdaRules(grammar);
+        GrammarUtil.removeLambdaRules(grammar,true);
+
         System.out.println("Step 3:");
+
+
         GrammarUtil.print(grammar);
         return null;
     }
-    private boolean addNewRules(ArrayList<Integer> positions, ArrayList<Symbol> rightSide, HashSet<ArrayList<Symbol>> res) {
-        boolean changed=false;
-        for(Integer i : positions) {
-            ArrayList<Symbol> newRightSide=new ArrayList<>();
-            for(int j=0;j<rightSide.size();j++) {
-                if(i.intValue()==j) {
-                    newRightSide.add(new Terminal("epsilon"));
-                } else {
-                    newRightSide.add(rightSide.get(j));
-                }
-            }
-            if(!res.contains(newRightSide)) {
-                res.add(newRightSide);
-                changed=true;
-            }
-        }
-        return changed;
-    }
+
     @Override
     public Class inputType() {
         return Grammar.class;
