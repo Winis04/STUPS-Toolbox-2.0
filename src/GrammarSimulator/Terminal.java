@@ -1,11 +1,9 @@
 package GrammarSimulator;
 
-import java.io.Serializable;
-
 /**
  * Created by fabian on 06.08.16.
  */
-public class Terminal implements Symbol, Serializable {
+public class Terminal implements Symbol {
 
     /**
      * The terminal's name.
@@ -29,10 +27,5 @@ public class Terminal implements Symbol, Serializable {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Symbol s) {
-        return (s instanceof Terminal && s.getName().equals(name));
     }
 }

@@ -1,13 +1,12 @@
 package GrammarSimulator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by fabian on 06.08.16.
  */
-public class Nonterminal implements Symbol, Serializable {
+public class Nonterminal implements Symbol {
 
     /**
      * The nonterminal's name.
@@ -40,11 +39,6 @@ public class Nonterminal implements Symbol, Serializable {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Symbol s) {
-        return (s instanceof  Nonterminal && s.getName().equals(name));
-    }
-
     /**
      * Getter-method for {@link #symbolLists}.
      *
@@ -53,5 +47,4 @@ public class Nonterminal implements Symbol, Serializable {
     public HashSet<ArrayList<Symbol>> getSymbolLists() {
         return symbolLists;
     }
-
 }

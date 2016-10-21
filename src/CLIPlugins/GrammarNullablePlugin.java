@@ -54,7 +54,7 @@ public class GrammarNullablePlugin implements CLIPlugin {
 
         System.out.println("}");
 
-        return result;
+        return null;
     }
 
     @Override

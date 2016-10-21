@@ -12,11 +12,11 @@ import sun.util.resources.cldr.zh.CalendarData_zh_Hans_HK;
 
 import javax.swing.plaf.synth.SynthButtonUI;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.security.cert.CollectionCertStoreParameters;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReferenceArray;
-import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 06.08.16.
@@ -377,7 +377,6 @@ public class GrammarUtil {
     }
 
     /**
-     * CHANGE: does not work. Das Symbol darf nur hinzugefügt
      * Calculates the nullable-set of a given grammar.
      *
      * @param grammar The grammar.
@@ -386,33 +385,27 @@ public class GrammarUtil {
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
         HashSet<Nonterminal> result = new HashSet<>();
         boolean changed = true;
-        boolean nullable = true;
 
         while(changed) {
             changed = false;
-
-
-
-
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
-                    nullable=true;
                     for (int i = 0; i < symbolList.size(); i++) {
-                        // if the symbol is nullable, set changed to true and go on with next
-                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda"))) {
-                            nullable = nullable & true;
-                        } else if(result.contains(symbolList.get(i))){
-                           nullable=nullable & true;
+                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda")) && !result.contains(nonterminal)) {
+                            //If the current symbol is the empty word, add the current nonterminal to the nullable-set.
+                            result.add(nonterminal);
+                            changed = true;
+                        } else if (result.contains(symbolList.get(i)) && !result.contains(nonterminal)) {
+                            //If the current symbol is in the nullable-set, add the current nonterminal to the nullable-set.
+                            result.add(nonterminal);
+                            changed = true;
                         } else {
-                            nullable=false;
+                            //If the current symbol is neither the empty word, nor nullable, this means that the current
+                            //symbolList is not nullable. So, the we go on with the next list.
+                            break;
                         }
                     }
-                    if(nullable && !result.contains(nonterminal)) {
-                        result.add(nonterminal);
-                        changed=true;
-                    }
                 }
-
             }
         }
 
@@ -651,94 +644,5 @@ public class GrammarUtil {
 
         return result;
     }
-    public static void removeUnneccesaryEpsilons(Grammar g) {
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> res=new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(g.getNullSymbol())).collect(Collectors.toList());
-                if(temp.size()!=0) {
-                    res.add(temp);
-                } else {
-                    temp=new ArrayList<>();
-                    temp.add(g.getNullSymbol());
-                    res.add(temp);
-                }
-            }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(res);
-        }
-    }
-    public static void removeLambdaRules(Grammar g, boolean again) {
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
-
-            tmp.addAll(nt.getSymbolLists().stream()
-                    .filter(list -> !(list.size() == 1 && list.get(0).equals(g.getNullSymbol())))
-                    .collect(Collectors.toList()));
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmp);
-        }
-        //these nonterminals can be removed
-        List<Symbol> toRemove = new ArrayList<>();
-        for(Nonterminal nt : g.getNonterminals()) {
-            if(nt.getSymbolLists().isEmpty()) {
-                toRemove.add(nt);
-            }
-        }
-
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> tmpList=new ArrayList<>();
-                for(int i=0;i<list.size();i++) {
-                    if(toRemove.contains(list.get(i))) {
-                        tmpList.add(g.getNullSymbol());
-                    } else {
-                        tmpList.add(list.get(i));
-                    }
-                }
-                tmp.add(tmpList);
-            }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmp);
-        }
-        ArrayList<Symbol> bla=new ArrayList<>();
-        bla.addAll(g.getNonterminals());
-        g.getNonterminals().clear();
-        for(Symbol nonterminal : bla) {
-            if(!toRemove.contains((Nonterminal) nonterminal)) {
-                g.getNonterminals().add((Nonterminal) nonterminal);
-            }
-        }
-        if(again) {
-            GrammarUtil.removeUnneccesaryEpsilons(g);
-            GrammarUtil.removeLambdaRules(g,false);
-            g.getTerminals().remove(g.getNullSymbol());
-        }
-
-    }
-
-    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
-        HashSet<ArrayList<Symbol>> res=new HashSet<>();
-        for(ArrayList<Symbol> list : tmp) {
-            boolean allNull=true;
-            for(Symbol sym : list) {
-                if(sym.equals(g.getNullSymbol())) {
-                    allNull=allNull & true;
-                } else {
-                    allNull=false;
-                }
-            }
-            if(allNull==false) {
-                res.add(list);
-            }
-        }
-        return res;
-
-    }
-
-
-
 }
 
