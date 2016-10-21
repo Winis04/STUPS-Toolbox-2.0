@@ -87,7 +87,10 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             }
         }
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
-        System.out.println("Step 2");
+        System.out.println("Step 2:");
+        GrammarUtil.print(grammar);
+        GrammarUtil.removeLambdaRules(grammar);
+        System.out.println("Step 3:");
         GrammarUtil.print(grammar);
         return null;
     }

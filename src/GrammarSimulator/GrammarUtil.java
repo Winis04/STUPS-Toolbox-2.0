@@ -670,17 +670,32 @@ public class GrammarUtil {
     }
     public static void removeUnneccesaryEpsilons(Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> res=new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
                 ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(g.getNullSymbol())).collect(Collectors.toList());
                 if(temp.size()!=0) {
-                    list.clear();
-                    list.addAll(temp);
+                    res.add(temp);
                 } else {
-                    list.clear();;
-                    list.add(g.getNullSymbol());
+                    temp=new ArrayList<>();
+                    temp.add(g.getNullSymbol());
+                    res.add(temp);
                 }
             }
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(res);
         }
+    }
+    public static void removeLambdaRules(Grammar g) {
+        for(Nonterminal nt : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+
+            tmp.addAll(nt.getSymbolLists().stream()
+                    .filter(list -> !(list.size() == 1 && list.get(0).equals(g.getNullSymbol())))
+                    .collect(Collectors.toList()));
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(tmp);
+        }
+        g.getTerminals().remove(g.getNullSymbol());
     }
 
 }
