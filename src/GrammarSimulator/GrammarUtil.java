@@ -12,11 +12,9 @@ import sun.util.resources.cldr.zh.CalendarData_zh_Hans_HK;
 
 import javax.swing.plaf.synth.SynthButtonUI;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 06.08.16.
@@ -644,5 +642,95 @@ public class GrammarUtil {
 
         return result;
     }
+
+    public static void removeUnneccesaryEpsilons(Grammar g) {
+        for(Nonterminal nt : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> res=new HashSet<>();
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(new Terminal("epsilon"))).collect(Collectors.toList());
+                if(temp.size()!=0) {
+                    res.add(temp);
+                } else {
+                    temp=new ArrayList<>();
+                    temp.add(new Terminal("epsilon"));
+                    res.add(temp);
+                }
+            }
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(res);
+        }
+    }
+    public static void removeLambdaRules(Grammar g, boolean again) {
+        for(Nonterminal nt : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+
+            tmp.addAll(nt.getSymbolLists().stream()
+                    .filter(list -> !(list.size() == 1 && list.get(0).equals(new Terminal("epsilon"))))
+                    .collect(Collectors.toList()));
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(tmp);
+        }
+        //these nonterminals can be removed
+        List<Symbol> toRemove = new ArrayList<>();
+        for(Nonterminal nt : g.getNonterminals()) {
+            if(nt.getSymbolLists().isEmpty()) {
+                toRemove.add(nt);
+            }
+        }
+
+        for(Nonterminal nt : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                ArrayList<Symbol> tmpList=new ArrayList<>();
+                for(int i=0;i<list.size();i++) {
+                    if(toRemove.contains(list.get(i))) {
+                        tmpList.add(new Terminal("epsilon"));
+                    } else {
+                        tmpList.add(list.get(i));
+                    }
+                }
+                tmp.add(tmpList);
+            }
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(tmp);
+        }
+        ArrayList<Symbol> bla=new ArrayList<>();
+        bla.addAll(g.getNonterminals());
+        g.getNonterminals().clear();
+        for(Symbol nonterminal : bla) {
+            if(!toRemove.contains((Nonterminal) nonterminal)) {
+                g.getNonterminals().add((Nonterminal) nonterminal);
+            }
+        }
+        if(again) {
+            GrammarUtil.removeUnneccesaryEpsilons(g);
+            GrammarUtil.removeLambdaRules(g,false);
+            g.getTerminals().remove(new Terminal("epsilon"));
+        }
+
+    }
+
+    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+        HashSet<ArrayList<Symbol>> res=new HashSet<>();
+        for(ArrayList<Symbol> list : tmp) {
+            boolean allNull=true;
+            for(Symbol sym : list) {
+                if(sym.equals(new Terminal("epsilon"))) {
+                    allNull=allNull & true;
+                } else {
+                    allNull=false;
+                }
+            }
+            if(allNull==false) {
+                res.add(list);
+            }
+        }
+        return res;
+
+    }
+
+
+
 }
 
