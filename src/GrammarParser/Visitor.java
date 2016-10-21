@@ -39,6 +39,13 @@ public class Visitor extends DepthFirstAdapter {
         nonterminals.put(startSymbol.getName(), startSymbol);
     }
 
+    /**
+     * checks, if the occurring symbols are in the Terminal or the nonterminal set
+     * An exception is epsilon, which is added to the terminal alphabet by this method.
+     *
+     * @author Fabian Ruhland, Isabel Wingen
+     * @param node
+     */
     @Override
     public void inARule(ARule node) {
         if(!nonterminals.containsKey(node.getComingFrom().getText())) {
@@ -55,6 +62,7 @@ public class Visitor extends DepthFirstAdapter {
                 symbols.add(nonterminals.get(symbol.getText().replaceAll("'", "")));
             }
             else {
+                //TODO: fix this. if it is an epsilon, add it to the set
                 System.out.println("Symbol " + symbol.getText() + " has not been defined!");
                 System.exit(1);
             }
