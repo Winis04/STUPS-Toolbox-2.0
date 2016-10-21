@@ -195,7 +195,7 @@ public class GrammarUtil {
             if(symbolList.get(i) instanceof Terminal) {
                 //If the current symbol is a terminal, add it to the result-set.
                 result.add((Terminal) symbolList.get(i));
-                if(!symbolList.get(i).getName().endsWith("epsilon") || !symbolList.get(i).equals("lambda")) {
+                if(!symbolList.get(i).getName().endsWith("epsilon") || !symbolList.get(i).getName().endsWith("lambda")) {
                     break;
                 }
             } else {
@@ -389,7 +389,7 @@ public class GrammarUtil {
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
                     for (int i = 0; i < symbolList.size(); i++) {
-                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).equals("lambda")) && !result.contains(nonterminal)) {
+                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).getName().equals("lambda")) && !result.contains(nonterminal)) {
                             //If the current symbol is the empty word, add the current nonterminal to the nullable-set.
                             result.add(nonterminal);
                             changed = true;
@@ -501,7 +501,7 @@ public class GrammarUtil {
                                 //symbolList.get(i) is always the Nonterminal whose follow-set we are currently calculating.
 
                                 int j = i + 1;
-                                while ((symbolList.get(j).getName().equals("epsilon") || symbolList.get(j).equals("lambda")) && j < symbolList.size()) {
+                                while ((symbolList.get(j).getName().equals("epsilon") || symbolList.get(j).getName().equals("lambda")) && j < symbolList.size()) {
                                     //Skip all empty words.
                                     j++;
                                 }
