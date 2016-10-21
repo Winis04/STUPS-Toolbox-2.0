@@ -21,7 +21,10 @@ public class Grammar {
      * The grammar's start symbol.
      */
     private Nonterminal startSymbol;
-
+    /**
+     * the grammar's null Symbol
+     */
+    private Terminal nullSymbol;
     /**
      * The constructor for an empty grammar.
      */
@@ -30,6 +33,7 @@ public class Grammar {
         ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
         this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
         this.terminals = new HashSet<>(Arrays.asList(terminal));
+        this.nullSymbol=new Terminal("epsilon");
         this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
     }
 
@@ -44,6 +48,7 @@ public class Grammar {
         this.terminals = terminals;
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
+        this.nullSymbol=new Terminal("epsilon");
     }
 
     /**
@@ -80,5 +85,19 @@ public class Grammar {
      */
     public void setStartSymbol(Nonterminal startSymbol) {
         this.startSymbol = startSymbol;
+    }
+
+    /**
+     * Getter-method for {@link #nullSymbol}
+     *
+     * @return nullSymbol The nullsymbol of this grammar
+     */
+    public Terminal getNullSymbol() {
+        for(Terminal t: terminals) {
+            if(t.getName().equals("epsilon")) {
+                return t;
+            }
+        }
+        return null;
     }
 }

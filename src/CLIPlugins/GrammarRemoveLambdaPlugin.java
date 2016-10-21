@@ -54,7 +54,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
                     HashSet<ArrayList<Symbol>> toAdd=new HashSet<>();
                     for(int i=0;i<current.size();i++) {
                         if(nullable.contains(current.get(i))) {
-                            newRightSide.set(i,new Terminal("epsilon"));
+                            newRightSide.set(i,grammar.getNullSymbol());
                             if(queue.contains(newRightSide)) {
                                 newRightSide.set(i,current.get(i));
                             } else {
