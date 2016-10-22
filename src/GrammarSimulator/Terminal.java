@@ -10,6 +10,8 @@ public class Terminal implements Symbol {
      */
     private String name;
 
+    public static final Terminal NULLSYMBOL=new Terminal("epsilon");
+
     /**
      * The constructor.
      *

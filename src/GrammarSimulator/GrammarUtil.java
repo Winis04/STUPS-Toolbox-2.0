@@ -647,12 +647,12 @@ public class GrammarUtil {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> res=new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(new Terminal("epsilon"))).collect(Collectors.toList());
+                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(Terminal.NULLSYMBOL)).collect(Collectors.toList());
                 if(temp.size()!=0) {
                     res.add(temp);
                 } else {
                     temp=new ArrayList<>();
-                    temp.add(new Terminal("epsilon"));
+                    temp.add(Terminal.NULLSYMBOL);
                     res.add(temp);
                 }
             }
@@ -660,12 +660,28 @@ public class GrammarUtil {
             nt.getSymbolLists().addAll(res);
         }
     }
+    public static void replaceLambda(Grammar g) {
+        Iterator<Terminal> it=g.getTerminals().iterator();
+        boolean hasNull=false;
+        Terminal toRemove=null;
+        while(it.hasNext()) {
+            Terminal t=it.next();
+            if(t.getName().equals("epsilon")) {
+                toRemove=t;
+                hasNull=true;
+            }
+        }
+        if(hasNull) {
+            g.getTerminals().remove(toRemove);
+            g.getTerminals().add(Terminal.NULLSYMBOL);
+        }
+    }
     public static void removeLambdaRules(Grammar g, boolean again) {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
 
             tmp.addAll(nt.getSymbolLists().stream()
-                    .filter(list -> !(list.size() == 1 && list.get(0).equals(new Terminal("epsilon"))))
+                    .filter(list -> !(list.size() == 1 && list.get(0).equals(Terminal.NULLSYMBOL)))
                     .collect(Collectors.toList()));
             nt.getSymbolLists().clear();
             nt.getSymbolLists().addAll(tmp);
@@ -684,7 +700,7 @@ public class GrammarUtil {
                 ArrayList<Symbol> tmpList=new ArrayList<>();
                 for(int i=0;i<list.size();i++) {
                     if(toRemove.contains(list.get(i))) {
-                        tmpList.add(new Terminal("epsilon"));
+                        tmpList.add(Terminal.NULLSYMBOL);
                     } else {
                         tmpList.add(list.get(i));
                     }
@@ -705,7 +721,7 @@ public class GrammarUtil {
         if(again) {
             GrammarUtil.removeUnneccesaryEpsilons(g);
             GrammarUtil.removeLambdaRules(g,false);
-            g.getTerminals().remove(new Terminal("epsilon"));
+            g.getTerminals().remove(Terminal.NULLSYMBOL);
         }
 
     }
@@ -716,7 +732,7 @@ public class GrammarUtil {
         for(ArrayList<Symbol> list : tmp) {
             boolean allNull=true;
             for(Symbol sym : list) {
-                if(sym.equals(new Terminal("epsilon"))) {
+                if(sym.equals(Terminal.NULLSYMBOL)) {
                     allNull=allNull & true;
                 } else {
                     allNull=false;

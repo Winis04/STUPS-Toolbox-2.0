@@ -37,10 +37,13 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             errorFlag = true;
             return null;
         }
-        //first step: calculate the Nullable set
+
+
         Grammar grammar = (Grammar) object;
+        GrammarUtil.replaceLambda(grammar);
+        //first step: calculate the Nullable set
         HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
-        System.out.printf("First Step:\nnullable = {%s}\n",nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+        System.out.printf("Step 1:\nnullable = {%s}\n",nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
@@ -63,7 +66,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
                     for (int i = 0; i < current.size(); i++) {
                         // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
                         if (nullable.contains(current.get(i))) {
-                            newRightSide.set(i, new Terminal("epsilon"));
+                            newRightSide.set(i, Terminal.NULLSYMBOL);
                             if (queue.contains(newRightSide)) {
                                 // if the queue already contains this new Rule, undo the changes and go on with the rule
                                 newRightSide.set(i, current.get(i)); // --> no change
@@ -112,12 +115,12 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> res=new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(new Terminal("epsilon"))).collect(Collectors.toList());
+                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(Terminal.NULLSYMBOL)).collect(Collectors.toList());
                 if(temp.size()!=0) {
                     res.add(temp);
                 } else {
                     temp=new ArrayList<>();
-                    temp.add(new Terminal("epsilon"));
+                    temp.add(Terminal.NULLSYMBOL);
                     res.add(temp);
                 }
             }
@@ -130,7 +133,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
 
             tmp.addAll(nt.getSymbolLists().stream()
-                    .filter(list -> !(list.size() == 1 && list.get(0).equals(new Terminal("epsilon"))))
+                    .filter(list -> !(list.size() == 1 && list.get(0).equals(Terminal.NULLSYMBOL)))
                     .collect(Collectors.toList()));
             nt.getSymbolLists().clear();
             nt.getSymbolLists().addAll(tmp);
@@ -149,7 +152,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
                 ArrayList<Symbol> tmpList=new ArrayList<>();
                 for(int i=0;i<list.size();i++) {
                     if(toRemove.contains(list.get(i))) {
-                        tmpList.add(new Terminal("epsilon"));
+                        tmpList.add(Terminal.NULLSYMBOL);
                     } else {
                         tmpList.add(list.get(i));
                     }
@@ -170,7 +173,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         if(again) {
             GrammarUtil.removeUnneccesaryEpsilons(g);
             GrammarUtil.removeLambdaRules(g,false);
-            g.getTerminals().remove(new Terminal("epsilon"));
+            g.getTerminals().remove(Terminal.NULLSYMBOL);
         }
 
     }
@@ -181,7 +184,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         for(ArrayList<Symbol> list : tmp) {
             boolean allNull=true;
             for(Symbol sym : list) {
-                if(sym.equals(new Terminal("epsilon"))) {
+                if(sym.equals(Terminal.NULLSYMBOL)) {
                     allNull=allNull & true;
                 } else {
                     allNull=false;
