@@ -811,7 +811,19 @@ public class GrammarUtil {
         return res;
 
     }
-
+    public static boolean addNewStartSymbol(Grammar g) {
+        if(GrammarUtil.startSymbolPointsOnLambda(g)) {
+            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
+            ArrayList<Symbol> tmp2=new ArrayList<>();
+            tmp2.add(g.getStartSymbol());
+            tmp.add(tmp2);
+            Nonterminal s0=new Nonterminal("S0",tmp);
+            g.getNonterminals().add(s0);
+            g.setStartSymbol(s0);
+            return true;
+        }
+        return false;
+    }
     /**
      * @author Isabel Wingen
      * @param g the grammar
@@ -822,7 +834,13 @@ public class GrammarUtil {
              nonterminal.getSymbolLists().stream().anyMatch(list ->
                      list.stream().anyMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL))));
     }
-
+    public static boolean languageContainsLambda(Grammar g) {
+       return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
+    }
+    public static boolean startSymbolPointsOnLambda(Grammar g) {
+        return g.getStartSymbol().getSymbolLists().stream().anyMatch(list -> list.stream().
+                allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
+    }
 
 }
 

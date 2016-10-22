@@ -40,9 +40,17 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
         Grammar grammar = (Grammar) object;
         GrammarUtil.replaceLambda(grammar);
+        //
+       if(GrammarUtil.addNewStartSymbol(grammar)) {
+           System.out.println("added new start symbol S0:");
+           GrammarUtil.print(grammar);
+       }
+
         //first step: calculate the Nullable set
         HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
         System.out.printf("Step 1:\nnullable = {%s}\n",nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+
+
 
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
