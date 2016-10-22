@@ -44,6 +44,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         //first step: calculate the Nullable set
         HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
         System.out.printf("Step 1:\nnullable = {%s}\n",nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
@@ -101,6 +102,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         }
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         System.out.println("Step 2:");
+
         GrammarUtil.print(grammar);
         GrammarUtil.removeLambdaRules(grammar,true);
 

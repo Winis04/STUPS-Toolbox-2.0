@@ -745,7 +745,11 @@ public class GrammarUtil {
         return res;
 
     }
-
+    public static boolean isLambdaFree(Grammar g) {
+     return   !g.getNonterminals().stream().anyMatch(nonterminal ->
+             nonterminal.getSymbolLists().stream().anyMatch(list ->
+                     list.stream().anyMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL))));
+    }
 
 
 }
