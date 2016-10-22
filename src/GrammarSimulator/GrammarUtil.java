@@ -1,19 +1,14 @@
 package GrammarSimulator;
 
-import AutomatonSimulator.Automaton;
-import AutomatonSimulator.State;
 import GrammarParser.Visitor;
 import GrammarParser.lexer.Lexer;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
-import sun.util.resources.cldr.zh.CalendarData_zh_Hans_HK;
 
-import javax.swing.plaf.synth.SynthButtonUI;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.stream.Collectors;
 
 /**
@@ -666,24 +661,34 @@ public class GrammarUtil {
             g.getTerminals().add(Terminal.NULLSYMBOL);
         }
     }
-    public static void removeLambdaRules(Grammar g, boolean again) {
+
+    /**
+     * the third step of the algorithm to delete lambda-rules
+     * all rules which have only epsilons on the right side are removed
+     * furthermore, nonterminals, which now do not appear on the left side of any rule, are removed
+     * @param g the grammar g
+     * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
+     */
+    public static void removeLambdaRules_StepThree(Grammar g, boolean again) {
+
+        // delete lambda-rules
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
 
             tmp.addAll(nt.getSymbolLists().stream()
-                    .filter(list -> !(list.size() == 1 && list.get(0).equals(Terminal.NULLSYMBOL)))
+                    .filter(list -> !list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)))
                     .collect(Collectors.toList()));
             nt.getSymbolLists().clear();
             nt.getSymbolLists().addAll(tmp);
         }
-        //these nonterminals can be removed
+        //these nonterminals can be removed. Store them in toRemove
         List<Symbol> toRemove = new ArrayList<>();
         for(Nonterminal nt : g.getNonterminals()) {
             if(nt.getSymbolLists().isEmpty()) {
                 toRemove.add(nt);
             }
         }
-
+        // the symbols that can be removed are replaced by the nullsymbol
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -700,6 +705,7 @@ public class GrammarUtil {
             nt.getSymbolLists().clear();
             nt.getSymbolLists().addAll(tmp);
         }
+        // the nonterminal set of the grammar needs to be updated
         ArrayList<Symbol> bla=new ArrayList<>();
         bla.addAll(g.getNonterminals());
         g.getNonterminals().clear();
@@ -708,14 +714,84 @@ public class GrammarUtil {
                 g.getNonterminals().add((Nonterminal) nonterminal);
             }
         }
+        // to find any new lambdas and lambda-rules
         if(again) {
             GrammarUtil.removeUnneccesaryEpsilons(g);
-            GrammarUtil.removeLambdaRules(g,false);
+            GrammarUtil.removeLambdaRules_StepThree(g,false);
             g.getTerminals().remove(Terminal.NULLSYMBOL);
         }
 
     }
 
+    /**
+     * the second step of the algorithm to delete lambda-rules.
+     * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced by "epsilon" is added to the ruleset
+     * @param grammar The Grammar
+     * @param nullable The set, which contains all the nullable terminals
+     */
+    public static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
+        GrammarUtil.removeUnneccesaryEpsilons(grammar);
+        for(Nonterminal nonterminal : grammar.getNonterminals()) {
+            //contains all rules for this nonterminal which need to be edited
+            Queue<ArrayList<Symbol>> queue = new LinkedList<>();
+
+            queue.addAll(GrammarUtil.getSymbolListsWithoutEmptyRules(nonterminal, grammar));
+            if (!queue.isEmpty()) {
+                boolean changed = true;
+                //contains every rule that is already edited
+                HashSet<ArrayList<Symbol>> alreadySeen=new HashSet<>();
+                while (changed && !queue.isEmpty()) { //stop, if there is no change anymore
+                    changed = false;
+                    // gets the current head of the queue and removes it
+                    ArrayList<Symbol> current = queue.poll();
+
+                    ArrayList<Symbol> newRightSide = new ArrayList<>();
+                    newRightSide.addAll(current);
+                    HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
+                    for (int i = 0; i < current.size(); i++) {
+                        // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
+                        if (nullable.contains(current.get(i))) {
+                            newRightSide.set(i, Terminal.NULLSYMBOL);
+                            if (queue.contains(newRightSide)) {
+                                // if the queue already contains this new Rule, undo the changes and go on with the rule
+                                newRightSide.set(i, current.get(i)); // --> no change
+                            } else {
+                                //if not, add the rule and after it the current rule. go on
+                                queue.add(newRightSide);
+                                queue.add(current);
+                                // both rules are now added to the alreadySeen List
+                                alreadySeen.add(newRightSide);
+                                alreadySeen.add(current);
+                                changed = true; //--> change
+                                break;
+                            }
+                        }
+                    }
+                    // if nothing was changed, check if the rule was already seen
+                    if (!changed) {
+                        // if yes, add it at the end
+                        if(alreadySeen.contains(current)) {
+                            queue.add(current);
+                        } else {
+                            alreadySeen.add(current);
+                            changed=true;
+                        }
+
+                    }
+                }
+                nonterminal.getSymbolLists().clear();
+                nonterminal.getSymbolLists().addAll(queue);
+                nonterminal.getSymbolLists().addAll(alreadySeen);
+            }
+        }
+    }
+
+    /**
+     * @author Isabel Wingen
+     * @param nt a nonterminal of the Grammar g
+     * @param g the Grammar g
+     * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
+     */
     public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
         HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
         HashSet<ArrayList<Symbol>> res=new HashSet<>();
@@ -735,6 +811,12 @@ public class GrammarUtil {
         return res;
 
     }
+
+    /**
+     * @author Isabel Wingen
+     * @param g the grammar
+     * @return true, if the grammar is lambda-free
+     */
     public static boolean isLambdaFree(Grammar g) {
      return   !g.getNonterminals().stream().anyMatch(nonterminal ->
              nonterminal.getSymbolLists().stream().anyMatch(list ->
