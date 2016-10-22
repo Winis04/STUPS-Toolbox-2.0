@@ -388,20 +388,10 @@ public class GrammarUtil {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
-                    for (int i = 0; i < symbolList.size(); i++) {
-                        if ((symbolList.get(i).getName().equals("epsilon") || symbolList.get(i).getName().equals("lambda")) && !result.contains(nonterminal)) {
-                            //If the current symbol is the empty word, add the current nonterminal to the nullable-set.
-                            result.add(nonterminal);
-                            changed = true;
-                        } else if (result.contains(symbolList.get(i)) && !result.contains(nonterminal)) {
-                            //If the current symbol is in the nullable-set, add the current nonterminal to the nullable-set.
-                            result.add(nonterminal);
-                            changed = true;
-                        } else {
-                            //If the current symbol is neither the empty word, nor nullable, this means that the current
-                            //symbolList is not nullable. So, the we go on with the next list.
-                            break;
-                        }
+                    if(symbolList.stream().allMatch(symbol -> (symbol.getName().equals("epsilon") || result.contains(symbol))) && !result.contains(nonterminal)) {
+                        result.add(nonterminal);
+
+                        changed=true;
                     }
                 }
             }
