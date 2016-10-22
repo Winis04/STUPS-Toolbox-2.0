@@ -28,76 +28,77 @@ public class FirstFollowTab implements GrammarTab {
         GridPane centerPane = new GridPane();
         GridPane firstPane = new GridPane();
         GridPane followPane = new GridPane();
+        if(GrammarUtil.isLambdaFree(grammar)) {
+            HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(grammar);
+            HashMap<Nonterminal, HashSet<Terminal>> first = GrammarUtil.calculateFirst(grammar);
+            HashMap<Nonterminal, HashSet<Terminal>> follow = GrammarUtil.calculateFollow(grammar);
 
-        HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(grammar);
-        HashMap<Nonterminal, HashSet<Terminal>> first = GrammarUtil.calculateFirst(grammar);
-        HashMap<Nonterminal, HashSet<Terminal>> follow = GrammarUtil.calculateFollow(grammar);
+            //Write the nullable-set.
+            StringBuilder sb = new StringBuilder();
+            sb.append("nullable = {");
 
-        //Write the nullable-set.
-        StringBuilder sb = new StringBuilder();
-        sb.append("nullable = {");
+            Iterator<Nonterminal> it1 = nullable.iterator();
+            while (it1.hasNext()) {
+                Nonterminal currentNonterminal = it1.next();
+                sb.append(currentNonterminal.getName());
 
-        Iterator<Nonterminal> it1 = nullable.iterator();
-        while(it1.hasNext()) {
-            Nonterminal currentNonterminal = it1.next();
-            sb.append(currentNonterminal.getName());
-
-            if(it1.hasNext()) {
-                sb.append(", ");
-            }
-        }
-        sb.append("}");
-
-        Label nullableLabel = new Label(sb.toString());
-        nullableLabel.setStyle("-fx-border-color: black");
-
-        rootPane.setTop(nullableLabel);
-        rootPane.setAlignment(nullableLabel, Pos.CENTER);
-        rootPane.setPadding(new Insets(50, 0, 0, 0));
-
-        //Iterate over all nonterminals and write their first- and follow-sets.
-        int i = 0;
-        for(Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
-            //Write the first-set of the current nonterminal.
-            sb = new StringBuilder();
-            sb.append("First(" + nonterminal.getName() + ") = {");
-
-            Iterator<Terminal> it2 = first.get(nonterminal).iterator();
-            while(it2.hasNext()) {
-                Terminal currentTerminal = it2.next();
-                sb.append(currentTerminal.getName());
-
-                if(it2.hasNext()) {
+                if (it1.hasNext()) {
                     sb.append(", ");
                 }
             }
             sb.append("}");
-            firstPane.addRow(i, new Label(sb.toString()));
 
-            //Write the follow-set of the current nonterminal.
-            sb = new StringBuilder();
-            sb.append("Follow(" + nonterminal.getName() + ") = {");
+            Label nullableLabel = new Label(sb.toString());
+            nullableLabel.setStyle("-fx-border-color: black");
 
-            it2 = follow.get(nonterminal).iterator();
-            while(it2.hasNext()) {
-                Terminal currentTerminal = it2.next();
-                sb.append(currentTerminal.getName());
+            rootPane.setTop(nullableLabel);
+            rootPane.setAlignment(nullableLabel, Pos.CENTER);
+            rootPane.setPadding(new Insets(50, 0, 0, 0));
 
-                if(it2.hasNext()) {
-                    sb.append(", ");
+            //Iterate over all nonterminals and write their first- and follow-sets.
+            int i = 0;
+            for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
+                //Write the first-set of the current nonterminal.
+                sb = new StringBuilder();
+                sb.append("First(" + nonterminal.getName() + ") = {");
+
+                Iterator<Terminal> it2 = first.get(nonterminal).iterator();
+                while (it2.hasNext()) {
+                    Terminal currentTerminal = it2.next();
+                    sb.append(currentTerminal.getName());
+
+                    if (it2.hasNext()) {
+                        sb.append(", ");
+                    }
                 }
-            }
-            sb.append("}");
-            followPane.addRow(i, new Label(sb.toString()));
+                sb.append("}");
+                firstPane.addRow(i, new Label(sb.toString()));
 
-            i++;
+                //Write the follow-set of the current nonterminal.
+                sb = new StringBuilder();
+                sb.append("Follow(" + nonterminal.getName() + ") = {");
+
+                it2 = follow.get(nonterminal).iterator();
+                while (it2.hasNext()) {
+                    Terminal currentTerminal = it2.next();
+                    sb.append(currentTerminal.getName());
+
+                    if (it2.hasNext()) {
+                        sb.append(", ");
+                    }
+                }
+                sb.append("}");
+                followPane.addRow(i, new Label(sb.toString()));
+
+                i++;
+            }
+            firstPane.setPadding(new Insets(0, 100, 0, 0));
+            followPane.setPadding(new Insets(0, 0, 0, 100));
+
+            firstPane.setStyle("-fx-border-color: black");
+            followPane.setStyle("-fx-border-color: black");
         }
 
-        firstPane.setPadding(new Insets(0, 100, 0, 0));
-        followPane.setPadding(new Insets(0, 0, 0, 100));
-
-        firstPane.setStyle("-fx-border-color: black");
-        followPane.setStyle("-fx-border-color: black");
 
         centerPane.addColumn(0, firstPane);
         centerPane.addColumn(1, followPane);
