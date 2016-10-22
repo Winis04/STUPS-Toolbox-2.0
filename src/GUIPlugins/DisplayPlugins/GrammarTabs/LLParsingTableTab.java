@@ -29,7 +29,7 @@ public class LLParsingTableTab implements GrammarTab {
             //Add a column for every terminal.
             int i = 1;
             for (Terminal terminal : terminalList) {
-                if (!terminal.getName().equals("epsilon") || terminal.getName().equals("lambda")) {
+                if (!terminal.getName().equals("epsilon")) {
                     Label label = new Label(terminal.getName());
                     label.setStyle("-fx-font-weight: bold");
                     rootPane.addColumn(i, label);
@@ -46,7 +46,7 @@ public class LLParsingTableTab implements GrammarTab {
 
                 int j = 1;
                 for (Terminal terminal : terminalList) {
-                    if (!terminal.getName().equals("epsilon") || terminal.getName().equals("lambda")) {
+                    if (!terminal.getName().equals("epsilon")) {
                         StringBuilder sb = new StringBuilder();
                         int k = 0;
                         for (String rule : llTable.get(nonterminal).get(terminal)) {
