@@ -838,20 +838,20 @@ public class GrammarUtil {
         }
         return false;
     }
-    public static HashSet<Nonterminal> unitRules(Grammar g) {
-        HashSet<Nonterminal> unitRules=new HashSet<>();
+    public static HashSet<UnitRule> unitRules(Grammar g) {
+        HashSet<UnitRule> unitRules=new HashSet<>();
         g.getNonterminals().stream().filter(nonterminal -> nonterminal.
                 getSymbolLists().
                 stream().
                 anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal)).
-                forEach(nt -> unitRules.add(new Nonterminal(nt.getName(),nt.getSymbolLists())));
-        for(Nonterminal t : unitRules) {
-            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
-            tmp.addAll(t.getSymbolLists().stream().filter(list -> list.size()==1 && list.get(0) instanceof Nonterminal).collect(Collectors.toList()));
-            t.setSymbolLists(tmp);
-        }
-       
+                forEach(nt -> unitRules.add(new UnitRule(nt,nt.getSymbolLists())));
         return unitRules;
+    }
+    public static boolean inCircle(Nonterminal s, Grammar g, HashSet<UnitRule> unitRules) {
+
+    }
+    public static HashSet<Nonterminal> followDirectly(Nonterminal s) {
+
     }
 
     public static boolean startSymbolOnRightSide(Grammar g) {
