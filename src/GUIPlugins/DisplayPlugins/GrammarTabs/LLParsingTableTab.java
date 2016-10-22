@@ -62,6 +62,7 @@ public class LLParsingTableTab implements GrammarTab {
                     }
                 }
 
+                
                 i++;
             }
             rootPane.setGridLinesVisible(true);
