@@ -6,6 +6,7 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
+import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 
 import java.io.*;
 import java.util.*;
@@ -811,18 +812,52 @@ public class GrammarUtil {
         return res;
 
     }
-    public static boolean addNewStartSymbol(Grammar g) {
-        if(GrammarUtil.startSymbolPointsOnLambda(g)) {
-            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
-            ArrayList<Symbol> tmp2=new ArrayList<>();
-            tmp2.add(g.getStartSymbol());
-            tmp.add(tmp2);
-            Nonterminal s0=new Nonterminal("S0",tmp);
-            g.getNonterminals().add(s0);
-            g.setStartSymbol(s0);
+    public static boolean specialRuleForEmptyWord(Grammar g) {
+        if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
+
+            Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
+            for(Nonterminal nt : g.getNonterminals()) {
+                HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
+                for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                    ArrayList<Symbol> tmp=new ArrayList<>();
+                    for(Symbol sym : list) {
+                        if(sym.equals(g.getStartSymbol())) {
+                            tmp.add(newSymbol);
+                        } else {
+                            tmp.add(sym);
+                        }
+                    }
+                    newRightSide.add(tmp);
+                }
+                nt.getSymbolLists().clear();
+                nt.getSymbolLists().addAll(newRightSide);
+            }
+            newSymbol.getSymbolLists().addAll(g.getStartSymbol().getSymbolLists());
             return true;
+
         }
         return false;
+    }
+    public static HashSet<Nonterminal> unitRules(Grammar g) {
+        HashSet<Nonterminal> unitRules=new HashSet<>();
+        g.getNonterminals().stream().filter(nonterminal -> nonterminal.
+                getSymbolLists().
+                stream().
+                anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal)).
+                forEach(nt -> unitRules.add(new Nonterminal(nt.getName(),nt.getSymbolLists())));
+        for(Nonterminal t : unitRules) {
+            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
+            tmp.addAll(t.getSymbolLists().stream().filter(list -> list.size()==1 && list.get(0) instanceof Nonterminal).collect(Collectors.toList()));
+            t.setSymbolLists(tmp);
+        }
+       
+        return unitRules;
+    }
+
+    public static boolean startSymbolOnRightSide(Grammar g) {
+
+        return g.getNonterminals().stream().anyMatch(nt -> nt.getSymbolLists().stream().
+        anyMatch(list -> list.stream().anyMatch(symbol -> symbol.equals(g.getStartSymbol()))));
     }
     /**
      * @author Isabel Wingen

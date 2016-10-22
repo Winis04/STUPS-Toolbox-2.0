@@ -41,8 +41,8 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         Grammar grammar = (Grammar) object;
         GrammarUtil.replaceLambda(grammar);
         //
-       if(GrammarUtil.addNewStartSymbol(grammar)) {
-           System.out.println("added new start symbol S0:");
+       if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
+           System.out.println("added new symbol S#:");
            GrammarUtil.print(grammar);
        }
 

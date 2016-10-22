@@ -47,6 +47,11 @@ public class Nonterminal implements Symbol {
     public HashSet<ArrayList<Symbol>> getSymbolLists() {
         return symbolLists;
     }
+
+    public void setSymbolLists(HashSet<ArrayList<Symbol>> symbolLists) {
+        this.symbolLists = symbolLists;
+    }
+
     @Override
     public boolean equals(Object o) {
         return o instanceof Nonterminal && ((Nonterminal)o).getName().equals(name);
