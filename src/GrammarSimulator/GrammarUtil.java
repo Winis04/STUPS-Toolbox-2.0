@@ -838,6 +838,46 @@ public class GrammarUtil {
         }
         return false;
     }
+    public static HashSet<Node> findUnitRules(Grammar g) {
+        HashSet<Node> result=new HashSet<>();
+        g.getNonterminals().stream().filter(nt ->
+                nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal)).
+                forEach(x -> result.add(new Node(x)));
+        for(Node node : result) {
+          for(ArrayList<Symbol> list : node.getValue().getSymbolLists()) {
+              if(list.size()==1 && list.get(0) instanceof Nonterminal) {
+                  Nonterminal nt = (Nonterminal) list.get(0);
+                  for (Node child : result) {
+                      if (child.equals(new Node(nt))) {
+                          node.getChildren().add(child);
+                      }
+                  }
+              }
+          }
+        }
+        return result;
+    }
+    public static void dfs(HashSet<Node> unitRules) {
+        Integer dfe=new Integer(1);
+        Integer dfs=new Integer(1);
+        for(Node node : unitRules) {
+            if(!node.isVisited()) {
+                dfe=GrammarUtil.dfs(node, dfs, dfe);
+            }
+        }
+    }
+    private static Integer dfs(Node node, Integer dfs, Integer dfe){
+        node.setVisited(true);
+        node.setDfs(dfs.intValue());
+        dfs=new Integer(dfs.intValue()+1);
+        for(Node child : node.getChildren()) {
+            if(!child.isVisited()) {
+                dfe=GrammarUtil.dfs(child,dfs,dfe);
+            }
+        }
+        node.setDfe(dfe.intValue());
+        return new Integer(dfe.intValue()+1);
+    }
     public static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             // a temporary HashSet containing the changed (and not changed) rules

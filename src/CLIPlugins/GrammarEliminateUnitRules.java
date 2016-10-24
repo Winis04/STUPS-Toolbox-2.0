@@ -1,9 +1,6 @@
 package CLIPlugins;
 
-import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Nonterminal;
-import GrammarSimulator.Symbol;
+import GrammarSimulator.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,7 +39,9 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-
+       HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
+        GrammarUtil.dfs(unitRules);
+        unitRules.stream().forEach(x -> System.out.printf("Node %s: dfs: %d, dfe: %d\n",x.getName(),x.getDfs(),x.getDfe()));
         GrammarUtil.print(grammar);
         return null;
     }

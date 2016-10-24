@@ -102,4 +102,12 @@ public class Node {
     public void setChildren(HashSet<Node> children) {
         this.children = children;
     }
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Node) {
+            Node node=(Node) o;
+            return node.getName().equals(this.getName());
+        }
+        return false;
+    }
 }
