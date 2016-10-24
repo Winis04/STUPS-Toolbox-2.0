@@ -938,6 +938,16 @@ public class GrammarUtil {
         if(g.getStartSymbol().equals(toBeReplaced)) {
             g.setStartSymbol(newNonterminal);
         }
+        for(Nonterminal nonterminal : g.getNonterminals()) {
+            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
+            for(ArrayList<Symbol> list : nonterminal.getSymbolLists()) {
+                if(list.size()>1 || !(list.get(0) instanceof Nonterminal) || !list.get(0).equals(nonterminal)) {
+                    tmp.add(list);
+                }
+            }
+            nonterminal.getSymbolLists().clear();
+            nonterminal.getSymbolLists().addAll(tmp);
+        }
     }
 
     public static boolean startSymbolOnRightSide(Grammar g) {

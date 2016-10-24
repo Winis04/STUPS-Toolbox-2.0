@@ -39,7 +39,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-
+        GrammarUtil.removeUnitRules(grammar);
        /// unitRules.stream().forEach(x -> System.out.printf("Node %s: dfs: %d, dfe: %d\n",x.getName(),x.getDfs(),x.getDfe()));
         GrammarUtil.print(grammar);
         return null;
