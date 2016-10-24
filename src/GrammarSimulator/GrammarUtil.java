@@ -857,19 +857,36 @@ public class GrammarUtil {
         }
         return result;
     }
-    public static void removeUnitRules(HashSet<Node> unitRules) {
+    public static void removeUnitRules(Grammar grammar) {
+        ArrayList<Node> tmp;
+
+        HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
         GrammarUtil.dfs(unitRules);
+        tmp=GrammarUtil.findBackwardsEdge(unitRules);
+        while(tmp!=null) {
+            GrammarUtil.replaceNonterminal(tmp.get(0).getValue(), tmp.get(1).getValue(), grammar);
+            unitRules= GrammarUtil.findUnitRules(grammar);
+            GrammarUtil.dfs(unitRules);
+            tmp=GrammarUtil.findBackwardsEdge(unitRules);
+        }
+
+
+
 
     }
-    private static void findBackwardsEdge(HashSet<Node> unitRules) {
+    private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) {
         for(Node node : unitRules) {
             for(Node child : node.getChildren()) {
                 if(child.getDfs()<node.getDfs() && child.getDfe()>node.getDfe()) {
                     //backward edge found!
-                   // GrammarUtil.replaceNonterminal();
+                    ArrayList<Node> tmp=new ArrayList<>();
+                    tmp.add(node);
+                    tmp.add(child);
+                    return tmp;
                 }
             }
         }
+        return null;
     }
     public static void dfs(HashSet<Node> unitRules) {
         ArrayList<Integer> df=new ArrayList<>();
