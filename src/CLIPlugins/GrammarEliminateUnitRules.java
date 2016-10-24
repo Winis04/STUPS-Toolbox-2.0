@@ -2,6 +2,11 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import GrammarSimulator.Nonterminal;
+import GrammarSimulator.Symbol;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Isabel on 22.10.2016.
@@ -37,7 +42,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-        GrammarUtil.unitRules(grammar);
+
         GrammarUtil.print(grammar);
         return null;
     }

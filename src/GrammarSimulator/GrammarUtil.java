@@ -838,20 +838,31 @@ public class GrammarUtil {
         }
         return false;
     }
-    public static HashSet<UnitRule> unitRules(Grammar g) {
-        HashSet<UnitRule> unitRules=new HashSet<>();
-        g.getNonterminals().stream().filter(nonterminal -> nonterminal.
-                getSymbolLists().
-                stream().
-                anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal)).
-                forEach(nt -> unitRules.add(new UnitRule(nt,nt.getSymbolLists())));
-        return unitRules;
-    }
-    public static boolean inCircle(Nonterminal s, Grammar g, HashSet<UnitRule> unitRules) {
-
-    }
-    public static HashSet<Nonterminal> followDirectly(Nonterminal s) {
-
+    public static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
+        for(Nonterminal nt : g.getNonterminals()) {
+            // a temporary HashSet containing the changed (and not changed) rules
+            HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                ArrayList<Symbol> tmpList=new ArrayList<>();
+                for(int i=0;i<list.size();i++) {
+                    if(list.get(i).equals(toBeReplaced)) {
+                        tmpList.add(newNonterminal);
+                    } else {
+                        tmpList.add(list.get(i));
+                    }
+                }
+                //tmpList contains the new rule which is now added to the hashset.
+                //because we add them to the new hashset no duplicates can occure
+                tmpSet.add(tmpList);
+            }
+            nt.getSymbolLists().clear();
+            nt.getSymbolLists().addAll(tmpSet);
+        }
+        newNonterminal.getSymbolLists().addAll(toBeReplaced.getSymbolLists());
+        g.getNonterminals().remove(toBeReplaced);
+        if(g.getStartSymbol().equals(toBeReplaced)) {
+            g.setStartSymbol(newNonterminal);
+        }
     }
 
     public static boolean startSymbolOnRightSide(Grammar g) {
