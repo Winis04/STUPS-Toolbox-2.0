@@ -956,8 +956,8 @@ public class GrammarUtil {
         df.set(1,new Integer(df.get(1).intValue()+1));
         return df;
     }
-    public static void removeUnitRules(HashSet<Node> nodes, ArrayList<Node> sorted, Grammar g) {
-        //ArrayList<Node> res=GrammarUtil.bringNonterminalsInOrder(nodes,g);
+    public static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
+        ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
            Node current=sorted.get(i);
             for(Node child : current.getChildren()) {
@@ -975,8 +975,9 @@ public class GrammarUtil {
             nt.getSymbolLists().clear();
             nt.getSymbolLists().addAll(tmpSet);
         }
+        return sorted;
     }
-    public static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
+    private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
         Node start=null;
         ArrayList<Node> result=new ArrayList<>();
         for(Node node : nodes) {
@@ -1052,7 +1053,9 @@ public class GrammarUtil {
             nonterminal.getSymbolLists().addAll(tmp);
         }
     }
-
+    public static boolean hasUnitRules(Grammar g) {
+       return g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal));
+    }
     /**
      * checks, if the startsymbol occurs on a right side of any rule
      * @author Isabel Wingen
