@@ -858,25 +858,29 @@ public class GrammarUtil {
         return result;
     }
     public static void dfs(HashSet<Node> unitRules) {
+        ArrayList<Integer> df=new ArrayList<>();
         Integer dfe=new Integer(1);
         Integer dfs=new Integer(1);
+        df.add(dfs);
+        df.add(dfe);
         for(Node node : unitRules) {
             if(!node.isVisited()) {
-                dfe=GrammarUtil.dfs(node, dfs, dfe);
+                df=GrammarUtil.dfs(node,df);
             }
         }
     }
-    private static Integer dfs(Node node, Integer dfs, Integer dfe){
+    private static ArrayList<Integer> dfs(Node node, ArrayList<Integer> df){
         node.setVisited(true);
-        node.setDfs(dfs.intValue());
-        dfs=new Integer(dfs.intValue()+1);
+        node.setDfs(df.get(0).intValue());
+        df.set(0,new Integer(df.get(0).intValue()+1));
         for(Node child : node.getChildren()) {
             if(!child.isVisited()) {
-                dfe=GrammarUtil.dfs(child,dfs,dfe);
+                df=GrammarUtil.dfs(child,df);
             }
         }
-        node.setDfe(dfe.intValue());
-        return new Integer(dfe.intValue()+1);
+        node.setDfe(df.get(1).intValue());
+        df.set(1,new Integer(df.get(1).intValue()+1));
+        return df;
     }
     public static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
