@@ -42,8 +42,10 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
         HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
         System.out.println("Step 1: remove Circle");
         GrammarUtil.print(grammar);
-        GrammarUtil.bringNonterminalsInOrder(unitRules,grammar);
-        unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
+        GrammarUtil.removeUnitRules(unitRules,grammar);
+        System.out.println("Step 2: remove unitRules");
+        GrammarUtil.print(grammar);
+       // unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
         //second step
 
         return null;
