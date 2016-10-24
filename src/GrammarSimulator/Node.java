@@ -12,11 +12,6 @@ public class Node {
      */
     private boolean visited;
     /**
-     * for the deep-search
-     * true, if the node is finished (all child-nodes are finished)
-     */
-    private boolean finished;
-    /**
      * when was this node finished
      */
     private int dfe;
@@ -29,6 +24,11 @@ public class Node {
      */
     private HashSet<Node> children;
     /**
+     *
+     */
+    private int number;
+
+    /**
      * the value of this node
      */
     private Nonterminal value;
@@ -38,7 +38,7 @@ public class Node {
     private String name;
     public Node(Nonterminal value) {
         this.visited=false;
-        this.finished=false;
+        this.number=0;
         this.dfe=0;
         this.dfe=0;
         this.children=new HashSet<>();
@@ -47,7 +47,7 @@ public class Node {
     }
     public Node(Nonterminal value, HashSet<Node> children) {
         this.visited=false;
-        this.finished=false;
+        this.number=0;
         this.dfe=0;
         this.dfe=0;
         this.children=children;
@@ -59,9 +59,7 @@ public class Node {
         return visited;
     }
 
-    public boolean isFinished() {
-        return finished;
-    }
+
 
     public int getDfe() {
         return dfe;
@@ -87,9 +85,6 @@ public class Node {
         this.visited = visited;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
 
     public void setDfe(int dfe) {
         this.dfe = dfe;
@@ -109,5 +104,13 @@ public class Node {
             return node.getName().equals(this.getName());
         }
         return false;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

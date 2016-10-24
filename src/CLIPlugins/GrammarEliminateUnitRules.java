@@ -2,7 +2,6 @@ package CLIPlugins;
 
 import GrammarSimulator.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -39,9 +38,14 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-        GrammarUtil.removeUnitRules(grammar);
-       /// unitRules.stream().forEach(x -> System.out.printf("Node %s: dfs: %d, dfe: %d\n",x.getName(),x.getDfs(),x.getDfe()));
+        //first step
+        HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
+        System.out.println("Step 1: remove Circle");
         GrammarUtil.print(grammar);
+        GrammarUtil.bringNonterminalsInOrder(unitRules,grammar);
+        unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
+        //second step
+
         return null;
     }
 

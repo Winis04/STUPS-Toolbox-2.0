@@ -727,6 +727,7 @@ public class GrammarUtil {
     /**
      * the second step of the algorithm to delete lambda-rules.
      * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced by "epsilon" is added to the ruleset
+     * @author Isabel Wingen
      * @param grammar The Grammar
      * @param nullable The set, which contains all the nullable terminals
      */
@@ -812,6 +813,14 @@ public class GrammarUtil {
         return res;
 
     }
+
+    /**
+     * if the startsymbol points on lambda and if the startsymbol occurs on any side, the special rule for the empty word
+     * has to be applied before the lambda-removal
+     * @author Isabel Wingen
+     * @param g
+     * @return
+     */
     public static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
@@ -838,26 +847,14 @@ public class GrammarUtil {
         }
         return false;
     }
-    public static HashSet<Node> findUnitRules(Grammar g) {
-        HashSet<Node> result=new HashSet<>();
-        g.getNonterminals().stream().filter(nt ->
-                nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal)).
-                forEach(x -> result.add(new Node(x)));
-        for(Node node : result) {
-          for(ArrayList<Symbol> list : node.getValue().getSymbolLists()) {
-              if(list.size()==1 && list.get(0) instanceof Nonterminal) {
-                  Nonterminal nt = (Nonterminal) list.get(0);
-                  for (Node child : result) {
-                      if (child.equals(new Node(nt))) {
-                          node.getChildren().add(child);
-                      }
-                  }
-              }
-          }
-        }
-        return result;
-    }
-    public static void removeUnitRules(Grammar grammar) {
+
+    /**
+     * removes circles in the grammar rules
+     * @author Isabel Wingen
+     * @param grammar
+     * @return
+     */
+    public static HashSet<Node> removeCircleRules(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
@@ -869,25 +866,63 @@ public class GrammarUtil {
             GrammarUtil.dfs(unitRules);
             tmp=GrammarUtil.findBackwardsEdge(unitRules);
         }
-
+        return unitRules;
 
 
 
     }
+
+    /**
+     * makes the nonterminals to nodes. the children are the nonterminals on which this nonterminal points
+     * @autor Isabel Wingen
+     * @param g
+     * @return a HashSet with the Nonterminals as Nodes connected in a graph
+     */
+    public static HashSet<Node> findUnitRules(Grammar g) {
+        HashSet<Node> result=new HashSet<>();
+        g.getNonterminals().stream().
+                forEach(x -> result.add(new Node(x)));
+        for(Node node : result) {
+            node.getValue().getSymbolLists().stream().forEach(list -> {
+                if(list.size()==1 && list.get(0) instanceof Nonterminal) {
+                    Nonterminal nt = (Nonterminal) list.get(0);
+                    result.stream().forEach(child -> {
+                        if (child.equals(new Node(nt))) {
+                            node.getChildren().add(child);
+                        }
+                    });
+                }
+            });
+        }
+        return result;
+    }
+
+    /**
+     * find backward edges after a dept-first-search
+     * @param unitRules
+     * @return
+     */
     private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) {
-        for(Node node : unitRules) {
-            for(Node child : node.getChildren()) {
-                if(child.getDfs()<node.getDfs() && child.getDfe()>node.getDfe()) {
-                    //backward edge found!
-                    ArrayList<Node> tmp=new ArrayList<>();
-                    tmp.add(node);
-                    tmp.add(child);
-                    return tmp;
+        if(unitRules.stream().allMatch(rule -> rule.getDfe()!=0)) {
+            for (Node node : unitRules) {
+                for (Node child : node.getChildren()) {
+                    if (child.getDfs() < node.getDfs() && child.getDfe() > node.getDfe()) {
+                        //backward edge found!
+                        ArrayList<Node> tmp = new ArrayList<>();
+                        tmp.add(node);
+                        tmp.add(child);
+                        return tmp;
+                    }
                 }
             }
         }
         return null;
     }
+
+    /**
+     * start of the dept-first search
+     * @param unitRules
+     */
     public static void dfs(HashSet<Node> unitRules) {
         ArrayList<Integer> df=new ArrayList<>();
         Integer dfe=new Integer(1);
@@ -900,6 +935,14 @@ public class GrammarUtil {
             }
         }
     }
+
+    /**
+     * dept-first search on {@link Node}s
+     * @author Isabel Wingen
+     * @param node the current node on which we do the search
+     * @param df the counter for dfe and dfs
+     * @return the new dfe and dfs counter
+     */
     private static ArrayList<Integer> dfs(Node node, ArrayList<Integer> df){
         node.setVisited(true);
         node.setDfs(df.get(0).intValue());
@@ -913,6 +956,36 @@ public class GrammarUtil {
         df.set(1,new Integer(df.get(1).intValue()+1));
         return df;
     }
+    public static void bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
+        Node start=null;
+        for(Node node : nodes) {
+            if(node.getValue().equals(g.getStartSymbol())) {
+                start=node;
+            }
+        }
+        if(start!=null) {
+            while(nodes.stream().
+                    anyMatch(node -> node.getChildren().stream().
+                            anyMatch(child -> child.getNumber()<=node.getNumber()))) {
+                GrammarUtil.bla(start);
+            }
+        }
+    }
+    private static void bla(Node node) {
+        if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
+            node.getChildren().stream().forEach(child -> child.setNumber(node.getNumber()+1));
+        }
+        node.getChildren().stream().forEach(child -> GrammarUtil.bla(child));
+    }
+
+    /**
+     * replaces a Nonterminal through another and remove it from the set
+     *
+     * @author Isabel Wingen
+     * @param toBeReplaced the nonterminal that should be replaced
+     * @param newNonterminal the new nonterminal that replaces the old
+     * @param g the grammar g
+     */
     public static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             // a temporary HashSet containing the changed (and not changed) rules
@@ -950,12 +1023,20 @@ public class GrammarUtil {
         }
     }
 
+    /**
+     * checks, if the startsymbol occurs on a right side of any rule
+     * @author Isabel Wingen
+     * @param g the grammar g
+     * @return true, if it is on a right side
+     */
     public static boolean startSymbolOnRightSide(Grammar g) {
 
         return g.getNonterminals().stream().anyMatch(nt -> nt.getSymbolLists().stream().
         anyMatch(list -> list.stream().anyMatch(symbol -> symbol.equals(g.getStartSymbol()))));
     }
     /**
+     * checks if a grammar is without any rules pointing on lambda
+     *
      * @author Isabel Wingen
      * @param g the grammar
      * @return true, if the grammar is lambda-free
@@ -965,9 +1046,21 @@ public class GrammarUtil {
              nonterminal.getSymbolLists().stream().anyMatch(list ->
                      list.stream().anyMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL))));
     }
+
+    /**
+     * checks, if lambda is in the languague which is generated by grammar g
+     * @param g
+     * @return
+     */
     public static boolean languageContainsLambda(Grammar g) {
        return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
     }
+
+    /**
+     * Is there any rule in the format S --> lambda?
+     * @param g
+     * @return
+     */
     public static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getStartSymbol().getSymbolLists().stream().anyMatch(list -> list.stream().
                 allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
