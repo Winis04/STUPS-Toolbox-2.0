@@ -6,7 +6,6 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
-import com.sun.java.swing.plaf.windows.WindowsTreeUI;
 
 import java.io.*;
 import java.util.*;
@@ -629,6 +628,10 @@ public class GrammarUtil {
         return result;
     }
 
+    /**
+     *
+     * @param g
+     */
     public static void removeUnneccesaryEpsilons(Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> res=new HashSet<>();
@@ -646,6 +649,11 @@ public class GrammarUtil {
             nt.getSymbolLists().addAll(res);
         }
     }
+
+    /**
+     * replaces every occurence of the nullsymbol with a static variable Terminal.NullSymbol
+     * @param g the grammar g
+     */
     public static void replaceLambda(Grammar g) {
         Iterator<Terminal> it=g.getTerminals().iterator();
         boolean hasNull=false;
@@ -671,7 +679,7 @@ public class GrammarUtil {
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
      */
     public static void removeLambdaRules_StepThree(Grammar g, boolean again) {
-
+        //TODO guarantee, that step two is executed before
         // delete lambda-rules
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
@@ -956,7 +964,15 @@ public class GrammarUtil {
         df.set(1,new Integer(df.get(1).intValue()+1));
         return df;
     }
-    public static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
+
+    /**
+     * removes the unit rules in a Grammar, only possible if there are no circle
+     * TODO
+     * @param nodes
+     * @param g
+     * @return
+     */
+    private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
            Node current=sorted.get(i);
@@ -977,7 +993,15 @@ public class GrammarUtil {
         }
         return sorted;
     }
+
+    /**
+     * @author Isabel Wingen
+     * @param nodes
+     * @param g
+     * @return
+     */
     private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
+        //find start node
         Node start=null;
         ArrayList<Node> result=new ArrayList<>();
         for(Node node : nodes) {
@@ -985,11 +1009,12 @@ public class GrammarUtil {
                 start=node;
             }
         }
+        // as long as some nodes have children with higher numbers, do the number-method
         if(start!=null) {
             while(nodes.stream().
                     anyMatch(node -> node.getChildren().stream().
                             anyMatch(child -> child.getNumber()<=node.getNumber()))) {
-                GrammarUtil.bla(start);
+                GrammarUtil.number(start);
             }
         }
         for(int i=nodes.size()-1;i>=0;i--) {
@@ -1002,11 +1027,16 @@ public class GrammarUtil {
         return result;
     }
 
-    private static void bla(Node node) {
+    /**
+     * numbers the parent node and all children nodes with a higher number
+     * @author Isabel Wingen
+     * @param node
+     */
+    private static void number(Node node) {
         if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
             node.getChildren().stream().forEach(child -> child.setNumber(node.getNumber()+1));
         }
-        node.getChildren().stream().forEach(child -> GrammarUtil.bla(child));
+        node.getChildren().stream().forEach(child -> GrammarUtil.number(child));
     }
 
     /**
@@ -1097,6 +1127,14 @@ public class GrammarUtil {
     public static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getStartSymbol().getSymbolLists().stream().anyMatch(list -> list.stream().
                 allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
+    }
+    public static boolean isCircleFree(Grammar g) {
+        return g.getNonterminals().stream().
+                allMatch(nonterminal -> nonterminal.getSymbolLists().stream().
+                allMatch(list -> list.size()>1 && !(list.get(0) instanceof Nonterminal)));
+    }
+    public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
+       return a.stream().allMatch(object -> b.contains(object)) && b.stream().allMatch(object -> a.contains(object));
     }
 
 }

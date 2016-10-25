@@ -39,7 +39,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-        GrammarUtil.replaceLambda(grammar);
+        GrammarUtil.replaceLambda(grammar); //TODO: do in the load grammar method
         //
        if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
            System.out.println("added new symbol S#:");
