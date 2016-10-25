@@ -629,7 +629,7 @@ public class GrammarUtil {
     }
 
     /**
-     *
+     * TODO
      * @param g
      */
     public static void removeUnneccesaryEpsilons(Grammar g) {
