@@ -670,7 +670,11 @@ public class GrammarUtil {
             g.getTerminals().add(Terminal.NULLSYMBOL);
         }
     }
-
+    /******************************************************************************************************************
+     * ---------------------------------------------------------------------------------------------------------------*
+     * -                                Remove Lambda Rules                                                          -*
+     * ---------------------------------------------------------------------------------------------------------------*
+     ******************************************************************************************************************/
     /**
      * the third step of the algorithm to delete lambda-rules
      * all rules which have only epsilons on the right side are removed
@@ -796,66 +800,11 @@ public class GrammarUtil {
         }
     }
 
-    /**
-     * @author Isabel Wingen
-     * @param nt a nonterminal of the Grammar g
-     * @param g the Grammar g
-     * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
-     */
-    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
-        HashSet<ArrayList<Symbol>> res=new HashSet<>();
-        for(ArrayList<Symbol> list : tmp) {
-            boolean allNull=true;
-            for(Symbol sym : list) {
-                if(sym.equals(Terminal.NULLSYMBOL)) {
-                    allNull=allNull & true;
-                } else {
-                    allNull=false;
-                }
-            }
-            if(allNull==false) {
-                res.add(list);
-            }
-        }
-        return res;
-
-    }
-
-    /**
-     * if the startsymbol points on lambda and if the startsymbol occurs on any side, the special rule for the empty word
-     * has to be applied before the lambda-removal
-     * @author Isabel Wingen
-     * @param g
-     * @return
-     */
-    public static boolean specialRuleForEmptyWord(Grammar g) {
-        if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
-
-            Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
-            for(Nonterminal nt : g.getNonterminals()) {
-                HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
-                for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                    ArrayList<Symbol> tmp=new ArrayList<>();
-                    for(Symbol sym : list) {
-                        if(sym.equals(g.getStartSymbol())) {
-                            tmp.add(newSymbol);
-                        } else {
-                            tmp.add(sym);
-                        }
-                    }
-                    newRightSide.add(tmp);
-                }
-                nt.getSymbolLists().clear();
-                nt.getSymbolLists().addAll(newRightSide);
-            }
-            newSymbol.getSymbolLists().addAll(g.getStartSymbol().getSymbolLists());
-            return true;
-
-        }
-        return false;
-    }
-
+    /******************************************************************************************************************
+     * ---------------------------------------------------------------------------------------------------------------*
+     * -                                eliminate Unit Rules                                                         -*
+     * ---------------------------------------------------------------------------------------------------------------*
+     ******************************************************************************************************************/
     /**
      * removes circles in the grammar rules
      * @author Isabel Wingen
@@ -964,15 +913,31 @@ public class GrammarUtil {
         df.set(1,new Integer(df.get(1).intValue()+1));
         return df;
     }
+    public static void eliminateUnitRulesComplete(Grammar grammar) {
+       // System.out.println("Step 1: remove Circle");
+        HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
+       // GrammarUtil.print(grammar);
 
+
+        //   GrammarUtil.print(grammar);
+
+       // System.out.println("Step 2: number the nonterminals");
+        ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
+       // list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
+      //  System.out.println("Step 3: remove unit rules");
+       // GrammarUtil.print(grammar);
+        // unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
+        //second step
+
+    }
     /**
      * removes the unit rules in a Grammar, only possible if there are no circle
      * TODO
-     * @param nodes
-     * @param g
-     * @return
+     * @param nodes the nonterminals as nodes. to obtain them, use
+     * @param g the grammar g
+     * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
      */
-    private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
+    public static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
            Node current=sorted.get(i);
@@ -1083,6 +1048,76 @@ public class GrammarUtil {
             nonterminal.getSymbolLists().addAll(tmp);
         }
     }
+    /******************************************************************************************************************
+     * ---------------------------------------------------------------------------------------------------------------*
+     * -                                make chomsky normal form                                                      -*
+     * ---------------------------------------------------------------------------------------------------------------*
+     ******************************************************************************************************************/
+
+    /******************************************************************************************************************
+     * ---------------------------------------------------------------------------------------------------------------*
+     * -                                other things                                                                 -*
+     * ---------------------------------------------------------------------------------------------------------------*
+     ******************************************************************************************************************/
+    /**
+     * @author Isabel Wingen
+     * @param nt a nonterminal of the Grammar g
+     * @param g the Grammar g
+     * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
+     */
+    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+        HashSet<ArrayList<Symbol>> res=new HashSet<>();
+        for(ArrayList<Symbol> list : tmp) {
+            boolean allNull=true;
+            for(Symbol sym : list) {
+                if(sym.equals(Terminal.NULLSYMBOL)) {
+                    allNull=allNull & true;
+                } else {
+                    allNull=false;
+                }
+            }
+            if(allNull==false) {
+                res.add(list);
+            }
+        }
+        return res;
+
+    }
+
+    /**
+     * if the startsymbol points on lambda and if the startsymbol occurs on any side, the special rule for the empty word
+     * has to be applied before the lambda-removal
+     * @author Isabel Wingen
+     * @param g
+     * @return
+     */
+    public static boolean specialRuleForEmptyWord(Grammar g) {
+        if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
+
+            Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
+            for(Nonterminal nt : g.getNonterminals()) {
+                HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
+                for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                    ArrayList<Symbol> tmp=new ArrayList<>();
+                    for(Symbol sym : list) {
+                        if(sym.equals(g.getStartSymbol())) {
+                            tmp.add(newSymbol);
+                        } else {
+                            tmp.add(sym);
+                        }
+                    }
+                    newRightSide.add(tmp);
+                }
+                nt.getSymbolLists().clear();
+                nt.getSymbolLists().addAll(newRightSide);
+            }
+            newSymbol.getSymbolLists().addAll(g.getStartSymbol().getSymbolLists());
+            return true;
+
+        }
+        return false;
+    }
     public static boolean hasUnitRules(Grammar g) {
        return g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal));
     }
@@ -1129,9 +1164,8 @@ public class GrammarUtil {
                 allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
     public static boolean isCircleFree(Grammar g) {
-        return g.getNonterminals().stream().
-                allMatch(nonterminal -> nonterminal.getSymbolLists().stream().
-                allMatch(list -> list.size()>1 && !(list.get(0) instanceof Nonterminal)));
+        //TODO
+        return true;
     }
     public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
        return a.stream().allMatch(object -> b.contains(object)) && b.stream().allMatch(object -> a.contains(object));

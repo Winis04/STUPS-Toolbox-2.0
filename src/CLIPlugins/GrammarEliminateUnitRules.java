@@ -54,7 +54,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
         System.out.println("Step 3: remove unit rules");
         GrammarUtil.print(grammar);
        // unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
-        //second step
+
 
         return null;
     }
