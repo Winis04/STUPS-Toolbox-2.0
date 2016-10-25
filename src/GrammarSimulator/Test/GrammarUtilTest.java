@@ -18,6 +18,17 @@ import static org.junit.Assert.assertTrue;
  * Created by Isabel on 24.10.2016.
  */
 public class GrammarUtilTest {
+    GrammarLoadPlugin lg;
+    String[] paths;
+    @Before
+    public void method() {
+        paths=new String[]{"test/test1.gr","test/test2.gr","test/test3.gr","test/test4.gr","test/test5.gr","test/test6.gr","test/test7.gr"};
+        lg=new GrammarLoadPlugin();
+    }
+    public Grammar loadNewGrammar(String path) {
+        Grammar g=(Grammar)lg.execute(null,new String[]{path});
+        return g;
+    }
     @Test
     public void calculateNullable1() throws Exception {
 
@@ -42,20 +53,10 @@ public class GrammarUtilTest {
     }
 
 
-    GrammarLoadPlugin lg;
-    String[] paths;
-    @Before
-    public void method() {
-        paths=new String[]{"test/test1.gr","test/test2.gr"};
-        lg=new GrammarLoadPlugin();
-    }
-    public Grammar loadNewGrammar(String path) {
-        Grammar g=(Grammar)lg.execute(null,new String[]{path});
-        return g;
-    }
+
     @Test
     public void isLambdaFree() {
-        boolean[] trueOrFalse={true, true};
+        boolean[] trueOrFalse={true, true, false, false, true, true, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -68,7 +69,7 @@ public class GrammarUtilTest {
     }
     @Test
     public void hasUnitRules() {
-        boolean[] trueOrFalse={false, true};
+        boolean[] trueOrFalse={false, true, false, false, true, true, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -81,7 +82,7 @@ public class GrammarUtilTest {
     }
     @Test
     public void startSymbolOnRightSide() throws Exception {
-        boolean[] trueOrFalse={true, true};
+        boolean[] trueOrFalse={true, true, false, true, false, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -95,7 +96,7 @@ public class GrammarUtilTest {
 
     @Test
     public void languageContainsLambda() throws Exception {
-        boolean[] trueOrFalse={false, false};
+        boolean[] trueOrFalse={false, false, false, true, false, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -109,7 +110,7 @@ public class GrammarUtilTest {
 
     @Test
     public void startSymbolPointsOnLambda() throws Exception {
-        boolean[] trueOrFalse={false, false};
+        boolean[] trueOrFalse={false, false, false, true, false, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -122,7 +123,7 @@ public class GrammarUtilTest {
     }
     @Ignore
     public void isCircleFree() {
-        boolean[] trueOrFalse={true, false};
+        boolean[] trueOrFalse={};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
