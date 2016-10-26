@@ -49,6 +49,7 @@ public class GrammarLoadPlugin implements CLIPlugin {
                 file = file + line + "\n";
             }
             grammar = GrammarUtil.parse(file);
+            GrammarUtil.replaceLambda(grammar);
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
             errorFlag = true;

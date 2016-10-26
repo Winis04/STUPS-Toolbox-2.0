@@ -660,7 +660,7 @@ public class GrammarUtil {
         Terminal toRemove=null;
         while(it.hasNext()) {
             Terminal t=it.next();
-            if(t.getName().equals("epsilon")) {
+            if(t.getName().equals("epsilon") || t.getName().equals("lambda")) {
                 toRemove=t;
                 hasNull=true;
             }
@@ -668,6 +668,15 @@ public class GrammarUtil {
         if(hasNull) {
             g.getTerminals().remove(toRemove);
             g.getTerminals().add(Terminal.NULLSYMBOL);
+        }
+        for(Nonterminal nt : g.getNonterminals()) {
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                for(int i=0;i<list.size();i++) {
+                    if(list.get(i).equals(new Terminal("epsilon"))||list.get(i).equals(new Terminal("lambda"))) {
+                        list.set(i,Terminal.NULLSYMBOL);
+                    }
+                }
+            }
         }
     }
     /******************************************************************************************************************
