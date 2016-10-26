@@ -5,10 +5,12 @@ import CLIPlugins.GrammarLoadPlugin;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Node;
+import GrammarSimulator.Nonterminal;
 import org.junit.Before;
 import org.junit.Ignore;
 import  org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertFalse;
@@ -18,19 +20,60 @@ import static org.junit.Assert.assertTrue;
  * Created by Isabel on 24.10.2016.
  */
 public class GrammarUtilTest {
-    GrammarLoadPlugin lg;
-    String[] paths;
-    @Before
-    public void method() {
-        paths=new String[]{"test/test1.gr","test/test2.gr","test/test3.gr","test/test4.gr","test/test5.gr","test/test6.gr","test/test7.gr"};
-        lg=new GrammarLoadPlugin();
+    @Test
+    public void removeLambdaRulesWithOutput() throws Exception {
+
     }
-    public Grammar loadNewGrammar(String path) {
-        Grammar g=(Grammar)lg.execute(null,new String[]{path});
-        return g;
+
+    @Test
+    public void removeLambdaRulesWithoutOutput() throws Exception {
+
     }
+
+    @Test
+    public void eliminateUnitRulesWithOutput() throws Exception {
+
+    }
+
+    @Test
+    public void eliminateUnitRulesWithoutOutput() throws Exception {
+
+    }
+
+    @Test
+    public void chomskyNormalFormWithOutput() throws Exception {
+        Grammar g;
+        for(int i=0;i<paths.length;i++) {
+            g=loadNewGrammar(paths[i]);
+            GrammarUtil.removeLambdaRulesWithOutput(g);
+            GrammarUtil.eliminateUnitRulesWithOutput(g);
+            GrammarUtil.chomskyNormalFormWithOutput(g);
+
+            assertTrue(i+": this grammar should now be in chomksy-normalform", GrammarUtil.isInChomskyNormalForm(g));
+
+        }
+
+    }
+
+    @Test
+    public void chomskyNormalFormWithoutOutput() throws Exception {
+        Grammar g;
+        for(int i=0;i<paths.length;i++) {
+            g=loadNewGrammar(paths[i]);
+            GrammarUtil.removeLambdaRulesWithoutOutput(g);
+            GrammarUtil.eliminateUnitRulesWithoutOutput(g);
+            GrammarUtil.chomskyNormalFormWithoutOutput(g);
+
+            assertTrue(i+": this grammar should now be in chomksy-normalform", GrammarUtil.isInChomskyNormalForm(g));
+
+        }
+    }
+
+
+
     @Test
     public void calculateNullable1() throws Exception {
+     
 
     }
 
@@ -134,6 +177,7 @@ public class GrammarUtilTest {
             }
         }
     }
+
     @Test
     public void calculateNullable() throws Exception {
 
@@ -190,6 +234,7 @@ public class GrammarUtilTest {
 
     }
 
+
     @Test
     public void removeUnitRules() throws Exception {
         Grammar g;
@@ -202,8 +247,27 @@ public class GrammarUtilTest {
     }
 
     @Test
-    public void replaceNonterminal() throws Exception {
-
+    public void isInChomskyNormalForm() throws Exception {
+        boolean[] trueOrFalse={false, false, false, false, false, false, false, true};
+        Grammar g;
+        for(int i=0;i<trueOrFalse.length;i++) {
+            g=loadNewGrammar(paths[i]);
+            if(trueOrFalse[i]) {
+                assertTrue(i+": this grammar is in chomsky-normalform", GrammarUtil.isInChomskyNormalForm(g));
+            } else {
+                assertFalse(i+": this grammar is not in chomsky-normalform", GrammarUtil.isInChomskyNormalForm(g));
+            }
+        }
     }
-
+    GrammarLoadPlugin lg;
+    String[] paths;
+    @Before
+    public void method() {
+        paths=new String[]{"test/test1.gr","test/test2.gr","test/test3.gr","test/test4.gr","test/test5.gr","test/test6.gr","test/test7.gr","test/test8.gr"};
+        lg=new GrammarLoadPlugin();
+    }
+    public Grammar loadNewGrammar(String path) {
+        Grammar g=(Grammar)lg.execute(null,new String[]{path});
+        return g;
+    }
 }

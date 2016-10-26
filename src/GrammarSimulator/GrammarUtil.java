@@ -1117,8 +1117,45 @@ public class GrammarUtil {
             }
         }
     }
-    private static void chomskyNormalForm_StepTwo(Grammar g) {
 
+    /**
+     * step 2: modify rules with more than two nonterminals so that they only have two
+     * @param g
+     */
+    private static void chomskyNormalForm_StepTwo(Grammar g) {
+        int counter=1;
+        boolean changed=true;
+        while(changed) {
+            changed=false;
+            HashSet<Nonterminal> newNonTerminals = new HashSet<>();
+            for (Nonterminal nt : g.getNonterminals()) {
+                for (ArrayList<Symbol> list : nt.getSymbolLists()) {
+                    if (list.size() > 2) {
+                        ArrayList<Symbol> listOld = new ArrayList<>();
+                        ArrayList<Symbol> listNew = new ArrayList<>();
+                        for (int i = 1; i < list.size(); i++) {
+                            listNew.add(list.get(i));
+                        }
+                        HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+                        tmp.add(listNew);
+                        Nonterminal generatedNonTerminal = new Nonterminal("P_" + counter++, tmp);
+                        list.set(1, generatedNonTerminal);
+                        newNonTerminals.add(generatedNonTerminal);
+                        int n = list.size();
+                        for (int i = 2; i < n; i++) {
+                            list.remove(2);
+                        }
+                        changed = true;
+                    }
+                }
+            }
+            g.getNonterminals().addAll(newNonTerminals);
+        }
+    }
+    public static boolean isInChomskyNormalForm(Grammar grammar) {
+        return grammar.getNonterminals().stream().allMatch(nonterminal ->
+                nonterminal.getSymbolLists().stream().allMatch(list ->
+                        (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof  Nonterminal))));
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
