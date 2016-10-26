@@ -44,10 +44,11 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             errorFlag = true;
             return null;
         }
-        GrammarUtil.replaceLambda(grammar); //TODO: do in the load grammar method
-        //step 1: take rules in form A --> a in new rule set
-        //step 2: replace every instance of terminal a through new Nonterminal X_a and add rule X_a -->
-        //step 3: remove more than two Nonterminals
+        GrammarUtil.replaceLambda(grammar);
+
+
+       GrammarUtil.chomskyNormalFormWithOutput(grammar);
+
 
         return null;
 

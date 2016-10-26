@@ -1054,6 +1054,72 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
+    public static void chomskyNormalFormWithOutput(Grammar grammar) {
+        GrammarUtil.chomskyNormalForm(grammar,true);
+    }
+    public static void chomskyNormalFormWithoutOutput(Grammar grammar) {
+        GrammarUtil.chomskyNormalForm(grammar,false);
+    }
+    private static void chomskyNormalForm(Grammar grammar, boolean output) {
+
+        //step 1: replace every instance of terminal a through new Nonterminal X_a except in rules A --> a and add rule X_a --> a
+        GrammarUtil.chomskyNormalForm_StepOne(grammar);
+        if(output) {
+            System.out.println("Step 0: keep all rules A --> a");
+            System.out.println("Step 1: replace instances of Terminals");
+            GrammarUtil.print(grammar);
+        }
+        //step 2: remove more than two Nonterminals
+        GrammarUtil.chomskyNormalForm_StepTwo(grammar);
+        if(output) {
+            System.out.println("Step 2: remove more than two terminals"); //TODO: better text
+            GrammarUtil.print(grammar);
+        }
+
+
+    }
+
+    private static void chomskyNormalForm_StepOne(Grammar g) {
+        HashSet<Nonterminal> newNonTerminals=new HashSet<>();
+        for(Nonterminal nt : g.getNonterminals()) {
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                if(list.size() > 1 && list.stream().anyMatch(symbol -> symbol instanceof Terminal)) {
+                    for(Symbol sym : list) {
+                        if(sym instanceof Terminal) {
+                            HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
+                            ArrayList<Symbol> tmpList=new ArrayList<>();
+                            tmpList.add(sym);
+                            tmpSet.add(tmpList);
+                            if(newNonTerminals.stream().map(x -> x.getName()).allMatch(name -> !name.equals("X_"+sym.getName()))) {
+                                newNonTerminals.add(new Nonterminal("X_" + sym.getName(), tmpSet));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        g.getNonterminals().addAll(newNonTerminals);
+        for(Nonterminal nt : g.getNonterminals()) {
+            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+                if(list.size() > 1) {
+                    for(int i=0;i<list.size();i++) {
+                        if(list.get(i) instanceof Terminal) {
+                            String name=list.get(i).getName();
+                            for(Nonterminal z : newNonTerminals) {
+                                if(z.getName().equals("X_"+name)) {
+                                    list.set(i,z);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    private static void chomskyNormalForm_StepTwo(Grammar g) {
+
+    }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                other things                                                                 -*
