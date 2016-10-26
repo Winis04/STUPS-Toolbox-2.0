@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import GrammarSimulator.Explanation;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 
@@ -8,6 +9,7 @@ import GrammarSimulator.GrammarUtil;
  */
 public class GrammarChomskyNormalForm implements CLIPlugin {
     private boolean errorFlag;
+    private Explanation type;
     @Override
     public String[] getNames() {
         return new String[]{"cnf","chomsky-formal-form"};
@@ -15,7 +17,21 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return true;
+        if(parameters.length==1) {
+            if(parameters[0].equals("no")) {
+                type=Explanation.NO;
+                return true;
+            }
+            if(parameters[0].equals("short")) {
+                type=Explanation.SHORT;
+                return true;
+            }
+            if(parameters[0].equals("long")) {
+                type=Explanation.LONG;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -31,6 +47,7 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             errorFlag = true;
             return null;
         }
+
 
 
         Grammar grammar = (Grammar) object;
