@@ -6,6 +6,7 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
+import javafx.scene.transform.MatrixType;
 
 import java.io.*;
 import java.util.*;
@@ -1286,6 +1287,13 @@ public class GrammarUtil {
                 nonterminal.getSymbolLists().stream().allMatch(list ->
                         (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof  Nonterminal))));
     }
+    /******************************************************************************************************************
+     * ---------------------------------------------------------------------------------------------------------------*
+     * -                                           CYK                                                               -*
+     * ---------------------------------------------------------------------------------------------------------------*
+     ******************************************************************************************************************/
+
+
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                other things                                                                 -*

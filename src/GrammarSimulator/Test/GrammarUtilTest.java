@@ -1,16 +1,12 @@
 package GrammarSimulator.Test;
 
-import CLIPlugins.CLIPlugin;
 import CLIPlugins.GrammarLoadPlugin;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Node;
-import GrammarSimulator.Nonterminal;
 import org.junit.Before;
 import org.junit.Ignore;
 import  org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertFalse;
