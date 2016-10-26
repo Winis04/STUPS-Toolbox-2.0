@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Matrix;
 
 /**
@@ -26,14 +27,16 @@ public class GrammarCYK implements CLIPlugin {
     @Override
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
-      /**  if(object == null) {
+        if(object == null) {
             System.out.println("Please load a grammar before using this command!");
             errorFlag = true;
             return null;
         }
-        Grammar grammar = (Grammar) object; **/
-        Matrix m=Matrix.test(6,7);
-        m.print();
+        Grammar grammar = (Grammar) object;
+        if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
+            GrammarUtil.chomskyNormalFormWithNoOutput(grammar);
+        }
+        GrammarUtil.cykWithLongOutput(grammar,parameters[0]);
         return null;
     }
 

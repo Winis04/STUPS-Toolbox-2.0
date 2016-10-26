@@ -1292,8 +1292,72 @@ public class GrammarUtil {
      * -                                           CYK                                                               -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
+    public static void cykWithNoOutput(Grammar g, String word) {
+        GrammarUtil.cyk(g,word,Explanation.NO);
+    }
+    public static void cykWithShortOutput(Grammar g, String word) {
+        GrammarUtil.cyk(g,word,Explanation.SHORT);
+    }
+
+    public static void cykWithLongOutput(Grammar g, String word) {
+        GrammarUtil.cyk(g,word,Explanation.LONG);
+    }
 
 
+    private static Matrix createMatrix(String word) {
+        System.out.println(word.length());
+        Matrix m=new Matrix(word.length(),word.length()+1, word);
+        return m;
+    }
+
+    private static void cyk(Grammar g, String word, Explanation type) {
+       if(!GrammarUtil.isInChomskyNormalForm(g)) {
+           return;
+       }
+        Matrix m=GrammarUtil.createMatrix(word);
+        for(int i=1;i<=word.length();i++) {
+            final int j=i;
+            ArrayList<Nonterminal> tmp=(ArrayList<Nonterminal>) g.getNonterminals().stream().
+                    filter(nt -> nt.getSymbolLists().stream().
+                            anyMatch(list ->
+                                    list.size()==1 && GrammarUtil.pointsOnCurrentChar(word,j,list))).
+                    collect(Collectors.toList());
+            for(Nonterminal nt : tmp) {
+                m.addToCell(i,0,nt);
+            }
+        }
+        switch (type) {
+            case LONG:
+            case SHORT:
+                System.out.println("first row");
+                m.printWithWord();
+                break;
+        }
+        for(int j=1;j<word.length();j++) {
+            for(int i=1;i<=word.length()-j;i++) {
+               // m.clearCell(i,j);
+                for(int k=0;k<j;k++) {
+
+                    for(Nonterminal nonterminal : g.getNonterminals()) {
+                        for(ArrayList<Symbol> list : nonterminal.getSymbolLists()) {
+                            if(list.size()==2) {
+                                Nonterminal b= (Nonterminal) list.get(0);
+                                Nonterminal c= (Nonterminal) list.get(1);
+                                if(m.getCell(i,k).contains(b) && m.getCell(i+k+1,j-k-1).contains(c)) {
+                                    m.addToCell(i,j,nonterminal);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            m.printWithWord();
+        }
+
+    }
+    private static boolean pointsOnCurrentChar(String word,int i,ArrayList<Symbol> list) {
+        return list.get(0).getName().equals(word.substring(i-1,i));
+    }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                other things                                                                 -*
