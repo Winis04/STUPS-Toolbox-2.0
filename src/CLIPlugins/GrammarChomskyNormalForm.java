@@ -44,10 +44,12 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             errorFlag = true;
             return null;
         }
+
         GrammarUtil.replaceLambda(grammar);
 
 
        GrammarUtil.chomskyNormalFormWithOutput(grammar);
+
 
 
         return null;

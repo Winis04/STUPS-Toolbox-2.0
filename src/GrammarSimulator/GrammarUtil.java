@@ -237,7 +237,9 @@ public class GrammarUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        return visitor.getGrammar();
+        Grammar g = visitor.getGrammar();
+        GrammarUtil.replaceLambda(g);
+        return g;
     }
 
     /**
@@ -628,11 +630,8 @@ public class GrammarUtil {
         return result;
     }
 
-    /**
-     * TODO
-     * @param g
-     */
-    public static void removeUnneccesaryEpsilons(Grammar g) {
+
+    private static void removeUnneccesaryEpsilons(Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> res=new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -650,11 +649,7 @@ public class GrammarUtil {
         }
     }
 
-    /**
-     * replaces every occurence of the nullsymbol with a static variable Terminal.NullSymbol
-     * @param g the grammar g
-     */
-    public static void replaceLambda(Grammar g) {
+    private static void replaceLambda(Grammar g) {
         Iterator<Terminal> it=g.getTerminals().iterator();
         boolean hasNull=false;
         Terminal toRemove=null;
@@ -684,6 +679,39 @@ public class GrammarUtil {
      * -                                Remove Lambda Rules                                                          -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
+    public static void removeLambdaRulesWithOutput(Grammar g) {
+        GrammarUtil.removeLambdaRules(g,true);
+    }
+    public static void removeLambdaRulesWithoutOutput(Grammar g) {
+        GrammarUtil.removeLambdaRules(g,false);
+    }
+    private static void removeLambdaRules(Grammar grammar, boolean output) {
+        //
+        if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
+            System.out.println("added new symbol S#:");
+            GrammarUtil.print(grammar);
+        }
+        //first step: calculate the Nullable set
+        HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
+        if(output) {
+            System.out.printf("Step 1:\nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+            System.out.println("Step 2:");
+
+        }
+        //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
+
+
+        GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
+        if(output) {
+            GrammarUtil.print(grammar);
+            System.out.println("Step 3:");
+        }
+        GrammarUtil.removeLambdaRules_StepThree(grammar,true);
+        if(output) {
+            GrammarUtil.print(grammar);
+        }
+
+    }
     /**
      * the third step of the algorithm to delete lambda-rules
      * all rules which have only epsilons on the right side are removed
@@ -691,8 +719,8 @@ public class GrammarUtil {
      * @param g the grammar g
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
      */
-    public static void removeLambdaRules_StepThree(Grammar g, boolean again) {
-        //TODO guarantee, that step two is executed before
+    private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
+
         // delete lambda-rules
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
@@ -752,7 +780,7 @@ public class GrammarUtil {
      * @param grammar The Grammar
      * @param nullable The set, which contains all the nullable terminals
      */
-    public static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
+    private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             //contains all rules for this nonterminal which need to be edited
@@ -814,13 +842,37 @@ public class GrammarUtil {
      * -                                eliminate Unit Rules                                                         -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
+    public static ArrayList<Node> eliminateUnitRulesWithOutput(Grammar grammar) {
+       return GrammarUtil.eliminateUnitRules(grammar,true);
+    }
+    public static ArrayList<Node> eliminateUnitRulesWithoutOutput(Grammar grammar) {
+        return GrammarUtil.eliminateUnitRules(grammar,false);
+    }
+    private static ArrayList<Node> eliminateUnitRules(Grammar grammar, boolean output) {
+        //first step
+        HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
+        if(output) {
+            System.out.println("Step 1: remove Circle");
+            GrammarUtil.print(grammar);
+            System.out.println("Step 2: number the nonterminals");
+        }
+        ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
+        if(output) {
+            list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
+            System.out.println("Step 3: remove unit rules");
+            GrammarUtil.print(grammar);
+        }
+        return list;
+
+    }
+
     /**
      * removes circles in the grammar rules
      * @author Isabel Wingen
      * @param grammar
      * @return
      */
-    public static HashSet<Node> removeCircleRules(Grammar grammar) {
+    private static HashSet<Node> removeCircleRules(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
@@ -844,7 +896,7 @@ public class GrammarUtil {
      * @param g
      * @return a HashSet with the Nonterminals as Nodes connected in a graph
      */
-    public static HashSet<Node> findUnitRules(Grammar g) {
+    private static HashSet<Node> findUnitRules(Grammar g) {
         HashSet<Node> result=new HashSet<>();
         g.getNonterminals().stream().
                 forEach(x -> result.add(new Node(x)));
@@ -889,7 +941,7 @@ public class GrammarUtil {
      * start of the dept-first search
      * @param unitRules
      */
-    public static void dfs(HashSet<Node> unitRules) {
+    private static void dfs(HashSet<Node> unitRules) {
         ArrayList<Integer> df=new ArrayList<>();
         Integer dfe=new Integer(1);
         Integer dfs=new Integer(1);
@@ -922,23 +974,7 @@ public class GrammarUtil {
         df.set(1,new Integer(df.get(1).intValue()+1));
         return df;
     }
-    public static void eliminateUnitRulesComplete(Grammar grammar) {
-       // System.out.println("Step 1: remove Circle");
-        HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
-       // GrammarUtil.print(grammar);
 
-
-        //   GrammarUtil.print(grammar);
-
-       // System.out.println("Step 2: number the nonterminals");
-        ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
-       // list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
-      //  System.out.println("Step 3: remove unit rules");
-       // GrammarUtil.print(grammar);
-        // unitRules.stream().forEach(x -> System.out.printf("Node %s: %d\n",x.getName(),x.getNumber()));
-        //second step
-
-    }
     /**
      * removes the unit rules in a Grammar, only possible if there are no circle
      * TODO
@@ -946,7 +982,7 @@ public class GrammarUtil {
      * @param g the grammar g
      * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
      */
-    public static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
+    private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
            Node current=sorted.get(i);
@@ -1021,7 +1057,7 @@ public class GrammarUtil {
      * @param newNonterminal the new nonterminal that replaces the old
      * @param g the grammar g
      */
-    public static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
+    private static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             // a temporary HashSet containing the changed (and not changed) rules
             HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
@@ -1177,7 +1213,7 @@ public class GrammarUtil {
      * @param g the Grammar g
      * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
      */
-    public static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+    private static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
         HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
         HashSet<ArrayList<Symbol>> res=new HashSet<>();
         for(ArrayList<Symbol> list : tmp) {
@@ -1204,7 +1240,7 @@ public class GrammarUtil {
      * @param g
      * @return
      */
-    public static boolean specialRuleForEmptyWord(Grammar g) {
+    private static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
             Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());

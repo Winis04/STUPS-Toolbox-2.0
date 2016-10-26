@@ -213,17 +213,6 @@ public class GrammarUtilTest {
 
     }
 
-
-    @Test
-    public void removeCircleRules() throws Exception {
-        Grammar g;
-        for(int i=0;i<paths.length;i++) {
-            g=loadNewGrammar(paths[i]);
-            GrammarUtil.removeCircleRules(g);
-            assertTrue(i+": this grammar should now be circle free",GrammarUtil.isCircleFree(g));
-        }
-    }
-
     @Test
     public void findUnitRules() throws Exception {
 
@@ -240,8 +229,7 @@ public class GrammarUtilTest {
         Grammar g;
         for(int i=0;i<paths.length;i++) {
             g=loadNewGrammar(paths[i]);
-            HashSet<Node> unitRules=GrammarUtil.removeCircleRules(g);
-            GrammarUtil.removeUnitRules(unitRules,g);
+            GrammarUtil.eliminateUnitRulesWithoutOutput(g);
             assertFalse(i+": this grammar should now be without unit rules",GrammarUtil.hasUnitRules(g));
         }
     }

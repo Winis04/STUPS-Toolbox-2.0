@@ -76,6 +76,7 @@ public class Visitor extends DepthFirstAdapter {
     }
 
     public Grammar getGrammar() {
+
         return  grammar;
     }
 }
