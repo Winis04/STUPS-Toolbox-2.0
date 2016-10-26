@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;
-
+    private Explanation type;
     @Override
     public String[] getNames() {
         return new String[]{"rlr", "remove-lambda-rules"};
@@ -20,7 +20,21 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return true;
+        if(parameters.length==1) {
+            if(parameters[0].equals("no")) {
+                type=Explanation.NO;
+                return true;
+            }
+            if(parameters[0].equals("short")) {
+                type=Explanation.SHORT;
+                return true;
+            }
+            if(parameters[0].equals("long")) {
+                type=Explanation.LONG;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -39,10 +53,22 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
+        if(GrammarUtil.isLambdaFree(grammar)) {
+            System.out.println("This grammar is already lambda-free");
+            return null;
+        }
+        switch (type) {
+            case NO:
+                GrammarUtil.removeLambdaRulesWithNoOutput(grammar);
+                break;
+            case SHORT:
+                GrammarUtil.removeLambdaRulesWithShortOutput(grammar);
+                break;
+            case LONG:
+                GrammarUtil.removeLambdaRulesWithLongOutput(grammar);
+                break;
 
-
-
-        GrammarUtil.removeLambdaRulesWithOutput(grammar);
+        }
         return null;
     }
 

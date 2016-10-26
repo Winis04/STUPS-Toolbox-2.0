@@ -679,13 +679,18 @@ public class GrammarUtil {
      * -                                Remove Lambda Rules                                                          -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static void removeLambdaRulesWithOutput(Grammar g) {
-        GrammarUtil.removeLambdaRules(g,true);
+    public static void removeLambdaRulesWithNoOutput(Grammar g) {
+        GrammarUtil.removeLambdaRules(g,Explanation.NO);
     }
-    public static void removeLambdaRulesWithoutOutput(Grammar g) {
-        GrammarUtil.removeLambdaRules(g,false);
+    public static void removeLambdaRulesWithShortOutput(Grammar g) {
+        GrammarUtil.removeLambdaRules(g,Explanation.SHORT);
     }
-    private static void removeLambdaRules(Grammar grammar, boolean output) {
+    public static void removeLambdaRulesWithLongOutput(Grammar g) {
+
+        GrammarUtil.removeLambdaRules(g,Explanation.LONG);
+    }
+
+    private static void removeLambdaRules(Grammar grammar, Explanation type) {
         //
         if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
             System.out.println("added new symbol S#:");
@@ -693,29 +698,44 @@ public class GrammarUtil {
         }
         //first step: calculate the Nullable set
         HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
-        if(output) {
-            System.out.printf("Step 1:\nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
-            System.out.println("Step 2:");
-
+        switch (type) {
+            case SHORT:
+                System.out.printf("Step 1:\nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+                System.out.println("Step 2:"); //TODO
+                break;
+            case LONG:
+                System.out.printf("Step 1: calculates the nullable Set: \nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
+                System.out.println("Step 2: for every rule with a nullable nonterminal, add that rule to the ruleset without this nonterminal");
+                break;
         }
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
 
-
         GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
-        if(output) {
-            GrammarUtil.print(grammar);
-            System.out.println("Step 3:");
+        GrammarUtil.removeUnneccesaryEpsilons(grammar);
+        switch (type) {
+            case SHORT:
+                GrammarUtil.print(grammar);
+                System.out.println("Step 3:");
+                break;
+            case LONG:
+                GrammarUtil.print(grammar);
+                System.out.println("Step 3: All lambda-rules are removed and all nonterminals, that do not appear on any right side");
+                break;
         }
         GrammarUtil.removeLambdaRules_StepThree(grammar,true);
-        if(output) {
-            GrammarUtil.print(grammar);
+        switch (type) {
+            case SHORT:
+              
+            case LONG:
+                GrammarUtil.print(grammar);
+                break;
         }
 
     }
     /**
      * the third step of the algorithm to delete lambda-rules
      * all rules which have only epsilons on the right side are removed
-     * furthermore, nonterminals, which now do not appear on the left side of any rule, are removed
+     * furthermore, nonterminals, which now do not appear on the rigth side of any rule, are removed
      * @param g the grammar g
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
      */

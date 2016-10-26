@@ -45,8 +45,8 @@ public class GrammarUtilTest {
         Grammar g;
         for(int i=0;i<paths.length;i++) {
             g=loadNewGrammar(paths[i]);
-            GrammarUtil.removeLambdaRulesWithOutput(g);
-            GrammarUtil.eliminateUnitRulesWithNoOutput(g);
+            GrammarUtil.removeLambdaRulesWithShortOutput(g);
+            GrammarUtil.eliminateUnitRulesWithShortOutput(g);
             GrammarUtil.chomskyNormalFormWithShortOutput(g);
 
             assertTrue(i+": this grammar should now be in chomksy-normalform", GrammarUtil.isInChomskyNormalForm(g));
@@ -60,7 +60,7 @@ public class GrammarUtilTest {
         Grammar g;
         for(int i=0;i<paths.length;i++) {
             g=loadNewGrammar(paths[i]);
-            GrammarUtil.removeLambdaRulesWithoutOutput(g);
+            GrammarUtil.removeLambdaRulesWithNoOutput(g);
             GrammarUtil.eliminateUnitRulesWithNoOutput(g);
             GrammarUtil.chomskyNormalFormWithNoOutput(g);
 
