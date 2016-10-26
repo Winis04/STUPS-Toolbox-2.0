@@ -725,7 +725,7 @@ public class GrammarUtil {
         GrammarUtil.removeLambdaRules_StepThree(grammar,true);
         switch (type) {
             case SHORT:
-              
+
             case LONG:
                 GrammarUtil.print(grammar);
                 break;

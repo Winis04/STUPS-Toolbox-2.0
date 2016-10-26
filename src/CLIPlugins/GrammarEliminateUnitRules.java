@@ -39,7 +39,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "eliminates unit Rules (A -> B) from the loaded grammar";
+        return "eliminates unit Rules (A -> B) from the loaded grammar. Takes the strings 'no', 'short' or 'long' as a parameter, which determine the level of explanation.";
     }
 
     @Override

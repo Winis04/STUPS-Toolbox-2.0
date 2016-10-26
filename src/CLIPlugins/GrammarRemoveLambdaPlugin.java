@@ -39,7 +39,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "removes lambda-rules. Does not take any parameters";
+        return "removes lambda-rules. Takes the strings 'no', 'short' or 'long' as a parameter, which determine the level of explanation.";
     }
 
     @Override
