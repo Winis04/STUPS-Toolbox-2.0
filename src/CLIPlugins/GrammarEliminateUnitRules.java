@@ -10,7 +10,7 @@ import java.util.HashSet;
  */
 public class GrammarEliminateUnitRules implements CLIPlugin {
     private boolean errorFlag = false;
-
+    private Explanation type;
 
 
     @Override
@@ -20,7 +20,21 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return true;
+        if(parameters.length==1) {
+            if(parameters[0].equals("no")) {
+                type=Explanation.NO;
+                return true;
+            }
+            if(parameters[0].equals("short")) {
+                type=Explanation.SHORT;
+                return true;
+            }
+            if(parameters[0].equals("long")) {
+                type=Explanation.LONG;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -39,8 +53,22 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
 
         Grammar grammar = (Grammar) object;
-        GrammarUtil.eliminateUnitRulesWithOutput(grammar);
+        if(!GrammarUtil.hasUnitRules(grammar)) {
+            System.out.println("This grammar is already without unit rules");
+            return null;
+        }
+        switch (type) {
+            case NO:
+                GrammarUtil.eliminateUnitRulesWithNoOutput(grammar);
+                break;
+            case SHORT:
+                GrammarUtil.eliminateUnitRulesWithShortOutput(grammar);
+                break;
+            case LONG:
+                GrammarUtil.eliminateUnitRulesWithLongutput(grammar);
+                break;
 
+        }
         return null;
     }
 

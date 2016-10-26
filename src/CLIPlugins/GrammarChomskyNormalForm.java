@@ -61,13 +61,22 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             errorFlag = true;
             return null;
         }
+        if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            System.out.println("This grammar is already in chomsky normal form");
+            return null;
+        }
+        switch (type) {
+            case NO:
+                GrammarUtil.chomskyNormalFormWithNoOutput(grammar);
+                break;
+            case SHORT:
+                GrammarUtil.chomskyNormalFormWithShortOutput(grammar);
+                break;
+            case LONG:
+                GrammarUtil.chomskyNormalFormWithLongOutput(grammar);
+                break;
 
-        GrammarUtil.replaceLambda(grammar);
-
-
-       GrammarUtil.chomskyNormalFormWithOutput(grammar);
-
-
+        }
 
         return null;
 

@@ -842,25 +842,42 @@ public class GrammarUtil {
      * -                                eliminate Unit Rules                                                         -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static ArrayList<Node> eliminateUnitRulesWithOutput(Grammar grammar) {
-       return GrammarUtil.eliminateUnitRules(grammar,true);
+    public static ArrayList<Node> eliminateUnitRulesWithNoOutput(Grammar grammar) {
+       return GrammarUtil.eliminateUnitRules(grammar,Explanation.NO);
     }
-    public static ArrayList<Node> eliminateUnitRulesWithoutOutput(Grammar grammar) {
-        return GrammarUtil.eliminateUnitRules(grammar,false);
+    public static ArrayList<Node> eliminateUnitRulesWithShortOutput(Grammar grammar) {
+        return GrammarUtil.eliminateUnitRules(grammar, Explanation.SHORT);
     }
-    private static ArrayList<Node> eliminateUnitRules(Grammar grammar, boolean output) {
+    public static ArrayList<Node> eliminateUnitRulesWithLongutput(Grammar grammar) {
+            return GrammarUtil.eliminateUnitRules(grammar, Explanation.LONG);
+    }
+
+    private static ArrayList<Node> eliminateUnitRules(Grammar grammar, Explanation type) {
         //first step
         HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
-        if(output) {
-            System.out.println("Step 1: remove Circle");
-            GrammarUtil.print(grammar);
-            System.out.println("Step 2: number the nonterminals");
+        switch (type) {
+            case SHORT:
+                System.out.println("Step 1: remove Circle");
+                GrammarUtil.print(grammar);
+                System.out.println("Step 2: number the nonterminals");
+                break;
+            case LONG:
+                System.out.println("Step 1: remove Circle like A_1 --> A_2, A_2 --> A_3, ..., A_n --> A_1");
+                GrammarUtil.print(grammar);
+                System.out.println("Step 2: number the nonterminals, which are in any unit Rule, such that from A_i --> A_j follows i<j");
         }
         ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
-        if(output) {
-            list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
-            System.out.println("Step 3: remove unit rules");
-            GrammarUtil.print(grammar);
+        switch (type) {
+            case SHORT:
+                list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
+                System.out.println("Step 3: remove unit rules");
+                GrammarUtil.print(grammar);
+                break;
+            case LONG:
+                list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
+                System.out.println("Step 3: remove unit rules beginning by the highest number");
+                GrammarUtil.print(grammar);
+                break;
         }
         return list;
 
@@ -899,7 +916,10 @@ public class GrammarUtil {
     private static HashSet<Node> findUnitRules(Grammar g) {
         HashSet<Node> result=new HashSet<>();
         g.getNonterminals().stream().
+                filter(nonterminal -> GrammarUtil.isLeftSideOfUnitRule(nonterminal) || GrammarUtil.isRightSideOfUnitRule(nonterminal,g)).
                 forEach(x -> result.add(new Node(x)));
+
+
         for(Node node : result) {
             node.getValue().getSymbolLists().stream().forEach(list -> {
                 if(list.size()==1 && list.get(0) instanceof Nonterminal) {
@@ -913,6 +933,13 @@ public class GrammarUtil {
             });
         }
         return result;
+    }
+    private static boolean isLeftSideOfUnitRule(Nonterminal nonterminal) {
+       return nonterminal.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal);
+    }
+    private static boolean isRightSideOfUnitRule(Nonterminal right, Grammar g) {
+
+        return g.getNonterminals().stream().anyMatch(nt -> nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0).getName().equals(right.getName())));
     }
 
     /**
@@ -1019,14 +1046,19 @@ public class GrammarUtil {
                 start=node;
             }
         }
-        // as long as some nodes have children with higher numbers, do the number-method
+
         if(start!=null) {
+            HashSet<Integer> takenNumbers=new HashSet<>();
+            takenNumbers.add(new Integer(0));
+            // as long as some nodes have children with higher numbers, do the number-method
             while(nodes.stream().
                     anyMatch(node -> node.getChildren().stream().
                             anyMatch(child -> child.getNumber()<=node.getNumber()))) {
                 GrammarUtil.number(start);
             }
         }
+
+
         for(int i=nodes.size()-1;i>=0;i--) {
             for(Node node : nodes) {
                 if(node.getNumber()==i) {
@@ -1099,28 +1131,60 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
-    public static void chomskyNormalFormWithOutput(Grammar grammar) {
-        GrammarUtil.chomskyNormalForm(grammar,true);
+    public static void chomskyNormalFormWithNoOutput(Grammar grammar) {
+        GrammarUtil.chomskyNormalForm(grammar,Explanation.NO);
     }
-    public static void chomskyNormalFormWithoutOutput(Grammar grammar) {
-        GrammarUtil.chomskyNormalForm(grammar,false);
+    public static void chomskyNormalFormWithShortOutput(Grammar grammar) {
+        GrammarUtil.chomskyNormalForm(grammar,Explanation.SHORT);
     }
-    private static void chomskyNormalForm(Grammar grammar, boolean output) {
+    public static void chomskyNormalFormWithLongOutput(Grammar grammar) {
+        GrammarUtil.chomskyNormalForm(grammar,Explanation.LONG);
+    }
+    private static void chomskyNormalForm(Grammar grammar, Explanation type) {
 
         //step 1: replace every instance of terminal a through new Nonterminal X_a except in rules A --> a and add rule X_a --> a
-        GrammarUtil.chomskyNormalForm_StepOne(grammar);
-        if(output) {
-            System.out.println("Step 0: keep all rules A --> a");
-            System.out.println("Step 1: replace instances of Terminals");
-            GrammarUtil.print(grammar);
+
+        switch (type) {
+            case SHORT:
+                System.out.println("Before:");
+                GrammarUtil.print(grammar);
+                System.out.println("Step 0: keep all rules A --> a");
+                System.out.println("Step 1: replace instances of Terminals in other rules");
+                GrammarUtil.chomskyNormalForm_StepOne(grammar);
+                GrammarUtil.print(grammar);
+                break;
+            case LONG:
+                System.out.println("Before:");
+                GrammarUtil.print(grammar);
+                System.out.println("Step 0: rules in form of A --> a are already in chomsky normal form and so we keep them.");
+                System.out.println("These are the following rules:");
+                grammar.getNonterminals().stream().
+                        filter(nt -> nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Terminal)).
+                        forEach(nonterminal -> {
+                            nonterminal.getSymbolLists().stream().filter(list -> list.size()==1 && list.get(0) instanceof Terminal).
+                                    forEach(list -> System.out.printf("%s --> %s\n",nonterminal.getName(),list.get(0).getName()));
+                        });
+                System.out.println("Step 1: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a");
+                GrammarUtil.chomskyNormalForm_StepOne(grammar);
+                GrammarUtil.print(grammar);
+                break;
+            case NO:
+                GrammarUtil.chomskyNormalForm_StepOne(grammar);
+                break;
         }
         //step 2: remove more than two Nonterminals
         GrammarUtil.chomskyNormalForm_StepTwo(grammar);
-        if(output) {
-            System.out.println("Step 2: remove more than two terminals"); //TODO: better text
-            GrammarUtil.print(grammar);
-        }
+        switch (type) {
+            case SHORT:
+                System.out.println("Step 2: remove more than two terminals"); //TODO: better text
 
+                break;
+            case LONG:
+                System.out.println("Step 2: in all rules that contain more than two nonterminals, add a new nonterminal that points on the end of the rule"); //TODO: better text
+
+                break;
+        }
+     //   GrammarUtil.print(grammar); //TODO: should it print the result even when no is set?
 
     }
 
