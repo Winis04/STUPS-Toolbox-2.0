@@ -63,7 +63,7 @@ public class GrammarUtilTest {
             if(trueOrFalse[i]) {
                 assertTrue(i+": this grammar should be lambda-free", GrammarUtil.isLambdaFree(g));
             } else {
-                assertFalse(i+": this grammar should be lambda-free", GrammarUtil.isLambdaFree(g));
+                assertFalse(i+": this grammar should be not lambda-free", GrammarUtil.isLambdaFree(g));
             }
         }
     }
