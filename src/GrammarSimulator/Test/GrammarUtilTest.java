@@ -73,7 +73,7 @@ public class GrammarUtilTest {
 
     @Test
     public void calculateNullable1() throws Exception {
-     
+
 
     }
 
