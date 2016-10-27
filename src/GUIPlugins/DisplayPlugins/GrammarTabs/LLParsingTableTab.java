@@ -17,7 +17,7 @@ public class LLParsingTableTab implements GrammarTab {
     @Override
     public Node getFxNode(Grammar grammar) {
         GridPane rootPane = new GridPane();
-        if(GrammarUtil.isLambdaFree(grammar)) {
+        //if(GrammarUtil.isLambdaFree(grammar)) {
             HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> llTable = GrammarUtil.llParsingTable(grammar);
             ArrayList<Terminal> terminalList = GrammarUtil.getTerminalsInOrder(grammar);
             for (Terminal terminal : llTable.get(grammar.getStartSymbol()).keySet()) {
@@ -66,7 +66,7 @@ public class LLParsingTableTab implements GrammarTab {
                 i++;
             }
             rootPane.setGridLinesVisible(true);
-        }
+        //}
 
         rootPane.setAlignment(Pos.CENTER);
 

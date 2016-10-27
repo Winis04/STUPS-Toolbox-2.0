@@ -28,7 +28,7 @@ public class FirstFollowTab implements GrammarTab {
         GridPane centerPane = new GridPane();
         GridPane firstPane = new GridPane();
         GridPane followPane = new GridPane();
-        if(GrammarUtil.isLambdaFree(grammar)) {
+        //if(GrammarUtil.isLambdaFree(grammar)) {
             HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(grammar);
             HashMap<Nonterminal, HashSet<Terminal>> first = GrammarUtil.calculateFirst(grammar);
             HashMap<Nonterminal, HashSet<Terminal>> follow = GrammarUtil.calculateFollow(grammar);
@@ -97,7 +97,7 @@ public class FirstFollowTab implements GrammarTab {
 
             firstPane.setStyle("-fx-border-color: black");
             followPane.setStyle("-fx-border-color: black");
-        }
+        //}
 
 
         centerPane.addColumn(0, firstPane);
