@@ -70,7 +70,7 @@ public class Matrix {
         System.out.println("");
         horizontalLine();
         for(int j=rows-1;j>-1;j--) {
-            System.out.print("| "+(rows-j-1)+" | ");
+            System.out.print("| "+j+" | ");
             for(int i=1;i<columns;i++) {
                 HashSet<Nonterminal> tmp=matrix[j][i];
 

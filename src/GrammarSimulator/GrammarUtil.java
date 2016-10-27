@@ -1292,15 +1292,15 @@ public class GrammarUtil {
      * -                                           CYK                                                               -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static void cykWithNoOutput(Grammar g, String word) {
-        GrammarUtil.cyk(g,word,Explanation.NO);
+    public static boolean cykWithNoOutput(Grammar g, String word) {
+        return GrammarUtil.cyk(g,word,Explanation.NO);
     }
-    public static void cykWithShortOutput(Grammar g, String word) {
-        GrammarUtil.cyk(g,word,Explanation.SHORT);
+    public static boolean cykWithShortOutput(Grammar g, String word) {
+        return GrammarUtil.cyk(g,word,Explanation.SHORT);
     }
 
-    public static void cykWithLongOutput(Grammar g, String word) {
-        GrammarUtil.cyk(g,word,Explanation.LONG);
+    public static boolean cykWithLongOutput(Grammar g, String word) {
+        return GrammarUtil.cyk(g,word,Explanation.LONG);
     }
 
 
@@ -1310,9 +1310,10 @@ public class GrammarUtil {
         return m;
     }
 
-    private static void cyk(Grammar g, String word, Explanation type) {
+    private static boolean cyk(Grammar g, String word, Explanation type) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
-           return;
+           System.out.println("Is not in chomsky normal form");
+           return false;
        }
         Matrix m=GrammarUtil.createMatrix(word);
         for(int i=1;i<=word.length();i++) {
@@ -1329,7 +1330,7 @@ public class GrammarUtil {
         switch (type) {
             case LONG:
             case SHORT:
-                System.out.println("first row");
+                System.out.println("row 0");
                 m.printWithWord();
                 break;
         }
@@ -1351,9 +1352,16 @@ public class GrammarUtil {
                     }
                 }
             }
-            m.printWithWord();
+            if(type == Explanation.LONG || type == Explanation.SHORT) {
+                System.out.println("row "+ j);
+                m.printWithWord();
+            }
         }
-
+        if(m.getCell(1,word.length()-1).contains(g.getStartSymbol())) {
+            return true;
+        } else {
+            return false;
+        }
     }
     private static boolean pointsOnCurrentChar(String word,int i,ArrayList<Symbol> list) {
         return list.get(0).getName().equals(word.substring(i-1,i));

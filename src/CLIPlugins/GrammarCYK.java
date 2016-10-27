@@ -36,7 +36,11 @@ public class GrammarCYK implements CLIPlugin {
         if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
             GrammarUtil.chomskyNormalFormWithNoOutput(grammar);
         }
-        GrammarUtil.cykWithLongOutput(grammar,parameters[0]);
+        if(GrammarUtil.cykWithLongOutput(grammar,parameters[0])) {
+            System.out.println("L(G) contains " + parameters[0] + ".");
+        } else {
+            System.out.println("L(G) does not contain " + parameters[0] + ".");
+        }
         return null;
     }
 
