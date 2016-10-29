@@ -7,7 +7,6 @@ import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
 import PushDownAutomatonSimulator.*;
-import javafx.scene.transform.MatrixType;
 
 import java.io.*;
 import java.util.*;
@@ -1377,15 +1376,15 @@ public class GrammarUtil {
         State onlyState=new State(true,"z");
         pda.getStates().add(onlyState);
         for(Symbol s : g.getTerminals()) {
-            pda.addToInputAlphabet(GrammarUtil.toInputLetter(s));
-            pda.addToStackAlphabet(GrammarUtil.toStackLetter(s));
+            PushDownAutomatonUtil.addToInputAlphabet(PushDownAutomatonUtil.asInputLetter(s),pda);
+            PushDownAutomatonUtil.addToStackAlphabet(PushDownAutomatonUtil.asStackLetter(s),pda);
         }
-        pda.addToInputAlphabet(GrammarUtil.toInputLetter(Terminal.NULLSYMBOL));
+        PushDownAutomatonUtil.addToInputAlphabet(PushDownAutomatonUtil.asInputLetter(Terminal.NULLSYMBOL),pda);
         for(Symbol s : g.getNonterminals()) {
-            pda.addToStackAlphabet(GrammarUtil.toStackLetter(s));
+            PushDownAutomatonUtil.addToStackAlphabet(PushDownAutomatonUtil.asStackLetter(s),pda);
         }
         pda.setStartState(onlyState);
-        pda.setInitalStackLetter(pda.getStackLetter(g.getStartSymbol().getName()));
+        pda.setInitalStackLetter(PushDownAutomatonUtil.getStackLetterWithName(g.getStartSymbol().getName(),pda));
         // rules :
         for(Nonterminal nonterminal : g.getNonterminals()) {
             GrammarUtil.nonterminalToRule(nonterminal,pda);
@@ -1393,13 +1392,14 @@ public class GrammarUtil {
         for(Terminal a : g.getTerminals()) {
             Rule tmp=new Rule();
             tmp.setComingFrom(pda.getStartState());
-            tmp.setReadIn(GrammarUtil.toInputLetter(a));
-            tmp.setOldToS(GrammarUtil.toStackLetter(a));
+            tmp.setReadIn(PushDownAutomatonUtil.asInputLetter(a));
+            tmp.setOldToS(PushDownAutomatonUtil.asStackLetter(a));
             ArrayList<StackLetter> list=new ArrayList<>();
-            list.add(GrammarUtil.toStackLetter(Terminal.NULLSYMBOL));
+            list.add(PushDownAutomatonUtil.asStackLetter(Terminal.NULLSYMBOL));
             tmp.setNewToS(list);
             tmp.setGoingTo(pda.getStartState());
             pda.getRules().add(tmp);
+            pda.setCurrentState(pda.getStartState());
         }
         return pda;
     }
@@ -1407,8 +1407,8 @@ public class GrammarUtil {
         for(ArrayList<Symbol> list : nt.getSymbolLists()) {
             Rule tmp=new Rule();
             tmp.setComingFrom(pda.getStartState());
-            tmp.setReadIn(GrammarUtil.toInputLetter(Terminal.NULLSYMBOL));
-            tmp.setOldToS(GrammarUtil.toStackLetter(nt));
+            tmp.setReadIn(PushDownAutomatonUtil.asInputLetter(Terminal.NULLSYMBOL));
+            tmp.setOldToS(PushDownAutomatonUtil.asStackLetter(nt));
             tmp.setGoingTo(pda.getStartState());
             tmp.setNewToS(GrammarUtil.calculateNewTos(list));
             pda.getRules().add(tmp);
@@ -1417,16 +1417,11 @@ public class GrammarUtil {
     private static ArrayList<StackLetter> calculateNewTos(ArrayList<Symbol> list) {
         ArrayList<StackLetter> res=new ArrayList<>();
         for(Symbol s : list) {
-            res.add(GrammarUtil.toStackLetter(s));
+            res.add(PushDownAutomatonUtil.asStackLetter(s));
         }
         return res;
     }
-    private static InputLetter toInputLetter(Symbol s) {
-        return new InputLetter(s.getName());
-    }
-    private static StackLetter toStackLetter(Symbol s) {
-        return new StackLetter(s.getName());
-    }
+
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                other things                                                                 -*

@@ -1,6 +1,8 @@
 package PushDownAutomatonSimulator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Stack;
 
 /**
@@ -30,22 +32,41 @@ public class PushDownAutomaton {
     /**
      * the rules of this pda
      */
-    private HashSet<Rule> rules;
-
-    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, HashSet<Rule> rules) {
+    private ArrayList<Rule> rules;
+    /**
+     * the stack;
+     */
+    private Stack<StackLetter> stack;
+    /**
+     * the current state of this automaton
+     */
+    private State currentState;
+    /**
+     * the current Input
+     */
+    private ArrayList<InputLetter> currentInput;
+    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, ArrayList<Rule> rules) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
         this.startState = startState;
         this.initalStackLetter = initalStackLetter;
         this.rules = rules;
+        this.stack=new Stack<>();
+        this.stack.add(initalStackLetter);
+        this.currentInput=new ArrayList<>();
+        this.currentState=startState;
     }
 
     public PushDownAutomaton() {
+
         this.states=new HashSet<>();
         this.inputAlphabet=new HashSet<>();
         this.stackAlphabet=new HashSet<>();
-        this.rules=new HashSet<>();
+        this.rules=new ArrayList<>();
+        this.stack=new Stack<>();
+        this.currentInput=new ArrayList<>();
+        this.currentState=startState;
     }
 
     public HashSet<State> getStates() {
@@ -64,7 +85,7 @@ public class PushDownAutomaton {
         return startState;
     }
 
-    public HashSet<Rule> getRules() {
+    public ArrayList<Rule> getRules() {
         return rules;
     }
 
@@ -89,51 +110,33 @@ public class PushDownAutomaton {
     }
 
     public void setInitalStackLetter(StackLetter initalStackLetter) {
+        if(stack.isEmpty()) {
+            stack.add(initalStackLetter);
+        }
         this.initalStackLetter = initalStackLetter;
     }
 
-    public void setRules(HashSet<Rule> rules) {
+    public void setRules(ArrayList<Rule> rules) {
         this.rules = rules;
     }
-    public boolean addToStackAlphabet(StackLetter st) {
-        if(!this.stackAlphabet.stream().anyMatch(letter -> letter.getName().equals(st.getName()))) {
-            stackAlphabet.add(st);
-            return true;
-        } else {
-            return false;
-        }
 
+    public Stack<StackLetter> getStack() {
+        return stack;
     }
-    public boolean addToInputAlphabet(InputLetter ip) {
-        if(!this.inputAlphabet.stream().anyMatch(letter -> letter.getName().equals(ip.getName()))) {
-            inputAlphabet.add(ip);
-            return true;
-        } else {
-            return false;
-        }
+
+    public State getCurrentState() {
+        return currentState;
     }
-    public StackLetter getStackLetter(String s) {
-        for(StackLetter st : this.stackAlphabet) {
-            if(st.getName().equals(s)) {
-                return st;
-            }
-        }
-        return null;
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
     }
-    public InputLetter getInputLetter(String s) {
-        for(InputLetter ip : this.inputAlphabet) {
-            if(ip.getName().equals(s)) {
-                return ip;
-            }
-        }
-        return null;
+
+    public ArrayList<InputLetter> getCurrentInput() {
+        return currentInput;
     }
-    public State getStateWithName(String name) {
-        for(State s : this.states) {
-            if(s.getName().equals(name)) {
-                return s;
-            }
-        }
-        return null;
+
+    public void setCurrentInput(ArrayList<InputLetter> currentInput) {
+        this.currentInput = currentInput;
     }
 }
