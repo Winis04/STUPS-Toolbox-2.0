@@ -1,5 +1,7 @@
 package PushDownAutomatonSimulator;
 
+import java.util.Stack;
+
 /**
  * Created by Isabel on 29.10.2016.
  */
@@ -13,4 +15,5 @@ public class StackLetter {
     public String getName() {
         return name;
     }
+
 }

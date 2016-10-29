@@ -25,6 +25,18 @@ public class State {
         this.rules = rules;
     }
 
+    public State(boolean isStart, String name) {
+        this.isStart = isStart;
+        this.name = name;
+        this.rules=new HashSet<>();
+    }
+
+    public State(String name) {
+        this.isStart= false;
+
+        this.rules=new HashSet<>();
+    }
+
     public boolean isStart() {
         return isStart;
     }

@@ -35,6 +35,17 @@ public class Rule {
         this.newToS = newToS;
     }
 
+    public Rule(State comingFrom, InputLetter readIn, StackLetter oldToS, State goingTo, ArrayList<StackLetter> newToS) {
+        this.comingFrom = comingFrom;
+        this.readIn = readIn;
+        OldToS = oldToS;
+        this.goingTo = goingTo;
+        this.newToS = newToS;
+    }
+
+    public Rule() {
+    }
+
     public State getGoingTo() {
         return goingTo;
     }
@@ -54,4 +65,25 @@ public class Rule {
     public State getComingFrom() {
         return comingFrom;
     }
+
+    public void setComingFrom(State comingFrom) {
+        this.comingFrom = comingFrom;
+    }
+
+    public void setReadIn(InputLetter readIn) {
+        this.readIn = readIn;
+    }
+
+    public void setOldToS(StackLetter oldToS) {
+        OldToS = oldToS;
+    }
+
+    public void setGoingTo(State goingTo) {
+        this.goingTo = goingTo;
+    }
+
+    public void setNewToS(ArrayList<StackLetter> newToS) {
+        this.newToS = newToS;
+    }
+
 }
