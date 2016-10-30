@@ -1362,6 +1362,40 @@ public class GrammarUtil {
         return m;
 
     }
+    public static void getPaths(Matrix m, Grammar g) {
+        int j=m.getRows()-1;
+        int i=1;
+        Nonterminal s=g.getStartSymbol();
+        if(j==0 && GrammarUtil.checkMatrix(m,g)) {
+            System.out.printf("%s |- %s\n",s.getName(),m.getWord());
+            return;
+        } else if(GrammarUtil.checkMatrix(m,g)) {
+            for(int k=0;k<j;k++) {
+                for(ArrayList<Symbol> list : s.getSymbolLists()) {
+                    if(list.size()==2) {
+                        Nonterminal b = (Nonterminal)list.get(0);
+                        Nonterminal c = (Nonterminal)list.get(1);
+                        if (m.getCell(i, k).contains(b) && m.getCell(i + k + 1, j - k - 1).contains(c)) {
+
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+
+    }
+
+    private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
+        if(matrix != null) {
+           return matrix.getCell(1, matrix.getWord().length() - 1).contains(grammar.getStartSymbol());
+        } else {
+            return false;
+        }
+    }
     private static boolean pointsOnCurrentChar(String word,int i,ArrayList<Symbol> list) {
         return list.get(0).getName().equals(word.substring(i-1,i));
     }

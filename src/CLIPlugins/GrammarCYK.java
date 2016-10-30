@@ -73,6 +73,7 @@ public class GrammarCYK implements CLIPlugin {
                 System.out.println("L(G) does not contain " + parameters[1] + ".");
             }
         }
+        GrammarUtil.getPaths(matrix,grammar);
         return null;
     }
 

@@ -112,4 +112,15 @@ public class Matrix {
         matrix[r][c]=new HashSet<>();
     }
 
+    public String getWord() {
+        return word;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
 }
