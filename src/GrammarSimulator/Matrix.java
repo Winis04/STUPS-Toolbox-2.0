@@ -16,7 +16,6 @@ public class Matrix {
     private int columns;
     private String word;
     private HashSet<Nonterminal>[][] matrix;
-    int max;
     int spacing;
     public Matrix(int rows, int columns, String word) {
         this.word=word;
@@ -28,19 +27,8 @@ public class Matrix {
                 matrix[j][i]=new HashSet<>();
             }
         }
-       this.max=0;
-        for(int j=0;j<matrix.length;j++) {
-            for(int i=0;i<matrix[j].length;i++) {
-                if(matrix[j][i].size()>max) {
-                    max=matrix[j][i].size();
-                }
-            }
-        }
-        if(max==0) {
-            this.spacing=3;
-        } else {
-            this.spacing = 3 * max;
-        }
+
+        this.spacing=3;
 
     }
     public void addToCell(int c, int r, Nonterminal nt) {
@@ -48,13 +36,17 @@ public class Matrix {
             matrix[r][c].add(nt);
         }
         for(int j=0;j<matrix.length;j++) {
-            for(int i=0;i<matrix[j].length;i++) {
-                if(matrix[j][i].size()>max) {
-                    max=matrix[j][i].size();
+            for (int i = 0; i < matrix[j].length; i++) {
+                int tmp=0;
+                for(Symbol s : matrix[j][i]) {
+                    tmp+=s.getName().length();
+                }
+                tmp+=2*matrix[j][i].size();
+                if(tmp>spacing) {
+                    this.spacing=tmp;
                 }
             }
         }
-        this.spacing=3*this.max;
     }
     public void print() {
         horizontalLine();
@@ -73,14 +65,14 @@ public class Matrix {
             System.out.print("| "+j+" | ");
             for(int i=1;i<columns;i++) {
                 HashSet<Nonterminal> tmp=matrix[j][i];
-
-                System.out.print(tmp.stream().map(nonterminal -> nonterminal.getName()).collect(joining(", ")));
+                String cellContent=tmp.stream().map(nonterminal -> nonterminal.getName()).collect(joining(", "));
+                System.out.print(cellContent);
                 int fill=0;
-                if(tmp.size()==0) {
-                    fill=spacing-2;
-                } else {
-                    fill=spacing-tmp.size()*3;
-                }
+
+
+
+                fill=spacing-cellContent.length()-2;
+
                 for(int k=0;k< fill;k++) {
                     System.out.print(" ");
                 }

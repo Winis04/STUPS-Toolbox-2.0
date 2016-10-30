@@ -1294,7 +1294,6 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
     public static Matrix cykWithNoOutput(Grammar g, String word) {
-
         return GrammarUtil.cyk(g,word,Explanation.NO);
 
     }
@@ -1308,7 +1307,6 @@ public class GrammarUtil {
 
 
     private static Matrix createMatrix(String word) {
-        System.out.println(word.length());
         Matrix m=new Matrix(word.length(),word.length()+1, word);
         return m;
     }
@@ -1316,6 +1314,7 @@ public class GrammarUtil {
 
     private static Matrix cyk(Grammar g, String word, Explanation type) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
+           System.out.println("Is not in chomsky normal form");
            return null;
        }
         Matrix m=GrammarUtil.createMatrix(word);
@@ -1360,7 +1359,6 @@ public class GrammarUtil {
                 m.printWithWord();
             }
         }
-      
         return m;
 
     }

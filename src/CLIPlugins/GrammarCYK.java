@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import GrammarSimulator.Explanation;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Matrix;
@@ -9,6 +10,7 @@ import GrammarSimulator.Matrix;
  */
 public class GrammarCYK implements CLIPlugin {
     private boolean errorFlag;
+    private Explanation type;
     @Override
     public String[] getNames() {
         return new String[]{"cyk"};
@@ -16,7 +18,24 @@ public class GrammarCYK implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return parameters.length==1;
+        if(parameters.length==2) {
+            if(parameters[0].equals("no")) {
+                type=Explanation.NO;
+                return true;
+            } else if(parameters[0].equals("short")) {
+                type=Explanation.SHORT;
+                return true;
+            } else if(parameters[0].equals("long")) {
+                type=Explanation.LONG;
+                return true;
+            } else {
+                System.out.println("This Input is not valid");
+                return false;
+            }
+        } else {
+            System.out.println("the number of parameters isn't right");
+            return false;
+        }
     }
 
     @Override
@@ -33,13 +52,26 @@ public class GrammarCYK implements CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
-            GrammarUtil.chomskyNormalFormWithNoOutput(grammar);
+        Matrix matrix;
+        switch (type) {
+            case SHORT:
+                matrix=GrammarUtil.cykWithShortOutput(grammar,parameters[1]);
+                break;
+            case LONG:
+                matrix=GrammarUtil.cykWithLongOutput(grammar,parameters[1]);
+                break;
+            case NO:
+                matrix=GrammarUtil.cykWithNoOutput(grammar,parameters[1]);
+                break;
+            default:
+                matrix=new Matrix(1,1,"default");
         }
-        if(GrammarUtil.cykWithLongOutput(grammar,parameters[0])) {
-            System.out.println("L(G) contains " + parameters[0] + ".");
-        } else {
-            System.out.println("L(G) does not contain " + parameters[0] + ".");
+        if(matrix != null) {
+            if (matrix.getCell(1,parameters[1].length()-1).contains(grammar.getStartSymbol())) {
+                System.out.println("L(G) contains " + parameters[1] + ".");
+            } else {
+                System.out.println("L(G) does not contain " + parameters[1] + ".");
+            }
         }
         return null;
     }
