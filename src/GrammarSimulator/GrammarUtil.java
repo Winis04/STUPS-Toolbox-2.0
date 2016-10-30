@@ -1292,14 +1292,17 @@ public class GrammarUtil {
      * -                                           CYK                                                               -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static boolean cykWithNoOutput(Grammar g, String word) {
+
+    public static Matrix cykWithNoOutput(Grammar g, String word) {
+
         return GrammarUtil.cyk(g,word,Explanation.NO);
+
     }
-    public static boolean cykWithShortOutput(Grammar g, String word) {
+    public static Matrix cykWithShortOutput(Grammar g, String word) {
         return GrammarUtil.cyk(g,word,Explanation.SHORT);
     }
 
-    public static boolean cykWithLongOutput(Grammar g, String word) {
+    public static Matrix cykWithLongOutput(Grammar g, String word) {
         return GrammarUtil.cyk(g,word,Explanation.LONG);
     }
 
@@ -1310,10 +1313,10 @@ public class GrammarUtil {
         return m;
     }
 
-    private static boolean cyk(Grammar g, String word, Explanation type) {
+
+    private static Matrix cyk(Grammar g, String word, Explanation type) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
-           System.out.println("Is not in chomsky normal form");
-           return false;
+           return null;
        }
         Matrix m=GrammarUtil.createMatrix(word);
         for(int i=1;i<=word.length();i++) {
@@ -1357,11 +1360,9 @@ public class GrammarUtil {
                 m.printWithWord();
             }
         }
-        if(m.getCell(1,word.length()-1).contains(g.getStartSymbol())) {
-            return true;
-        } else {
-            return false;
-        }
+      
+        return m;
+
     }
     private static boolean pointsOnCurrentChar(String word,int i,ArrayList<Symbol> list) {
         return list.get(0).getName().equals(word.substring(i-1,i));
