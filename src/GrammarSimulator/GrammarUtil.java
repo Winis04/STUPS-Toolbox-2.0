@@ -946,7 +946,7 @@ public class GrammarUtil {
                 if(list.size()==1 && list.get(0) instanceof Nonterminal) {
                     Nonterminal nt = (Nonterminal) list.get(0);
                     result.stream().forEach(child -> {
-                        if (child.equals(new Node(nt))) {
+                        if (child.getName().equals(nt.getName())) {
                             node.getChildren().add(child);
                         }
                     });
@@ -1362,31 +1362,54 @@ public class GrammarUtil {
         return m;
 
     }
-    public static void getPaths(Matrix m, Grammar g) {
-        int j=m.getRows()-1;
-        int i=1;
-        Nonterminal s=g.getStartSymbol();
-        if(j==0 && GrammarUtil.checkMatrix(m,g)) {
-            System.out.printf("%s |- %s\n",s.getName(),m.getWord());
-            return;
-        } else if(GrammarUtil.checkMatrix(m,g)) {
+    public static LinkedHashSet<Node> makeSyntaxTree(Matrix matrix, Grammar grammar) {
+        if(checkMatrix(matrix,grammar)) {
+            LinkedHashSet<Node> result=new LinkedHashSet<>();
+            int j=matrix.getRows()-1;
+            int i=1;
+            Nonterminal s=grammar.getStartSymbol();
             for(int k=0;k<j;k++) {
                 for(ArrayList<Symbol> list : s.getSymbolLists()) {
                     if(list.size()==2) {
-                        Nonterminal b = (Nonterminal)list.get(0);
-                        Nonterminal c = (Nonterminal)list.get(1);
-                        if (m.getCell(i, k).contains(b) && m.getCell(i + k + 1, j - k - 1).contains(c)) {
+                        Nonterminal b = (Nonterminal) list.get(0);
+                        Nonterminal c = (Nonterminal) list.get(1);
+                        if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) {
+                            Node start=new Node(s);
+                            Node left=new Node(b);
+                            Node right=new Node(c);
+                            result.add(start);
 
-
+                            start.getChildren().add(left);
+                            makeSyntaxTree(matrix,grammar,k,i,left);
+                            start.getChildren().add(right);
+                            makeSyntaxTree(matrix,grammar,j-k-1,i+k+1,right);
                         }
                     }
-
+                }
+            }
+            return result;
+        } else {
+            return null;
+        }
+    }
+    public static void makeSyntaxTree(Matrix matrix, Grammar grammar, int j, int i, Node node) {
+        for(int k=0;k<j;k++) {
+            for(ArrayList<Symbol> list : node.getValue().getSymbolLists()) {
+                if(list.size()==2) {
+                    Nonterminal b = (Nonterminal) list.get(0);
+                    Nonterminal c = (Nonterminal) list.get(1);
+                    if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) {
+                        Node left=new Node(b);
+                        Node right=new Node(c);
+                        node.getChildren().add(left);
+                        makeSyntaxTree(matrix,grammar,k,i,left);
+                        node.getChildren().add(right);
+                        makeSyntaxTree(matrix,grammar,j-k-1,i+k+1,right);
+                        return;
+                    }
                 }
             }
         }
-
-
-
     }
 
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {

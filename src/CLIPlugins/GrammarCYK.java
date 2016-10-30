@@ -1,9 +1,13 @@
 package CLIPlugins;
 
-import GrammarSimulator.Explanation;
-import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Matrix;
+import GrammarSimulator.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 /**
  * Created by Isabel on 26.10.2016.
@@ -73,7 +77,28 @@ public class GrammarCYK implements CLIPlugin {
                 System.out.println("L(G) does not contain " + parameters[1] + ".");
             }
         }
-        GrammarUtil.getPaths(matrix,grammar);
+        LinkedHashSet<Node> trees= GrammarUtil.makeSyntaxTree(matrix,grammar);
+        Node test=new Node();
+        for(Node node : trees) {
+            test=node;
+        }
+        ArrayList<Node> list=new ArrayList<>();
+        list.addAll(test.getChildren());
+        System.out.printf("%s |- ",test.getName());
+        boolean changed=true;
+       /* while(changed) {
+            changed = false;
+            System.out.printf("%s |- ", list.stream().map(child -> child.getName()).collect(joining(", ")));
+            int i = 0;
+            while (!changed) {
+                Node toRemove = list.get(i);
+                list.remove(i);
+                list.addAll(i, toRemove.getChildren());
+                i++;
+                changed = true;
+            }
+        }*/
+        System.out.println("");
         return null;
     }
 

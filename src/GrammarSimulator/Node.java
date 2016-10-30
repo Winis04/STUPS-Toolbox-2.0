@@ -1,6 +1,9 @@
 package GrammarSimulator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
 
 /**
  * Created by Isabel on 24.10.2016.
@@ -22,7 +25,7 @@ public class Node {
     /**
      * the following nodes
      */
-    private HashSet<Node> children;
+    private LinkedHashSet<Node> children;
     /**
      *
      */
@@ -41,11 +44,20 @@ public class Node {
         this.number=0;
         this.dfe=0;
         this.dfe=0;
-        this.children=new HashSet<>();
+        this.children=new LinkedHashSet<>();
         this.value=value;
         this.name=value.getName();
     }
-    public Node(Nonterminal value, HashSet<Node> children) {
+    public Node(String name) {
+        this.visited=false;
+        this.number=0;
+        this.dfe=0;
+        this.dfe=0;
+        this.children=new LinkedHashSet<>();
+        this.name=name;
+        this.value=new Nonterminal(name,null);
+    }
+    public Node(Nonterminal value, LinkedHashSet<Node> children) {
         this.visited=false;
         this.number=0;
         this.dfe=0;
@@ -53,6 +65,14 @@ public class Node {
         this.children=children;
         this.value=value;
         this.name=value.getName();
+    }
+    public Node() {
+        this.children=new LinkedHashSet<>();
+        this.value=null;
+        this.visited=false;
+        this.number=0;
+        this.dfe=0;
+        this.dfe=0;
     }
 
     public boolean isVisited() {
@@ -94,17 +114,10 @@ public class Node {
         this.dfs = dfs;
     }
 
-    public void setChildren(HashSet<Node> children) {
+    public void setChildren(LinkedHashSet<Node> children) {
         this.children = children;
     }
-    @Override
-    public boolean equals(Object o) {
-        if(o instanceof Node) {
-            Node node=(Node) o;
-            return node.getName().equals(this.getName());
-        }
-        return false;
-    }
+
 
     public int getNumber() {
         return number;
@@ -113,4 +126,8 @@ public class Node {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public static final Node EMPTY_NODE=new Node();
+
+
 }
