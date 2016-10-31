@@ -1,4 +1,6 @@
 import CLIPlugins.*;
+import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;
@@ -21,6 +23,7 @@ public class CLI {
      */
     public static HashMap<Class, Object> objects = new HashMap<>();
 
+    public static ArrayList<Grammar> grammars=new ArrayList<>();
     /**
      * This method starts the CLI and enters an endless loop, listening for user input.
      */
@@ -80,9 +83,57 @@ public class CLI {
                 if(command.equals("gui")) {
                     validCommand = true;
                     Platform.runLater(() -> GUI.show());
-                    while(!GUI.IS_VISIBLE) {
+                    while (!GUI.IS_VISIBLE) {
                         Thread.sleep(500);
                     }
+                } else if(command.equals("show-all-grammar")||command.equals("sag")) {
+                    validCommand = true;
+                    for(int i=0;i<grammars.size();i++) {
+                        System.out.printf("(%d): \n",i);
+                        GrammarUtil.print(grammars.get(i));
+                    }
+
+                } else if(command.equals("store-g")||command.equals("store-grammar")) {
+                    validCommand = true;
+                    Grammar toBeStored = (Grammar) objects.get(Grammar.class);
+                    grammars.add(toBeStored);
+                } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
+                    validCommand = true;
+                    if (grammars.isEmpty()) {
+                        System.out.println("no grammar stored");
+                    } else if (parameters.length == 1) {
+                        try {
+                            int i = Integer.parseInt(parameters[0]);
+                            if (i < grammars.size() && i > -1) {
+                                objects.put(Grammar.class, grammars.get(i));
+                            } else {
+                                System.out.println("no valid index");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("the argument is not an integer!");
+                        }
+                    } else {
+                        System.out.println("wrong input!");
+                    }
+                } else if(command.equals("remove-grammar")|| command.equals("remove-g")) {
+                    validCommand = true;
+                    if (grammars.isEmpty()) {
+                        System.out.println("no grammar stored");
+                    } else if (parameters.length == 1) {
+                        try {
+                            int i = Integer.parseInt(parameters[0]);
+                            if (i < grammars.size() && i > -1) {
+                                grammars.remove(i);
+                            } else {
+                                System.out.println("no valid index");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("the argument is not an integer!");
+                        }
+                    } else {
+                        System.out.println("wrong input!");
+                    }
+
                 } else if(command.equals("h") || command.equals("help")) {
                     validCommand = true;
                     for(CLIPlugin plugin : plugins) {
@@ -99,6 +150,9 @@ public class CLI {
                     }
 
                     System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
+                    System.out.println("'store-grammar' or 'store-g' -- stores the current grammar. Doesn't take any parameters");
+                    System.out.println("'remove-grammar' or 'remove-g' __ removes the grammar at the given index. Takes an Index as a parameter");
+                    System.out.println("'switch-grammar' or 'switch-g' -- switches the current grammar. Takes the index of the new grammar as a parameter"); //TODO:
                     System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
                     System.out.println("'a' or 'about' -- Shows the release information");
                     System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");

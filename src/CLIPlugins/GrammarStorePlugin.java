@@ -1,17 +1,20 @@
 package CLIPlugins;
 
+import GrammarSimulator.Grammar;
+
 /**
  * Created by Isabel on 31.10.2016.
  */
 public class GrammarStorePlugin implements CLIPlugin {
+    private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[0];
+        return new String[]{"st","store-grammar"};
     }
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return false;
+        return parameters.length==0;
     }
 
     @Override
@@ -21,21 +24,27 @@ public class GrammarStorePlugin implements CLIPlugin {
 
     @Override
     public Object execute(Object object, String[] parameters) {
+        errorFlag = false;
+        if(object == null) {
+            System.out.println("Please load a grammar before using this command!");
+            errorFlag = true;
+            return null;
+        }
         return null;
     }
 
     @Override
     public Class inputType() {
-        return null;
+        return Grammar[].class;
     }
 
     @Override
     public Class outputType() {
-        return null;
+        return Grammar[].class;
     }
 
     @Override
     public boolean errorFlag() {
-        return false;
+        return errorFlag;
     }
 }
