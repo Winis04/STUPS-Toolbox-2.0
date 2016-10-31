@@ -6,11 +6,16 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
+
 import PushDownAutomatonSimulator.*;
+
+
 
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created by fabian on 06.08.16.
@@ -1362,27 +1367,38 @@ public class GrammarUtil {
         return m;
 
     }
-    public static LinkedHashSet<Node> makeSyntaxTree(Matrix matrix, Grammar grammar) {
-        if(checkMatrix(matrix,grammar)) {
-            LinkedHashSet<Node> result=new LinkedHashSet<>();
+
+    /**
+     * Calculates some syntax trees of the word in the matrix
+     * @param matrix
+     * @param grammar
+     * @return
+     */
+    public static LinkedHashSet<Node> makeSyntaxTrees(Matrix matrix, Grammar grammar) {
+        if(checkMatrix(matrix,grammar)) { // does the language contains the word?
+            LinkedHashSet<Node> result=new LinkedHashSet<>(); //every node is the start of a tree
             int j=matrix.getRows()-1;
             int i=1;
             Nonterminal s=grammar.getStartSymbol();
+            if(s.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0).getName().equals(matrix.getWord()))) {
+                result.add(new Node(s));
+            }
             for(int k=0;k<j;k++) {
                 for(ArrayList<Symbol> list : s.getSymbolLists()) {
                     if(list.size()==2) {
                         Nonterminal b = (Nonterminal) list.get(0);
                         Nonterminal c = (Nonterminal) list.get(1);
-                        if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) {
+                        if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) { // is this rule S -> BC the cause that S in the left-top corner?
+                                                                                                            // if yes, add B and C as children
                             Node start=new Node(s);
                             Node left=new Node(b);
                             Node right=new Node(c);
-                            result.add(start);
+                            result.add(start);     // a tree was found
 
                             start.getChildren().add(left);
-                            makeSyntaxTree(matrix,grammar,k,i,left);
+                            makeSyntaxTrees(matrix,grammar,k,i,left);  //continue with the left node and find out, why it is where it is
                             start.getChildren().add(right);
-                            makeSyntaxTree(matrix,grammar,j-k-1,i+k+1,right);
+                            makeSyntaxTrees(matrix,grammar,j-k-1,i+k+1,right); //continue with the right node and find out why it is where it is
                         }
                     }
                 }
@@ -1392,7 +1408,16 @@ public class GrammarUtil {
             return null;
         }
     }
-    public static void makeSyntaxTree(Matrix matrix, Grammar grammar, int j, int i, Node node) {
+
+    /**
+     * find the tree that starts with the Node node, at column i and row j
+     * @param matrix the matrix of the cyk
+     * @param grammar a grammar in cnf
+     * @param j the current row
+     * @param i the current column
+     * @param node the current node
+     */
+    private static void makeSyntaxTrees(Matrix matrix, Grammar grammar, int j, int i, Node node) {
         for(int k=0;k<j;k++) {
             for(ArrayList<Symbol> list : node.getValue().getSymbolLists()) {
                 if(list.size()==2) {
@@ -1402,16 +1427,71 @@ public class GrammarUtil {
                         Node left=new Node(b);
                         Node right=new Node(c);
                         node.getChildren().add(left);
-                        makeSyntaxTree(matrix,grammar,k,i,left);
+                        makeSyntaxTrees(matrix,grammar,k,i,left);
                         node.getChildren().add(right);
-                        makeSyntaxTree(matrix,grammar,j-k-1,i+k+1,right);
-                        return;
+                        makeSyntaxTrees(matrix,grammar,j-k-1,i+k+1,right);
+                        return; //TODO: the loop stops here. this causes that ONE tree will be found but not ALL
                     }
                 }
             }
         }
     }
 
+    /**
+     * prints all syntax trees
+     * @param matrix the matrix of the cyk
+     * @param grammar the grammar to thy cyk in cnf
+     */
+    public static void printSyntaxTrees(Matrix matrix, Grammar grammar) {
+        if(GrammarUtil.checkMatrix(matrix,grammar)) {
+            LinkedHashSet<Node> trees = GrammarUtil.makeSyntaxTrees(matrix, grammar);
+            for (Node node : trees) {
+                printSyntaxTree(matrix, grammar, node);
+            }
+        }
+    }
+    private static void printSyntaxTree(Matrix matrix, Grammar grammar, Node start) {
+        ArrayList<Node> list=new ArrayList<>();
+        list.addAll(start.getChildren());
+        System.out.printf("%s",start.getName());
+        if(start.getChildren().isEmpty()) {
+            System.out.println(" |- "+matrix.getWord());
+        } else {
+            boolean changed = true;
+            int rowcount=0;
+            while (changed) {
+                changed = false;
+                System.out.printf(" |- %s", list.stream().map(child -> child.getName()).collect(joining(", ")));
+                if(rowcount==5) {
+                    rowcount=0;
+                    System.out.println("");
+                    System.out.print(" ");
+                }
+                rowcount++;
+                int i = 0;
+                boolean stop = false;
+                while (!changed && i < list.size()) {
+                    Node toRemove = list.get(i);
+                    if (!toRemove.getChildren().isEmpty()) { // if the node has no children it is a leaf and points on a terminal symbol
+                        list.remove(i);
+                        list.addAll(i, toRemove.getChildren());
+                        changed = true;
+                    } else {
+                        if (!list.get(i).isVisited()) {
+                            list.remove(i);
+                            Node terminalNode = new Node(matrix.getWord().substring(i, i + 1)); // little cheat, because node only contains nonterminals. TODO: fix this!
+                            // so a new nonterminal with the name of the terminal is created
+                            terminalNode.setVisited(true);                                      // checks if this node without children was already replaced
+                            list.add(i, terminalNode);                                          // where this nonterminal was, there must be the i-th letter of the word
+                            changed = true;
+                        }
+                    }
+                    i++;
+                }
+            }
+            System.out.println("");
+        }
+    }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
         if(matrix != null) {
            return matrix.getCell(1, matrix.getWord().length() - 1).contains(grammar.getStartSymbol());

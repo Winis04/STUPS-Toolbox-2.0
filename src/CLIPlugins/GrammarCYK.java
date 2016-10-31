@@ -77,32 +77,7 @@ public class GrammarCYK implements CLIPlugin {
                 System.out.println("L(G) does not contain " + parameters[1] + ".");
             }
         }
-        LinkedHashSet<Node> trees= GrammarUtil.makeSyntaxTree(matrix,grammar);
-        Node test=new Node();
-        for(Node node : trees) {
-            test=node;
-        }
-        ArrayList<Node> list=new ArrayList<>();
-        list.addAll(test.getChildren());
-        System.out.printf("%s |- ",test.getName());
-        boolean changed=true;
-        while(changed) {
-            changed = false;
-            System.out.printf("%s |- ", list.stream().map(child -> child.getName()).collect(joining(", ")));
-            int i = 0;
-            boolean stop=false;
-            while (!stop && i < list.size()) {
-                Node toRemove = list.get(i);
-                if(!toRemove.getChildren().isEmpty()) {
-                    list.remove(i);
-                    list.addAll(i,toRemove.getChildren());
-                    stop=true;
-                    changed=true;
-                }
-                i++;
-            }
-        }
-        System.out.println("");
+        GrammarUtil.printSyntaxTrees(matrix,grammar);
         return null;
     }
 
