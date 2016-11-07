@@ -528,9 +528,9 @@ public class GrammarUtil {
                                                     changed = true;
                                                 }
                                             } else if (symbolList.get(k) instanceof Nonterminal) {
-                                                if(!result.get(symbolList.get(i)).containsAll(firsts.get(result.get(k)))) {
+                                                if(!result.get(symbolList.get(i)).containsAll(firsts.get(symbolList.get(k)))) {
                                                     //If the current symbol is a nonterminal, add its first-set to the follow-set of symbolList.get(i).
-                                                    result.get(symbolList.get(i)).addAll(firsts.get(result.get(k)));
+                                                    result.get(symbolList.get(i)).addAll(firsts.get(symbolList.get(k)));
                                                     changed = true;
                                                 }
                                             }
