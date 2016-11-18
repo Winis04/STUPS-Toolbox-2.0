@@ -18,21 +18,7 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        if(parameters.length==1) {
-            if(parameters[0].equals("no")) {
-                type=Explanation.NO;
-                return true;
-            }
-            if(parameters[0].equals("short")) {
-                type=Explanation.SHORT;
-                return true;
-            }
-            if(parameters[0].equals("long")) {
-                type=Explanation.LONG;
-                return true;
-            }
-        }
-        return false;
+        return parameters.length==0;
     }
 
     @Override

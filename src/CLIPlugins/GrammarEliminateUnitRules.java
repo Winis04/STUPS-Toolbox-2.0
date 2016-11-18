@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.*;
+import Print.Printer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,21 +21,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        if(parameters.length==1) {
-            if(parameters[0].equals("no")) {
-                type=Explanation.NO;
-                return true;
-            }
-            if(parameters[0].equals("short")) {
-                type=Explanation.SHORT;
-                return true;
-            }
-            if(parameters[0].equals("long")) {
-                type=Explanation.LONG;
-                return true;
-            }
-        }
-        return false;
+        return parameters.length==0;
     }
 
     @Override
@@ -57,18 +44,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
             System.out.println("This grammar is already without unit rules");
             return null;
         }
-        switch (type) {
-            case NO:
-                GrammarUtil.eliminateUnitRulesWithNoOutput(grammar);
-                break;
-            case SHORT:
-                GrammarUtil.eliminateUnitRulesWithShortOutput(grammar);
-                break;
-            case LONG:
-                GrammarUtil.eliminateUnitRulesWithLongutput(grammar);
-                break;
-
-        }
+        Printer.printEliminateUnitRules(grammar);
         return null;
     }
 

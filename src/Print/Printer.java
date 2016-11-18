@@ -39,7 +39,21 @@ public class Printer {
             case NO:
                 break;
             case LATEX:
-                printGrammarLatex(grammar);
+                printGrammarLatex(grammar,0);
+                break;
+            case CONSOLE:
+                printGrammarConsole(grammar);
+                break;
+        }
+
+
+    }
+    public static void printGrammar(Grammar grammar, int x) {
+        switch(printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printGrammarLatex(grammar,x);
                 break;
             case CONSOLE:
                 printGrammarConsole(grammar);
@@ -60,6 +74,73 @@ public class Printer {
                 printCNFConsole(grammar);
                 break;
         }
+    }
+
+
+    public static void printEliminateUnitRules(Grammar grammar) {
+        switch(printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printEliminateUnitRulesLatex(grammar);
+                break;
+            case CONSOLE:
+                printEliminateUnitRulesConsole(grammar);
+                break;
+        }
+    }
+
+    private static void printEliminateUnitRulesLatex(Grammar grammar) {
+        try {
+            writer.write("\\section{Eliminate unit rules}\n");
+            writer.write("\\begin{description}\n");
+            HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
+            writer.write("\t\\item[Step 1] remove circles: \\\\ \n");
+
+            Printer.printGrammar(grammar,1);
+            writer.write("\t\\item[Step 2] number the nonterminals:\n");
+
+            ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
+            writer.write("\t\\begin{align*}\n");
+
+            writer.write(list.stream().map(node -> "\t\t"+node.getName()+ "&: "+ node.getNumber()).collect(joining("\\\\\n")));
+
+            writer.write("\n\t\\end{align*}\n");
+
+            writer.write("\t\\item[Step 3] remove unit rules beginning by the highest number: \\\\ \n");
+
+            Printer.printGrammar(grammar,1);
+            writer.write("\\end{description}\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void printEliminateUnitRulesConsole(Grammar grammar) {
+        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
+
+        try {
+            HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
+            writer1.write("Step 1: remove circles\n");
+            writer1.flush();
+            Printer.printGrammar(grammar);
+            writer1.write("Step 2: number the nonterminals");
+            writer1.flush();
+            ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
+            list.stream().forEach(x -> {
+                try {
+                    writer1.write(x.getName() + ": " + x.getNumber() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            writer1.write("Step 3: remove unit rules beginning by the highest number\n");
+            writer1.flush();
+            Printer.printGrammar(grammar);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
     private static void printCNFConsole(Grammar grammar) {
         BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
@@ -87,20 +168,20 @@ public class Printer {
         try {
             writer.write("\\section{Chomsky - Normal - Form}\n");
             writer.write("\\begin{description}\n");
-            writer.write("\\item[Before]\n");
+            writer.write("\t\\item[Before]\n");
             writer.flush();
-            printGrammar(grammar);
-            writer.write("\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
+            printGrammar(grammar,1);
+            writer.write("\t\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
             writer.flush();
-            writer.write("\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
+            writer.write("\t\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
             writer.flush();
 
             GrammarUtil.chomskyNormalForm_StepOne(grammar);
-            printGrammar(grammar);
-            writer.write("\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
+            printGrammar(grammar,1);
+            writer.write("\t\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\n");
             writer.flush();
             GrammarUtil.chomskyNormalForm_StepTwo(grammar);
-            printGrammar(grammar);
+            printGrammar(grammar,1);
             writer.write("\\end{description}\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,15 +220,18 @@ public class Printer {
         }
     }
 
-    private static void printGrammarLatex(Grammar grammar) {
-
+    private static void printGrammarLatex(Grammar grammar, int x) {
+        String s="";
+        for(int i=0;i<x;i++) {
+            s+="\t";
+        }
+        final String space=s;
         try {
 
 
             ArrayList<String>[] header=getHeader(grammar);
-            writer.write("$");
-            writer.write("G=\\left(\\{");
-            writer.write(header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
+            writer.write(space+"$G=\\left(\\{");
+            writer.write(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
 
             writer.write("\\},\\;\\{ ");
 
@@ -158,8 +242,9 @@ public class Printer {
 
             writer.write(",\\;P\\right)");
             writer.write("$ with\n");
-            writer.write("\\begin{align*}\n");
-            writer.write("P=\\{");
+            writer.write(space+"\\begin{align*}\n");
+
+            writer.write(space+"\tP=\\{");
 
 
             writer.write(GrammarUtil.getNonterminalsInOrder(grammar).stream().
@@ -172,10 +257,10 @@ public class Printer {
                                         collect(joining(""))).
                                 collect(joining("\\;|\\;"));
                         return start;
-                    }).collect(joining(", \\\\ \n")));
+                    }).collect(joining(", \\\\ \n"+space)));
 
             writer.write("\\}\n");
-            writer.write("\\end{align*}\n");
+            writer.write("\t\\end{align*}\n");
 
         } catch (IOException e) {
             e.printStackTrace();

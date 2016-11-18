@@ -915,7 +915,7 @@ public class GrammarUtil {
      * @param grammar
      * @return
      */
-    private static HashSet<Node> removeCircleRules(Grammar grammar) {
+    public static HashSet<Node> removeCircleRules(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
@@ -1035,7 +1035,7 @@ public class GrammarUtil {
      * @param g the grammar g
      * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
      */
-    private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
+    public static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
            Node current=sorted.get(i);

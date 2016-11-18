@@ -42,6 +42,7 @@ public class PrintModePlugin implements CLIPlugin {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Printer.writer=null;
                 Printer.printmode=PrintMode.CONSOLE;
 
             } else {
@@ -60,6 +61,7 @@ public class PrintModePlugin implements CLIPlugin {
 
                     } else {
                         System.out.println("this file already exists");
+                        Printer.printmode=PrintMode.CONSOLE;
                         errorFlag=true;
                         return null;
                     }
