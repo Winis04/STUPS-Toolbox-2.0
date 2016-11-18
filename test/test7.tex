@@ -6,14 +6,30 @@
 
 \begin{document}
 
-$G=\left(\{1, 0, \epsilon\},\;\{ S, A, B, D, E, C\},\;S,\;P\right)
-$ mit
+Before:
+$G=\left(\{0, 1\},\;\{ S, B, D, E\},\;S,\;P\right)$ mit
 \begin{align*}
-P=\{	S &\rightarrow ABD, \\ 
-	A &\rightarrow ED\;|\;BB, \\ 
-	B &\rightarrow \epsilon\;|\;AC, \\ 
+P=\{	S &\rightarrow BBD\;|\;BD\;|\;0, \\ 
+	B &\rightarrow ED\;|\;BB, \\ 
 	D &\rightarrow 0, \\ 
-	E &\rightarrow 1, \\ 
-	C &\rightarrow \epsilon\}
+	E &\rightarrow 1\}
+\end{align*}
+Step 1: rules in form of $A \rightarrow a$ are already in chomsky normal form and we keep them.
+Step 2: in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \rightarrow a$
+$G=\left(\{0, 1\},\;\{ S, B, D, E\},\;S,\;P\right)$ mit
+\begin{align*}
+P=\{	S &\rightarrow BBD\;|\;BD\;|\;0, \\ 
+	B &\rightarrow ED\;|\;BB, \\ 
+	D &\rightarrow 0, \\ 
+	E &\rightarrow 1\}
+\end{align*}
+Step 3: in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule
+$G=\left(\{0, 1\},\;\{ S, B, D, P_1, E\},\;S,\;P\right)$ mit
+\begin{align*}
+P=\{	S &\rightarrow BP_1\;|\;BD\;|\;0, \\ 
+	B &\rightarrow ED\;|\;BB, \\ 
+	D &\rightarrow 0, \\ 
+	P_1 &\rightarrow BD, \\ 
+	E &\rightarrow 1\}
 \end{align*}
 \end{document}

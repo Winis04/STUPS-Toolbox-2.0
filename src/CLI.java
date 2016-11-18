@@ -1,6 +1,7 @@
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Print.Printer;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;
@@ -158,6 +159,10 @@ public class CLI {
                     System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
                 } else if(command.equals("e") || command.equals("exit")) {
                     System.out.println("Goodbye!");
+                    if(Printer.writer!=null) {
+                        Printer.printEndOfLatex(Printer.writer);
+                        Printer.writer.close();
+                    }
                     System.exit(0);
                 } else if(command.equals("a") || command.equals("about")) {
                     validCommand = true;

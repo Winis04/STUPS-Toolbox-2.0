@@ -3,7 +3,9 @@ package CLIPlugins;
 import Print.PrintMode;
 import Print.Printer;
 
-import java.io.PrintWriter;
+import java.io.*;
+
+import static Print.Printer.writer;
 
 /**
  * Created by Isabel on 18.11.2016.
@@ -17,7 +19,7 @@ public class PrintModePlugin implements CLIPlugin {
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return parameters.length==1 || parameters.length==2;
+        return parameters.length < 4;
     }
 
     @Override
@@ -32,7 +34,16 @@ public class PrintModePlugin implements CLIPlugin {
             if(parameters[0].equals("no")) {
                 Printer.printmode= PrintMode.NO;
             } else if(parameters[0].equals("console")) {
+                Printer.printmode = PrintMode.CONSOLE;
+            } else if(parameters[0].equals("close") &&Printer.printmode==PrintMode.LATEX && Printer.writer!=null) {
+                Printer.printEndOfLatex(Printer.writer);
+                try {
+                    Printer.writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Printer.printmode=PrintMode.CONSOLE;
+
             } else {
                 errorFlag=true;
                 System.out.println("not a valid parameter");
@@ -41,15 +52,25 @@ public class PrintModePlugin implements CLIPlugin {
         } else {
             if(parameters[0].equals("latex")) {
                 Printer.printmode=PrintMode.LATEX;
-                try{
-                    PrintWriter writer = new PrintWriter(parameters[1], "UTF-8");
-                    writer.close();
-                } catch (Exception e) {
-                    errorFlag=true;
-                    System.out.println("not a valid path");
-                    return null;
+                if(Printer.writer!=null) {
+                    Printer.printEndOfLatex(writer);
+                }
+                if(new File(parameters[1]).exists()) {
+                    if(parameters.length==3 && parameters[2].equals("--force")) {
+
+                    } else {
+                        System.out.println("this file already exists");
+                        errorFlag=true;
+                        return null;
+                    }
                 }
                 Printer.currentFile=parameters[1];
+                try {
+                    writer=new BufferedWriter(new FileWriter(Printer.currentFile));
+                    Printer.printStartOfLatex(writer);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             } else {
                 errorFlag=true;

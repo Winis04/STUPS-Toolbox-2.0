@@ -27,6 +27,8 @@ public class Printer {
      */
     public static String currentFile;
     //BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+
+    public static BufferedWriter writer=null;
     /**
      * Prints a given grammar depending on {@Link printmode}
      *
@@ -46,12 +48,13 @@ public class Printer {
 
 
     }
+
     public static void printCNF(Grammar grammar) {
         switch(printmode) {
             case NO:
                 break;
             case LATEX:
-                printGrammarLatex(grammar);
+                printCNFLatex(grammar);
                 break;
             case CONSOLE:
                 printCNFConsole(grammar);
@@ -59,19 +62,19 @@ public class Printer {
         }
     }
     private static void printCNFConsole(Grammar grammar) {
-        BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
         try {
-            writer.write("Before:\n");
-            writer.flush();
+            writer1.write("Before:\n");
+            writer1.flush();
             printGrammar(grammar);
-            writer.write("Step 1: rules in form of A --> a are already in chomsky normal form and we keep them.\n");
-            writer.flush();
-            writer.write("Step 2: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a\n");
-            writer.flush();
+            writer1.write("Step 1: rules in form of A --> a are already in chomsky normal form and we keep them.\n");
+            writer1.flush();
+            writer1.write("Step 2: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a\n");
+            writer1.flush();
             printGrammar(grammar);
             GrammarUtil.chomskyNormalForm_StepOne(grammar);
-            writer.write("Step 3: in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
-            writer.flush();
+            writer1.write("Step 3: in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
+            writer1.flush();
             GrammarUtil.chomskyNormalForm_StepTwo(grammar);
             printGrammar(grammar);
 
@@ -81,51 +84,54 @@ public class Printer {
 
     }
     private static void printCNFLatex(Grammar grammar) {
-        BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
         try {
-            writer.write("Before:\n");
+            writer.write("\\section{Chomsky - Normal - Form}\n");
+            writer.write("\\begin{description}\n");
+            writer.write("\\item[Before]\n");
             writer.flush();
             printGrammar(grammar);
-            writer.write("Step 1: rules in form of A --> a are already in chomsky normal form and we keep them.\n");
+            writer.write("\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
             writer.flush();
-            writer.write("Step 2: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a\n");
+            writer.write("\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
             writer.flush();
-            printGrammar(grammar);
+
             GrammarUtil.chomskyNormalForm_StepOne(grammar);
-            writer.write("Step 3: in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
+            printGrammar(grammar);
+            writer.write("\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
             writer.flush();
             GrammarUtil.chomskyNormalForm_StepTwo(grammar);
             printGrammar(grammar);
-
+            writer.write("\\end{description}\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
     private static void printGrammarConsole(Grammar grammar) {
-        BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
         try {
+
             ArrayList<String>[] header=getHeader(grammar);
 
-            writer.write("{");
-            writer.write(header[0].stream().collect(joining(", ")));
-            writer.flush();
-            writer.write("; ");
+            writer1.write("{");
+            writer1.write(header[0].stream().collect(joining(", ")));
+            writer1.flush();
+            writer1.write("; ");
 
-            writer.write(header[1].stream().collect(joining(", ")));
-            writer.flush();
-            writer.write("; ");
-            writer.write(header[2].get(0));
-            writer.flush();
-            writer.write("}\n\n");
-            writer.flush();
+            writer1.write(header[1].stream().collect(joining(", ")));
+            writer1.flush();
+            writer1.write("; ");
+            writer1.write(header[2].get(0));
+            writer1.flush();
+            writer1.write("}\n\n");
+            writer1.flush();
 
             for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(grammar)) {
-                writer.write(nt.getName() + " --> ");
+                writer1.write(nt.getName() + " --> ");
                 HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
-                writer.write(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
-                writer.write("\n");
-                writer.flush();
+                writer1.write(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
+                writer1.write("\n");
+                writer1.flush();
             }
 
         } catch (IOException e) {
@@ -136,8 +142,8 @@ public class Printer {
     private static void printGrammarLatex(Grammar grammar) {
 
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(currentFile));
-            printStartOfLatex(writer);
+
+
             ArrayList<String>[] header=getHeader(grammar);
             writer.write("$");
             writer.write("G=\\left(\\{");
@@ -150,8 +156,8 @@ public class Printer {
 
             writer.write(header[2].get(0));
 
-            writer.write(",\\;P\\right)\n");
-            writer.write("$ mit\n");
+            writer.write(",\\;P\\right)");
+            writer.write("$ with\n");
             writer.write("\\begin{align*}\n");
             writer.write("P=\\{");
 
@@ -170,7 +176,7 @@ public class Printer {
 
             writer.write("\\}\n");
             writer.write("\\end{align*}\n");
-            printEndOfLatex(writer);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,7 +213,7 @@ public class Printer {
         }
         return result;
     }
-    private static void printStartOfLatex(BufferedWriter writer) {
+    public static void printStartOfLatex(BufferedWriter writer) {
         try {
             writer.write("%%this document was generated by the STUPS Toolbox 2.0\n");
             writer.write("\\documentclass{article}\n\\usepackage{amssymb}\n\\usepackage{amsmath,amsthm}\n\\usepackage[ngerman,english]{babel}\n\n\\begin{document}\n\n");
@@ -215,7 +221,7 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    private static void printEndOfLatex(BufferedWriter writer) {
+    public static void printEndOfLatex(BufferedWriter writer) {
         try {
             writer.write("\\end{document}");
             writer.close();
