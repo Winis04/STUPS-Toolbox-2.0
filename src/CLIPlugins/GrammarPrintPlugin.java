@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Print.Printer;
 
 /**
  * Created by fabian on 11.08.16.
@@ -22,7 +23,7 @@ public class GrammarPrintPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "Prints the loaded grammar on the console. Doesn't take any parameters.";
+        return "Prints the loaded grammar. Doesn't take any parameters.";
     }
 
     @Override
@@ -34,7 +35,7 @@ public class GrammarPrintPlugin implements CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        GrammarUtil.print(grammar);
+        Printer.printGrammar(grammar);
         return null;
     }
 

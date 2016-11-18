@@ -5,6 +5,6 @@ package Print;
  */
 public enum PrintMode {
     NO,
-    TERMINAL,
+    CONSOLE,
     LATEX
 }

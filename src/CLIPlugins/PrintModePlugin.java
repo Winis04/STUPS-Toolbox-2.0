@@ -31,8 +31,8 @@ public class PrintModePlugin implements CLIPlugin {
         if(parameters.length==1) {
             if(parameters[0].equals("no")) {
                 Printer.printmode= PrintMode.NO;
-            } else if(parameters[0].equals("terminal")) {
-                Printer.printmode=PrintMode.TERMINAL;
+            } else if(parameters[0].equals("console")) {
+                Printer.printmode=PrintMode.CONSOLE;
             } else {
                 errorFlag=true;
                 System.out.println("not a valid parameter");
