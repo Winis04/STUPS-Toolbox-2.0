@@ -95,7 +95,7 @@ public class CLI {
 
                 } else if(command.equals("store-g")||command.equals("store-grammar")) {
                     validCommand = true;
-                    Grammar toBeStored = (Grammar) objects.get(Grammar.class);
+                    Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class));
                     grammars.add(toBeStored);
                 } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
                     validCommand = true;
