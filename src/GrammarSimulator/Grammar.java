@@ -46,6 +46,10 @@ public class Grammar {
         this.startSymbol = startSymbol;
     }
 
+    public Grammar(Grammar old) {
+
+    }
+
     /**
      * Getter-method for {@link #terminals}.
      *
