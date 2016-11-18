@@ -1182,7 +1182,7 @@ public class GrammarUtil {
             case LONG:
                 System.out.println("Before:");
                 GrammarUtil.print(grammar);
-                System.out.println("Step 0: rules in form of A --> a are already in chomsky normal form and so we keep them.");
+                System.out.println("Step 0: rules in form of A --> a are already in chomsky normal form and we keep them.");
                 System.out.println("These are the following rules:");
                 grammar.getNonterminals().stream().
                         filter(nt -> nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Terminal)).
@@ -1214,7 +1214,7 @@ public class GrammarUtil {
 
     }
 
-    private static void chomskyNormalForm_StepOne(Grammar g) {
+    public static void chomskyNormalForm_StepOne(Grammar g) {
         HashSet<Nonterminal> newNonTerminals=new HashSet<>();
         for(Nonterminal nt : g.getNonterminals()) {
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -1257,7 +1257,7 @@ public class GrammarUtil {
      * step 2: modify rules with more than two nonterminals so that they only have two
      * @param g
      */
-    private static void chomskyNormalForm_StepTwo(Grammar g) {
+    public static void chomskyNormalForm_StepTwo(Grammar g) {
         int counter=1;
         boolean changed=true;
         while(changed) {

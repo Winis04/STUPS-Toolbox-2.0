@@ -3,6 +3,7 @@ package CLIPlugins;
 import GrammarSimulator.Explanation;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Print.Printer;
 
 /**
  * Created by isabel on 25.10.16.
@@ -65,18 +66,8 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             System.out.println("This grammar is already in chomsky normal form");
             return null;
         }
-        switch (type) {
-            case NO:
-                GrammarUtil.chomskyNormalFormWithNoOutput(grammar);
-                break;
-            case SHORT:
-                GrammarUtil.chomskyNormalFormWithShortOutput(grammar);
-                break;
-            case LONG:
-                GrammarUtil.chomskyNormalFormWithLongOutput(grammar);
-                break;
 
-        }
+        Printer.printCNF(grammar);
 
         return null;
 
