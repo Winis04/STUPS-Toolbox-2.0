@@ -105,31 +105,36 @@ public class Printer {
             BufferedWriter writer = new BufferedWriter(new FileWriter(currentFile));
             printStartOfLatex(writer);
             ArrayList<String>[] header=getHeader(grammar);
-            writer.write("\\begin{align*}\n");
-            writer.write("\t\\{");
+            writer.write("$");
+            writer.write("G=\\left(\\{");
             writer.write(header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
 
-            writer.write("; ");
+            writer.write("\\},\\;\\{ ");
 
             writer.write(header[1].stream().collect(joining(", ")));
-            writer.write("; ");
+            writer.write("\\},\\;");
 
             writer.write(header[2].get(0));
 
-            writer.write("\\}\n");
-            writer.write("\\end{align*}\n");
+            writer.write(",\\;P\\right)\n");
+            writer.write("$ mit\n");
             writer.write("\\begin{align*}\n");
-            for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(grammar)) {
-                writer.write(nt.getName() + " &\\rightarrow ");
-                HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
-                writer.write(tmp.stream().
-                        map(list -> list.stream().
-                                map(string -> makeToGreek(string)).
-                                collect(joining(""))).
-                        collect(joining("\\;|\\;")));
-                writer.write(" \\\\ \n");
-                writer.flush();
-            }
+            writer.write("P=\\{");
+
+
+            writer.write(GrammarUtil.getNonterminalsInOrder(grammar).stream().
+                    map(nonterminal -> {
+                        String start="\t"+nonterminal.getName() + " &\\rightarrow ";
+                        HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nonterminal);
+                        start+=tmp.stream().
+                                map(list -> list.stream().
+                                        map(string -> makeToGreek(string)).
+                                        collect(joining(""))).
+                                collect(joining("\\;|\\;"));
+                        return start;
+                    }).collect(joining(", \\\\ \n")));
+
+            writer.write("\\}\n");
             writer.write("\\end{align*}\n");
             printEndOfLatex(writer);
         } catch (IOException e) {
@@ -138,6 +143,7 @@ public class Printer {
 
 
     }
+
     private static ArrayList<String>[] getHeader(Grammar grammar) {
         ArrayList<String>[] header=new ArrayList[3];
         header[0]=getTerminalsAsStrings(grammar);
