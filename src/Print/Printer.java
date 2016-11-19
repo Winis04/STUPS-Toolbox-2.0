@@ -90,10 +90,77 @@ public class Printer {
         }
     }
 
+    public static void printRemoveLambdaRules(Grammar grammar) {
+        switch(printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printRemoveLambdaRulesLatex(grammar);
+                break;
+            case CONSOLE:
+                printRemoveLambdaRulesConsole(grammar);
+                break;
+        }
+    }
+    private static void printRemoveLambdaRulesLatex(Grammar grammar) {
+        try {
+            writer.write("\\section{Remove lambda-rules}\n");
+            writer.write("\\begin{description}\n");
+            writer.write("\t\\item[Before] \\hfill \\\\ \n");
+            Printer.printGrammar(grammar,1);
+            if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
+                writer.write("\t\\item[Step 0] add new Symbol $S#§: \\\\ \n");
+                Printer.printGrammar(grammar,1);
+            }
+            //first step: calculate the Nullable set
+            HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
+            writer.write("\t\\item[Step 1] nullable = \\{"+ nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", "))+"\\}\n");
+            writer.write("\t\\item[Step 2]\n");
+            //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
+            GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
+            GrammarUtil.removeUnneccesaryEpsilons(grammar);
+            Printer.printGrammar(grammar,1);
+            writer.write("\t\\item[Step 3] All lambda-rules are removed and all nonterminals, that do not appear on any right side. \\\\ \n");
+            GrammarUtil.removeLambdaRules_StepThree(grammar,true);
+            Printer.printGrammar(grammar,1);
+            writer.write("\\end{description}\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void printRemoveLambdaRulesConsole(Grammar grammar) {
+            BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
+            try {
+                if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
+                    writer.write("added new symbol S#:\n");
+                    writer.flush();
+                    Printer.printGrammar(grammar);
+                }
+                //first step: calculate the Nullable set
+                HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
+                writer.write("Step 1:\nnullable = {"+ nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", "))+"}\n");
+                writer.flush();
+                writer.write("Step 2:\n");
+                writer.flush();
+                //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
+                GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
+                GrammarUtil.removeUnneccesaryEpsilons(grammar);
+                Printer.printGrammar(grammar);
+                writer.write("Step 3: All lambda-rules are removed and all nonterminals, that do not appear on any right side\n");
+                writer.flush();
+                GrammarUtil.removeLambdaRules_StepThree(grammar,true);
+                Printer.printGrammar(grammar);
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
     private static void printEliminateUnitRulesLatex(Grammar grammar) {
         try {
             writer.write("\\section{Eliminate unit rules}\n");
             writer.write("\\begin{description}\n");
+            writer.write("\t\\item[Before] \n");
+            Printer.printGrammar(grammar,1);
             HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
             writer.write("\t\\item[Step 1] remove circles: \\\\ \n");
 
@@ -123,7 +190,7 @@ public class Printer {
             writer1.write("Step 1: remove circles\n");
             writer1.flush();
             Printer.printGrammar(grammar);
-            writer1.write("Step 2: number the nonterminals");
+            writer1.write("Step 2: number the nonterminals\n");
             writer1.flush();
             ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
             list.stream().forEach(x -> {
@@ -169,17 +236,17 @@ public class Printer {
             writer.write("\\section{Chomsky - Normal - Form}\n");
             writer.write("\\begin{description}\n");
             writer.write("\t\\item[Before]\n");
-            writer.flush();
+
             printGrammar(grammar,1);
             writer.write("\t\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
-            writer.flush();
+
             writer.write("\t\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
-            writer.flush();
+
 
             GrammarUtil.chomskyNormalForm_StepOne(grammar);
             printGrammar(grammar,1);
             writer.write("\t\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\n");
-            writer.flush();
+
             GrammarUtil.chomskyNormalForm_StepTwo(grammar);
             printGrammar(grammar,1);
             writer.write("\\end{description}\n");

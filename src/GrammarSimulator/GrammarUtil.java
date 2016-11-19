@@ -637,7 +637,7 @@ public class GrammarUtil {
     }
 
 
-    private static void removeUnneccesaryEpsilons(Grammar g) {
+    public static void removeUnneccesaryEpsilons(Grammar g) {
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> res=new HashSet<>();
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -715,7 +715,6 @@ public class GrammarUtil {
                 break;
         }
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
-
         GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         switch (type) {
@@ -745,7 +744,7 @@ public class GrammarUtil {
      * @param g the grammar g
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
      */
-    private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
+    public static void removeLambdaRules_StepThree(Grammar g, boolean again) {
 
         // delete lambda-rules
         for(Nonterminal nt : g.getNonterminals()) {
@@ -806,7 +805,7 @@ public class GrammarUtil {
      * @param grammar The Grammar
      * @param nullable The set, which contains all the nullable terminals
      */
-    private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
+    public static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             //contains all rules for this nonterminal which need to be edited
@@ -1596,7 +1595,7 @@ public class GrammarUtil {
      * @param g
      * @return
      */
-    private static boolean specialRuleForEmptyWord(Grammar g) {
+    public static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
             Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
