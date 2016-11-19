@@ -44,7 +44,9 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
             System.out.println("This grammar is already without unit rules");
             return null;
         }
+
         Printer.printEliminateUnitRules(grammar);
+
         return null;
     }
 

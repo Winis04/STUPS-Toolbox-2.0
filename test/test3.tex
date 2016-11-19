@@ -6,10 +6,10 @@
 
 \begin{document}
 
-\section{remove lambda-rules}
+\section{Remove lambda-rules}
 \begin{description}
 	\item[Before] \hfill \\ 
-	$G=\left(\{	1, 0, \epsilon\},\;\{ S, A, B, D, E, C\},\;S,\;P\right)$ with
+	$G'=\left(\{	1, 0, \epsilon\},\;\{ S, A, B, D, E, C\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow ABD, \\ 
 		A &\rightarrow ED\;|\;BB, \\ 
@@ -20,7 +20,7 @@
 	\end{align*}
 	\item[Step 1] nullable = \{C, A, B\}
 	\item[Step 2]
-	$G=\left(\{	\epsilon, 1, 0\},\;\{ S, B, D, A, E, C\},\;S,\;P\right)$ with
+	$G'=\left(\{	\epsilon, 1, 0\},\;\{ S, B, D, A, E, C\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow BD\;|\;D\;|\;ABD\;|\;AD, \\ 
 		B &\rightarrow A\;|\;C\;|\;\epsilon\;|\;AC, \\ 
@@ -30,7 +30,7 @@
 		C &\rightarrow \epsilon\}
 	\end{align*}
 	\item[Step 3] All lambda-rules are removed and all nonterminals, that do not appear on any right side. \\ 
-	$G=\left(\{	1, 0\},\;\{ S, B, D, A, E\},\;S,\;P\right)$ with
+	$G'=\left(\{	1, 0\},\;\{ S, B, D, A, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow BD\;|\;D\;|\;ABD\;|\;AD, \\ 
 		B &\rightarrow A, \\ 
@@ -41,8 +41,8 @@
 \end{description}
 \section{Eliminate unit rules}
 \begin{description}
-	\item[Before] \hfill \\ 
-	$G=\left(\{	1, 0\},\;\{ S, B, D, A, E\},\;S,\;P\right)$ with
+	\item[Before] 
+	$G''=\left(\{	1, 0\},\;\{ S, B, D, A, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow BD\;|\;D\;|\;ABD\;|\;AD, \\ 
 		B &\rightarrow A, \\ 
@@ -51,7 +51,7 @@
 		E &\rightarrow 1\}
 	\end{align*}
 	\item[Step 1] remove circles: \\ 
-	$G=\left(\{	1, 0\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
+	$G''=\left(\{	1, 0\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow AAD\;|\;D\;|\;AD, \\ 
 		A &\rightarrow ED\;|\;AA, \\ 
@@ -64,7 +64,7 @@
 		S&: 0
 	\end{align*}
 	\item[Step 3] remove unit rules beginning by the highest number: \\ 
-	$G=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
+	$G''=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow AAD\;|\;AD\;|\;0, \\ 
 		A &\rightarrow ED\;|\;AA, \\ 
@@ -75,7 +75,7 @@
 \section{Chomsky - Normal - Form}
 \begin{description}
 	\item[Before]
-	$G=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
+	$G''=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow AAD\;|\;AD\;|\;0, \\ 
 		A &\rightarrow ED\;|\;AA, \\ 
@@ -84,7 +84,7 @@
 	\end{align*}
 	\item[Step 1] rules in form of $A \rightarrow a$ are already in chomsky normal form and we keep them.
 	\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \rightarrow a$.
-	$G=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
+	$G''=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow AAD\;|\;AD\;|\;0, \\ 
 		A &\rightarrow ED\;|\;AA, \\ 
@@ -92,7 +92,7 @@
 		E &\rightarrow 1\}
 	\end{align*}
 	\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.
-	$G=\left(\{	0, 1\},\;\{ S, A, P_1, D, E\},\;S,\;P\right)$ with
+	$G''=\left(\{	0, 1\},\;\{ S, A, P_1, D, E\},\;S,\;P\right)$ with
 	\begin{align*}
 		P=\{	S &\rightarrow AP_1\;|\;AD\;|\;0, \\ 
 		A &\rightarrow ED\;|\;AA, \\ 

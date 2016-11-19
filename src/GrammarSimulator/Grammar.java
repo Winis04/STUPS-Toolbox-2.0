@@ -21,6 +21,10 @@ public class Grammar {
      * The grammar's start symbol.
      */
     private Nonterminal startSymbol;
+    /**
+     * the grammars name (optional)
+     */
+    private String name=null;
 
     /**
      * The constructor for an empty grammar.
@@ -127,5 +131,17 @@ public class Grammar {
             }
         }
         return null;
+    }
+
+    public String getName() {
+        if(name==null) {
+            return "G";
+        } else {
+            return name;
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

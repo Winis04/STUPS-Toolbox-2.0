@@ -297,7 +297,7 @@ public class Printer {
 
 
             ArrayList<String>[] header=getHeader(grammar);
-            writer.write(space+"$G=\\left(\\{");
+            writer.write(space+"$"+grammar.getName()+"=\\left(\\{");
             writer.write(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
 
             writer.write("\\},\\;\\{ ");

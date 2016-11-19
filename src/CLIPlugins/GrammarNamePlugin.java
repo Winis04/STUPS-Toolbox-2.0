@@ -1,32 +1,25 @@
 package CLIPlugins;
 
-import GrammarSimulator.*;
-import Print.Printer;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
+import GrammarSimulator.Grammar;
 
 /**
- * Created by isabel on 20.10.16.
+ * Created by Isabel on 19.11.2016.
  */
-public class GrammarRemoveLambdaPlugin implements CLIPlugin {
-
-    private boolean errorFlag = false;
-    private Explanation type;
+public class GrammarNamePlugin implements CLIPlugin {
+    private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[]{"rlr", "remove-lambda-rules"};
+        return new String[]{"ng","name-grammar"};
     }
 
     @Override
     public boolean checkParameters(String[] parameters) {
-        return parameters.length==0;
+        return parameters.length==1;
     }
 
     @Override
     public String getHelpText() {
-        return "removes lambda-rules. Takes the strings 'no', 'short' or 'long' as a parameter, which determine the level of explanation.";
+        return "sets the name of the current grammar to the parameter";
     }
 
     @Override
@@ -37,21 +30,10 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             errorFlag = true;
             return null;
         }
-
-
-        Grammar grammar = (Grammar) object;
-        if(GrammarUtil.isLambdaFree(grammar)) {
-            System.out.println("This grammar is already lambda-free");
-            return null;
-        }
-
-        Printer.printRemoveLambdaRules(grammar);
-
+        Grammar grammar=(Grammar) object;
+        grammar.setName(parameters[0]);
         return null;
     }
-
-
-
 
     @Override
     public Class inputType() {
