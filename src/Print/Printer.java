@@ -66,6 +66,7 @@ public class Printer {
     public static void printCNF(Grammar grammar) {
         switch(printmode) {
             case NO:
+                GrammarUtil.chomskyNormalForm(grammar);
                 break;
             case LATEX:
                 printCNFLatex(grammar);
@@ -80,6 +81,7 @@ public class Printer {
     public static void printEliminateUnitRules(Grammar grammar) {
         switch(printmode) {
             case NO:
+                GrammarUtil.eliminateUnitRules(grammar);
                 break;
             case LATEX:
                 printEliminateUnitRulesLatex(grammar);
@@ -93,6 +95,7 @@ public class Printer {
     public static void printRemoveLambdaRules(Grammar grammar) {
         switch(printmode) {
             case NO:
+                GrammarUtil.removeLambdaRules(grammar);
                 break;
             case LATEX:
                 printRemoveLambdaRulesLatex(grammar);
@@ -108,9 +111,11 @@ public class Printer {
             writer.write("\\begin{description}\n");
             writer.write("\t\\item[Before] \\hfill \\\\ \n");
             Printer.printGrammar(grammar,1);
+            grammar.modifyName();
             if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
                 writer.write("\t\\item[Step 0] add new Symbol $S#§: \\\\ \n");
                 Printer.printGrammar(grammar,1);
+                grammar.modifyName();
             }
             //first step: calculate the Nullable set
             HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
@@ -120,9 +125,11 @@ public class Printer {
             GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
             GrammarUtil.removeUnneccesaryEpsilons(grammar);
             Printer.printGrammar(grammar,1);
+            grammar.modifyName();
             writer.write("\t\\item[Step 3] All lambda-rules are removed and all nonterminals, that do not appear on any right side. \\\\ \n");
             GrammarUtil.removeLambdaRules_StepThree(grammar,true);
             Printer.printGrammar(grammar,1);
+            grammar.clearName();
             writer.write("\\end{description}\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -161,10 +168,12 @@ public class Printer {
             writer.write("\\begin{description}\n");
             writer.write("\t\\item[Before] \n");
             Printer.printGrammar(grammar,1);
+            grammar.modifyName();
             HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
             writer.write("\t\\item[Step 1] remove circles: \\\\ \n");
 
             Printer.printGrammar(grammar,1);
+            grammar.modifyName();
             writer.write("\t\\item[Step 2] number the nonterminals:\n");
 
             ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
@@ -177,6 +186,7 @@ public class Printer {
             writer.write("\t\\item[Step 3] remove unit rules beginning by the highest number: \\\\ \n");
 
             Printer.printGrammar(grammar,1);
+            grammar.clearName();
             writer.write("\\end{description}\n");
         } catch (IOException e) {
             e.printStackTrace();

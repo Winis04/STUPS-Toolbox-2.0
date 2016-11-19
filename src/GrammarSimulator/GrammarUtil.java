@@ -685,64 +685,26 @@ public class GrammarUtil {
      * -                                Remove Lambda Rules                                                          -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static void removeLambdaRulesWithNoOutput(Grammar g) {
-        GrammarUtil.removeLambdaRules(g,Explanation.NO);
-    }
-    public static void removeLambdaRulesWithShortOutput(Grammar g) {
-        GrammarUtil.removeLambdaRules(g,Explanation.SHORT);
-    }
-    public static void removeLambdaRulesWithLongOutput(Grammar g) {
 
-        GrammarUtil.removeLambdaRules(g,Explanation.LONG);
-    }
 
-    private static void removeLambdaRules(Grammar grammar, Explanation type) {
+    public static void removeLambdaRules(Grammar grammar) {
         //
-        if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
-            System.out.println("added new symbol S#:");
-            GrammarUtil.print(grammar);
-        }
+        GrammarUtil.specialRuleForEmptyWord(grammar);
         //first step: calculate the Nullable set
         HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
-        switch (type) {
-            case SHORT:
-                System.out.printf("Step 1:\nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
-                System.out.println("Step 2:"); //TODO
-                break;
-            case LONG:
-                System.out.printf("Step 1: calculates the nullable Set: \nnullable = {%s}\n", nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", ")));
-                System.out.println("Step 2: for every rule with a nullable nonterminal, add that rule to the ruleset without this nonterminal");
-                break;
-        }
+
         //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
         GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
-        switch (type) {
-            case SHORT:
-                GrammarUtil.print(grammar);
-                System.out.println("Step 3:");
-                break;
-            case LONG:
-                GrammarUtil.print(grammar);
-                System.out.println("Step 3: All lambda-rules are removed and all nonterminals, that do not appear on any right side");
-                break;
-        }
         GrammarUtil.removeLambdaRules_StepThree(grammar,true);
-        switch (type) {
-            case SHORT:
-
-            case LONG:
-                GrammarUtil.print(grammar);
-                break;
-        }
-
     }
     /**
      * the third step of the algorithm to delete lambda-rules
      * all rules which have only epsilons on the right side are removed
      * furthermore, nonterminals, which now do not appear on the rigth side of any rule, are removed
      * @param g the grammar g
-     * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method has to be called again, but this time with again set to false
+     * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method
+     *              has to be called again, but this time with again set to false
      */
     public static void removeLambdaRules_StepThree(Grammar g, boolean again) {
 
@@ -800,7 +762,8 @@ public class GrammarUtil {
 
     /**
      * the second step of the algorithm to delete lambda-rules.
-     * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced by "epsilon" is added to the ruleset
+     * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced
+     * by "epsilon" is added to the ruleset
      * @author Isabel Wingen
      * @param grammar The Grammar
      * @param nullable The set, which contains all the nullable terminals
@@ -867,45 +830,13 @@ public class GrammarUtil {
      * -                                eliminate Unit Rules                                                         -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    public static ArrayList<Node> eliminateUnitRulesWithNoOutput(Grammar grammar) {
-       return GrammarUtil.eliminateUnitRules(grammar,Explanation.NO);
-    }
-    public static ArrayList<Node> eliminateUnitRulesWithShortOutput(Grammar grammar) {
-        return GrammarUtil.eliminateUnitRules(grammar, Explanation.SHORT);
-    }
-    public static ArrayList<Node> eliminateUnitRulesWithLongutput(Grammar grammar) {
-            return GrammarUtil.eliminateUnitRules(grammar, Explanation.LONG);
-    }
 
-    private static ArrayList<Node> eliminateUnitRules(Grammar grammar, Explanation type) {
+
+    public static ArrayList<Node> eliminateUnitRules(Grammar grammar) {
         //first step
         HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
-        switch (type) {
-            case SHORT:
-                System.out.println("Step 1: remove Circle");
-                GrammarUtil.print(grammar);
-                System.out.println("Step 2: number the nonterminals");
-                break;
-            case LONG:
-                System.out.println("Step 1: remove Circle like A_1 --> A_2, A_2 --> A_3, ..., A_n --> A_1");
-                GrammarUtil.print(grammar);
-                System.out.println("Step 2: number the nonterminals, which are in any unit Rule, such that from A_i --> A_j follows i<j");
-        }
         ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
-        switch (type) {
-            case SHORT:
-                list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
-                System.out.println("Step 3: remove unit rules");
-                GrammarUtil.print(grammar);
-                break;
-            case LONG:
-                list.stream().forEach(x -> System.out.printf("%s: %d\n",x.getName(),x.getNumber()));
-                System.out.println("Step 3: remove unit rules beginning by the highest number");
-                GrammarUtil.print(grammar);
-                break;
-        }
         return list;
-
     }
 
     /**
@@ -1156,61 +1087,14 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
-    public static void chomskyNormalFormWithNoOutput(Grammar grammar) {
-        GrammarUtil.chomskyNormalForm(grammar,Explanation.NO);
-    }
-    public static void chomskyNormalFormWithShortOutput(Grammar grammar) {
-        GrammarUtil.chomskyNormalForm(grammar,Explanation.SHORT);
-    }
-    public static void chomskyNormalFormWithLongOutput(Grammar grammar) {
-        GrammarUtil.chomskyNormalForm(grammar,Explanation.LONG);
-    }
-    private static void chomskyNormalForm(Grammar grammar, Explanation type) {
+
+    public static void chomskyNormalForm(Grammar grammar) {
 
         //step 1: replace every instance of terminal a through new Nonterminal X_a except in rules A --> a and add rule X_a --> a
 
-        switch (type) {
-            case SHORT:
-                System.out.println("Before:");
-                GrammarUtil.print(grammar);
-                System.out.println("Step 0: keep all rules A --> a");
-                System.out.println("Step 1: replace instances of Terminals in other rules");
-                GrammarUtil.chomskyNormalForm_StepOne(grammar);
-                GrammarUtil.print(grammar);
-                break;
-            case LONG:
-                System.out.println("Before:");
-                GrammarUtil.print(grammar);
-                System.out.println("Step 0: rules in form of A --> a are already in chomsky normal form and we keep them.");
-                System.out.println("These are the following rules:");
-                grammar.getNonterminals().stream().
-                        filter(nt -> nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Terminal)).
-                        forEach(nonterminal -> {
-                            nonterminal.getSymbolLists().stream().filter(list -> list.size()==1 && list.get(0) instanceof Terminal).
-                                    forEach(list -> System.out.printf("%s --> %s\n",nonterminal.getName(),list.get(0).getName()));
-                        });
-                System.out.println("Step 1: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a");
-                GrammarUtil.chomskyNormalForm_StepOne(grammar);
-                GrammarUtil.print(grammar);
-                break;
-            case NO:
-                GrammarUtil.chomskyNormalForm_StepOne(grammar);
-                break;
-        }
+        GrammarUtil.chomskyNormalForm_StepOne(grammar);
         //step 2: remove more than two Nonterminals
         GrammarUtil.chomskyNormalForm_StepTwo(grammar);
-        switch (type) {
-            case SHORT:
-                System.out.println("Step 2: remove more than two terminals"); //TODO: better text
-
-                break;
-            case LONG:
-                System.out.println("Step 2: in all rules that contain more than two nonterminals, add a new nonterminal that points on the end of the rule"); //TODO: better text
-
-                break;
-        }
-     //   GrammarUtil.print(grammar); //TODO: should it print the result even when no is set?
-
     }
 
     public static void chomskyNormalForm_StepOne(Grammar g) {
