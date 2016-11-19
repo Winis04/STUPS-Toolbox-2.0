@@ -25,7 +25,10 @@ public class Grammar {
      * the grammars name (optional)
      */
     private String name=null;
-
+    /**
+     * a suffix for the name;
+     */
+    private String suffix="";
     /**
      * The constructor for an empty grammar.
      */
@@ -135,13 +138,23 @@ public class Grammar {
 
     public String getName() {
         if(name==null) {
-            return "G";
+            return "G"+suffix;
         } else {
-            return name;
+            return name+suffix;
         }
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+    public void modifyName() {
+        this.suffix+="'";
+    }
+    public void clearName() {
+        this.suffix="";
+    }
+
+    public String getRuleSetName() {
+        return "R"+suffix;
     }
 }

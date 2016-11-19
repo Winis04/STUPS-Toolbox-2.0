@@ -238,6 +238,7 @@ public class Printer {
             writer.write("\t\\item[Before]\n");
 
             printGrammar(grammar,1);
+            grammar.modifyName();
             writer.write("\t\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
 
             writer.write("\t\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
@@ -245,10 +246,13 @@ public class Printer {
 
             GrammarUtil.chomskyNormalForm_StepOne(grammar);
             printGrammar(grammar,1);
+            grammar.modifyName();
             writer.write("\t\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\n");
 
             GrammarUtil.chomskyNormalForm_StepTwo(grammar);
             printGrammar(grammar,1);
+            grammar.clearName();
+
             writer.write("\\end{description}\n");
         } catch (IOException e) {
             e.printStackTrace();
@@ -307,11 +311,11 @@ public class Printer {
 
             writer.write(header[2].get(0));
 
-            writer.write(",\\;P\\right)");
+            writer.write(",\\;"+grammar.getRuleSetName()+"\\right)");
             writer.write("$ with\n");
             writer.write(space+"\\begin{align*}\n");
 
-            writer.write(space+"\tP=\\{");
+            writer.write(space+"\t"+grammar.getRuleSetName()+"=\\{");
 
 
             writer.write(GrammarUtil.getNonterminalsInOrder(grammar).stream().
