@@ -1181,6 +1181,7 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
+
     public static Matrix cykWithNoOutput(Grammar g, String word) {
         return GrammarUtil.cyk(g,word,Explanation.NO);
 
@@ -1194,13 +1195,28 @@ public class GrammarUtil {
     }
 
 
+
     private static Matrix createMatrix(String word) {
         Matrix m=new Matrix(word.length(),word.length()+1, word);
         return m;
     }
 
+    public static boolean containsWord(Grammar g, String word) {
+        GrammarUtil.chomskyNormalForm(g);
+        Matrix matrix=GrammarUtil.cyk(g,word);
+        if(matrix != null) {
+            return matrix.getCell(1,word.length()-1).contains(g.getStartSymbol());
+        }
+        return false;
+    }
+    public static boolean containsWord(Grammar g, String word, Matrix matrix) {
+        if(matrix != null) {
+            return matrix.getCell(1,word.length()-1).contains(g.getStartSymbol());
+        }
+        return false;
+    }
 
-    private static Matrix cyk(Grammar g, String word, Explanation type) {
+    public static Matrix cyk(Grammar g, String word) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
            return null;
@@ -1217,13 +1233,7 @@ public class GrammarUtil {
                 m.addToCell(i,0,nt);
             }
         }
-        switch (type) {
-            case LONG:
-            case SHORT:
-                System.out.println("row 0");
-                m.printWithWord();
-                break;
-        }
+
         for(int j=1;j<word.length();j++) {
             for(int i=1;i<=word.length()-j;i++) {
                // m.clearCell(i,j);
@@ -1242,10 +1252,6 @@ public class GrammarUtil {
                     }
                 }
             }
-            if(type == Explanation.LONG || type == Explanation.SHORT) {
-                System.out.println("row "+ j);
-                m.printWithWord();
-            }
         }
         return m;
 
@@ -1260,7 +1266,7 @@ public class GrammarUtil {
     public static LinkedHashSet<Node> makeSyntaxTrees(Matrix matrix, Grammar grammar) {
         if(checkMatrix(matrix,grammar)) { // does the language contains the word?
             LinkedHashSet<Node> result=new LinkedHashSet<>(); //every node is the start of a tree
-            int j=matrix.getRows()-1;
+            int j=matrix.getNumberOfRows()-1;
             int i=1;
             Nonterminal s=grammar.getStartSymbol();
             if(s.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0).getName().equals(matrix.getWord()))) {

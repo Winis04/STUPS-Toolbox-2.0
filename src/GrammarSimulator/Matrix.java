@@ -2,9 +2,12 @@ package GrammarSimulator;
 
 import GrammarSimulator.Nonterminal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -105,7 +108,9 @@ public class Matrix {
         System.out.println("+");
 
     }
-    public HashSet getCell(int c, int r) {
+
+
+    public HashSet<Nonterminal> getCell(int c, int r) {
         return matrix[r][c];
     }
     public void clearCell(int c, int r) {
@@ -116,11 +121,11 @@ public class Matrix {
         return word;
     }
 
-    public int getRows() {
+    public int getNumberOfRows() {
         return rows;
     }
 
-    public int getColumns() {
+    public int getNumberOfColumns() {
         return columns;
     }
 }

@@ -81,7 +81,7 @@ public class GrammarUtilTest {
 
     @Test
     public void isLambdaFree() {
-        boolean[] trueOrFalse={true, true, false, false, true, true, false};
+        boolean[] trueOrFalse={true, true, false, false, true, true};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -94,7 +94,7 @@ public class GrammarUtilTest {
     }
     @Test
     public void hasUnitRules() {
-        boolean[] trueOrFalse={false, true, false, false, true, true, false};
+        boolean[] trueOrFalse={false, true, false, false, true, true};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -107,7 +107,7 @@ public class GrammarUtilTest {
     }
     @Test
     public void startSymbolOnRightSide() throws Exception {
-        boolean[] trueOrFalse={true, true, false, true, false, false, false};
+        boolean[] trueOrFalse={true, true, false, true, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -121,7 +121,7 @@ public class GrammarUtilTest {
 
     @Test
     public void languageContainsLambda() throws Exception {
-        boolean[] trueOrFalse={false, false, false, true, false, false, false};
+        boolean[] trueOrFalse={false, false, false, true, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -135,7 +135,7 @@ public class GrammarUtilTest {
 
     @Test
     public void startSymbolPointsOnLambda() throws Exception {
-        boolean[] trueOrFalse={false, false, false, true, false, false, false};
+        boolean[] trueOrFalse={false, false, false, true, false, false};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -218,7 +218,7 @@ public class GrammarUtilTest {
 
     @Test
     public void isInChomskyNormalForm() throws Exception {
-        boolean[] trueOrFalse={false, false, false, false, false, false, false, true};
+        boolean[] trueOrFalse={false, false, false, false, false, false, true};
         Grammar g;
         for(int i=0;i<trueOrFalse.length;i++) {
             g=loadNewGrammar(paths[i]);
@@ -233,7 +233,7 @@ public class GrammarUtilTest {
     String[] paths;
     @Before
     public void method() {
-        paths=new String[]{"test/test1.gr","test/test2.gr","test/test3.gr","test/test4.gr","test/test5.gr","test/test6.gr","test/test7.gr","test/test8.gr"};
+        paths=new String[]{"test/test1.gr","test/test2.gr","test/test3.gr","test/test4.gr","test/test5.gr","test/test6.gr","test/test8.gr"};
         lg=new GrammarLoadPlugin();
     }
     public Grammar loadNewGrammar(String path) {
