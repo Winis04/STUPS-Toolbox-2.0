@@ -1,5 +1,7 @@
 package GrammarSimulator;
 
+import Print.Printable;
+
 /**
  * Created by fabian on 06.08.16.
  */

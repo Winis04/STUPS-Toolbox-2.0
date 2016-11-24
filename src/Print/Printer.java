@@ -34,62 +34,22 @@ public class Printer {
      * @param grammar The grammar.
      */
     public static void printGrammar(Grammar grammar) {
-        switch(printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printGrammarLatex(grammar,0);
-                break;
-            case CONSOLE:
-                printGrammarConsole(grammar);
-                break;
-        }
-
-
+        grammar.print();
     }
 
-    public static void printCNF(Grammar grammar) {
+    public static void print(ArrayList<Printable> printables, String[] texts, String titel) {
         switch(printmode) {
             case NO:
-                GrammarUtil.chomskyNormalForm(grammar);
-                break;
-            case LATEX:
-                printCNFLatex(grammar);
                 break;
             case CONSOLE:
-                printCNFConsole(grammar);
+                printConsole(printables,texts,titel);
+                break;
+            case LATEX:
+                printLatex(printables,texts,titel);
                 break;
         }
     }
 
-
-    public static void printEliminateUnitRules(Grammar grammar) {
-        switch(printmode) {
-            case NO:
-                GrammarUtil.eliminateUnitRules(grammar);
-                break;
-            case LATEX:
-                printEliminateUnitRulesLatex(grammar);
-                break;
-            case CONSOLE:
-                printEliminateUnitRulesConsole(grammar);
-                break;
-        }
-    }
-
-    public static void printRemoveLambdaRules(Grammar grammar) {
-        switch(printmode) {
-            case NO:
-                GrammarUtil.removeLambdaRules(grammar);
-                break;
-            case LATEX:
-                printRemoveLambdaRulesLatex(grammar);
-                break;
-            case CONSOLE:
-                printRemoveLambdaRulesConsole(grammar);
-                break;
-        }
-    }
     public static void printCYKTable(Matrix matrix) {
         switch(printmode) {
             case NO:
@@ -116,12 +76,6 @@ public class Printer {
     }
 
 
-
-
-
-    /** PRIVATE METHODS **/
-
-    /** LATEX **/
 
     private static void printCYKTableLatex(Matrix matrix) {
         try {
@@ -179,23 +133,39 @@ public class Printer {
         }
     }
 
-    public static void print(ArrayList<Printable> printables, ArrayList<String> texts, String titel) {
-        if(printables.size()!=texts.size()) {
+    private static void printLatex(ArrayList<Printable> printables, String[] texts, String titel) {
+        if(printables.size()!=texts.length) {
             return;
-        } else {
-            int n=printables.size();
         }
         try {
             writer.write("\\section{"+titel+"}\n");
             writer.write("\\begin{description}\n");
             Printer.deepnes++;
             for(int i=0;i<printables.size();i++) {
-                writeItem("Step "+i,texts.get(i));
+                writeItem("Step "+i,texts[i]);
                 printables.get(i).print();
             }
             Printer.deepnes--;
             writer.write("\\end{description}\n");
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void printConsole(ArrayList<Printable> printables, String[] texts, String titel) {
+        if(printables.size()!=texts.length) {
+            return;
+        }
+        BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
+        try {
+            for(int i=0;i<printables.size();i++) {
+                writer.write("Step "+i+": "+texts[i]+"\n");
+                writer.flush();
+                printables.get(i).print();
+                writer.flush();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -208,179 +178,17 @@ public class Printer {
         }
         writer.write(s+"\\item["+titel+"] "+subtitel +"\n");
     }
-    private static void printCNFLatex(Grammar grammar) {
-        try {
-            writer.write("\\section{Chomsky - Normal - Form}\n");
-            writer.write("\\begin{description}\n");
-            writer.write("\t\\item[Before]\n");
-
-            printGrammar(grammar,1);
-            grammar.modifyName();
-            writer.write("\t\\item[Step 1] rules in form of $A \\rightarrow a$ are already in chomsky normal form and we keep them.\n");
-
-            writer.write("\t\\item[Step 2] in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.\n");
 
 
-            GrammarUtil.chomskyNormalForm_StepOne(grammar);
-            printGrammar(grammar,1);
-            grammar.modifyName();
-            writer.write("\t\\item[Step 3] in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\n");
 
-            GrammarUtil.chomskyNormalForm_StepTwo(grammar);
-            printGrammar(grammar,1);
-            grammar.clearName();
-
-            writer.write("\\end{description}\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static void printEliminateUnitRulesLatex(Grammar grammar) {
-        try {
-            writer.write("\\section{Eliminate unit rules}\n");
-            writer.write("\\begin{description}\n");
-            writer.write("\t\\item[Before] \n");
-            Printer.printGrammar(grammar,1);
-            grammar.modifyName();
-            HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
-            writer.write("\t\\item[Step 1] remove circles: \\\\ \n");
-
-            Printer.printGrammar(grammar,1);
-            grammar.modifyName();
-            writer.write("\t\\item[Step 2] number the nonterminals:\n");
-
-            ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
-            writer.write("\t\\begin{align*}\n");
-
-            writer.write(list.stream().map(node -> "\t\t"+node.getName()+ "&: "+ node.getNumber()).collect(joining("\\\\\n")));
-
-            writer.write("\n\t\\end{align*}\n");
-
-            writer.write("\t\\item[Step 3] remove unit rules beginning by the highest number: \\\\ \n");
-
-            Printer.printGrammar(grammar,1);
-            grammar.clearName();
-            writer.write("\\end{description}\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void printRemoveLambdaRulesLatex(Grammar grammar) {
-        try {
-            writer.write("\\section{Remove lambda-rules}\n");
-            writer.write("\\begin{description}\n");
-            writer.write("\t\\item[Before] \\hfill \\\\ \n");
-            Printer.printGrammar(grammar,1);
-            grammar.modifyName();
-            if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
-                writer.write("\t\\item[Step 0] add new Symbol $S#§: \\\\ \n");
-                Printer.printGrammar(grammar,1);
-                grammar.modifyName();
-            }
-            //first step: calculate the Nullable set
-            HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
-            writer.write("\t\\item[Step 1] nullable = \\{"+ nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", "))+"\\}\n");
-            writer.write("\t\\item[Step 2]\n");
-            //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
-            GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
-            GrammarUtil.removeUnneccesaryEpsilons(grammar);
-            Printer.printGrammar(grammar,1);
-            grammar.modifyName();
-            writer.write("\t\\item[Step 3] All lambda-rules are removed and all nonterminals, that do not appear on any right side. \\\\ \n");
-            GrammarUtil.removeLambdaRules_StepThree(grammar,true);
-            Printer.printGrammar(grammar,1);
-            grammar.clearName();
-            writer.write("\\end{description}\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /** CONSOLE **/
     private static void printCYKTableConsole(Matrix matrix) {
 
     }
 
-    private static void printRemoveLambdaRulesConsole(Grammar grammar) {
-            BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
-            try {
-                if(GrammarUtil.specialRuleForEmptyWord(grammar)) {
-                    writer.write("added new symbol S#:\n");
-                    writer.flush();
-                    Printer.printGrammar(grammar);
-                }
-                //first step: calculate the Nullable set
-                HashSet<Nonterminal> nullable= GrammarUtil.calculateNullable(grammar);
-                writer.write("Step 1:\nnullable = {"+ nullable.stream().map(nt -> nt.getName()).collect(Collectors.joining(", "))+"}\n");
-                writer.flush();
-                writer.write("Step 2:\n");
-                writer.flush();
-                //second step: for every rule with a nullable nonterminal, add that rule without this nonterminal
-                GrammarUtil.removeLambdaRules_StepTwo(grammar,nullable);
-                GrammarUtil.removeUnneccesaryEpsilons(grammar);
-                Printer.printGrammar(grammar);
-                writer.write("Step 3: All lambda-rules are removed and all nonterminals, that do not appear on any right side\n");
-                writer.flush();
-                GrammarUtil.removeLambdaRules_StepThree(grammar,true);
-                Printer.printGrammar(grammar);
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
-
-    private static void printEliminateUnitRulesConsole(Grammar grammar) {
-        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
-
-        try {
-            HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar);
-            writer1.write("Step 1: remove circles\n");
-            writer1.flush();
-            Printer.printGrammar(grammar);
-            writer1.write("Step 2: number the nonterminals\n");
-            writer1.flush();
-            ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar);
-            list.stream().forEach(x -> {
-                try {
-                    writer1.write(x.getName() + ": " + x.getNumber() + "\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            writer1.write("Step 3: remove unit rules beginning by the highest number\n");
-            writer1.flush();
-            Printer.printGrammar(grammar);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
-    }
-    private static void printCNFConsole(Grammar grammar) {
-        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
-        try {
-            writer1.write("Before:\n");
-            writer1.flush();
-            printGrammar(grammar);
-            writer1.write("Step 1: rules in form of A --> a are already in chomsky normal form and we keep them.\n");
-            writer1.flush();
-            writer1.write("Step 2: in all other rules replace every appearance of Terminal a through a new Nonterminal X_a and add the rule X_a --> a\n");
-            writer1.flush();
-            printGrammar(grammar);
-            GrammarUtil.chomskyNormalForm_StepOne(grammar);
-            writer1.write("Step 3: in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule\n");
-            writer1.flush();
-            GrammarUtil.chomskyNormalForm_StepTwo(grammar);
-            printGrammar(grammar);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
 

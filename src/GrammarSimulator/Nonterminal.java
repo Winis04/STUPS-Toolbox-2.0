@@ -1,12 +1,20 @@
 package GrammarSimulator;
 
+import Print.Printable;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static Print.Printer.printmode;
+import static Print.Printer.writer;
 
 /**
  * Created by fabian on 06.08.16.
  */
-public class Nonterminal implements Symbol {
+public class Nonterminal implements Symbol, Printable {
 
     /**
      * The nonterminal's name.
@@ -56,5 +64,28 @@ public class Nonterminal implements Symbol {
     @Override
     public boolean equals(Object o) {
         return o instanceof Nonterminal && ((Nonterminal)o).getName().equals(name);
+    }
+
+    @Override
+    public void print() {
+        switch (printmode) {
+            case NO:
+                break;
+            case CONSOLE:
+                BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
+                try {
+                    writer1.write(this.getName()+" ");
+                    writer1.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case LATEX:
+                try {
+                    writer.write(this.getName()+" ");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 }

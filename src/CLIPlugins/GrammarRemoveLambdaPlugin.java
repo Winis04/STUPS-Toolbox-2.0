@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.*;
+import Print.Printable;
 import Print.Printer;
 
 import java.util.*;
@@ -44,8 +45,18 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             System.out.println("This grammar is already lambda-free");
             return null;
         }
+       ArrayList<Printable> printables=GrammarUtil.removeLambdaRules(grammar);
+        String texts[];
+        if(printables.size()==4) {
+            texts=new String[]{"Before","nullables","",
+            "All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+        } else if(printables.size()==5) {
+            texts=new String[]{"Before","add new Symbol $S#§","nullables","","All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+        } else {
+            texts=new String[]{""};
+        }
+        Printer.print(printables,texts,"Remove Lambda-Rules");
 
-        Printer.printRemoveLambdaRules(grammar);
 
         return null;
     }
