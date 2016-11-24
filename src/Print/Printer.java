@@ -188,12 +188,26 @@ public class Printer {
         try {
             writer.write("\\section{"+titel+"}\n");
             writer.write("\\begin{description}\n");
+            Printer.deepnes++;
+            for(int i=0;i<printables.size();i++) {
+                writeItem("Step "+i,texts.get(i));
+                printables.get(i).print();
+            }
+            Printer.deepnes--;
+            writer.write("\\end{description}\n");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-
+    private static void writeItem(String titel, String subtitel) throws IOException {
+        String s="";
+        for(int i=0;i<Printer.deepnes;i++) {
+            s+="\t";
+        }
+        writer.write(s+"\\item["+titel+"] "+subtitel +"\n");
+    }
     private static void printCNFLatex(Grammar grammar) {
         try {
             writer.write("\\section{Chomsky - Normal - Form}\n");
