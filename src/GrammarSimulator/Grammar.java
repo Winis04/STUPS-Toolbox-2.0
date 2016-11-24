@@ -1,11 +1,14 @@
 package GrammarSimulator;
 
+
+import Print.Printable;
+
 import java.util.*;
 
 /**
  * Created by fabian on 06.08.16.
  */
-public class Grammar {
+public class Grammar implements Printable {
 
     /**
      * The grammar's terminal symbols.
@@ -29,6 +32,7 @@ public class Grammar {
      * a suffix for the name;
      */
     private String suffix="";
+
     /**
      * The constructor for an empty grammar.
      */
@@ -119,6 +123,7 @@ public class Grammar {
         this.startSymbol = startSymbol;
     }
 
+<<<<<<< 902536a7405d30a6ffbb9aa2b90253ca9144eed0
     public Terminal getTerminal(String name) {
         for(Terminal t : this.terminals) {
             if(t.getName().equals(name)) {
@@ -156,5 +161,20 @@ public class Grammar {
 
     public String getRuleSetName() {
         return "R"+suffix;
+=======
+    @Override
+    public void print() {
+
+    }
+
+    @Override
+    public void setText(String newText) {
+        this.help_text=newText;
+    }
+
+    @Override
+    public String getText() {
+        return this.help_text;
+>>>>>>> added printable interface
     }
 }
