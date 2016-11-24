@@ -728,9 +728,10 @@ public class GrammarUtil {
         boolean additional=specialRuleForEmptyWord(grammar05);
         //1. Nullable Set
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
-        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar05);
+
         //2. step two && unneccesaryepsilons
         Grammar grammar2=new Grammar(grammar05);
+        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar2);
         removeLambdaRules_StepTwo(grammar2,nullable);
         removeUnneccesaryEpsilons(grammar2);
         //3. step three
@@ -745,6 +746,7 @@ public class GrammarUtil {
         res.add(grammar3);
         /** change original grammar **/
         specialRuleForEmptyWord(grammar);
+        nullable=GrammarUtil.calculateNullable(grammar);
         removeLambdaRules_StepTwo(grammar,nullable);
         removeUnneccesaryEpsilons(grammar);
         removeLambdaRules_StepThree(grammar,true);
@@ -843,6 +845,7 @@ public class GrammarUtil {
                     HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
                     for (int i = 0; i < current.size(); i++) {
                         // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
+                        //if(nullable.stream().anyMatch(nullables -> nullables.getName().equals(current.get(i).getName())))
                         if (nullable.contains(current.get(i))) {
                             newRightSide.set(i, Terminal.NULLSYMBOL);
                             if (queue.contains(newRightSide)) {
@@ -890,15 +893,16 @@ public class GrammarUtil {
         Grammar grammar0=new Grammar(grammar);
 
         Grammar grammar1=new Grammar(grammar);
-        HashSet<Node> unitRules=GrammarUtil.removeCircleRules(grammar1);
+        GrammarUtil.removeCircleRulesAndGetUnitRules(grammar1);
 
         Grammar grammar2=new Grammar(grammar1);
-        ArrayList<Node> list=GrammarUtil.removeUnitRules(unitRules,grammar2);
+        HashSet<Node> unitRules=GrammarUtil.removeCircleRulesAndGetUnitRules(grammar2);
+        GrammarUtil.removeUnitRules(unitRules,grammar2);
         res.add(grammar0);
         res.add(grammar1);
         res.add(grammar2);
         /** change original grammar **/
-        HashSet<Node> unitRules2=removeCircleRules(grammar);
+        HashSet<Node> unitRules2= removeCircleRulesAndGetUnitRules(grammar);
         removeUnitRules(unitRules2,grammar);
         return res;
 
@@ -911,7 +915,7 @@ public class GrammarUtil {
      * @param grammar
      * @return
      */
-    private static HashSet<Node> removeCircleRules(Grammar grammar) {
+    private static HashSet<Node> removeCircleRulesAndGetUnitRules(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
