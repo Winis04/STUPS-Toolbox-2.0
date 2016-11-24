@@ -717,6 +717,9 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
     public static ArrayList<Printable> removeLambdaRules(Grammar grammar) {
+
+
+
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
         Grammar grammar0=new Grammar(grammar);
@@ -724,21 +727,27 @@ public class GrammarUtil {
         Grammar grammar05=new Grammar(grammar0);
         boolean additional=specialRuleForEmptyWord(grammar05);
         //1. Nullable Set
-        PrintableSet nullable=GrammarUtil.calculateNullableAsPrintable(grammar05);
+        PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
+        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar05);
         //2. step two && unneccesaryepsilons
         Grammar grammar2=new Grammar(grammar05);
         removeLambdaRules_StepTwo(grammar2,nullable);
         removeUnneccesaryEpsilons(grammar2);
         //3. step three
         Grammar grammar3=new Grammar(grammar2);
-        removeLambdaRules_StepThree(grammar2,true);
+        removeLambdaRules_StepThree(grammar3,true);
         res.add(grammar0);
         if(additional) {
             res.add(grammar05);
         }
-        res.add(nullable);
+        res.add(nullable_and_printable);
         res.add(grammar2);
         res.add(grammar3);
+        /** change original grammar **/
+        specialRuleForEmptyWord(grammar);
+        removeLambdaRules_StepTwo(grammar,nullable);
+        removeUnneccesaryEpsilons(grammar);
+        removeLambdaRules_StepThree(grammar,true);
         return res;
 
     }
@@ -813,11 +822,7 @@ public class GrammarUtil {
      * @param grammar The Grammar
      * @param nullable2 The set, which contains all the nullable terminals
      */
-    private static void removeLambdaRules_StepTwo(Grammar grammar, PrintableSet nullable2) {
-        HashSet<Nonterminal> nullable=new HashSet<>(1);
-        nullable2.stream()
-                .map(printable -> (Nonterminal) printable)
-                .forEach(nonterminal -> nullable.add(nonterminal));
+    private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             //contains all rules for this nonterminal which need to be edited
@@ -892,6 +897,9 @@ public class GrammarUtil {
         res.add(grammar0);
         res.add(grammar1);
         res.add(grammar2);
+        /** change original grammar **/
+        HashSet<Node> unitRules2=removeCircleRules(grammar);
+        removeUnitRules(unitRules2,grammar);
         return res;
 
     }
@@ -1160,6 +1168,8 @@ public class GrammarUtil {
         res.add(grammar);
         res.add(grammar1);
         res.add(grammar2);
+        chomskyNormalForm_StepOne(grammar);
+        chomskyNormalForm_StepTwo(grammar);
         return res;
     }
 

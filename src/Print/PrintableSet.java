@@ -42,6 +42,7 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
             this.stream().forEach(x -> x.print());
             writer.flush();
             writer.write("}\n");
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

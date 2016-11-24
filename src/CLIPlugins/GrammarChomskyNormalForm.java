@@ -52,16 +52,12 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             System.out.println("This grammar is already in chomsky normal form");
             return null;
         }
-<<<<<<< d2c2e07913fecd8b3ce8c443febcb4a20ca8d3f0
 
-        Printer.printCNF(GrammarUtil.chomskyNormalForm(grammar));
 
-=======
-        String[] texts=new String[]{"rules in form of $A \rightarrow a$ are already in chomsky normal form and we keep them.",
-                "in all other rules replace every appearance of Terminal a through a new Nonterminal $X_a$ and add the rule $X_a \\rightarrow a$.",
+        String[] texts=new String[]{"rules, that point only on one Nonterminal are already in chomsky normal form and we keep them.",
+                "in all other rules replace every appearance of Terminal a through a new Nonterminal.",
                 "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule."};
         Printer.print(GrammarUtil.chomskyNormalForm(grammar),texts,"Chomsky - Normal - Form");
->>>>>>> almost complete
         return null;
 
     }
