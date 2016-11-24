@@ -53,7 +53,7 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             return null;
         }
 
-        Printer.printCNF(grammar);
+        Printer.printCNF(GrammarUtil.chomskyNormalForm(grammar));
 
         return null;
 

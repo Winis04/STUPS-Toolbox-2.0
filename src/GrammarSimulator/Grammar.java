@@ -2,8 +2,16 @@ package GrammarSimulator;
 
 
 import Print.Printable;
+import Print.Printer;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.*;
+
+import static Print.Printer.makeToGreek;
+import static Print.Printer.writer;
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created by fabian on 06.08.16.
@@ -33,6 +41,11 @@ public class Grammar implements Printable {
      */
     private String suffix="";
 
+<<<<<<< 450016293caed50ee11b68c31056124c6b74ffff
+=======
+
+
+>>>>>>> on the right way!
     /**
      * The constructor for an empty grammar.
      */
@@ -122,8 +135,112 @@ public class Grammar implements Printable {
     public void setStartSymbol(Nonterminal startSymbol) {
         this.startSymbol = startSymbol;
     }
+<<<<<<< 450016293caed50ee11b68c31056124c6b74ffff
 
 <<<<<<< 902536a7405d30a6ffbb9aa2b90253ca9144eed0
+=======
+
+    private static void printGrammarLatex(Grammar grammar, int x) {
+        String s="";
+        for(int i=0;i<x;i++) {
+            s+="\t";
+        }
+        final String space=s;
+        try {
+
+
+            ArrayList<String>[] header= Printer.getHeader(grammar);
+            writer.write(space+"$"+grammar.getName()+"=\\left(\\{");
+            writer.write(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
+
+            writer.write("\\},\\;\\{ ");
+
+            writer.write(header[1].stream().collect(joining(", ")));
+            writer.write("\\},\\;");
+
+            writer.write(header[2].get(0));
+
+            writer.write(",\\;"+grammar.getRuleSetName()+"\\right)");
+            writer.write("$ with\n");
+            writer.write(space+"\\begin{align*}\n");
+
+            writer.write(space+"\t"+grammar.getRuleSetName()+"=\\{");
+
+
+            writer.write(GrammarUtil.getNonterminalsInOrder(grammar).stream().
+                    map(nonterminal -> {
+                        String start="\t"+nonterminal.getName() + " &\\rightarrow ";
+                        HashSet<ArrayList<Symbol>> tmp=nonterminal.getSymbolLists();
+                        start+=tmp.stream().
+                                map(list -> list.stream().
+                                        map(symbol -> symbol.getName()).
+                                        map(string -> makeToGreek(string)).
+                                        collect(joining(""))).
+                                collect(joining("\\;|\\;"));
+                        return start;
+                    }).collect(joining(", \\\\ \n"+space)));
+
+            writer.write("\\}\n");
+            writer.write("\t\\end{align*}\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    private static void printGrammarConsole(Grammar grammar) {
+        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
+        try {
+
+            ArrayList<String>[] header=Printer.getHeader(grammar);
+
+            writer1.write("{");
+            writer1.write(header[0].stream().collect(joining(", ")));
+            writer1.flush();
+            writer1.write("; ");
+
+            writer1.write(header[1].stream().collect(joining(", ")));
+            writer1.flush();
+            writer1.write("; ");
+            writer1.write(header[2].get(0));
+            writer1.flush();
+            writer1.write("}\n\n");
+            writer1.flush();
+
+            for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(grammar)) {
+                writer1.write(nt.getName() + " --> ");
+                HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+                writer1.write(tmp.stream()
+                        .map(list -> list.stream().map(symbol -> symbol.getName()).collect(joining("")))
+                        .collect(joining(" | ")));
+               // HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
+                //writer1.write(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
+                writer1.write("\n");
+                writer1.flush();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void print() {
+        switch(Printer.printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printGrammarLatex(this,Printer.deepnes);
+                break;
+            case CONSOLE:
+                printGrammarConsole(this);
+                break;
+        }
+    }
+
+
+
+>>>>>>> on the right way!
     public Terminal getTerminal(String name) {
         for(Terminal t : this.terminals) {
             if(t.getName().equals(name)) {

@@ -5,6 +5,4 @@ package Print;
  */
 public interface Printable {
     void print();
-    void setText(String text);
-    String getText();
 }

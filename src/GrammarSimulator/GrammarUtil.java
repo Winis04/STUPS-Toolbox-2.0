@@ -7,6 +7,8 @@ import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
 
+import Print.Printable;
+
 import PushDownAutomatonSimulator.*;
 
 
@@ -1088,16 +1090,22 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
 
-    public static void chomskyNormalForm(Grammar grammar) {
+    public static ArrayList<Printable> chomskyNormalForm(Grammar grammar) {
+        ArrayList<Printable> res=new ArrayList<>(3);
 
         //step 1: replace every instance of terminal a through new Nonterminal X_a except in rules A --> a and add rule X_a --> a
+        Grammar grammar0=new Grammar(grammar);
 
-        GrammarUtil.chomskyNormalForm_StepOne(grammar);
+        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar));
         //step 2: remove more than two Nonterminals
-        GrammarUtil.chomskyNormalForm_StepTwo(grammar);
+        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1));
+        res.add(grammar);
+        res.add(grammar1);
+        res.add(grammar2);
+        return res;
     }
 
-    public static void chomskyNormalForm_StepOne(Grammar g) {
+    private static Grammar chomskyNormalForm_StepOne(Grammar g) {
         HashSet<Nonterminal> newNonTerminals=new HashSet<>();
         for(Nonterminal nt : g.getNonterminals()) {
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -1134,13 +1142,14 @@ public class GrammarUtil {
 
             }
         }
+        return g;
     }
 
     /**
      * step 2: modify rules with more than two nonterminals so that they only have two
      * @param g
      */
-    public static void chomskyNormalForm_StepTwo(Grammar g) {
+    private static Grammar chomskyNormalForm_StepTwo(Grammar g) {
         int counter=1;
         boolean changed=true;
         while(changed) {
@@ -1169,6 +1178,7 @@ public class GrammarUtil {
             }
             g.getNonterminals().addAll(newNonTerminals);
         }
+        return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getNonterminals().stream().allMatch(nonterminal ->

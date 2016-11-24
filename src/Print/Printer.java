@@ -26,6 +26,7 @@ public class Printer {
     public static String currentFile;
     //BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
+    public static int deepnes=0;
     public static BufferedWriter writer=null;
     /**
      * Prints a given grammar depending on {@Link printmode}
@@ -38,20 +39,6 @@ public class Printer {
                 break;
             case LATEX:
                 printGrammarLatex(grammar,0);
-                break;
-            case CONSOLE:
-                printGrammarConsole(grammar);
-                break;
-        }
-
-
-    }
-    public static void printGrammar(Grammar grammar, int x) {
-        switch(printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printGrammarLatex(grammar,x);
                 break;
             case CONSOLE:
                 printGrammarConsole(grammar);
@@ -184,7 +171,7 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    private static String makeToGreek(String string) {
+    public static String makeToGreek(String string) {
         if(string.equals("epsilon")||string.equals("lambda")) {
             return "\\"+string;
         } else {
@@ -192,52 +179,18 @@ public class Printer {
         }
     }
 
-    private static void printGrammarLatex(Grammar grammar, int x) {
-        String s="";
-        for(int i=0;i<x;i++) {
-            s+="\t";
+    public static void print(ArrayList<Printable> printables, ArrayList<String> texts, String titel) {
+        if(printables.size()!=texts.size()) {
+            return;
+        } else {
+            int n=printables.size();
         }
-        final String space=s;
         try {
-
-
-            ArrayList<String>[] header=getHeader(grammar);
-            writer.write(space+"$"+grammar.getName()+"=\\left(\\{");
-            writer.write(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
-
-            writer.write("\\},\\;\\{ ");
-
-            writer.write(header[1].stream().collect(joining(", ")));
-            writer.write("\\},\\;");
-
-            writer.write(header[2].get(0));
-
-            writer.write(",\\;"+grammar.getRuleSetName()+"\\right)");
-            writer.write("$ with\n");
-            writer.write(space+"\\begin{align*}\n");
-
-            writer.write(space+"\t"+grammar.getRuleSetName()+"=\\{");
-
-
-            writer.write(GrammarUtil.getNonterminalsInOrder(grammar).stream().
-                    map(nonterminal -> {
-                        String start="\t"+nonterminal.getName() + " &\\rightarrow ";
-                        HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nonterminal);
-                        start+=tmp.stream().
-                                map(list -> list.stream().
-                                        map(string -> makeToGreek(string)).
-                                        collect(joining(""))).
-                                collect(joining("\\;|\\;"));
-                        return start;
-                    }).collect(joining(", \\\\ \n"+space)));
-
-            writer.write("\\}\n");
-            writer.write("\t\\end{align*}\n");
-
+            writer.write("\\section{"+titel+"}\n");
+            writer.write("\\begin{description}\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -415,41 +368,11 @@ public class Printer {
 
     }
 
-    private static void printGrammarConsole(Grammar grammar) {
-        BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
-        try {
 
-            ArrayList<String>[] header=getHeader(grammar);
-
-            writer1.write("{");
-            writer1.write(header[0].stream().collect(joining(", ")));
-            writer1.flush();
-            writer1.write("; ");
-
-            writer1.write(header[1].stream().collect(joining(", ")));
-            writer1.flush();
-            writer1.write("; ");
-            writer1.write(header[2].get(0));
-            writer1.flush();
-            writer1.write("}\n\n");
-            writer1.flush();
-
-            for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(grammar)) {
-                writer1.write(nt.getName() + " --> ");
-                HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
-                writer1.write(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
-                writer1.write("\n");
-                writer1.flush();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /** HELP METHODS **/
 
-    private static ArrayList<String>[] getHeader(Grammar grammar) {
+    public static ArrayList<String>[] getHeader(Grammar grammar) {
         ArrayList<String>[] header=new ArrayList[3];
         header[0]=getTerminalsAsStrings(grammar);
         header[1]=getNonterminalsAsStrings(grammar);
