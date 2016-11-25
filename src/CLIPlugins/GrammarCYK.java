@@ -41,7 +41,7 @@ public class GrammarCYK implements CLIPlugin {
         }
         Grammar grammar = (Grammar) object;
         Matrix matrix=GrammarUtil.cyk(grammar,parameters[0]);
-        Printer.printCYKTable(matrix);
+        Printer.print(matrix);
         return null;
     }
 

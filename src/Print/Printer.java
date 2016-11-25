@@ -38,6 +38,9 @@ public class Printer {
         }
 
     }
+    public static void print(Printable printable) {
+        printable.print();
+    }
 
     public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
         switch(printmode) {
@@ -48,19 +51,6 @@ public class Printer {
                 break;
             case LATEX:
                 printEnumerationLatex(printables,point_descriptions,texts,titel);
-                break;
-        }
-    }
-
-    public static void printCYKTable(Matrix matrix) {
-        switch(printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printCYKTableLatex(matrix);
-                break;
-            case CONSOLE:
-                printCYKTableConsole(matrix);
                 break;
         }
     }
@@ -144,34 +134,6 @@ public class Printer {
 
     }
 
-    private static void printCYKTableLatex(Matrix matrix) {
-        Printer.print("\\begin{table}[h!]\n");
-        Printer.print("\t\\centering\n");
-        Printer.print("\t\\caption{CYK}\n");
-        String s="|";
-        for(int i = 0; i<matrix.getNumberOfColumns()-1; i++) {
-            s+="c|";
-        }
-        Printer.print("\t\\begin{tabular}{"+s+"}\n");
-        //1 & 2 & 3\\
-        //\hline
-        Printer.print("\t\t\\hline\n");
-        for(int r=matrix.getNumberOfRows()-1;r>=0;r--) {
-            Printer.print("\t\t");
-            for(int c=1;c<matrix.getNumberOfColumns();c++) {
-                Printer.print(matrix.getCell(c,r).stream().map(nonterminal -> "$"+nonterminal.getName()+"$").collect(joining(", ")));
-                if(c<matrix.getNumberOfColumns()-1) {
-                    Printer.print(" & ");
-                }
-            }
-
-
-            Printer.print("\\\\\n\t\t\\hline\n");
-        }
-        Printer.print("\t\\end{tabular}\n");
-        Printer.print("\\end{table}\n\n");
-
-    }
 
     /** CONSOLE **/
 
@@ -193,7 +155,6 @@ public class Printer {
     private static void printCYKTableConsole(Matrix matrix) {
 
     }
-
 
 
 
