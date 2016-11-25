@@ -5,6 +5,7 @@ import Print.Printer;
 
 import java.io.*;
 
+import static Print.Printer.printmode;
 import static Print.Printer.writer;
 
 /**
@@ -24,41 +25,39 @@ public class PrintModePlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "sets the printEnumeration-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'terminal' for output in the terminal";
+        return "sets the print-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'terminal' for output in the terminal";
     }
 
     @Override
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
+        if(Printer.printmode==PrintMode.LATEX && Printer.writer!=null) {
+            Printer.printEndOfLatex();
+            try {
+                Printer.writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Printer.writer=null;
+        }
         if(parameters.length==1) {
-            PrintMode old=Printer.printmode;
+
 
             if(parameters[0].equals("no")) {
                 Printer.printmode= PrintMode.NO;
+                Printer.setWriter(null);
             } else if(parameters[0].equals("console")) {
+                Printer.setWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
                 Printer.printmode = PrintMode.CONSOLE;
-            } else if(parameters[0].equals("close")) {
-                Printer.printmode=PrintMode.NO;
             } else {
                 errorFlag=true;
                 System.out.println("not a valid parameter");
                 return null;
             }
-            if(old==PrintMode.LATEX && Printer.writer!=null) {
-                Printer.printEndOfLatex();
-                try {
-                    Printer.writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Printer.writer=null;
-            }
+
         } else {
             if(parameters[0].equals("latex")) {
                 Printer.printmode=PrintMode.LATEX;
-                if(Printer.writer!=null) {
-                    Printer.printEndOfLatex();
-                }
                 if(new File(parameters[1]).exists()) {
                     if(parameters.length==3 && parameters[2].equals("--force")) {
 

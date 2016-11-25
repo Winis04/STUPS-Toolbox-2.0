@@ -27,8 +27,17 @@ public class Printer {
     //BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
     public static int deepnes=0;
-    public static BufferedWriter writer=null;
+    public static BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
 
+    public static void print(String s) {
+        try {
+            writer.write(s);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
         switch(printmode) {
@@ -96,11 +105,13 @@ public class Printer {
         }
     }
     public static void printEndOfLatex() {
-        try {
-            writer.write("\\end{document}");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(printmode==PrintMode.LATEX) {
+            print("\\end{document}");
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     public static String makeToGreek(String string) {
@@ -216,4 +227,15 @@ public class Printer {
 
     }
 
+    public static void setWriter(BufferedWriter writer) {
+        Printer.writer = writer;
+    }
+
+    public static void closeWriter() {
+        try {
+            Printer.writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
