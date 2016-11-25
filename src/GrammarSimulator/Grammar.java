@@ -38,11 +38,7 @@ public class Grammar implements Printable {
      */
     private String suffix="";
 
-<<<<<<< 450016293caed50ee11b68c31056124c6b74ffff
-=======
 
-
->>>>>>> on the right way!
     /**
      * The constructor for an empty grammar.
      */
@@ -138,10 +134,7 @@ public class Grammar implements Printable {
     public void setStartSymbol(Nonterminal startSymbol) {
         this.startSymbol = startSymbol;
     }
-<<<<<<< 450016293caed50ee11b68c31056124c6b74ffff
 
-<<<<<<< 902536a7405d30a6ffbb9aa2b90253ca9144eed0
-=======
 
     private static void printGrammarLatex(Grammar grammar, int x) {
         String s="";
@@ -233,9 +226,6 @@ public class Grammar implements Printable {
         }
     }
 
-
-
->>>>>>> on the right way!
     public Terminal getTerminal(String name) {
         for(Terminal t : this.terminals) {
             if(t.getName().equals(name)) {
@@ -279,24 +269,8 @@ public class Grammar implements Printable {
     }
 
     public String getRuleSetName() {
-        return "R"+suffix;
-=======
-    @Override
-    public void print() {
-
+        return "R" + suffix;
     }
-
-    @Override
-    public void setText(String newText) {
-        this.help_text=newText;
-    }
-
-    @Override
-    public String getText() {
-        return this.help_text;
->>>>>>> added printable interface
-    }
-
     public String getSuffix() {
         return suffix;
     }

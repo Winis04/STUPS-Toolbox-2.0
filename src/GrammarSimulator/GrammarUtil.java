@@ -1269,21 +1269,6 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
-
-    public static Matrix cykWithNoOutput(Grammar g, String word) {
-        return GrammarUtil.cyk(g,word,Explanation.NO);
-
-    }
-    public static Matrix cykWithShortOutput(Grammar g, String word) {
-        return GrammarUtil.cyk(g,word,Explanation.SHORT);
-    }
-
-    public static Matrix cykWithLongOutput(Grammar g, String word) {
-        return GrammarUtil.cyk(g,word,Explanation.LONG);
-    }
-
-
-
     private static Matrix createMatrix(String word) {
         Matrix m=new Matrix(word.length(),word.length()+1, word);
         return m;
