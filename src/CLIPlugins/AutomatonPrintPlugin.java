@@ -12,7 +12,7 @@ public class AutomatonPrintPlugin implements CLIPlugin {
 
     @Override
     public String[] getNames() {
-        return new String[]{"pa", "print-automaton"};
+        return new String[]{"pa", "printEnumeration-automaton"};
     }
 
     @Override

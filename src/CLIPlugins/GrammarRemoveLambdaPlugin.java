@@ -5,7 +5,6 @@ import Print.Printable;
 import Print.Printer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -59,7 +58,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             point_descriptions=new String[]{""};
             texts=new String[]{""};
         }
-        Printer.print(printables,point_descriptions,texts,"Remove Lambda-Rules");
+        Printer.printEnumeration(printables,point_descriptions,texts,"Remove Lambda-Rules");
 
 
         return null;

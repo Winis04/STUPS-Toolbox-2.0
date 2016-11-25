@@ -3,9 +3,6 @@ package CLIPlugins;
 import GrammarSimulator.*;
 import Print.Printer;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 /**
  * Created by Isabel on 22.10.2016.
  */
@@ -48,7 +45,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
                 "remove circles \\\\ \n",
                 "number the nonterminals and remove unit rules beginning by the highest number. \\\\ \n"};
         String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
-        Printer.print(GrammarUtil.eliminateUnitRules(grammar),point_descriptions,texts,"Eliminate Unit Rules");
+        Printer.printEnumeration(GrammarUtil.eliminateUnitRules(grammar),point_descriptions,texts,"Eliminate Unit Rules");
 
         return null;
     }

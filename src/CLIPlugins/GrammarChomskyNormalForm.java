@@ -57,8 +57,12 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
                 "in all other rules replace every appearance of Terminal a through a new Nonterminal.\\\\ \n",
                 "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\\\\ \n"};
         String[] point_descriptions=new String[]{"Before","Step 1", "Step 2", "Step 3"};
+<<<<<<< 4cb370f0971701e19e59e4b125439e9095d4a09d
         Printer.print(GrammarUtil.chomskyNormalForm(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
 
+=======
+        Printer.printEnumeration(GrammarUtil.chomskyNormalForm(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
+>>>>>>> first step making writer private
         return null;
 
     }

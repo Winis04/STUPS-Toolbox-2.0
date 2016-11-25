@@ -131,7 +131,7 @@ public class AutomatonUtil {
         ArrayList<State> states = getStatesInOrder(automaton);
         boolean comma = false;
 
-        //Iterate through all rules of every state and print their rules.
+        //Iterate through all rules of every state and printEnumeartion their rules.
         try {
             for(State state : states) {
                 for (Rule rule : state.getRules()) {

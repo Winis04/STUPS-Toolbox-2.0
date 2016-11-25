@@ -160,7 +160,7 @@ public class CLI {
                 } else if(command.equals("e") || command.equals("exit")) {
                     System.out.println("Goodbye!");
                     if(Printer.writer!=null) {
-                        Printer.printEndOfLatex(Printer.writer);
+                        Printer.printEndOfLatex();
                         Printer.writer.close();
                     }
                     System.exit(0);

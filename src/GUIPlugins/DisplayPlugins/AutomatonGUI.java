@@ -205,7 +205,7 @@ public class AutomatonGUI implements DisplayPlugin {
         });
 
         //Tell visualizationViewer how to label the states.
-        //In this case, the graph's vertices are just the states' names, so it should just print strings.
+        //In this case, the graph's vertices are just the states' names, so it should just printEnumeartion strings.
         //This is automatically handled by a ToStringLabeller.
         visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 

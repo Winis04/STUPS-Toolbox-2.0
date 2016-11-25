@@ -14,7 +14,7 @@ public class PrintModePlugin implements CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[]{"print-mode","pm"};
+        return new String[]{"printEnumeration-mode","pm"};
     }
 
     @Override
@@ -24,7 +24,7 @@ public class PrintModePlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "sets the print-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'terminal' for output in the terminal";
+        return "sets the printEnumeration-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'terminal' for output in the terminal";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PrintModePlugin implements CLIPlugin {
                 return null;
             }
             if(old==PrintMode.LATEX && Printer.writer!=null) {
-                Printer.printEndOfLatex(Printer.writer);
+                Printer.printEndOfLatex();
                 try {
                     Printer.writer.close();
                 } catch (IOException e) {
@@ -57,7 +57,7 @@ public class PrintModePlugin implements CLIPlugin {
             if(parameters[0].equals("latex")) {
                 Printer.printmode=PrintMode.LATEX;
                 if(Printer.writer!=null) {
-                    Printer.printEndOfLatex(writer);
+                    Printer.printEndOfLatex();
                 }
                 if(new File(parameters[1]).exists()) {
                     if(parameters.length==3 && parameters[2].equals("--force")) {
@@ -72,7 +72,7 @@ public class PrintModePlugin implements CLIPlugin {
                 Printer.currentFile=parameters[1];
                 try {
                     writer=new BufferedWriter(new FileWriter(Printer.currentFile));
-                    Printer.printStartOfLatex(writer);
+                    Printer.printStartOfLatex();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
