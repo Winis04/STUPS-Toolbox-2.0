@@ -151,7 +151,7 @@ public class Grammar implements Printable {
         final String space=s;
 
 
-        ArrayList<String>[] header= Printer.getHeader(grammar);
+        ArrayList<String>[] header= GrammarUtil.getHeader(grammar);
         Printer.print(space+"$"+grammar.getNameWithSuffix()+"=\\left(\\{");
         Printer.print(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
 
@@ -191,7 +191,7 @@ public class Grammar implements Printable {
 
         Printer.print(grammar.getNameWithSuffix()+"\n");
 
-        ArrayList<String>[] header=Printer.getHeader(grammar);
+        ArrayList<String>[] header=GrammarUtil.getHeader(grammar);
 
         Printer.print("{");
         Printer.print(header[0].stream().collect(joining(", ")));

@@ -1540,6 +1540,27 @@ public class GrammarUtil {
      * -                                other things                                                                 -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
+    static ArrayList<String>[] getHeader(Grammar grammar) {
+        ArrayList<String>[] header=new ArrayList[3];
+        header[0]=getTerminalsAsStrings(grammar);
+        header[1]=getNonterminalsAsStrings(grammar);
+        ArrayList<String> tmp=new ArrayList<>();
+        tmp.add(grammar.getStartSymbol().getName());
+        header[2]=tmp;
+        return header;
+    }
+
+    public static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
+        //Get all of the grammar's terminals in order of their appearance in the rules.
+        ArrayList<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
+        return (ArrayList<String>) terminals.stream().map(terminal -> terminal.getName()).collect(Collectors.toList());
+    }
+
+    public static ArrayList<String> getNonterminalsAsStrings(Grammar grammar) {
+        ArrayList<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
+        return (ArrayList<String>) nonterminals.stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.toList());
+    }
+
     /**
      * @author Isabel Wingen
      * @param nt a nonterminal of the Grammar g
