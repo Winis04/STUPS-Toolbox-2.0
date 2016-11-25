@@ -1,5 +1,8 @@
 package GrammarSimulator;
 
+import Print.Printable;
+import Print.Printer;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -8,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Isabel on 24.10.2016.
  */
-public class Node {
+public class Node implements Printable{
     /**
      * for the deep-search
      * is true, if the node was already visited
@@ -75,6 +78,7 @@ public class Node {
         this.dfe=0;
     }
 
+
     public boolean isVisited() {
         return visited;
     }
@@ -130,4 +134,19 @@ public class Node {
     public static final Node EMPTY_NODE=new Node();
 
 
+    @Override
+    public void print() {
+        switch(Printer.printmode) {
+            case NO:
+                break;
+            case CONSOLE:
+                this.printConsole();
+                break;
+            case LATEX:
+                break;
+        }
+    }
+    private void printConsole() {
+        Printer.print(this.name);
+    }
 }
