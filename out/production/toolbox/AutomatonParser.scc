@@ -1,0 +1,38 @@
+Package AutomatonParser;
+
+Helpers
+    letter = ['a'..'z'] | ['A'..'Z'];
+    digit = ['0'..'9'];
+    tab = 9;
+    lf = 10;
+    cr = 13;
+    
+Tokens
+    whitespace =  (' ' | tab | cr | lf)+;
+    arrow_start = '--';
+    arrow_end = '-->';
+    l_bracket = '(';
+    r_bracket = ')';
+    l_bracket2 = '{';
+    r_bracket2 = '}';
+    semicolon = ';';
+    comma = ',';
+    identifier = ('_' | letter)('_'  | letter | digit)*;
+    list_arg = ''' [[0..0xffff] - ''']+ ''';
+
+Ignored Tokens
+    whitespace;
+
+Productions
+    s {-> root} = {grammar} states rule_list {-> New root(states, [rule_list.rule])};
+    states {-> states} = {states} l_bracket2 [all_states]: identifierlist [first_semi]: semicolon [start_state]: identifier [last_semi]: semicolon [end_states]: identifierlist r_bracket2 {-> New states([all_states.identifier], start_state, [end_states.identifier])};
+    identifierlist {-> identifier*} = {single_id} identifier {-> [identifier]} | {mult_id} identifier comma identifierlist {-> [identifier, identifierlist.identifier]};
+    rule_list {-> rule*} = {single_rule} rule {-> [rule.rule]} | {mult_rule} rule rule_list {-> [rule, rule_list.rule]};
+    rule {-> rule} = {rule} [coming_from]: identifier arrow_start arg_list arrow_end [going_to]: identifier {-> New rule(coming_from, [arg_list.list_arg], going_to)};
+    arg_list {-> list_arg*} = {single_arg} list_arg {-> [list_arg]} | {mult_arg} list_arg comma arg_list {-> [list_arg, arg_list.list_arg]};
+
+Abstract Syntax Tree
+    root = states rule*;
+    states = [all_states]: identifier* [start_state]: identifier [end_states]: identifier*;
+    rule = [coming_from]: identifier list_arg* [going_to]: identifier;
+    arg_list = list_arg*;

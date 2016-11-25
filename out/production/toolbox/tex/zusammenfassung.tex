@@ -1,0 +1,24 @@
+%%% Die folgende Zeile nicht ändern!
+\section*{\ifthenelse{\equal{\sprache}{deutsch}}{Zusammenfassung}{Abstract}}
+%%% Zusammenfassung:
+Die Zielsetzung dieser Bachelorarbeit war es, eine Sammlung von Tools zu programmieren, welche es ermöglicht Automaten und Grammatiken zu simulieren und visuell darzustellen. Des Weiteren sollte es möglich sein diese "`Toolbox"' später einfach zu erweitern. Hintergrund dessen ist, dass es in der Theoretischen Informatik noch viele Themengebiete gibt, zu denen man der Toolsammlung weitere Funktionen hinzufügen könnte (zum Beispiel Turing-Maschinen und Kellerautomaten). Die Bedienung des Programms sollte sowohl von der Konsole aus, als auch per grafischer Oberfläche möglich sein.\\
+\\
+Im Rahmen dieser Arbeit wurden zwei Datenstrukturen zum Speichern von nichtdeterministischen und deterministischen endlichen Automaten (kurz: NFA und DFA) und Grammatiken erstellt. Außerdem wurden folgende Algorithmen implementiert:
+\begin{itemize}
+	\item Automaten:
+	\begin{itemize}
+		\item Entfernen von Epsilon-Übergängen
+		\item Vervollständigen der Übergangsfunktion
+		\item Umwandeln eines NFA in einen DFA
+		\item Minimieren eines DFA
+	\end{itemize}
+	\item Grammatiken:
+	\begin{itemize}
+		\item First-Mengen einer Grammatik berechnen
+		\item Follow-Mengen einer Grammatik berechnen
+		\item LL-Parser-Tabelle für eine Grammatik aufstellen.
+	\end{itemize}
+\end{itemize}
+Man kann sowohl Automaten als auch Grammatiken in einer grafischen Oberfläche bearbeiten.\\
+\\
+Zusätzlich wurde ein Plugin-System entworfen, durch welches es möglich wird, der Toolbox neue Datenstrukturen und Funktionen hinzuzufügen. Hierzu ist es nicht einmal nötig, sich tiefergehend mit dem von mir geschriebenen Quellcode zu befassen. Man muss nur ein entsprechendes Interface implementieren, das Hauptprogramm lädt dann alle Funktionen zur Laufzeit.
