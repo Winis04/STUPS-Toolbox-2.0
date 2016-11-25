@@ -26,7 +26,7 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
                 this.printConsole();
                 break;
             case LATEX:
-                this.printLatex();
+                this.printLatex(Printer.deepnes);
         }
     }
     @Override
@@ -51,8 +51,12 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
         Printer.print("}\n");
 
     }
-    private void printLatex() {
-        Printer.print("$\\{");
+    private void printLatex(int x) {
+        String space="";
+        for(int i=0;i<x;i++) {
+            space+="\t";
+        }
+        Printer.print(space+"$\\{");
         Iterator<Printable> printableIterator=this.iterator();
         while(printableIterator.hasNext()) {
             Printable p=printableIterator.next();

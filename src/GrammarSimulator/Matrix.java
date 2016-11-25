@@ -152,6 +152,7 @@ public class Matrix implements Printable{
 
             Printer.print("\\\\\n"+space+"\t\t\\hline\n");
         }
+        Printer.print(space+"\t\t\\hline\n");
         Printer.print(space+"\t\t");
         for(int i=0;i<word.length();i++) {
             Printer.print(word.substring(i,i+1));
@@ -160,7 +161,7 @@ public class Matrix implements Printable{
             }
         }
         Printer.print("\\\\\n"+space+"\t\t\\hline\n");
-        Printer.print("\\\\\n"+space+"\t\t\\hline\n");
+
         Printer.print(space+"\t\\end{tabular}\n");
         Printer.print(space+"\\end{table}\n\n");
     }
