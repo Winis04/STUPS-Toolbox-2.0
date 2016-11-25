@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Created by fabian on 15.06.16.
@@ -24,7 +21,8 @@ public class CLI {
      */
     public static HashMap<Class, Object> objects = new HashMap<>();
 
-    public static ArrayList<Grammar> grammars=new ArrayList<>();
+    //public static ArrayList<Grammar> grammars=new ArrayList<>();
+    public static TreeMap<String,Grammar> grammars=new TreeMap<>();
     /**
      * This method starts the CLI and enters an endless loop, listening for user input.
      */
@@ -89,30 +87,40 @@ public class CLI {
                     }
                 } else if(command.equals("show-all-grammar")||command.equals("sag")) {
                     validCommand = true;
-                    for(int i=0;i<grammars.size();i++) {
-                        System.out.printf("(%d): \n",i);
-                        GrammarUtil.print(grammars.get(i));
+                    if(grammars.keySet().isEmpty()) {
+                        System.out.println("no grammars stored");
+                    } else {
+                        grammars.keySet().forEach(key -> {
+                            grammars.get(key).print();
+                        });
                     }
 
                 } else if(command.equals("store-g")||command.equals("store-grammar")) {
                     validCommand = true;
-                    Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class));
-                    grammars.add(toBeStored);
+                    Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class),false);
+                    if (parameters.length == 1) {
+                        try {
+                            toBeStored.setName(parameters[0]);
+                            grammars.put(parameters[0],toBeStored);
+                        } catch (Exception e) {
+                            System.out.println("the argument is not an integer!");
+                        }
+                    }
+
+                    //grammars.add(toBeStored);
                 } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
                     validCommand = true;
                     if (grammars.isEmpty()) {
                         System.out.println("no grammar stored");
                     } else if (parameters.length == 1) {
-                        try {
-                            int i = Integer.parseInt(parameters[0]);
-                            if (i < grammars.size() && i > -1) {
-                                objects.put(Grammar.class, grammars.get(i));
-                            } else {
-                                System.out.println("no valid index");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("the argument is not an integer!");
+                        String key=parameters[0];
+                        Grammar newCurrent=grammars.get(key);
+                        if(newCurrent!=null) {
+                            objects.put(Grammar.class,newCurrent);
+                        } else {
+                            System.out.println("no such grammar stored");
                         }
+
                     } else {
                         System.out.println("wrong input!");
                     }
@@ -121,16 +129,8 @@ public class CLI {
                     if (grammars.isEmpty()) {
                         System.out.println("no grammar stored");
                     } else if (parameters.length == 1) {
-                        try {
-                            int i = Integer.parseInt(parameters[0]);
-                            if (i < grammars.size() && i > -1) {
-                                grammars.remove(i);
-                            } else {
-                                System.out.println("no valid index");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("the argument is not an integer!");
-                        }
+                        String key=parameters[0];
+                        grammars.remove(key);
                     } else {
                         System.out.println("wrong input!");
                     }

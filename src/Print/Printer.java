@@ -28,27 +28,21 @@ public class Printer {
 
     public static int deepnes=0;
     public static BufferedWriter writer=null;
-    /**
-     * Prints a given grammar depending on {@Link printmode}
-     *
-     * @param grammar The grammar.
-     */
-    public static void printGrammar(Grammar grammar) {
-        grammar.print();
-    }
 
-    public static void print(ArrayList<Printable> printables, String[] texts, String titel) {
+
+    public static void print(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
         switch(printmode) {
             case NO:
                 break;
             case CONSOLE:
-                printConsole(printables,texts,titel);
+                printConsole(printables,point_descriptions,texts,titel);
                 break;
             case LATEX:
-                printLatex(printables,texts,titel);
+                printLatex(printables,point_descriptions,texts,titel);
                 break;
         }
     }
+
 
     public static void printCYKTable(Matrix matrix) {
         switch(printmode) {
@@ -137,20 +131,21 @@ public class Printer {
         }
     }
 
-    private static void printLatex(ArrayList<Printable> printables, String[] texts, String titel) {
+    private static void printLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
         if(printables.size()!=texts.length) {
             return;
         }
         try {
-            writer.write("\\section{"+titel+"}\n");
+            writer.write("\\section{"+titel+"}\n\n");
             writer.write("\\begin{description}\n");
             Printer.deepnes++;
             for(int i=0;i<printables.size();i++) {
-                writeItem("Step "+i,texts[i]);
+                writeItem(point_descriptions[i],texts[i]);
                 printables.get(i).print();
+
             }
             Printer.deepnes--;
-            writer.write("\\end{description}\n");
+            writer.write("\\end{description}\n\n");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -158,14 +153,14 @@ public class Printer {
 
     }
 
-    private static void printConsole(ArrayList<Printable> printables, String[] texts, String titel) {
+    private static void printConsole(ArrayList<Printable> printables, String[] point_description, String[] texts, String titel) {
         if(printables.size()!=texts.length) {
             return;
         }
         BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
         try {
             for(int i=0;i<printables.size();i++) {
-                writer.write("Step "+i+": "+texts[i]+"\n");
+                writer.write(point_description[i]+": "+texts[i]+"\n");
                 writer.flush();
                 printables.get(i).print();
                 writer.flush();
@@ -180,7 +175,7 @@ public class Printer {
         for(int i=0;i<Printer.deepnes;i++) {
             s+="\t";
         }
-        writer.write(s+"\\item["+titel+"] "+subtitel +"\n");
+        writer.write(s+"\\item["+titel+"] \\hfill \\\\ \n"+s+subtitel);
     }
 
 

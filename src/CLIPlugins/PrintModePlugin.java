@@ -31,11 +31,20 @@ public class PrintModePlugin implements CLIPlugin {
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
         if(parameters.length==1) {
+            PrintMode old=Printer.printmode;
+
             if(parameters[0].equals("no")) {
                 Printer.printmode= PrintMode.NO;
             } else if(parameters[0].equals("console")) {
                 Printer.printmode = PrintMode.CONSOLE;
-            } else if(parameters[0].equals("close") &&Printer.printmode==PrintMode.LATEX && Printer.writer!=null) {
+            } else if(parameters[0].equals("close")) {
+                Printer.printmode=PrintMode.NO;
+            } else {
+                errorFlag=true;
+                System.out.println("not a valid parameter");
+                return null;
+            }
+            if(old==PrintMode.LATEX && Printer.writer!=null) {
                 Printer.printEndOfLatex(Printer.writer);
                 try {
                     Printer.writer.close();
@@ -43,12 +52,6 @@ public class PrintModePlugin implements CLIPlugin {
                     e.printStackTrace();
                 }
                 Printer.writer=null;
-                Printer.printmode=PrintMode.CONSOLE;
-
-            } else {
-                errorFlag=true;
-                System.out.println("not a valid parameter");
-                return null;
             }
         } else {
             if(parameters[0].equals("latex")) {

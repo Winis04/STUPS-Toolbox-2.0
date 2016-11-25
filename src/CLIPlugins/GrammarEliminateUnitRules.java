@@ -44,10 +44,11 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
             System.out.println("This grammar is already without unit rules");
             return null;
         }
-        String texts[]=new String[]{"before",
-                "remove circles",
-                "number the nonterminals and remove unit rules beginning by the highest number:"};
-        Printer.print(GrammarUtil.eliminateUnitRules(grammar),texts,"Eliminate Unit Rules");
+        String texts[]=new String[]{"",
+                "remove circles \\\\ \n",
+                "number the nonterminals and remove unit rules beginning by the highest number. \\\\ \n"};
+        String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
+        Printer.print(GrammarUtil.eliminateUnitRules(grammar),point_descriptions,texts,"Eliminate Unit Rules");
 
         return null;
     }

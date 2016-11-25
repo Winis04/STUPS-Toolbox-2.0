@@ -6,13 +6,9 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;
 import GrammarParser.parser.Parser;
 import GrammarParser.parser.ParserException;
-
+import Print.Dummy;
 import Print.Printable;
-<<<<<<< d2c2e07913fecd8b3ce8c443febcb4a20ca8d3f0
-
-=======
 import Print.PrintableSet;
->>>>>>> almost complete
 import PushDownAutomatonSimulator.*;
 
 
@@ -722,20 +718,24 @@ public class GrammarUtil {
 
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
-        Grammar grammar0=new Grammar(grammar);
+        Grammar grammar0=new Grammar(grammar,false);
+
         //0.5 special Rule
-        Grammar grammar05=new Grammar(grammar0);
+        Grammar grammar05=new Grammar(grammar0,false);
         boolean additional=specialRuleForEmptyWord(grammar05);
+        if(additional) {
+            grammar05.modifyName();
+        }
         //1. Nullable Set
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
 
         //2. step two && unneccesaryepsilons
-        Grammar grammar2=new Grammar(grammar05);
+        Grammar grammar2=new Grammar(grammar05,true);
         HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar2);
         removeLambdaRules_StepTwo(grammar2,nullable);
         removeUnneccesaryEpsilons(grammar2);
         //3. step three
-        Grammar grammar3=new Grammar(grammar2);
+        Grammar grammar3=new Grammar(grammar2,true);
         removeLambdaRules_StepThree(grammar3,true);
         res.add(grammar0);
         if(additional) {
@@ -822,7 +822,7 @@ public class GrammarUtil {
      * by "epsilon" is added to the ruleset
      * @author Isabel Wingen
      * @param grammar The Grammar
-     * @param nullable2 The set, which contains all the nullable terminals
+     * @param nullable The set, which contains all the nullable terminals
      */
     private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
@@ -845,7 +845,7 @@ public class GrammarUtil {
                     HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
                     for (int i = 0; i < current.size(); i++) {
                         // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
-                        //if(nullable.stream().anyMatch(nullables -> nullables.getName().equals(current.get(i).getName())))
+                        //if(nullable.stream().anyMatch(nullables -> nullables.getNameWithSuffix().equals(current.get(i).getNameWithSuffix())))
                         if (nullable.contains(current.get(i))) {
                             newRightSide.set(i, Terminal.NULLSYMBOL);
                             if (queue.contains(newRightSide)) {
@@ -890,15 +890,17 @@ public class GrammarUtil {
 
     public static ArrayList<Printable> eliminateUnitRules(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(3);
-        Grammar grammar0=new Grammar(grammar);
 
-        Grammar grammar1=new Grammar(grammar);
+
+        Grammar grammar1=new Grammar(grammar,true);
         GrammarUtil.removeCircleRulesAndGetUnitRules(grammar1);
 
-        Grammar grammar2=new Grammar(grammar1);
+
+        Grammar grammar2=new Grammar(grammar1,true);
         HashSet<Node> unitRules=GrammarUtil.removeCircleRulesAndGetUnitRules(grammar2);
         GrammarUtil.removeUnitRules(unitRules,grammar2);
-        res.add(grammar0);
+
+        res.add(grammar);
         res.add(grammar1);
         res.add(grammar2);
         /** change original grammar **/
@@ -1161,15 +1163,19 @@ public class GrammarUtil {
 
 
     public static ArrayList<Printable> chomskyNormalForm(Grammar grammar) {
-        ArrayList<Printable> res=new ArrayList<>(3);
+        ArrayList<Printable> res=new ArrayList<>(4);
 
-        //step 1: replace every instance of terminal a through new Nonterminal X_a except in rules A --> a and add rule X_a --> a
-        Grammar grammar0=new Grammar(grammar);
 
-        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar));
+
+        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar,true));
+
+
         //step 2: remove more than two Nonterminals
-        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1));
+        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1,true));
+
+
         res.add(grammar);
+        res.add(new Dummy());
         res.add(grammar1);
         res.add(grammar2);
         chomskyNormalForm_StepOne(grammar);

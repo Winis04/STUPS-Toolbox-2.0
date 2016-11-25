@@ -74,7 +74,7 @@ public class Grammar implements Printable {
      * deep copy constructor
      * @param old the grammar that should be copied
      */
-    public Grammar(Grammar old) {
+    public Grammar(Grammar old, boolean newName) {
         this.terminals=new HashSet<>();
         this.nonterminals=new HashSet<>();
         for(Terminal t : old.getTerminals()) { //adds the Terminals
@@ -97,8 +97,14 @@ public class Grammar implements Printable {
                 newNt.getSymbolLists().add(tmp);
             }
         }
+        this.name=old.getNameWithoutSuffix();
+        this.suffix=old.getSuffix();
+        if(newName) {
+            this.modifyName();
+        }
         this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
     }
+
 
     /**
      * Getter-method for {@link #terminals}.
@@ -150,7 +156,7 @@ public class Grammar implements Printable {
 
 
             ArrayList<String>[] header= Printer.getHeader(grammar);
-            writer.write(space+"$"+grammar.getName()+"=\\left(\\{");
+            writer.write(space+"$"+grammar.getNameWithSuffix()+"=\\left(\\{");
             writer.write(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")));
 
             writer.write("\\},\\;\\{ ");
@@ -192,7 +198,8 @@ public class Grammar implements Printable {
     private static void printGrammarConsole(Grammar grammar) {
         BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
         try {
-
+            writer1.write(grammar.getNameWithSuffix()+"\n");
+            writer1.flush();
             ArrayList<String>[] header=Printer.getHeader(grammar);
 
             writer1.write("{");
@@ -258,11 +265,18 @@ public class Grammar implements Printable {
         return null;
     }
 
-    public String getName() {
+    public String getNameWithSuffix() {
         if(name==null) {
             return "G"+suffix;
         } else {
             return name+suffix;
+        }
+    }
+    public String getNameWithoutSuffix() {
+        if(name==null) {
+            return "G";
+        } else {
+            return name;
         }
     }
 
@@ -293,5 +307,9 @@ public class Grammar implements Printable {
     public String getText() {
         return this.help_text;
 >>>>>>> added printable interface
+    }
+
+    public String getSuffix() {
+        return suffix;
     }
 }

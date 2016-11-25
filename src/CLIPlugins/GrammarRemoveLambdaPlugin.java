@@ -47,15 +47,19 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         }
        ArrayList<Printable> printables=GrammarUtil.removeLambdaRules(grammar);
         String texts[];
+        String point_descriptions[];
         if(printables.size()==4) {
-            texts=new String[]{"Before","nullables","",
-            "All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+            point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3"};
+            texts=new String[]{"","nullables=","",
+            "All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\\\ \n"};
         } else if(printables.size()==5) {
-            texts=new String[]{"Before","add new Symbol $S#§","nullables","","All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+            point_descriptions=new String[]{"Before","Special Rule for Empty Word","Step 1","Step 2","Step 3"};
+            texts=new String[]{"","add new Symbol $S#§\\\\ \n","nullables=","","All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\\\ \n"};
         } else {
+            point_descriptions=new String[]{""};
             texts=new String[]{""};
         }
-        Printer.print(printables,texts,"Remove Lambda-Rules");
+        Printer.print(printables,point_descriptions,texts,"Remove Lambda-Rules");
 
 
         return null;
