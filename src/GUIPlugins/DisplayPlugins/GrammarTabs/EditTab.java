@@ -337,7 +337,7 @@ public class EditTab implements GrammarTab {
                 nonterminal = new Nonterminal(name, new HashSet<>());
 
                 if (terminalsMap.containsKey(name)) {
-                    //If the entered nonterminal is contained in the grammar's nonterminals,
+                    //If the entered nonterminal is contained in the grammar's terminals,
                     //Replace every occurence of this terminal with the new nonterminal.
                     for (Nonterminal nt : grammar.getNonterminals()) {
                         for (ArrayList<Symbol> sl : nt.getSymbolLists()) {
@@ -346,6 +346,9 @@ public class EditTab implements GrammarTab {
                             }
                         }
                     }
+
+                    grammar.getTerminals().remove(terminalsMap.get(name));
+                    terminalsMap.remove(name);
                 }
 
                 nonterminalsMap.put(name, nonterminal);
@@ -477,20 +480,34 @@ public class EditTab implements GrammarTab {
         ArrayList<Symbol> newList = new ArrayList<>();
 
         while (symbolsTokenizer.hasMoreElements()) {
-            String currentString = symbolsTokenizer.nextToken();
-            if (terminalsMap.containsKey(currentString)) {
-                newList.add(terminalsMap.get(currentString));
-            } else if (nonterminalsMap.containsKey(currentString)) {
-                newList.add(nonterminalsMap.get(currentString));
-            } else {
-                Terminal newTerminal = new Terminal(currentString);
-                terminalsMap.put(currentString, newTerminal);
-                grammar.getTerminals().add(newTerminal);
-                newList.add(newTerminal);
+            String currentString = symbolsTokenizer.nextToken().trim();
+            if(!currentString.isEmpty()) {
+                if (terminalsMap.containsKey(currentString)) {
+                    newList.add(terminalsMap.get(currentString));
+                } else if (nonterminalsMap.containsKey(currentString)) {
+                    newList.add(nonterminalsMap.get(currentString));
+                } else {
+                    Terminal newTerminal = new Terminal(currentString);
+                    terminalsMap.put(currentString, newTerminal);
+                    grammar.getTerminals().add(newTerminal);
+                    newList.add(newTerminal);
+                }
             }
         }
 
-        nonterminal.getSymbolLists().remove(oldSymbols);
+        /*
+         * The following code should not be needed...
+         * For some weird reason 'nonterminal.getSymbolLists().remove(oldSymbols);' does not work.
+         */
+        HashSet<ArrayList<Symbol>> symbolLists = new HashSet<>();
+        for(ArrayList<Symbol> sl : nonterminal.getSymbolLists()) {
+            if(!sl.equals(oldSymbols)) {
+                symbolLists.add(sl);
+            }
+        }
+        nonterminal.getSymbolLists().clear();
+        nonterminal.getSymbolLists().addAll(symbolLists);
+
         nonterminal.getSymbolLists().add(newList);
     }
 }

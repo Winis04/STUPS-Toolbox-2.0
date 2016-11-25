@@ -34,7 +34,7 @@ log.txt
 .*
 *.txt
 *.dot
-run.sh
+toolbox.sh
 src/*/analysis/
 src/*/lexer/
 src/*/node/
@@ -49,6 +49,11 @@ src/*/parser/
 *.log
 *.bbl
 *.lol
+*.nav
+*.pdfpc
+*.snm
+*.vrb
+*.synctex.gz
 *.pdf
 *.jar
 de/*
