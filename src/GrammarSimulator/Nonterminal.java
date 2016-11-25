@@ -1,15 +1,13 @@
 package GrammarSimulator;
 
 import Print.Printable;
+import Print.Printer;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import static Print.Printer.printmode;
-import static Print.Printer.writer;
+
 
 /**
  * Created by fabian on 06.08.16.
@@ -72,20 +70,9 @@ public class Nonterminal implements Symbol, Printable {
             case NO:
                 break;
             case CONSOLE:
-                BufferedWriter writer1=new BufferedWriter(new OutputStreamWriter(System.out));
-                try {
-                    writer1.write(this.getName()+" ");
-                    writer1.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
             case LATEX:
-                try {
-                    writer.write(this.getName()+" ");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Printer.print(this.getName());
+                break;
         }
     }
 }

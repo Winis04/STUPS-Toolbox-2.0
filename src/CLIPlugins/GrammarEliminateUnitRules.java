@@ -8,7 +8,6 @@ import Print.Printer;
  */
 public class GrammarEliminateUnitRules implements CLIPlugin {
     private boolean errorFlag = false;
-    private Explanation type;
 
 
     @Override
@@ -42,8 +41,8 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
             return null;
         }
         String texts[]=new String[]{"",
-                "remove circles \\\\ \n",
-                "number the nonterminals and remove unit rules beginning by the highest number. \\\\ \n"};
+                "remove circles",
+                "number the nonterminals and remove unit rules beginning by the highest number."};
         String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
         Printer.printEnumeration(GrammarUtil.eliminateUnitRules(grammar),point_descriptions,texts,"Eliminate Unit Rules");
 

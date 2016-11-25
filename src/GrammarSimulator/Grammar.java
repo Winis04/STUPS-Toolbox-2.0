@@ -183,7 +183,7 @@ public class Grammar implements Printable {
                 }).collect(joining(", \\\\ \n"+space)));
 
         Printer.print("\\}\n");
-        Printer.print("\t\\end{align*}\n");
+        Printer.print(space+"\\end{align*}\n");
 
 
     }

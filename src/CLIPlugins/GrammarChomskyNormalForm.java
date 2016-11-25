@@ -1,6 +1,5 @@
 package CLIPlugins;
 
-import GrammarSimulator.Explanation;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Print.Printer;
@@ -10,7 +9,7 @@ import Print.Printer;
  */
 public class GrammarChomskyNormalForm implements CLIPlugin {
     private boolean errorFlag;
-    private Explanation type;
+
     @Override
     public String[] getNames() {
         return new String[]{"cnf","chomsky-formal-form"};
@@ -53,16 +52,13 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
             return null;
         }
 
-        String[] texts=new String[]{"","rules, that point only on one Nonterminal are already in chomsky normal form and we keep them.\\\\ \n",
-                "in all other rules replace every appearance of Terminal a through a new Nonterminal.\\\\ \n",
-                "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\\\\ \n"};
-        String[] point_descriptions=new String[]{"Before","Step 1", "Step 2", "Step 3"};
-<<<<<<< 4cb370f0971701e19e59e4b125439e9095d4a09d
-        Printer.print(GrammarUtil.chomskyNormalForm(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
+        String[] texts=new String[]{"","rules, that point only on one Nonterminal are already in chomsky normal form and we keep them",
+                "in all other rules replace every appearance of Terminal a through a new Nonterminal",
+                "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule."};
 
-=======
+        String[] point_descriptions=new String[]{"Before","Step 1", "Step 2", "Step 3"};
+
         Printer.printEnumeration(GrammarUtil.chomskyNormalForm(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
->>>>>>> first step making writer private
         return null;
 
     }

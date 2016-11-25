@@ -1,14 +1,9 @@
 package Print;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import static Print.Printer.writer;
 
 /**
  * Created by isabel on 24.11.16.
@@ -35,27 +30,32 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
         }
     }
     private void printConsole() {
-        BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
-        try {
-            writer.write("{");
-            writer.flush();
-            this.stream().forEach(x -> x.print());
-            writer.flush();
-            writer.write("}\n");
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        Printer.print("{");
+        Iterator<Printable> printableIterator=this.iterator();
+        while(printableIterator.hasNext()) {
+            Printable p=printableIterator.next();
+            p.print();
+            if(printableIterator.hasNext()) {
+                Printer.print(", ");
+            }
         }
+
+
+        Printer.print("}\n");
+
     }
     private void printLatex() {
-        try {
-            writer.write("$\\{");
-            this.stream().forEach(x -> x.print());
-            writer.write("\\}$\n");
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        Printer.print("$\\{");
+        Iterator<Printable> printableIterator=this.iterator();
+        while(printableIterator.hasNext()) {
+            Printable p=printableIterator.next();
+            p.print();
+            if(printableIterator.hasNext()) {
+                Printer.print(", ");
+            }
         }
+        Printer.print("\\}$\n");
 
 
     }

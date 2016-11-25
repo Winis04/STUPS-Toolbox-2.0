@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.*;
  */
 public class GrammarCYK implements CLIPlugin {
     private boolean errorFlag;
-    private Explanation type;
+
     @Override
     public String[] getNames() {
         return new String[]{"cyk"};

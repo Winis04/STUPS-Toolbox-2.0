@@ -13,7 +13,6 @@ import java.util.*;
 public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;
-    private Explanation type;
     @Override
     public String[] getNames() {
         return new String[]{"rlr", "remove-lambda-rules"};
@@ -49,11 +48,11 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         String point_descriptions[];
         if(printables.size()==4) {
             point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3"};
-            texts=new String[]{"","nullables=","",
-            "All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\\\ \n"};
+            texts=new String[]{"","nullables","",
+            "All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
         } else if(printables.size()==5) {
             point_descriptions=new String[]{"Before","Special Rule for Empty Word","Step 1","Step 2","Step 3"};
-            texts=new String[]{"","add new Symbol $S#§\\\\ \n","nullables=","","All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\\\ \n"};
+            texts=new String[]{"","add new Symbol $S#§","nullables","","All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
         } else {
             point_descriptions=new String[]{""};
             texts=new String[]{""};

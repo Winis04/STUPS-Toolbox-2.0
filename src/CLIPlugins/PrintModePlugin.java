@@ -5,8 +5,6 @@ import Print.Printer;
 
 import java.io.*;
 
-import static Print.Printer.printmode;
-import static Print.Printer.writer;
 
 /**
  * Created by Isabel on 18.11.2016.
@@ -15,7 +13,7 @@ public class PrintModePlugin implements CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[]{"printEnumeration-mode","pm"};
+        return new String[]{"print-mode","pm"};
     }
 
     @Override
@@ -31,14 +29,10 @@ public class PrintModePlugin implements CLIPlugin {
     @Override
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
-        if(Printer.printmode==PrintMode.LATEX && Printer.writer!=null) {
+        if(Printer.printmode==PrintMode.LATEX && !Printer.writerIsNull()) {
             Printer.printEndOfLatex();
-            try {
-                Printer.writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Printer.writer=null;
+            Printer.closeWriter();
+            Printer.setWriter(null);
         }
         if(parameters.length==1) {
 
@@ -70,7 +64,7 @@ public class PrintModePlugin implements CLIPlugin {
                 }
                 Printer.currentFile=parameters[1];
                 try {
-                    writer=new BufferedWriter(new FileWriter(Printer.currentFile));
+                    Printer.setWriter(new BufferedWriter(new FileWriter(Printer.currentFile)));
                     Printer.printStartOfLatex();
                 } catch (IOException e) {
                     e.printStackTrace();

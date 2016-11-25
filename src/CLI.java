@@ -159,9 +159,9 @@ public class CLI {
                     System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
                 } else if(command.equals("e") || command.equals("exit")) {
                     System.out.println("Goodbye!");
-                    if(Printer.writer!=null) {
+                    if(!Printer.writerIsNull()) {
                         Printer.printEndOfLatex();
-                        Printer.writer.close();
+                        Printer.closeWriter();
                     }
                     System.exit(0);
                 } else if(command.equals("a") || command.equals("about")) {
