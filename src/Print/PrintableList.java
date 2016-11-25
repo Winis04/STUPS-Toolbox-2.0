@@ -15,6 +15,14 @@ public class PrintableList extends ArrayList<Printable> implements Printable {
     }
     @Override
     public void print() {
-        this.stream().forEach(x -> x.print());
+        this.stream().forEach(x -> {
+            x.print();
+            Printer.print("\n");
+        });
+    }
+    @Override
+    public boolean add(Printable p) {
+        if(p==null) return false;
+        return super.add(p);
     }
 }

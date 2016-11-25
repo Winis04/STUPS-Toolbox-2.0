@@ -29,6 +29,12 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
                 this.printLatex();
         }
     }
+    @Override
+    public boolean add(Printable p) {
+        if(p==null) return false;
+        return super.add(p);
+    }
+
     private void printConsole() {
 
         Printer.print("{");
