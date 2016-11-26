@@ -23,6 +23,8 @@ public class CLI {
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     public static TreeMap<String,Grammar> grammars=new TreeMap<>();
+
+
     /**
      * This method starts the CLI and enters an endless loop, listening for user input.
      */

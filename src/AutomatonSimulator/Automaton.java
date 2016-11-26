@@ -217,6 +217,39 @@ public class Automaton implements Printable {
     }
 
     private void printLatex(int x) {
+        Printer.print("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n");
+        Printer.deepnes++;
+        String space="";
+        for(int i=0;i<x;i++) {
+            space+="\t";
+        }
+        for(State state : this.states) {
+            Printer.print("\\node[state");
+            if(state.isStart()) {
+                Printer.print(",initial");
+            }
+            if(state.isFinal()) {
+                Printer.print(",accepting");
+            }
+            Printer.print("] \t (");
+            state.print();
+            Printer.print(") \t {");
+            state.print();
+            Printer.print("};\n");
+          //  \node[state,initial] (q_0)   {$q_0$};
+        }
+        Printer.print( space+"\\path[->]\n");
+
+        for(State s : this.states) {
+            Printer.print(space+"(");
+            s.print();
+            Printer.print(") \t");
+            for(Rule r : s.getRules()) {
+                r.print();
+            }
+        }
+        Printer.deepnes--;
+        Printer.print("\\end{tikzpicture}");
 
     }
     /**

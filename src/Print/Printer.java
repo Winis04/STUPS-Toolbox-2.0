@@ -99,7 +99,9 @@ public class Printer {
         Printer.print("\\documentclass{article}\n\\" +
                 "usepackage{amssymb}\n\\" +
                 "usepackage{amsmath,amsthm}\n\\" +
-                "usepackage[ngerman,english]{babel}\n\n\\" +
+                "usepackage[ngerman,english]{babel}\n\\" +
+                "usepackage{tikz}\n\\" +
+                "usetikzlibrary{automata,positioning}\n\n\\" +
                 "begin{document}\n\n");
     }
     public static void printEndOfLatex() {

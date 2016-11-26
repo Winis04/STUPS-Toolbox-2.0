@@ -23,6 +23,7 @@ public class Rule implements Printable{
      */
     private HashSet<String> acceptedInputs;
 
+    private boolean isLoop;
     /**
      * The constructor.
      *
@@ -77,7 +78,13 @@ public class Rule implements Printable{
 
 
     private void printLatex(int x) {
-
+        Printer.print(" edge ");
+        if(isLoop) {
+            Printer.print("[loop above] ");
+        }
+        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(");
+        goingTo.print();
+        Printer.print(")\n");
     }
 
 
@@ -85,5 +92,9 @@ public class Rule implements Printable{
         Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ");
         goingTo.print();
 
+    }
+
+    public void setLoop(boolean loop) {
+        isLoop = loop;
     }
 }
