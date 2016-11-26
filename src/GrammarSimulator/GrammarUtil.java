@@ -158,7 +158,7 @@ public class GrammarUtil {
         //Get all of the grammar's nonterminal symbols in order of their appearance in the rules.
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
 
-        //Iterate through all symbol lists of every nonterminal and printEnumeration them.
+        //Iterate through all symbol lists of every nonterminal and print them.
         try {
             for (Nonterminal nonterminal : nonterminals) {
                 for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {

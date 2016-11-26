@@ -6,17 +6,18 @@ import AutomatonParser.lexer.LexerException;
 import AutomatonParser.node.Start;
 import AutomatonParser.parser.Parser;
 import AutomatonParser.parser.ParserException;
+import Print.Printable;
+import Print.PrintableSet;
+import Print.Printer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 21.04.16.
  */
-public class Automaton {
+public class Automaton implements Printable {
 
     /**
      * Contains all the states of the automaton.
@@ -199,5 +200,60 @@ public class Automaton {
      */
     public void setStartState(State startState) {
         this.startState = startState;
+    }
+
+    @Override
+    public void print() {
+        switch (Printer.printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printLatex(Printer.deepnes);
+                break;
+            case CONSOLE:
+                printConsole();
+                break;
+        }
+    }
+
+    private void printLatex(int x) {
+
+    }
+    /**
+     * Prints a given automaton to stdout.
+     */
+    public void printConsole() {
+
+        Printer.print("{");
+        this.printAllStates_Console(false);
+        Printer.print("; ");
+        Printer.print(this.startState.getName()+"; ");
+        Printer.print("; ");
+        this.printAllStates_Console(true);
+        Printer.print("}\n");
+
+        for(State s : this.states) {
+            for(Rule r : s.getRules()) {
+                s.print();
+                r.print();
+                Printer.print("\n");
+            }
+        }
+    }
+    public void printAllStates_Console(boolean onlyFinal) {
+        ArrayList<State> states;
+        if(onlyFinal) {
+            states=(ArrayList<State>) this.states.stream().filter(state -> state.isFinal()).collect(Collectors.toList());
+        } else {
+            states=(ArrayList<State>) this.states.stream().collect(Collectors.toList());
+        }
+        Iterator<State> iterator=states.iterator();
+        while(iterator.hasNext()) {
+            State state=iterator.next();
+            state.print();
+            if(iterator.hasNext()) {
+                Printer.print(", ");
+            }
+        }
     }
 }

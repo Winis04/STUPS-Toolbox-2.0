@@ -3,6 +3,7 @@ package Print;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -16,7 +17,9 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
     public PrintableSet(Collection<Printable> collection) {
         super(collection);
     }
-
+    public PrintableSet(Set<Printable> set) {
+        super(set);
+    }
     @Override
     public void print() {
         switch (Printer.printmode) {

@@ -1,13 +1,18 @@
 package AutomatonSimulator;
 
+import Print.Printable;
+import Print.Printer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static java.util.stream.Collectors.joining;
+
 /**
  * Created by fabian on 21.04.16.
  */
-public class Rule {
+public class Rule implements Printable{
     /**
      * The state, to which the rule points.
      */
@@ -54,5 +59,31 @@ public class Rule {
      */
     public void setGoingTo(State goingTo) {
         this.goingTo = goingTo;
+    }
+
+    @Override
+    public void print() {
+        switch (Printer.printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printLatex(Printer.deepnes);
+                break;
+            case CONSOLE:
+                printConsole();
+                break;
+        }
+    }
+
+
+    private void printLatex(int x) {
+
+    }
+
+
+    private void printConsole() {
+        Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ");
+        goingTo.print();
+
     }
 }

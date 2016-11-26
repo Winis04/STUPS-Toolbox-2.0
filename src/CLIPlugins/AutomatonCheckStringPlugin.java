@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Print.Printer;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -36,7 +37,7 @@ public class AutomatonCheckStringPlugin implements CLIPlugin{
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
-            System.out.println("Please use 'a', or 'automaton' to load an automaton before using this command!");
+            System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");
             errorFlag = true;
             return null;
         }
@@ -69,9 +70,10 @@ public class AutomatonCheckStringPlugin implements CLIPlugin{
         }
 
         if (accepted) {
-            System.out.println("\nThe automaton accepts the given input!");
+            Printer.print("\nThe automaton accepts the given input!\n");
+
         } else {
-            System.out.println("\nThe automaton doesn't accept the given input!");
+            Printer.print("\nThe automaton doesn't accept the given input!\n");
         }
         return null;
     }

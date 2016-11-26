@@ -10,7 +10,7 @@ public class PDAPrintPlugin implements CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[]{"printEnumeration-push-down-automaton","ppda"};
+        return new String[]{"print-push-down-automaton","ppda"};
     }
 
     @Override

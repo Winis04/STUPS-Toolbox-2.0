@@ -29,7 +29,7 @@ public class AutomatonRemoveEpsilonStatesPlugin implements CLIPlugin {
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
-            System.out.println("Please use 'a', or 'automaton' to load an automaton before using this command!");
+            System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");
             errorFlag = true;
             return null;
         }

@@ -13,7 +13,7 @@ public class GrammarPrintPlugin implements CLIPlugin {
 
     @Override
     public String[] getNames() {
-        return new String[]{"pg", "printEnumeration-grammar"};
+        return new String[]{"pg", "print-grammar"};
     }
 
     @Override

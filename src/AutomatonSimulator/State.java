@@ -1,12 +1,15 @@
 package AutomatonSimulator;
 
+import Print.Printable;
+import Print.Printer;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by fabian on 21.04.16.
  */
-public class State {
+public class State implements Printable{
     /**
      * The state's name.
      */
@@ -103,5 +106,28 @@ public class State {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void print() {
+        switch (Printer.printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printLatex(Printer.deepnes);
+                break;
+            case CONSOLE:
+                printConsole();
+                break;
+        }
+    }
+
+    private void printLatex(int x) {
+        Printer.print("$"+this.name+"$");
+    }
+
+
+    private void printConsole() {
+        Printer.print(this.name);
     }
 }

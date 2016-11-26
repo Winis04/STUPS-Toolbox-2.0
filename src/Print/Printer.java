@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class Printer {
     /**
-     * the printEnumeration mode
+     * the print mode
      */
     public static PrintMode printmode=PrintMode.CONSOLE;
     /**
