@@ -69,7 +69,7 @@ public class Rule implements Printable{
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(" edge ",writer);
         if(isLoop) {
-            Printer.print("[loop above] ",writer);
+            Printer.print("[loop below] ",writer);
         }
         Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(",writer);
         Printer.print(goingTo);

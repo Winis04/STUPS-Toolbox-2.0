@@ -441,9 +441,21 @@ public class AutomatonUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        return visitor.getAutomaton();
+        return setIsLoop(visitor.getAutomaton());
     }
 
+    private static Automaton setIsLoop(Automaton automaton) {
+        automaton.getStates().stream().forEach(state -> {
+            state.getRules().stream().forEach(rule -> {
+                if(rule.getGoingTo().getName().equals(state.getName())) {
+                    rule.setLoop(true);
+                } else {
+                    rule.setLoop(false);
+                }
+            });
+        });
+        return automaton;
+    }
     /**
      * Returns an ArrayList that contains all states in order of their appearance in the automaton's rules.
      *

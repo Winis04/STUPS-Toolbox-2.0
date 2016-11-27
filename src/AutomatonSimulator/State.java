@@ -44,13 +44,6 @@ public class State implements Printable{
         this.isStart = isStart;
         this.isFinal = isFinal;
         this.rules = rules;
-        for(Rule r : rules) {
-            if(r.getGoingTo().getName().equals(this.name)) {
-                r.setLoop(true);
-            } else {
-                r.setLoop(false);
-            }
-        }
     }
 
     /**

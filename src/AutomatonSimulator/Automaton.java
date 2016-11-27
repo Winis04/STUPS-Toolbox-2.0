@@ -15,6 +15,9 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by fabian on 21.04.16.
  */
@@ -229,9 +232,11 @@ public class Automaton implements Printable, Storable {
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
+        ArrayList<State> statesSorted=getStatesSorted();
         Printer.println("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n",writer);
         String space1=space+"\t";
-        for(State state : this.states) {
+        String before="";
+        for(State state : statesSorted) {
             Printer.print(space1+"\\node[state",writer);
             if(state.isStart()) {
                 Printer.print(",initial",writer);
@@ -239,16 +244,24 @@ public class Automaton implements Printable, Storable {
             if(state.isFinal()) {
                 Printer.print(",accepting",writer);
             }
-            Printer.print("] \t (",writer);
+            Printer.print("]\t (",writer);
             Printer.print(state);
-            Printer.print(") \t {",writer);
+            Printer.print(")\t",writer);
+            //position:
+            if(!before.isEmpty()) {
+                Printer.print("[right of="+before+"]\t",writer);
+                before=state.getName();
+            } else {
+                before=statesSorted.get(0).getName();
+            }
+            Printer.print("\t{",writer);
             Printer.print(state);
             Printer.print("};\n",writer);
           //  \node[state,initial] (q_0)   {$q_0$};
         }
         Printer.println( space+"\\path[->]",writer);
 
-        for(State s : this.states) {
+        for(State s : statesSorted) {
             Printer.print(space+"(",writer);
             Printer.print(s);
             Printer.print(") \t",writer);
@@ -256,35 +269,39 @@ public class Automaton implements Printable, Storable {
                 Printer.print(r);
             }
         }
-        Printer.print("\\end{tikzpicture}",writer);
+        Printer.println(";",writer);
+        Printer.println("\\end{tikzpicture}",writer);
 
     }
     /**
      * Prints a given automaton to stdout.
      */
     public void printConsole(BufferedWriter writer) {
-
+        ArrayList<State> statesSorted=this.getStatesSorted();
         Printer.print("{",writer);
-        this.printAllStates_Console(writer,false);
+        this.printAllStates_Console(statesSorted,writer,false);
         Printer.print("; ",writer);
         Printer.print(this.startState.getName()+"; ",writer);
-        this.printAllStates_Console(writer,true);
+        this.printAllStates_Console(statesSorted,writer,true);
         Printer.print("}\n",writer);
 
-        for(State s : this.states) {
+        for(State s : statesSorted) {
             for(Rule r : s.getRules()) {
                 Printer.print(s);
                 Printer.print(r);
                 Printer.print("\n",writer);
             }
         }
+
+        Printer.println("",writer);
+        Printer.println(getStatesSorted().stream().map(stream -> stream.getName()).collect(joining(", ")),writer);
     }
-    public void printAllStates_Console(BufferedWriter writer, boolean onlyFinal) {
+    public void printAllStates_Console(ArrayList<State> statesSorted,BufferedWriter writer, boolean onlyFinal) {
         ArrayList<State> states;
         if(onlyFinal) {
-            states=(ArrayList<State>) this.states.stream().filter(state -> state.isFinal()).collect(Collectors.toList());
+            states=(ArrayList<State>) statesSorted.stream().filter(state -> state.isFinal()).collect(Collectors.toList());
         } else {
-            states=(ArrayList<State>) this.states.stream().collect(Collectors.toList());
+            states=(ArrayList<State>) statesSorted.stream().collect(Collectors.toList());
         }
         Iterator<State> iterator=states.iterator();
         while(iterator.hasNext()) {
@@ -310,4 +327,10 @@ public class Automaton implements Printable, Storable {
         });
         return res[0];
     }
+
+    private ArrayList<State> getStatesSorted() {
+        return (ArrayList<State>) states.stream().sorted((s1,s2) -> s1.getName().compareTo(s2.getName())).collect(toList());
+    }
+
+
 }
