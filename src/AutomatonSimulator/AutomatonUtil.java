@@ -11,6 +11,8 @@ import javafx.util.Pair;
 import java.io.*;
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by fabian on 20.06.16.
  */
@@ -1011,4 +1013,36 @@ public class AutomatonUtil {
     public static Stack<String> getTakenWay() {
         return takenWay;
     }
+
+    public static void fillLengthsOfEdges(Automaton automaton) {
+        ArrayList<State> statesSorted=getStatesSorted(automaton);
+        for(int i=0;i<statesSorted.size();i++) {
+            State current=statesSorted.get(i);
+            for(Rule rule : current.getRules()) {
+                int j=statesSorted.indexOf(rule.getGoingTo());
+                rule.setLength(Math.abs(i-j));
+            }
+        }
+        int max=0;
+        for(State state : automaton.getStates()) {
+            for(Rule rule : state.getRules()) {
+                if(rule.getLength()>max) {
+                    max=rule.getLength();
+                }
+            }
+        }
+        for(int i=0;i<statesSorted.size();i++) {
+            State current=statesSorted.get(i);
+            for(Rule rule : current.getRules()) {
+                int j=statesSorted.indexOf(rule.getGoingTo());
+                rule.setMaxLength(max);
+            }
+        }
+
+    }
+    public static ArrayList<State> getStatesSorted(Automaton automaton) {
+        return (ArrayList<State>) automaton.getStates().stream().sorted((s1,s2) -> s1.getName().compareTo(s2.getName())).collect(toList());
+    }
+
+
 }

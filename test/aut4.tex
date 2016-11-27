@@ -14,9 +14,9 @@
 	\node[state]	 (z1)	[right of=z0]		{z1};
 	\node[state,accepting]	 (z2)	[right of=z1]		{z2};
 \path[->]
-(z0) 	 edge [bend left=45]node {a}	(z1)
+(z0) 	 edge [bend left=0]node {a}	(z1)
  edge [bend left=90]node {a}	(z2)
-(z1) 	 edge [bend left=45]node {b}	(z2)
+(z1) 	 edge [bend left=0]node {b}	(z2)
  edge [loop below] node {a}	(z1)
 (z2) 	 edge [loop below] node {b}	(z2)
  edge [bend left=90]node {a}	(z0)

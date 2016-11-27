@@ -232,7 +232,8 @@ public class Automaton implements Printable, Storable {
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
-        ArrayList<State> statesSorted=getStatesSorted();
+        AutomatonUtil.fillLengthsOfEdges(this);
+        ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
         Printer.println("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n",writer);
         String space1=space+"\t";
         String before="";
@@ -277,7 +278,7 @@ public class Automaton implements Printable, Storable {
      * Prints a given automaton to stdout.
      */
     public void printConsole(BufferedWriter writer) {
-        ArrayList<State> statesSorted=this.getStatesSorted();
+        ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
         Printer.print("{",writer);
         this.printAllStates_Console(statesSorted,writer,false);
         Printer.print("; ",writer);
@@ -294,7 +295,7 @@ public class Automaton implements Printable, Storable {
         }
 
         Printer.println("",writer);
-        Printer.println(getStatesSorted().stream().map(stream -> stream.getName()).collect(joining(", ")),writer);
+        Printer.println(AutomatonUtil.getStatesSorted(this).stream().map(stream -> stream.getName()).collect(joining(", ")),writer);
     }
     public void printAllStates_Console(ArrayList<State> statesSorted,BufferedWriter writer, boolean onlyFinal) {
         ArrayList<State> states;
@@ -328,9 +329,7 @@ public class Automaton implements Printable, Storable {
         return res[0];
     }
 
-    private ArrayList<State> getStatesSorted() {
-        return (ArrayList<State>) states.stream().sorted((s1,s2) -> s1.getName().compareTo(s2.getName())).collect(toList());
-    }
+
 
 
 }

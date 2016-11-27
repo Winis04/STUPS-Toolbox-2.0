@@ -24,7 +24,18 @@ public class Rule implements Printable{
      */
     private HashSet<String> acceptedInputs;
 
+    /**
+     * is this rule a loop?
+     */
     private boolean isLoop;
+
+    /**
+     * the automaton is printed from left to right in alphanumeric order and length give the length of the edge
+     * for example, 1 if the edge goes to a neighbor.
+     */
+    private int length=1;
+
+    private int maxLength=1;
     /**
      * The constructor.
      *
@@ -34,6 +45,7 @@ public class Rule implements Printable{
     public Rule(State goingTo, HashSet<String> acceptedInputs) {
         this.goingTo = goingTo;
         this.acceptedInputs = acceptedInputs;
+        this.length=1;
     }
 
     /**
@@ -64,12 +76,25 @@ public class Rule implements Printable{
     }
 
 
-
+    /**
+     * the automaton is printed from left to right in alphanumeric order
+     * @param writer the output-write
+     * @param space a string of tabs for nice printing
+     */
     @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(" edge ",writer);
         if(isLoop) {
             Printer.print("[loop below] ",writer);
+        } else {
+            int arc;
+            if(maxLength==1) {
+                arc=45;
+            } else {
+                arc = (int) ((90*length)/maxLength);
+            }
+            String s=""+arc;
+              Printer.print("[bend left="+s+"] ",writer);
         }
         Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(",writer);
         Printer.print(goingTo);
@@ -85,5 +110,21 @@ public class Rule implements Printable{
 
     public void setLoop(boolean loop) {
         isLoop = loop;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 }
