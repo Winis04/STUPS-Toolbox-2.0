@@ -9,6 +9,7 @@ import GrammarParser.parser.ParserException;
 import Print.Dummy;
 import Print.Printable;
 import Print.PrintableSet;
+import Print.Printer;
 import PushDownAutomatonSimulator.*;
 
 
@@ -682,7 +683,7 @@ public class GrammarUtil {
         }
     }
 
-    private static void replaceLambda(Grammar g) {
+    static void replaceLambda(Grammar g) {
         Iterator<Terminal> it=g.getTerminals().iterator();
         boolean hasNull=false;
         Terminal toRemove=null;
@@ -713,9 +714,6 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
     public static ArrayList<Printable> removeLambdaRules(Grammar grammar) {
-
-
-
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
         Grammar grammar0=new Grammar(grammar,false);
@@ -763,7 +761,7 @@ public class GrammarUtil {
      *              has to be called again, but this time with again set to false
      */
     private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
-
+        boolean startSymbolPointsOnLamda=GrammarUtil.startSymbolPointsOnLambda(g);
         // delete lambda-rules
         for(Nonterminal nt : g.getNonterminals()) {
             HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
@@ -813,6 +811,12 @@ public class GrammarUtil {
             GrammarUtil.removeLambdaRules_StepThree(g,false);
             g.getTerminals().remove(Terminal.NULLSYMBOL);
         }
+        if(startSymbolPointsOnLamda) {
+            ArrayList<Symbol> tmp=new ArrayList<>();
+            tmp.add(Terminal.NULLSYMBOL);
+            g.getTerminals().add(Terminal.NULLSYMBOL);
+            g.getStartSymbol().getSymbolLists().add(tmp);
+        }
 
     }
 
@@ -825,8 +829,10 @@ public class GrammarUtil {
      * @param nullable The set, which contains all the nullable terminals
      */
     private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
+        boolean pointsOnLambda=GrammarUtil.startSymbolPointsOnLambda(grammar);
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
-        for(Nonterminal nonterminal : grammar.getNonterminals()) {
+
+        grammar.getNonterminals().stream().forEach(nonterminal -> {
             //contains all rules for this nonterminal which need to be edited
             Queue<ArrayList<Symbol>> queue = new LinkedList<>();
 
@@ -879,6 +885,12 @@ public class GrammarUtil {
                 nonterminal.getSymbolLists().addAll(queue);
                 nonterminal.getSymbolLists().addAll(alreadySeen);
             }
+        });
+        if(pointsOnLambda) {
+            ArrayList<Symbol> tmp=new ArrayList<>();
+            tmp.add(Terminal.NULLSYMBOL);
+            grammar.getTerminals().add(Terminal.NULLSYMBOL);
+            grammar.getStartSymbol().getSymbolLists().add(tmp);
         }
     }
 
@@ -1557,13 +1569,7 @@ public class GrammarUtil {
         HashSet<ArrayList<Symbol>> res=new HashSet<>();
         for(ArrayList<Symbol> list : tmp) {
             boolean allNull=true;
-            for(Symbol sym : list) {
-                if(sym.equals(Terminal.NULLSYMBOL)) {
-                    allNull=allNull & true;
-                } else {
-                    allNull=false;
-                }
-            }
+            allNull=list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL));
             if(allNull==false) {
                 res.add(list);
             }
@@ -1583,6 +1589,7 @@ public class GrammarUtil {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
             Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
+            g.getNonterminals().add(newSymbol);
             for(Nonterminal nt : g.getNonterminals()) {
                 HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
                 for(ArrayList<Symbol> list : nt.getSymbolLists()) {

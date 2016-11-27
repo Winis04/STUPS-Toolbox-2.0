@@ -98,6 +98,7 @@ public class Grammar implements Printable, Storable {
             this.modifyName();
         }
         this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
+        GrammarUtil.replaceLambda(this);
     }
 
 
@@ -260,7 +261,7 @@ public class Grammar implements Printable, Storable {
     }
 
     @Override
-    public Storable deep_copy(Storable old) {
-        return new Grammar((Grammar) old, false);
+    public Storable deep_copy() {
+        return new Grammar(this, false);
     }
 }

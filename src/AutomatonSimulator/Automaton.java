@@ -298,8 +298,8 @@ public class Automaton implements Printable, Storable {
     }
 
     @Override
-    public Storable deep_copy(Storable old) {
-        return new Automaton((Automaton) old);
+    public Storable deep_copy() {
+        return new Automaton(this);
     }
 
     private State getState(String name) {

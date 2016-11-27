@@ -1,8 +1,10 @@
 package Main;
 
+import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
 
@@ -23,9 +25,17 @@ public class CLI {
      */
     protected static HashMap<Class, Object> objects = new HashMap<>();
 
+    private static HashMap<Class, HashMap<Integer,Storable>> store= new HashMap<>();
+
+    private static HashMap<String,Class> lookUpTable =new HashMap<>();
+
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     protected static TreeMap<String,Grammar> grammars=new TreeMap<>();
 
+    private static boolean isStoreFunction(String command) {
+        String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv"};
+        return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
+    }
 
     private static boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         if(command.equals("gui")) {
@@ -34,54 +44,59 @@ public class CLI {
             while (!GUI.IS_VISIBLE) {
                 Thread.sleep(500);
             }
-        } else if(command.equals("show-all-grammar")||command.equals("sag")) {
+        } else if(isStoreFunction(command)) {
+            try {
+                Integer i = Integer.parseInt(parameters[1]);
+                //first: detect which object should be stored
+                Class clazz = lookUpTable.get(parameters[0].toLowerCase());
 
-            if(grammars.keySet().isEmpty()) {
-                System.out.println("no grammars stored");
-            } else {
-                grammars.keySet().forEach(key -> {
-                    Printer.print(grammars.get(key));
-                });
-            }
-
-        } else if(command.equals("store-g")||command.equals("store-grammar")) {
-
-            Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class),false);
-            if (parameters.length == 1) {
-                try {
-                    toBeStored.setName(parameters[0]);
-                    grammars.put(parameters[0],toBeStored);
-                } catch (Exception e) {
-                    System.out.println("the argument is not an integer!");
-                }
-            }
-
-            //grammars.add(toBeStored);
-        } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
-
-            if (grammars.isEmpty()) {
-                System.out.println("no grammar stored");
-            } else if (parameters.length == 1) {
-                String key=parameters[0];
-                Grammar newCurrent=grammars.get(key);
-                if(newCurrent!=null) {
-                    objects.put(Grammar.class,newCurrent);
+                if (clazz == null) {
+                    System.out.println("There are no objects of type " + parameters[0]);
                 } else {
-                    System.out.println("no such grammar stored");
+                    HashMap<Integer, Storable> correctMap = store.get(clazz);
+                    if (command.equals("store") || command.equals("str")) {
+                        Object object = objects.get(clazz);
+                        if (object == null) {
+                            System.out.println("Please load an object of type " + parameters[0] + " before using this command!");
+                        } else {
+                            Storable toBeStored = ((Storable) object).deep_copy();
+                            if (correctMap == null) {
+                                HashMap<Integer, Storable> tmp = new HashMap<>();
+                                tmp.put(i, toBeStored);
+                                store.put(clazz, tmp);
+                            } else {
+                                correctMap.put(i, toBeStored);
+                                //    store.get(clazz).put(i, toBeStored);
+                            }
+                        }
+                    } else if (command.equals("switch") || command.equals("swt")) {
+                        Storable theNewCurrent = correctMap.get(i);
+                        if (theNewCurrent == null) {
+                            System.out.println("no Object with this Index"); //TODO
+                        } else {
+                            objects.put(clazz, theNewCurrent.deep_copy());
+                        }
+                    } else if (command.equals("remove") || command.equals("rmv")) {
+                        correctMap.remove(i);
+                    } else {
+                        System.out.println("something went wrong");
+                    }
                 }
-
-            } else {
-                System.out.println("wrong input!");
+            } catch (NumberFormatException e) {
+                System.out.println("invalid input: Input is not an Integer");
             }
-        } else if(command.equals("remove-grammar")|| command.equals("remove-g")) {
 
-            if (grammars.isEmpty()) {
-                System.out.println("no grammar stored");
-            } else if (parameters.length == 1) {
-                String key=parameters[0];
-                grammars.remove(key);
+        } else if(command.equals("sa")||command.equals("show-all")) {
+            Class clazz = lookUpTable.get(parameters[0].toLowerCase());
+            if(clazz==null) {
+                System.out.println("no such objects stored");
             } else {
-                System.out.println("wrong input!");
+                HashMap<Integer,Storable> correctMap=store.get(clazz);
+                if(correctMap==null) {
+                    System.out.println("no objects of type " +parameters[0]+" stored!");
+                } else {
+                    correctMap.keySet().stream().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                }
             }
 
         } else if(command.equals("h") || command.equals("help")) {
@@ -130,6 +145,8 @@ public class CLI {
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
     public static void start() {
+        lookUpTable.put("grammar",Grammar.class);
+        lookUpTable.put("automaton",Automaton.class);
         //Print a welcome message and initialize some variables.
         System.out.println("Welcome to the STUPS-Toolbox!\nPlease enter a command!\nFor a list of commands enter 'h' or 'help'...");
         String input, command, parameters[];
