@@ -1,3 +1,5 @@
+package Main;
+
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
@@ -19,14 +21,14 @@ public class CLI {
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
-    public static HashMap<Class, Object> objects = new HashMap<>();
+    protected static HashMap<Class, Object> objects = new HashMap<>();
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
-    public static TreeMap<String,Grammar> grammars=new TreeMap<>();
+    protected static TreeMap<String,Grammar> grammars=new TreeMap<>();
 
 
     /**
-     * This method starts the CLI and enters an endless loop, listening for user input.
+     * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
     public static void start() {
         //Print a welcome message and initialize some variables.
@@ -35,7 +37,7 @@ public class CLI {
         ArrayList<CLIPlugin> plugins = new ArrayList<>();
         objects.put(null, null);
 
-        //Load all CLI plugins.
+        //Load all Main.CLI plugins.
         try {
             String packagePath = Thread.currentThread().getContextClassLoader().getResources("CLIPlugins").nextElement().getFile().replace("%20", " ");
             File[] classes = new File(packagePath).listFiles();
@@ -53,7 +55,7 @@ public class CLI {
         //Enter an endless loop and listen for user input.
         while(true) {
 
-            //Sleep, while the GUI is visible.
+            //Sleep, while the Main.GUI is visible.
             while(GUI.IS_VISIBLE) {
                 try {
                     Thread.sleep(500);
@@ -93,7 +95,7 @@ public class CLI {
                         System.out.println("no grammars stored");
                     } else {
                         grammars.keySet().forEach(key -> {
-                            grammars.get(key).print();
+                            Printer.print(grammars.get(key));
                         });
                     }
 

@@ -70,10 +70,10 @@ public class AutomatonCheckStringPlugin implements CLIPlugin{
         }
 
         if (accepted) {
-            Printer.print("\nThe automaton accepts the given input!\n");
+            System.out.println("\nThe automaton accepts the given input!");
 
         } else {
-            Printer.print("\nThe automaton doesn't accept the given input!\n");
+            System.out.println("\nThe automaton doesn't accept the given input!");
         }
         return null;
     }

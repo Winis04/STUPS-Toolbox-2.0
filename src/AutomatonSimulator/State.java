@@ -3,6 +3,7 @@ package AutomatonSimulator;
 import Print.Printable;
 import Print.Printer;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -116,26 +117,13 @@ public class State implements Printable{
     }
 
     @Override
-    public void print() {
-        switch (Printer.printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printLatex(Printer.deepnes);
-                break;
-            case CONSOLE:
-                printConsole();
-                break;
-        }
+    public void printLatex(BufferedWriter writer, String space) {
+
+        Printer.print("$"+this.name+"$",writer);
     }
 
-    private void printLatex(int x) {
-
-        Printer.print("$"+this.name+"$");
-    }
-
-
-    private void printConsole() {
-        Printer.print(this.name);
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        Printer.print(this.name,writer);
     }
 }

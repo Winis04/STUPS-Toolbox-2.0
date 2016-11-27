@@ -35,7 +35,7 @@ public class GrammarPrintPlugin implements CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        grammar.print();
+        Printer.print(grammar);
         return null;
     }
 

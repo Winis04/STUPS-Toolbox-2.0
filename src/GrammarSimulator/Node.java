@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Isabel on 24.10.2016.
  */
-public class Node implements Printable{
+public class Node {
     /**
      * for the deep-search
      * is true, if the node was already visited
@@ -134,19 +134,4 @@ public class Node implements Printable{
     public static final Node EMPTY_NODE=new Node();
 
 
-    @Override
-    public void print() {
-        switch(Printer.printmode) {
-            case NO:
-                break;
-            case CONSOLE:
-                this.printConsole();
-                break;
-            case LATEX:
-                break;
-        }
-    }
-    private void printConsole() {
-        Printer.print(this.name);
-    }
 }

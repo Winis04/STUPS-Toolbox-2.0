@@ -4,6 +4,7 @@ import GrammarSimulator.Nonterminal;
 import Print.Printable;
 import Print.Printer;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -53,39 +54,27 @@ public class Matrix implements Printable{
             }
         }
     }
-    @Override
-    public void print() {
-        switch (Printer.printmode) {
-            case NO:
-                break;
-            case CONSOLE:
-                printConsole();
-                break;
-            case LATEX:
-                printLatex(Printer.deepnes);
-                break;
-        }
-    }
 
-    private void printConsole() {
-        horizontalLine();
-        System.out.print("| i | ");
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        horizontalLine(writer);
+        Printer.print("| i | ",writer);
         IntStream.range(1,columns).
                 forEach(s ->  {
-                    System.out.print(s);
+                    Printer.print(s,writer);
                     for(int k=0;k< spacing-3;k++) {
-                        System.out.print(" ");
+                        Printer.print(" ",writer);
                     }
-                    System.out.print(" | ");
+                    Printer.print(" | ",writer);
                 });
-        System.out.println("");
-        horizontalLine();
+        Printer.println("",writer);
+        horizontalLine(writer);
         for(int j=rows-1;j>-1;j--) {
-            System.out.print("| "+j+" | ");
+            Printer.print("| "+j+" | ",writer);
             for(int i=1;i<columns;i++) {
                 HashSet<Nonterminal> tmp=matrix[j][i];
                 String cellContent=tmp.stream().map(nonterminal -> nonterminal.getName()).collect(joining(", "));
-                System.out.print(cellContent);
+                Printer.print(cellContent,writer);
                 int fill=0;
 
 
@@ -93,77 +82,74 @@ public class Matrix implements Printable{
                 fill=spacing-cellContent.length()-2;
 
                 for(int k=0;k< fill;k++) {
-                    System.out.print(" ");
+                    Printer.print(" ",writer);
                 }
-                System.out.print(" | ");
+                Printer.print(" | ",writer);
             }
-            System.out.println("");
-            horizontalLine();
+            Printer.println("",writer);
+            horizontalLine(writer);
         }
-        System.out.print("| j | ");
+        Printer.print("| j | ",writer);
         for(int i=0;i<word.length();i++) {
-            System.out.print(word.charAt(i));
+            Printer.print(word.charAt(i),writer);
             for(int j=0;j<spacing-2;j++) {
-                System.out.print(" ");
+                Printer.print(" ",writer);
             }
-            System.out.print("| ");
+            Printer.print("| ",writer);
         }
-        System.out.println("");
-        horizontalLine();
+       Printer.println("",writer);
+        horizontalLine(writer);
     }
 
-    private void horizontalLine() {
-        System.out.print("+---");
+    private void horizontalLine(BufferedWriter writer) {
+        Printer.print("+---",writer);
         for(int i=1;i<columns;i++) {
-            System.out.print("+");
+            Printer.print("+",writer);
             for(int j=0;j<this.spacing;j++) {
-                System.out.print("-");
+                Printer.print("-",writer);
             }
         }
-        System.out.println("+");
+        Printer.println("+",writer);
 
     }
-
-    private void printLatex(int x) {
-        String space="";
-        for(int i=0;i<x;i++) {
-            space+="\t";
-        }
-        Printer.print(space+"\\begin{table}[h!]\n");
-        Printer.print(space+"\t\\centering\n");
-        Printer.print(space+"\t\\caption{CYK}\n");
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+      
+        Printer.print(space+"\\begin{table}[h!]\n",writer);
+        Printer.print(space+"\t\\centering\n",writer);
+        Printer.print(space+"\t\\caption{CYK}\n",writer);
         String s="|";
         for(int i = 0; i<rows; i++) {
             s+="c|";
         }
-        Printer.print(space+"\t\\begin{tabular}{"+s+"}\n");
+        Printer.print(space+"\t\\begin{tabular}{"+s+"}\n",writer);
         //1 & 2 & 3\\
         //\hline
-        Printer.print(space+"\t\t\\hline\n");
+        Printer.print(space+"\t\t\\hline\n",writer);
         for(int r=rows-1;r>=0;r--) {
-            Printer.print(space+"\t\t");
+            Printer.print(space+"\t\t",writer);
             for(int c=1;c<columns;c++) {
-                Printer.print(this.getCell(c,r).stream().map(nonterminal -> "$"+nonterminal.getName()+"$").collect(joining(", ")));
+                Printer.print(this.getCell(c,r).stream().map(nonterminal -> "$"+nonterminal.getName()+"$").collect(joining(", ")),writer);
                 if(c<columns-1) {
-                    Printer.print(" & ");
+                    Printer.print(" & ",writer);
                 }
             }
 
 
-            Printer.print("\\\\\n"+space+"\t\t\\hline\n");
+            Printer.print("\\\\\n"+space+"\t\t\\hline\n",writer);
         }
-        Printer.print(space+"\t\t\\hline\n");
-        Printer.print(space+"\t\t");
+        Printer.print(space+"\t\t\\hline\n",writer);
+        Printer.print(space+"\t\t",writer);
         for(int i=0;i<word.length();i++) {
-            Printer.print(word.substring(i,i+1));
+            Printer.print(word.substring(i,i+1),writer);
             if(i<word.length()-1) {
-                Printer.print(" & ");
+                Printer.print(" & ",writer);
             }
         }
-        Printer.print("\\\\\n"+space+"\t\t\\hline\n");
+        Printer.print("\\\\\n"+space+"\t\t\\hline\n",writer);
 
-        Printer.print(space+"\t\\end{tabular}\n");
-        Printer.print(space+"\\end{table}\n\n");
+        Printer.print(space+"\t\\end{tabular}\n",writer);
+        Printer.print(space+"\\end{table}\n\n",writer);
     }
 
 

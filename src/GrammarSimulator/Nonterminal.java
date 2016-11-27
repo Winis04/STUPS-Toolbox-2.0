@@ -3,6 +3,7 @@ package GrammarSimulator;
 import Print.Printable;
 import Print.Printer;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -65,14 +66,12 @@ public class Nonterminal implements Symbol, Printable {
     }
 
     @Override
-    public void print() {
-        switch (printmode) {
-            case NO:
-                break;
-            case CONSOLE:
-            case LATEX:
-                Printer.print(this.getName());
-                break;
-        }
+    public void printLatex(BufferedWriter writer, String space) {
+        Printer.print(space+this.getName(),writer);
+    }
+
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        Printer.print(this.getName(),writer);
     }
 }

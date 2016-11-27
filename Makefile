@@ -6,7 +6,7 @@ JCLASSPATH_UNIX = $(JOUTPUTPATH):$(JLIBS_UNIX)
 JCLASSPATH_WINDOWS = $(JOUTPUTPATH);$(JLIBS_WINDOWS)
 JLIBS_UNIX = $(shell find $(LIBDIR) -name "*.jar" | tr "\n" ":")
 JLIBS_WINDOWS = $(shell find $(LIBDIR) -name "*.jar" | tr "\n" ";")
-JMAINCLASS = GUI
+JMAINCLASS = Main.GUI
 
 JAVA = java
 SCCURL = https://jcenter.bintray.com/de/hhu/stups/sablecc/3.2.10/sablecc-3.2.10.jar

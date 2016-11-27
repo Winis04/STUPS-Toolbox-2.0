@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Print.Printer;
 
 /**
  * Created by fabian on 20.06.16.
@@ -34,7 +35,7 @@ public class AutomatonPrintPlugin implements CLIPlugin {
             return null;
         }
         Automaton automaton = (Automaton) object;
-        automaton.print();
+        Printer.print(automaton);
         return null;
     }
 

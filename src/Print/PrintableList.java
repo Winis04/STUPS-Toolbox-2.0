@@ -1,5 +1,6 @@
 package Print;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,16 +15,26 @@ public class PrintableList extends ArrayList<Printable> implements Printable {
     public PrintableList(Collection<Printable> collection) {
         super(collection);
     }
-    @Override
-    public void print() {
-        this.stream().forEach(x -> {
-            x.print();
-            Printer.print("\n");
-        });
-    }
+
     @Override
     public boolean add(Printable p) {
         if(p==null) return false;
         return super.add(p);
+    }
+
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+        this.stream().forEach(x -> {
+            Printer.print(x);
+            Printer.print("\n",writer);
+        });
+    }
+
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        this.stream().forEach(x -> {
+            Printer.print(x);
+            Printer.print("\n",writer);
+        });
     }
 }

@@ -1,12 +1,12 @@
+package Main;
+
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import Main.CLI;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -26,7 +25,7 @@ import java.util.HashSet;
  */
 public class GUI extends Application{
     /**
-     * true, if the GUI is visible. The CLI will deactivate itself, if this is true.
+     * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
      */
     public static boolean IS_VISIBLE = false;
 
@@ -60,11 +59,11 @@ public class GUI extends Application{
     }
 
     /**
-     * This method is called when 'gui' is entered into the CLI and shows the GUI.
+     * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
     public static void show() {
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
-        //as the displayed object may have changed since the GUI was last opened.
+        //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(CLI.objects.get(currentDisplayPlugin.displayType()));
@@ -96,7 +95,7 @@ public class GUI extends Application{
     /**
      * This method is called by the launch()-call in the main-method. It gets executed when the program is started.
      *
-     * @param stage The GUI's main stage.
+     * @param stage The Main.GUI's main stage.
      */
     @Override
     public void start(Stage stage) {
@@ -162,7 +161,7 @@ public class GUI extends Application{
         Button functionsButton = new Button("Execute");
 
         //When the functionsButton is pressed, the input-type for the selected simple plugin is loaded into "input",
-        //so that we can get the corresponding object from the HashMap "CLI.objects".
+        //so that we can get the corresponding object from the HashMap "Main.CLI.objects".
         //Then we can call the plugin's execute-method with the object as a parameter.
         functionsButton.setOnAction(event -> {
             Class input = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).inputType();
@@ -280,7 +279,7 @@ public class GUI extends Application{
             pluginMenu.getItems().add(menuItem);
         }
 
-        //construct the rest of the GUI. This is pretty straight forward.
+        //construct the rest of the Main.GUI. This is pretty straight forward.
         menuBar.getMenus().add(pluginMenu);
         complexFunctionsPane.setVgap(5);
         complexFunctionsPane.setPadding(new Insets(2, 0, 2, 5));
@@ -304,9 +303,9 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
-        //Now, that everything is loaded, we can start the CLI in a different Thread.
+        //Now, that everything is loaded, we can start the Main.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
-        //and the GUI will be made visible, when the user gives the appropriate command.
+        //and the Main.GUI will be made visible, when the user gives the appropriate command.
         new Thread(() -> CLI.start()).start();
     }
 }

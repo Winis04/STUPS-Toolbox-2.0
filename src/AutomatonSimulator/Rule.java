@@ -3,6 +3,7 @@ package AutomatonSimulator;
 import Print.Printable;
 import Print.Printer;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,35 +63,23 @@ public class Rule implements Printable{
         this.goingTo = goingTo;
     }
 
+
+
     @Override
-    public void print() {
-        switch (Printer.printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printLatex(Printer.deepnes);
-                break;
-            case CONSOLE:
-                printConsole();
-                break;
-        }
-    }
-
-
-    private void printLatex(int x) {
-        Printer.print(" edge ");
+    public void printLatex(BufferedWriter writer, String space) {
+        Printer.print(" edge ",writer);
         if(isLoop) {
-            Printer.print("[loop above] ");
+            Printer.print("[loop above] ",writer);
         }
-        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(");
-        goingTo.print();
-        Printer.print(")\n");
+        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(",writer);
+        Printer.print(goingTo);
+        Printer.println(")",writer);
     }
 
-
-    private void printConsole() {
-        Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ");
-        goingTo.print();
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ",writer);
+        Printer.print(goingTo);
 
     }
 

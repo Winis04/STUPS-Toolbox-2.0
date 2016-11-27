@@ -1,5 +1,6 @@
 package Print;
 
+import java.io.BufferedWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,56 +21,45 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
     public PrintableSet(Set<Printable> set) {
         super(set);
     }
-    @Override
-    public void print() {
-        switch (Printer.printmode) {
-            case NO:
-                break;
-            case CONSOLE:
-                this.printConsole();
-                break;
-            case LATEX:
-                this.printLatex(Printer.deepnes);
-        }
-    }
+
     @Override
     public boolean add(Printable p) {
         if(p==null) return false;
         return super.add(p);
     }
+    @Override
+    public void printConsole(BufferedWriter writer) {
 
-    private void printConsole() {
-
-        Printer.print("{");
+        Printer.print("{",writer);
         Iterator<Printable> printableIterator=this.iterator();
         while(printableIterator.hasNext()) {
             Printable p=printableIterator.next();
-            p.print();
+            Printer.print(p);
             if(printableIterator.hasNext()) {
-                Printer.print(", ");
+                Printer.print(", ",writer);
             }
         }
 
 
-        Printer.print("}\n");
+        Printer.print("}\n",writer);
 
     }
-    private void printLatex(int x) {
-        String space="";
-        for(int i=0;i<x;i++) {
-            space+="\t";
-        }
-        Printer.print(space+"$\\{");
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+
+        Printer.print(space+"$\\{",writer);
         Iterator<Printable> printableIterator=this.iterator();
         while(printableIterator.hasNext()) {
             Printable p=printableIterator.next();
-            p.print();
+            Printer.print(p);
             if(printableIterator.hasNext()) {
-                Printer.print(", ");
+                Printer.print(", ",writer);
             }
         }
-        Printer.print("\\}$\n");
+        Printer.print("\\}$\n",writer);
 
 
     }
+
+
 }

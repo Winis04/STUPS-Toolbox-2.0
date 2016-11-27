@@ -202,78 +202,61 @@ public class Automaton implements Printable {
         this.startState = startState;
     }
 
-    @Override
-    public void print() {
-        switch (Printer.printmode) {
-            case NO:
-                break;
-            case LATEX:
-                printLatex(Printer.deepnes);
-                break;
-            case CONSOLE:
-                printConsole();
-                break;
-        }
-    }
 
-    private void printLatex(int x) {
-        Printer.print("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n");
-        Printer.deepnes++;
-        String space="";
-        for(int i=0;i<x;i++) {
-            space+="\t";
-        }
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+        Printer.println("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n",writer);
+        String space1=space+"\t";
         for(State state : this.states) {
-            Printer.print("\\node[state");
+            Printer.print(space1+"\\node[state",writer);
             if(state.isStart()) {
-                Printer.print(",initial");
+                Printer.print(",initial",writer);
             }
             if(state.isFinal()) {
-                Printer.print(",accepting");
+                Printer.print(",accepting",writer);
             }
-            Printer.print("] \t (");
-            state.print();
-            Printer.print(") \t {");
-            state.print();
-            Printer.print("};\n");
+            Printer.print("] \t (",writer);
+            Printer.print(state);
+            Printer.print(") \t {",writer);
+            Printer.print(state);
+            Printer.print("};\n",writer);
           //  \node[state,initial] (q_0)   {$q_0$};
         }
-        Printer.print( space+"\\path[->]\n");
+        Printer.println( space+"\\path[->]",writer);
 
         for(State s : this.states) {
-            Printer.print(space+"(");
-            s.print();
-            Printer.print(") \t");
+            Printer.print(space+"(",writer);
+            Printer.print(s);
+            Printer.print(") \t",writer);
             for(Rule r : s.getRules()) {
-                r.print();
+                Printer.print(r);
             }
         }
-        Printer.deepnes--;
-        Printer.print("\\end{tikzpicture}");
+        Printer.print("\\end{tikzpicture}",writer);
 
     }
     /**
      * Prints a given automaton to stdout.
      */
-    public void printConsole() {
+    public void printConsole(BufferedWriter writer) {
 
-        Printer.print("{");
-        this.printAllStates_Console(false);
-        Printer.print("; ");
-        Printer.print(this.startState.getName()+"; ");
-        Printer.print("; ");
-        this.printAllStates_Console(true);
-        Printer.print("}\n");
+        Printer.print("{",writer);
+        this.printAllStates_Console(writer,false);
+        Printer.print("; ",writer);
+        Printer.print(this.startState.getName()+"; ",writer);
+        Printer.print("; ",writer);
+        this.printAllStates_Console(writer,true);
+        Printer.print("}\n",writer);
 
         for(State s : this.states) {
             for(Rule r : s.getRules()) {
-                s.print();
-                r.print();
-                Printer.print("\n");
+                Printer.print(s);
+                Printer.print(r);
+                Printer.print("\n",writer);
             }
         }
     }
-    public void printAllStates_Console(boolean onlyFinal) {
+    public void printAllStates_Console(BufferedWriter writer, boolean onlyFinal) {
         ArrayList<State> states;
         if(onlyFinal) {
             states=(ArrayList<State>) this.states.stream().filter(state -> state.isFinal()).collect(Collectors.toList());
@@ -283,9 +266,9 @@ public class Automaton implements Printable {
         Iterator<State> iterator=states.iterator();
         while(iterator.hasNext()) {
             State state=iterator.next();
-            state.print();
+            Printer.print(state);
             if(iterator.hasNext()) {
-                Printer.print(", ");
+                Printer.print(", ",writer);
             }
         }
     }

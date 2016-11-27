@@ -159,7 +159,7 @@
 	\begin{itemize}
 		\item Mit SableCC erstellte Parser zum Einlesen von Automaten und Grammatiken aus Textdateien
 		\item Programm startet in Konsole; Mit Konsolenbefehlen können Dateien eingelesen und Algorithmen ausgeführt werden
-		\item GUI wird per Konsolenbefehl gestartet; Automaten und Grammatiken sind hier vollständig editierbar
+		\item Main.GUI wird per Konsolenbefehl gestartet; Automaten und Grammatiken sind hier vollständig editierbar
 	\end{itemize}
 \end{frame}
 
@@ -167,7 +167,7 @@
 	\begin{itemize}
 		\item Selbst entwickeltes Plugin-System zur Erweiterung der Toolbox:
 		\begin{itemize}
-			\item Interfaces um Konsole und GUI neue Funktionen hinzuzufügen (Plugins)
+			\item Interfaces um Konsole und Main.GUI neue Funktionen hinzuzufügen (Plugins)
 			\item Plugins werden zur Laufzeit geladen
 			\item Wenig Kenntnis über meinen Code vorausgesetzt
 		\end{itemize}
@@ -266,7 +266,7 @@ z2 --'b'--> z2
 \section{Plugins}
 \begin{frame}\frametitle{5 - Plugins}
 	\begin{itemize}
-		\item Verschiedene Plugins für Konsole und GUI
+		\item Verschiedene Plugins für Konsole und Main.GUI
 		\item Müssen entsprechendes Interface implementieren und im richtigen Ordner liegen
 		\item Werden vom Hauptprogramm zur Laufzeit geladen
 	\end{itemize}
@@ -432,8 +432,8 @@ public boolean errorFlag() {
 		\item Drei verschiedene Interfaces mit jeweils eigenen Packages:
 		\begin{itemize}
 			\item DisplayPlugin - Zur Darstellung von Objekten
-			\item SimpleFunctionPlugin - Um der GUI einfache Funktionen hinzuzufügen
-			\item ComplexFunctionPlugin - Um der GUI Funktionen mit wiederum eigener GUI hinzuzufügen
+			\item SimpleFunctionPlugin - Um der Main.GUI einfache Funktionen hinzuzufügen
+			\item ComplexFunctionPlugin - Um der Main.GUI Funktionen mit wiederum eigener Main.GUI hinzuzufügen
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -453,7 +453,7 @@ public boolean errorFlag() {
 		\begin{lstlisting}[frame=single, basicstyle=\tiny]
 public interface DisplayPlugin {
 
-//Gibt einen Java-FX Node zurueck, der in der GUI angezeigt wird
+//Gibt einen Java-FX Node zurueck, der in der Main.GUI angezeigt wird
 Node display(Object object);
 
 //Anzeige aktualisieren
@@ -468,7 +468,7 @@ Object openFile();
 //Objekt in Datei speichern (File --> Save)
 void saveFile(Object object);
 
-//Zusaetzliche Menueobjekte fuer die Menueleiste der GUI
+//Zusaetzliche Menueobjekte fuer die Menueleiste der Main.GUI
 HashSet<Menu> menus(Object object, Node node);
 
 //Name des Plugins (ChoosePlugin-Menue)
