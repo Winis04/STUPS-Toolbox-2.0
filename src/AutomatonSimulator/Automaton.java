@@ -6,6 +6,7 @@ import AutomatonParser.lexer.LexerException;
 import AutomatonParser.node.Start;
 import AutomatonParser.parser.Parser;
 import AutomatonParser.parser.ParserException;
+import Main.Storable;
 import Print.Printable;
 import Print.PrintableSet;
 import Print.Printer;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Created by fabian on 21.04.16.
  */
-public class Automaton implements Printable {
+public class Automaton implements Printable, Storable {
 
     /**
      * Contains all the states of the automaton.
@@ -65,6 +66,29 @@ public class Automaton implements Printable {
         this.states = new HashSet<>();
         this.states.add(this.startState);
         this.allInputs = new HashSet<>();
+    }
+
+    public Automaton(Automaton oldAutomaton) {
+        this.states= new HashSet<>();
+
+        //adds the states, but without Rules.
+        oldAutomaton.states.stream()
+                .forEach(state -> this.states.add(new State(oldAutomaton.startState.getName(),true,oldAutomaton.startState.isFinal(),new HashSet<>())));
+        this.states.stream().forEach(state -> {
+            if(state.isStart()) {
+                this.startState=state;
+            }
+        });
+        // for every old State, find the matching new State and copy the rules, so the new rules will have references to the new states.
+        oldAutomaton.states.stream()
+                .forEach(oldState -> {
+                    State newState = this.getState(oldState.getName());
+                    oldState.getRules().stream()
+                            .forEach(rule -> {
+                                newState.getRules().add(new Rule(this.getState(rule.getGoingTo().getName()),rule.getAcceptedInputs()));
+                            });
+                });
+        this.allInputs=oldAutomaton.allInputs;
     }
 
     /**
@@ -271,5 +295,20 @@ public class Automaton implements Printable {
                 Printer.print(", ",writer);
             }
         }
+    }
+
+    @Override
+    public Storable deep_copy(Storable old) {
+        return new Automaton((Automaton) old);
+    }
+
+    private State getState(String name) {
+        final State[] res = {null};
+        states.stream().forEach(state -> {
+            if(state.getName().equals(name)) {
+                res[0] =state;
+            }
+        });
+        return res[0];
     }
 }

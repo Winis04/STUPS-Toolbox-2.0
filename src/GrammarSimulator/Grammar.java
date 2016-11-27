@@ -1,6 +1,7 @@
 package GrammarSimulator;
 
 
+import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.joining;
 /**
  * Created by fabian on 06.08.16.
  */
-public class Grammar implements Printable {
+public class Grammar implements Printable, Storable {
 
     /**
      * The grammar's terminal symbols.
@@ -256,5 +257,10 @@ public class Grammar implements Printable {
     }
     public String getSuffix() {
         return suffix;
+    }
+
+    @Override
+    public Storable deep_copy(Storable old) {
+        return new Grammar((Grammar) old, false);
     }
 }
