@@ -27,6 +27,105 @@ public class CLI {
     protected static TreeMap<String,Grammar> grammars=new TreeMap<>();
 
 
+    private static boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
+        if(command.equals("gui")) {
+
+            Platform.runLater(() -> GUI.show());
+            while (!GUI.IS_VISIBLE) {
+                Thread.sleep(500);
+            }
+        } else if(command.equals("show-all-grammar")||command.equals("sag")) {
+
+            if(grammars.keySet().isEmpty()) {
+                System.out.println("no grammars stored");
+            } else {
+                grammars.keySet().forEach(key -> {
+                    Printer.print(grammars.get(key));
+                });
+            }
+
+        } else if(command.equals("store-g")||command.equals("store-grammar")) {
+
+            Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class),false);
+            if (parameters.length == 1) {
+                try {
+                    toBeStored.setName(parameters[0]);
+                    grammars.put(parameters[0],toBeStored);
+                } catch (Exception e) {
+                    System.out.println("the argument is not an integer!");
+                }
+            }
+
+            //grammars.add(toBeStored);
+        } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
+
+            if (grammars.isEmpty()) {
+                System.out.println("no grammar stored");
+            } else if (parameters.length == 1) {
+                String key=parameters[0];
+                Grammar newCurrent=grammars.get(key);
+                if(newCurrent!=null) {
+                    objects.put(Grammar.class,newCurrent);
+                } else {
+                    System.out.println("no such grammar stored");
+                }
+
+            } else {
+                System.out.println("wrong input!");
+            }
+        } else if(command.equals("remove-grammar")|| command.equals("remove-g")) {
+
+            if (grammars.isEmpty()) {
+                System.out.println("no grammar stored");
+            } else if (parameters.length == 1) {
+                String key=parameters[0];
+                grammars.remove(key);
+            } else {
+                System.out.println("wrong input!");
+            }
+
+        } else if(command.equals("h") || command.equals("help")) {
+
+            for(CLIPlugin plugin : plugins) {
+                System.out.print("'" + plugin.getNames()[0] + "'");
+                for(int i = 1; i < plugin.getNames().length; i++) {
+                    if(i < plugin.getNames().length - 1) {
+                        System.out.print(", ");
+                    } else {
+                        System.out.print(" or ");
+                    }
+                    System.out.print("'" + plugin.getNames()[i] + "'");
+                }
+                System.out.println("  --  " + plugin.getHelpText());
+            }
+
+            System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
+            System.out.println("'store-grammar' or 'store-g' -- stores the current grammar. Doesn't take any parameters");
+            System.out.println("'remove-grammar' or 'remove-g' __ removes the grammar at the given index. Takes an Index as a parameter");
+            System.out.println("'switch-grammar' or 'switch-g' -- switches the current grammar. Takes the index of the new grammar as a parameter"); //TODO:
+            System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
+            System.out.println("'a' or 'about' -- Shows the release information");
+            System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
+        } else if(command.equals("e") || command.equals("exit")) {
+            System.out.println("Goodbye!");
+            if(!Printer.writerIsNull()) {
+                Printer.printEndOfLatex();
+                Printer.closeWriter();
+            }
+            System.exit(0);
+        } else if(command.equals("a") || command.equals("about")) {
+            System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
+            System.out.println("Written and developed by Fabian Ruhland.");
+            System.out.println("--------------------------------------------");
+            System.out.println("This program uses the JUNG2-library to display automatons.");
+            System.out.println("JUNG2 is licensed under the BSD open-source license.");
+            System.out.println("See http://jung.sourceforge.net/site/license.html or the file \"lib/JUNG2/JUNG-license.txt\" for more information.");
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
@@ -83,99 +182,8 @@ public class CLI {
                 //If a plugin returns an object, it is put into the objects-Hashmap. If an object of this type already exists, it will be overwritten.
                 Object ret;
                 boolean validCommand = false;
-                if(command.equals("gui")) {
-                    validCommand = true;
-                    Platform.runLater(() -> GUI.show());
-                    while (!GUI.IS_VISIBLE) {
-                        Thread.sleep(500);
-                    }
-                } else if(command.equals("show-all-grammar")||command.equals("sag")) {
-                    validCommand = true;
-                    if(grammars.keySet().isEmpty()) {
-                        System.out.println("no grammars stored");
-                    } else {
-                        grammars.keySet().forEach(key -> {
-                            Printer.print(grammars.get(key));
-                        });
-                    }
-
-                } else if(command.equals("store-g")||command.equals("store-grammar")) {
-                    validCommand = true;
-                    Grammar toBeStored = new Grammar((Grammar) objects.get(Grammar.class),false);
-                    if (parameters.length == 1) {
-                        try {
-                            toBeStored.setName(parameters[0]);
-                            grammars.put(parameters[0],toBeStored);
-                        } catch (Exception e) {
-                            System.out.println("the argument is not an integer!");
-                        }
-                    }
-
-                    //grammars.add(toBeStored);
-                } else if(command.equals("switch-grammar")|| command.equals("switch-g")) {
-                    validCommand = true;
-                    if (grammars.isEmpty()) {
-                        System.out.println("no grammar stored");
-                    } else if (parameters.length == 1) {
-                        String key=parameters[0];
-                        Grammar newCurrent=grammars.get(key);
-                        if(newCurrent!=null) {
-                            objects.put(Grammar.class,newCurrent);
-                        } else {
-                            System.out.println("no such grammar stored");
-                        }
-
-                    } else {
-                        System.out.println("wrong input!");
-                    }
-                } else if(command.equals("remove-grammar")|| command.equals("remove-g")) {
-                    validCommand = true;
-                    if (grammars.isEmpty()) {
-                        System.out.println("no grammar stored");
-                    } else if (parameters.length == 1) {
-                        String key=parameters[0];
-                        grammars.remove(key);
-                    } else {
-                        System.out.println("wrong input!");
-                    }
-
-                } else if(command.equals("h") || command.equals("help")) {
-                    validCommand = true;
-                    for(CLIPlugin plugin : plugins) {
-                        System.out.print("'" + plugin.getNames()[0] + "'");
-                        for(int i = 1; i < plugin.getNames().length; i++) {
-                            if(i < plugin.getNames().length - 1) {
-                                System.out.print(", ");
-                            } else {
-                                System.out.print(" or ");
-                            }
-                            System.out.print("'" + plugin.getNames()[i] + "'");
-                        }
-                        System.out.println("  --  " + plugin.getHelpText());
-                    }
-
-                    System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
-                    System.out.println("'store-grammar' or 'store-g' -- stores the current grammar. Doesn't take any parameters");
-                    System.out.println("'remove-grammar' or 'remove-g' __ removes the grammar at the given index. Takes an Index as a parameter");
-                    System.out.println("'switch-grammar' or 'switch-g' -- switches the current grammar. Takes the index of the new grammar as a parameter"); //TODO:
-                    System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
-                    System.out.println("'a' or 'about' -- Shows the release information");
-                    System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
-                } else if(command.equals("e") || command.equals("exit")) {
-                    System.out.println("Goodbye!");
-                    if(!Printer.writerIsNull()) {
-                        Printer.printEndOfLatex();
-                        Printer.closeWriter();
-                    }
-                    System.exit(0);
-                } else if(command.equals("a") || command.equals("about")) {
-                    validCommand = true;
-                    System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
-                    System.out.println("Written and developed by Fabian Ruhland.");
-                    System.out.println("--------------------------------------------");
-                    System.out.println("This program uses the JUNG2-library to display automatons.");
-                    System.out.println("JUNG2 is licensed under the BSD open-source license.");
-                    System.out.println("See http://jung.sourceforge.net/site/license.html or the file \"lib/JUNG2/JUNG-license.txt\" for more information.");
+                if(buildIn(command,parameters,plugins)) {
+                    validCommand=true;
                 } else {
                     for (CLIPlugin plugin : plugins) {
                         if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
