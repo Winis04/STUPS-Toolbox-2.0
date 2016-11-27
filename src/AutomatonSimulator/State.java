@@ -119,7 +119,7 @@ public class State implements Printable{
     @Override
     public void printLatex(BufferedWriter writer, String space) {
 
-        Printer.print("$"+this.name+"$",writer);
+        Printer.print(this.name,writer);
     }
 
     @Override

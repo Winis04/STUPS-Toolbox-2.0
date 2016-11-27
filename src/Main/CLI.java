@@ -36,6 +36,9 @@ public class CLI {
         String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv"};
         return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
     }
+    private static boolean storeFunctionCheckParameter(String[] parameters) {
+        return parameters.length==2;
+    }
 
     private static boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         if(command.equals("gui")) {
@@ -45,58 +48,66 @@ public class CLI {
                 Thread.sleep(500);
             }
         } else if(isStoreFunction(command)) {
-            try {
-                Integer i = Integer.parseInt(parameters[1]);
-                //first: detect which object should be stored
-                Class clazz = lookUpTable.get(parameters[0].toLowerCase());
+            if(storeFunctionCheckParameter(parameters)) {
+                try {
+                    Integer i = Integer.parseInt(parameters[1]);
+                    //first: detect which object should be stored
+                    Class clazz = lookUpTable.get(parameters[0].toLowerCase());
 
-                if (clazz == null) {
-                    System.out.println("There are no objects of type " + parameters[0]);
-                } else {
-                    HashMap<Integer, Storable> correctMap = store.get(clazz);
-                    if (command.equals("store") || command.equals("str")) {
-                        Object object = objects.get(clazz);
-                        if (object == null) {
-                            System.out.println("Please load an object of type " + parameters[0] + " before using this command!");
-                        } else {
-                            Storable toBeStored = ((Storable) object).deep_copy();
-                            if (correctMap == null) {
-                                HashMap<Integer, Storable> tmp = new HashMap<>();
-                                tmp.put(i, toBeStored);
-                                store.put(clazz, tmp);
-                            } else {
-                                correctMap.put(i, toBeStored);
-                                //    store.get(clazz).put(i, toBeStored);
-                            }
-                        }
-                    } else if (command.equals("switch") || command.equals("swt")) {
-                        Storable theNewCurrent = correctMap.get(i);
-                        if (theNewCurrent == null) {
-                            System.out.println("no Object with this Index"); //TODO
-                        } else {
-                            objects.put(clazz, theNewCurrent.deep_copy());
-                        }
-                    } else if (command.equals("remove") || command.equals("rmv")) {
-                        correctMap.remove(i);
+                    if (clazz == null) {
+                        System.out.println("There are no objects of type " + parameters[0]);
                     } else {
-                        System.out.println("something went wrong");
+                        HashMap<Integer, Storable> correctMap = store.get(clazz);
+                        if (command.equals("store") || command.equals("str")) {
+                            Object object = objects.get(clazz);
+                            if (object == null) {
+                                System.out.println("Please load an object of type " + parameters[0] + " before using this command!");
+                            } else {
+                                Storable toBeStored = ((Storable) object).deep_copy();
+                                if (correctMap == null) {
+                                    HashMap<Integer, Storable> tmp = new HashMap<>();
+                                    tmp.put(i, toBeStored);
+                                    store.put(clazz, tmp);
+                                } else {
+                                    correctMap.put(i, toBeStored);
+                                    //    store.get(clazz).put(i, toBeStored);
+                                }
+                            }
+                        } else if (command.equals("switch") || command.equals("swt")) {
+                            Storable theNewCurrent = correctMap.get(i);
+                            if (theNewCurrent == null) {
+                                System.out.println("no Object with this Index"); //TODO
+                            } else {
+                                objects.put(clazz, theNewCurrent.deep_copy());
+                            }
+                        } else if (command.equals("remove") || command.equals("rmv")) {
+                            correctMap.remove(i);
+                        } else {
+                            System.out.println("something went wrong");
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    System.out.println("invalid input: Input is not an Integer");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("invalid input: Input is not an Integer");
+            } else {
+                System.out.println("please enter a storable type (e.g. grammar) and key as parameters!");
             }
 
         } else if(command.equals("sa")||command.equals("show-all")) {
-            Class clazz = lookUpTable.get(parameters[0].toLowerCase());
-            if(clazz==null) {
-                System.out.println("no such objects stored");
-            } else {
-                HashMap<Integer,Storable> correctMap=store.get(clazz);
-                if(correctMap==null) {
-                    System.out.println("no objects of type " +parameters[0]+" stored!");
+            if(parameters.length==1) {
+                Class clazz = lookUpTable.get(parameters[0].toLowerCase());
+                if (clazz == null) {
+                    System.out.println("no such objects stored");
                 } else {
-                    correctMap.keySet().stream().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                    HashMap<Integer, Storable> correctMap = store.get(clazz);
+                    if (correctMap == null || correctMap.isEmpty()) {
+                        System.out.println("no objects of type " + parameters[0] + " stored!");
+                    } else {
+                        correctMap.keySet().stream().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                    }
                 }
+            } else {
+                System.out.println("Please enter a storable type as a parameter for this command!");
             }
 
         } else if(command.equals("h") || command.equals("help")) {

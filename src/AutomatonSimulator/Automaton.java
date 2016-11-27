@@ -73,7 +73,7 @@ public class Automaton implements Printable, Storable {
 
         //adds the states, but without Rules.
         oldAutomaton.states.stream()
-                .forEach(state -> this.states.add(new State(oldAutomaton.startState.getName(),true,oldAutomaton.startState.isFinal(),new HashSet<>())));
+                .forEach(state -> this.states.add(new State(state.getName(),state.isStart(),state.isFinal(),new HashSet<>())));
         this.states.stream().forEach(state -> {
             if(state.isStart()) {
                 this.startState=state;
@@ -268,7 +268,6 @@ public class Automaton implements Printable, Storable {
         this.printAllStates_Console(writer,false);
         Printer.print("; ",writer);
         Printer.print(this.startState.getName()+"; ",writer);
-        Printer.print("; ",writer);
         this.printAllStates_Console(writer,true);
         Printer.print("}\n",writer);
 
