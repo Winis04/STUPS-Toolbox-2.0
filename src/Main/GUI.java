@@ -50,10 +50,12 @@ public class GUI extends Application{
         initRootLayout();
 
         showPersonOverview();
+
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
             primaryStage.close();
         });
+
         new Thread(() -> cli.start()).start();
     }
 
