@@ -45,7 +45,8 @@ public class GUI extends Application{
         Platform.setImplicitExit(false);
         this.cli=new CLI(this);
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("AddressApp");
+
+
 
         initRootLayout();
 
@@ -55,7 +56,7 @@ public class GUI extends Application{
             IS_VISIBLE = false;
             primaryStage.close();
         });
-
+      
         new Thread(() -> cli.start()).start();
     }
 
@@ -72,7 +73,6 @@ public class GUI extends Application{
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.show();
 
             // Give the controller access to the main app.
             rootController = loader.getController();
