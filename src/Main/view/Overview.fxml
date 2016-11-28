@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
 <AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.view.OverviewController">
    <children>
@@ -14,10 +17,29 @@
                </children></AnchorPane>
           <AnchorPane fx:id="right">
                <children>
-                  <SplitPane dividerPositions="0.7478991596638656" layoutX="223.0" layoutY="108.0" orientation="VERTICAL" prefHeight="478.0" prefWidth="606.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane layoutX="223.0" layoutY="108.0" orientation="VERTICAL" prefHeight="478.0" prefWidth="606.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane />
-                      <AnchorPane />
+                      <AnchorPane>
+                           <children>
+                              <BorderPane layoutX="173.0" layoutY="119.0" prefHeight="476.0" prefWidth="604.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <bottom>
+                                    <TabPane prefHeight="160.0" prefWidth="604.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                                      <tabs>
+                                        <Tab text="Untitled Tab 1">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                          </content>
+                                        </Tab>
+                                        <Tab text="Untitled Tab 2">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                          </content>
+                                        </Tab>
+                                      </tabs>
+                                    </TabPane>
+                                 </bottom>
+                              </BorderPane>
+                           </children></AnchorPane>
                     </items>
                   </SplitPane>
                </children></AnchorPane>

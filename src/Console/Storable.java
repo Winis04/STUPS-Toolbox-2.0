@@ -5,4 +5,5 @@ package Console;
  */
 public interface Storable {
     Storable deep_copy();
+    String getName();
 }

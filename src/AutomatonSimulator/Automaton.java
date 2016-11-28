@@ -321,7 +321,9 @@ public class Automaton implements Printable, Storable {
         return res[0];
     }
 
-
+    public String getName() {
+        return "A";
+    }
 
 
 }

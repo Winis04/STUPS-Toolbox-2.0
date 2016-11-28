@@ -242,6 +242,9 @@ public class Grammar implements Printable, Storable {
             return name;
         }
     }
+    public String getName() {
+        return getNameWithoutSuffix();
+    }
 
     public void setName(String name) {
         this.name = name;

@@ -31,18 +31,30 @@ import java.util.HashSet;
  */
 public class GUI extends Application{
 
-    public static boolean IS_VISIBLE=true;
+    private CLI cli;
+
+    private OverviewController overviewController;
+    private RootController rootController;
+
+    public static boolean IS_VISIBLE=false;
     private Stage primaryStage;
     private BorderPane rootLayout;
 
     @Override
     public void start(Stage primaryStage) {
+        Platform.setImplicitExit(false);
+        this.cli=new CLI(this);
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("AddressApp");
 
         initRootLayout();
 
         showPersonOverview();
+        primaryStage.setOnCloseRequest(event -> {
+            IS_VISIBLE = false;
+            primaryStage.close();
+        });
+        new Thread(() -> cli.start()).start();
     }
 
     /**
@@ -61,8 +73,8 @@ public class GUI extends Application{
             primaryStage.show();
 
             // Give the controller access to the main app.
-            RootController controller = loader.getController();
-            controller.setGui(this);
+            rootController = loader.getController();
+            rootController.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,8 +93,8 @@ public class GUI extends Application{
             // Set person overview into the center of root layout.
            rootLayout.setCenter(overview);
             // Give the controller access to the main app.
-            OverviewController controller = loader.getController();
-            controller.setGui(this);
+            overviewController = loader.getController();
+            overviewController.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,6 +106,17 @@ public class GUI extends Application{
      */
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+    /**
+     * This method is called when 'gui' is entered into the Console.CLI and shows the Main.GUI.
+     */
+    public void show() {
+        //Set IS_VISIBLE and refresh the currently loaded display-plugin,
+        //as the displayed object may have changed since the Main.GUI was last opened.
+        IS_VISIBLE = true;
+        overviewController.makeTree();
+
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

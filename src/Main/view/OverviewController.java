@@ -1,10 +1,20 @@
 package Main.view;
 
+import AutomatonSimulator.Automaton;
+import Console.CLI;
+import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import Main.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
+import sun.reflect.generics.tree.Tree;
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Isabel on 28.11.2016.
@@ -23,6 +33,7 @@ public class OverviewController {
      * The constructor is called before the initialize() method.
      */
     public OverviewController() {
+        makeTree();
     }
     /**
      * Initializes the controller class. This method is automatically called
@@ -30,9 +41,27 @@ public class OverviewController {
      */
     @FXML
     private void initialize() {
+        makeTree();
 
+    }
+    public void makeTree() {
+        TreeItem<String> root=new TreeItem<>("Storables");
+        if(!CLI.store.keySet().isEmpty()) {
+            /** top items **/
+            CLI.store.keySet().stream()
+                    .forEach(clazz -> {
+                        List<TreeItem<String>> list= CLI.store.get(clazz).keySet().stream()
+                                .map(key -> new TreeItem<String>(key+""))
+                                .collect(Collectors.toList());
+                        TreeItem<String> top=new TreeItem<String>(clazz.getSimpleName());
+                        top.getChildren().addAll(list);
+                        top.setExpanded(true);
+                        root.getChildren().add(top);
+                    });
 
-
+            root.setExpanded(true);
+            treeView.setRoot(root);
+        }
     }
     public void setGui(GUI gui) {
         this.gui = gui;

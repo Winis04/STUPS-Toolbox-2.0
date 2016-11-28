@@ -20,18 +20,24 @@ import java.util.*;
  * Created by fabian on 15.06.16.
  */
 public class CLI {
+
+    private GUI gui;
     /**
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
     public static HashMap<Class, Object> objects = new HashMap<>();
 
-    private static HashMap<Class, HashMap<Integer, Storable>> store= new HashMap<>();
+    public static HashMap<Class, HashMap<Integer, Storable>> store= new HashMap<>();
 
     private static HashMap<String,Class> lookUpTable =new HashMap<>();
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     protected static TreeMap<String,Grammar> grammars=new TreeMap<>();
+
+    public CLI(GUI gui) {
+        this.gui=gui;
+    }
 
     private static boolean isStoreFunction(String command) {
         String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv"};
@@ -41,13 +47,13 @@ public class CLI {
         return parameters.length==2;
     }
 
-    private static boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
+    private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         if(command.equals("gui")) {
-            /**
-            Platform.runLater(() -> GUI.show());
+
+            Platform.runLater(() -> gui.show());
             while (!GUI.IS_VISIBLE) {
                 Thread.sleep(500);
-            } **/
+            }
         } else if(isStoreFunction(command)) {
             if(storeFunctionCheckParameter(parameters)) {
                 try {
@@ -156,7 +162,7 @@ public class CLI {
     /**
      * This method starts the Console.CLI and enters an endless loop, listening for user input.
      */
-    public static void start() {
+    public void start() {
         lookUpTable.put("grammar",Grammar.class);
         lookUpTable.put("automaton",Automaton.class);
         //Print a welcome message and initialize some variables.

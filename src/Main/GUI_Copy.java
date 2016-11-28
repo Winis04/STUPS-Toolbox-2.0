@@ -307,7 +307,7 @@ public class GUI_Copy extends Application{
         //Now, that everything is loaded, we can start the Console.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
         //and the Main.GUI will be made visible, when the user gives the appropriate command.
-        new Thread(() -> CLI.start()).start();
+     //   new Thread(() -> CLI.start()).start();
     }
 
 
