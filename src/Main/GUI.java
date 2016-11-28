@@ -4,6 +4,7 @@ import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import Console.CLI;
+import Main.view.OverviewController;
 import Main.view.RootController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -79,6 +80,9 @@ public class GUI extends Application{
 
             // Set person overview into the center of root layout.
            rootLayout.setCenter(overview);
+            // Give the controller access to the main app.
+            OverviewController controller = loader.getController();
+            controller.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

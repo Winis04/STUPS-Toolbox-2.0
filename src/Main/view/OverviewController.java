@@ -2,31 +2,27 @@ package Main.view;
 
 import Main.GUI;
 import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Created by Isabel on 28.11.2016.
  */
-public class RootController {
+public class OverviewController {
     @FXML
-    private MenuBar menuBar;
+    AnchorPane left;
     @FXML
-    private Menu choosePlugin;
+    AnchorPane right;
     @FXML
-    private Menu file;
-    @FXML
-    private Menu export;
-    @FXML
-    private Menu options;
+    TreeView<String> treeView;
 
     private GUI gui;
-
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    public RootController() {
+    public OverviewController() {
     }
     /**
      * Initializes the controller class. This method is automatically called
@@ -35,8 +31,9 @@ public class RootController {
     @FXML
     private void initialize() {
 
-    }
 
+
+    }
     public void setGui(GUI gui) {
         this.gui = gui;
     }

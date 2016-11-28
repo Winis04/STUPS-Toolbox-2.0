@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 import Main.GUI;
+import Main.GUI_Copy;
 import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
