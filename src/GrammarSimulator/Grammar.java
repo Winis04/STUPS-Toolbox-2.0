@@ -1,7 +1,7 @@
 package GrammarSimulator;
 
 
-import Main.Storable;
+import Console.Storable;
 import Print.Printable;
 import Print.Printer;
 

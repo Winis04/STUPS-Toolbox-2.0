@@ -1,9 +1,9 @@
-package Main;
+package Console;
 
 import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
+import Main.GUI;
 import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
@@ -23,9 +23,9 @@ public class CLI {
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
-    protected static HashMap<Class, Object> objects = new HashMap<>();
+    public static HashMap<Class, Object> objects = new HashMap<>();
 
-    private static HashMap<Class, HashMap<Integer,Storable>> store= new HashMap<>();
+    private static HashMap<Class, HashMap<Integer, Storable>> store= new HashMap<>();
 
     private static HashMap<String,Class> lookUpTable =new HashMap<>();
 
@@ -42,11 +42,11 @@ public class CLI {
 
     private static boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         if(command.equals("gui")) {
-
+            /**
             Platform.runLater(() -> GUI.show());
             while (!GUI.IS_VISIBLE) {
                 Thread.sleep(500);
-            }
+            } **/
         } else if(isStoreFunction(command)) {
             if(storeFunctionCheckParameter(parameters)) {
                 try {
@@ -153,7 +153,7 @@ public class CLI {
     }
 
     /**
-     * This method starts the Main.CLI and enters an endless loop, listening for user input.
+     * This method starts the Console.CLI and enters an endless loop, listening for user input.
      */
     public static void start() {
         lookUpTable.put("grammar",Grammar.class);
@@ -164,7 +164,7 @@ public class CLI {
         ArrayList<CLIPlugin> plugins = new ArrayList<>();
         objects.put(null, null);
 
-        //Load all Main.CLI plugins.
+        //Load all Console.CLI plugins.
         try {
             String packagePath = Thread.currentThread().getContextClassLoader().getResources("CLIPlugins").nextElement().getFile().replace("%20", " ");
             File[] classes = new File(packagePath).listFiles();
@@ -190,7 +190,6 @@ public class CLI {
                     e.printStackTrace();
                 }
             }
-
             command = "";
             System.out.print(">");
             try {

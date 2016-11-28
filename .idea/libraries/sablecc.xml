@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sablecc">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/out/production/toolbox/sablecc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/production/stups-toolbox-2.0/sablecc.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,14 +1,7 @@
 package AutomatonSimulator;
 
-import AutomatonParser.Visitor;
-import AutomatonParser.lexer.Lexer;
-import AutomatonParser.lexer.LexerException;
-import AutomatonParser.node.Start;
-import AutomatonParser.parser.Parser;
-import AutomatonParser.parser.ParserException;
-import Main.Storable;
+import Console.Storable;
 import Print.Printable;
-import Print.PrintableSet;
 import Print.Printer;
 
 import java.io.*;
@@ -16,7 +9,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by fabian on 21.04.16.

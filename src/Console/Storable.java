@@ -1,4 +1,4 @@
-package Main;
+package Console;
 
 /**
  * Created by Isabel on 27.11.2016.
