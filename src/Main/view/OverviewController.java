@@ -11,6 +11,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class OverviewController {
     @FXML
     TabPane tabPane;
     @FXML
-    AnchorPane contentPane;
+    BorderPane contentPane;
 
     HashSet<TabPlugin> tabPlugins=null;
     HashMap<Class, Tab> tabs=new HashMap<>();
@@ -76,13 +77,20 @@ public class OverviewController {
     }
 
     public void addTabs(HashSet<TabPlugin> tabPlugins) {
+        tabPlugins.stream().forEach(tabPlugin -> {
+            tabPlugin.setContentPane(contentPane);
+            BorderPane pane=new BorderPane();
+            tabPlugin.setPane(pane);
+            Tab tab=new Tab(tabPlugin.getClass().getSimpleName(),pane);
+            tabPlugin.setTab(tab);
 
+            tabPlugin.initialize(new Automaton());
+        });
         this.tabPlugins=tabPlugins;
         tabPlugins.stream().forEach(tabPlugin -> {
             // creates a tab for every class in tabPlugins
-            tabs.put(tabPlugin.getClass(),new Tab(tabPlugin.getClass().getSimpleName()));
+            tabs.put(tabPlugin.getClass(),tabPlugin.getTab());
         });
         tabPane.getTabs().addAll(tabs.values());
-
     }
 }
