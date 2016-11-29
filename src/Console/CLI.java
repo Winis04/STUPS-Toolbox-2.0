@@ -40,7 +40,7 @@ public class CLI {
     }
 
     private static boolean isStoreFunction(String command) {
-        String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv"};
+        String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv","copy"};
         return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
     }
     private static boolean storeFunctionCheckParameter(String[] parameters) {
@@ -65,12 +65,17 @@ public class CLI {
                         System.out.println("There are no objects of type " + parameters[0]);
                     } else {
                         HashMap<Integer, Storable> correctMap = store.get(clazz);
-                        if (command.equals("store") || command.equals("str")) {
+                        if (command.equals("store") || command.equals("str") || command.equals("copy")) {
                             Object object = objects.get(clazz);
                             if (object == null) {
                                 System.out.println("Please load an object of type " + parameters[0] + " before using this command!");
                             } else {
-                                Storable toBeStored = ((Storable) object).deep_copy();
+                                Storable toBeStored;
+                                if(command.equals("copy")) {
+                                    toBeStored = ((Storable) object).deep_copy();
+                                } else {
+                                    toBeStored = (Storable) object;
+                                }
                                 if (correctMap == null) {
                                     HashMap<Integer, Storable> tmp = new HashMap<>();
                                     tmp.put(i, toBeStored);
@@ -85,7 +90,7 @@ public class CLI {
                             if (theNewCurrent == null) {
                                 System.out.println("no Object with this Index"); //TODO
                             } else {
-                                objects.put(clazz, theNewCurrent.deep_copy());
+                                objects.put(clazz, theNewCurrent);
                             }
                         } else if (command.equals("remove") || command.equals("rmv")) {
                             correctMap.remove(i);

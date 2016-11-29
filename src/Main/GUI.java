@@ -56,7 +56,7 @@ public class GUI extends Application{
             IS_VISIBLE = false;
             primaryStage.close();
         });
-      
+
         new Thread(() -> cli.start()).start();
     }
 
@@ -89,7 +89,7 @@ public class GUI extends Application{
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("view/overview.fxml"));
+            loader.setLocation(GUI.class.getResource("view/Overview.fxml"));
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
