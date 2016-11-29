@@ -3,8 +3,11 @@ package Main.view;
 import AutomatonSimulator.Automaton;
 import Console.CLI;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
+import GUIPlugins.TabPlugins.TabPlugin;
 import Main.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +16,8 @@ import sun.reflect.generics.tree.Tree;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +26,14 @@ import java.util.stream.Collectors;
  */
 public class OverviewController {
     @FXML
-    AnchorPane left;
-    @FXML
-    AnchorPane right;
-    @FXML
     TreeView<String> treeView;
+    @FXML
+    TabPane tabPane;
+    @FXML
+    AnchorPane contentPane;
+
+    HashSet<TabPlugin> tabPlugins=null;
+    HashMap<Class, Tab> tabs=new HashMap<>();
 
     private GUI gui;
     /**
@@ -65,5 +73,16 @@ public class OverviewController {
     }
     public void setGui(GUI gui) {
         this.gui = gui;
+    }
+
+    public void addTabs(HashSet<TabPlugin> tabPlugins) {
+
+        this.tabPlugins=tabPlugins;
+        tabPlugins.stream().forEach(tabPlugin -> {
+            // creates a tab for every class in tabPlugins
+            tabs.put(tabPlugin.getClass(),new Tab(tabPlugin.getClass().getSimpleName()));
+        });
+        tabPane.getTabs().addAll(tabs.values());
+
     }
 }

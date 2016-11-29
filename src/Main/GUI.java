@@ -1,44 +1,41 @@
 package Main;
 
-import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
-import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import GUIPlugins.TabPlugins.TabPlugin;
 import Console.CLI;
 import Main.view.OverviewController;
 import Main.view.RootController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import sun.plugin.javascript.navig.Anchor;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
  * Created by fabian on 17.06.16.
  */
 public class GUI extends Application{
-
+    /** the cli instance that is called by the gui **/
     private CLI cli;
-
+    /** controller for the right part of the scree**/
     private OverviewController overviewController;
+    /** controller for the main menu and stuff **/
     private RootController rootController;
+    /** true, when the gui is visible. Otherwise, false **/
+    public boolean IS_VISIBLE=false;
 
-    public static boolean IS_VISIBLE=false;
     private Stage primaryStage;
     private BorderPane rootLayout;
+
+    HashSet<TabPlugin> tabPlugins=new HashSet<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -117,8 +114,32 @@ public class GUI extends Application{
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
         overviewController.makeTree();
-
+        loadtabPlugIns();
         primaryStage.show();
+    }
+    public void loadtabPlugIns() {
+        String packagePath = null;
+        try {
+            packagePath = Thread.currentThread().getContextClassLoader().getResources("GUIPlugins/TabPlugins").nextElement().getFile().replace("%20", " ");
+            File[] classes = new File(packagePath).listFiles();
+            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
+            for(File file : classes) {
+                if(file.getName().endsWith(".class") && !file.getName().equals("TabPlugin.class") && !file.getName().contains("$")) {
+                    TabPlugin instance = (TabPlugin) urlClassLoader.loadClass("GUIPlugins.TabPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
+                    tabPlugins.add(instance);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        overviewController.addTabs(tabPlugins);
+
     }
 
     public static void main(String[] args) {

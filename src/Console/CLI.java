@@ -51,7 +51,7 @@ public class CLI {
         if(command.equals("gui")) {
 
             Platform.runLater(() -> gui.show());
-            while (!GUI.IS_VISIBLE) {
+            while (!gui.IS_VISIBLE) {
                 Thread.sleep(500);
             }
         } else if(isStoreFunction(command)) {
@@ -195,7 +195,7 @@ public class CLI {
         while(true) {
 
             //Sleep, while the Main.GUI is visible.
-            while(GUI.IS_VISIBLE) {
+            while(gui.IS_VISIBLE) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

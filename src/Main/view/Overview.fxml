@@ -1,45 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.view.OverviewController">
+<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.view.OverviewController">
    <children>
       <SplitPane dividerPositions="0.23684210526315788" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane fx:id="left" SplitPane.resizableWithParent="false">
+          <AnchorPane SplitPane.resizableWithParent="false">
                <children>
                   <TreeView fx:id="treeView" layoutX="-55.0" layoutY="-23.0" prefHeight="298.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
-          <AnchorPane fx:id="right">
+          <AnchorPane>
                <children>
-                  <SplitPane layoutX="223.0" layoutY="108.0" orientation="VERTICAL" prefHeight="478.0" prefWidth="606.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.7331932773109243" layoutX="39.0" layoutY="52.0" orientation="VERTICAL" prefHeight="478.0" prefWidth="605.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <BorderPane layoutX="173.0" layoutY="119.0" prefHeight="476.0" prefWidth="604.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <bottom>
-                                    <TabPane prefHeight="160.0" prefWidth="604.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-                                      <tabs>
-                                        <Tab text="Untitled Tab 1">
-                                          <content>
-                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                          </content>
-                                        </Tab>
-                                        <Tab text="Untitled Tab 2">
-                                          <content>
-                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                          </content>
-                                        </Tab>
-                                      </tabs>
-                                    </TabPane>
-                                 </bottom>
-                              </BorderPane>
-                           </children></AnchorPane>
+                              <TabPane fx:id="tabPane" layoutX="-10.0" layoutY="-62.0" prefHeight="123.0" prefWidth="603.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
                     </items>
                   </SplitPane>
                </children></AnchorPane>
