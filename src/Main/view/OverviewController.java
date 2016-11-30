@@ -45,7 +45,7 @@ public class OverviewController {
      * The constructor is called before the initialize() method.
      */
     public OverviewController() {
-        makeTree();
+//        makeTree();
     }
     /**
      * Initializes the controller class. This method is automatically called
@@ -53,8 +53,8 @@ public class OverviewController {
      */
     @FXML
     private void initialize() {
-        this.cli=gui.getCli();
-        makeTree();
+//        this.cli=gui.getCli();
+//        makeTree();
 
     }
     public void makeTree() {

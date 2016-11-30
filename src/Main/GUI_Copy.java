@@ -60,9 +60,9 @@ public class GUI_Copy extends Application{
     private RootController rootController;
     private OverviewController overviewController;
 
-    private BorderPane content;
-
     private BorderPane root;
+    private BorderPane functionsPane;
+    private FlowPane simpleFunctionsPane;
     /**
      * The main method. It just launches the JavaFX-Application Thread.
      *
@@ -172,8 +172,9 @@ public class GUI_Copy extends Application{
         //Initialize panes for the currently loaded display and function plugins.
       //  BorderPane root = new BorderPane();
         initRootLayout();
-        BorderPane functionsPane = new BorderPane();
-        FlowPane simpleFunctionsPane = new FlowPane();
+        showOverview();
+     //   BorderPane functionsPane = new BorderPane();
+       // FlowPane simpleFunctionsPane = new FlowPane();
 
         //Create a ComboBox to display all the simple plugins and a button to execute the selected plugin.
         ComboBox<String> functionsBox = new ComboBox<>();
@@ -351,7 +352,7 @@ public class GUI_Copy extends Application{
     /**
      * Shows the person overview inside the root layout.
      */
-    public void showPersonOverview() {
+    public void showOverview() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -359,10 +360,12 @@ public class GUI_Copy extends Application{
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
-            //root.setCenter(overview);
+            root.setCenter(overview);
             // Give the controller access to the main app.
             overviewController = loader.getController();
             overviewController.setGui(this);
+            this.functionsPane=overviewController.getContentPane();
+            this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
 
         } catch (IOException e) {
             e.printStackTrace();
