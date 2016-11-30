@@ -5,6 +5,7 @@ import Console.CLI;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.TabPlugins.TabPlugin;
 import Main.GUI;
+import Main.GUI_Copy;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -36,7 +37,8 @@ public class OverviewController {
     HashSet<TabPlugin> tabPlugins=null;
     HashMap<Class, Tab> tabs=new HashMap<>();
 
-    private GUI gui;
+    private GUI_Copy gui;
+    private CLI cli;
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
@@ -50,16 +52,17 @@ public class OverviewController {
      */
     @FXML
     private void initialize() {
+        this.cli=gui.getCli();
         makeTree();
 
     }
     public void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
-        if(!CLI.store.keySet().isEmpty()) {
+        if(!cli.store.keySet().isEmpty()) {
             /** top items **/
-            CLI.store.keySet().stream()
+            cli.store.keySet().stream()
                     .forEach(clazz -> {
-                        List<TreeItem<String>> list= CLI.store.get(clazz).keySet().stream()
+                        List<TreeItem<String>> list= cli.store.get(clazz).keySet().stream()
                                 .map(key -> new TreeItem<String>(key+""))
                                 .collect(Collectors.toList());
                         TreeItem<String> top=new TreeItem<String>(clazz.getSimpleName());
@@ -72,7 +75,7 @@ public class OverviewController {
             treeView.setRoot(root);
         }
     }
-    public void setGui(GUI gui) {
+    public void setGui(GUI_Copy gui) {
         this.gui = gui;
     }
 
@@ -84,7 +87,7 @@ public class OverviewController {
             Tab tab=new Tab(tabPlugin.getClass().getSimpleName(),pane);
             tabPlugin.setTab(tab);
 
-            tabPlugin.initialize(new Automaton());
+            tabPlugin.getFxNode(new Automaton(),null);
         });
         this.tabPlugins=tabPlugins;
         tabPlugins.stream().forEach(tabPlugin -> {

@@ -40,7 +40,7 @@ public class GUI extends Application{
     @Override
     public void start(Stage primaryStage) {
         Platform.setImplicitExit(false);
-        this.cli=new CLI(this);
+     //   this.cli=new CLI(this);
         this.primaryStage = primaryStage;
 
 
@@ -73,7 +73,7 @@ public class GUI extends Application{
 
             // Give the controller access to the main app.
             rootController = loader.getController();
-            rootController.setGui(this);
+     //       rootController.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class GUI extends Application{
            rootLayout.setCenter(overview);
             // Give the controller access to the main app.
             overviewController = loader.getController();
-            overviewController.setGui(this);
+//            overviewController.setGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

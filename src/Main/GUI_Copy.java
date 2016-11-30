@@ -4,8 +4,10 @@ import Console.CLI;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import Main.view.RootController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -27,28 +30,34 @@ public class GUI_Copy extends Application{
     /**
      * true, if the Main.GUI is visible. The Console.CLI will deactivate itself, if this is true.
      */
-    public static boolean IS_VISIBLE = false;
+    public boolean IS_VISIBLE = false;
 
     /**
      * The main stage for JavaFX.
      */
-    private static Stage primaryStage;
+    private Stage primaryStage;
 
     /**
      * The currenty displayed display-plugin.
      */
-    private static DisplayPlugin currentDisplayPlugin;
+    private DisplayPlugin currentDisplayPlugin;
 
     /**
      * Contains all complex plugins. The class-type of every plugin is mapped to a instane of the plugin.
      */
-    private static HashMap<Class, ComplexFunctionPlugin> complexFunctionPlugins = new HashMap<>();
+    private HashMap<Class, ComplexFunctionPlugin> complexFunctionPlugins = new HashMap<>();
 
     /**
      * Displays all complex plugins that match the display-type of the currently loaded display-plugin.
      */
-    private static GridPane complexFunctionsPane = new GridPane();
+    private GridPane complexFunctionsPane = new GridPane();
 
+    /**
+     *
+     */
+    private RootController rootController;
+
+    private BorderPane root;
     /**
      * The main method. It just launches the JavaFX-Application Thread.
      *
@@ -58,22 +67,24 @@ public class GUI_Copy extends Application{
         launch();
     }
 
+    private CLI cli;
+
     /**
      * This method is called when 'gui' is entered into the Console.CLI and shows the Main.GUI.
      */
-    public static void show() {
+    public void show() {
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(CLI.objects.get(currentDisplayPlugin.displayType()));
+            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
         }
 
         primaryStage.show();
     }
 
-    private static void refreshComplexPlugins() {
+    private void refreshComplexPlugins() {
         complexFunctionsPane.getChildren().clear();
         int i = 0;
         for(Class functionPlugin : complexFunctionPlugins.keySet()) {
@@ -84,7 +95,7 @@ public class GUI_Copy extends Application{
 
                 pane.setHgap(10);
                 pane.getChildren().add(label);
-                pane.getChildren().add(plugin.getFxNode(CLI.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
+                pane.getChildren().add(plugin.getFxNode(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
 
                 complexFunctionsPane.add(pane, 0, i);
                 i++;
@@ -99,6 +110,7 @@ public class GUI_Copy extends Application{
      */
     @Override
     public void start(Stage stage) {
+        this.cli=new CLI(this);
         //Prevent the JavaFX-Application Thread from exiting, when the window is closed.
         Platform.setImplicitExit(false);
 
@@ -153,7 +165,8 @@ public class GUI_Copy extends Application{
 
 
         //Initialize panes for the currently loaded display and function plugins.
-        BorderPane root = new BorderPane();
+      //  BorderPane root = new BorderPane();
+        initRootLayout();
         BorderPane functionsPane = new BorderPane();
         FlowPane simpleFunctionsPane = new FlowPane();
 
@@ -166,9 +179,9 @@ public class GUI_Copy extends Application{
         //Then we can call the plugin's execute-method with the object as a parameter.
         functionsButton.setOnAction(event -> {
             Class input = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).inputType();
-            Object ret = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).execute(CLI.objects.get(input));
+            Object ret = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).execute(cli.objects.get(input));
             if(ret != null) {
-                CLI.objects.put(input, ret);
+                cli.objects.put(input, ret);
                 currentDisplayPlugin.refresh(ret);
                 refreshComplexPlugins();
             }
@@ -194,13 +207,13 @@ public class GUI_Copy extends Application{
             menuItem.setOnAction(event -> {
                 //get the display plugin and its corresponding object.
                 currentDisplayPlugin = displayPlugins.get(displayPlugin);
-                Object object = CLI.objects.get(displayPlugins.get(displayPlugin).displayType());
+                Object object = cli.objects.get(displayPlugins.get(displayPlugin).displayType());
 
                 //if the object doesn't exist, create a new one.
                 if(object == null) {
                     try {
                         object = displayPlugins.get(displayPlugin).displayType().newInstance();
-                        CLI.objects.put(displayPlugins.get(displayPlugin).displayType(), object);
+                        cli.objects.put(displayPlugins.get(displayPlugin).displayType(), object);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -213,7 +226,7 @@ public class GUI_Copy extends Application{
                 menuBar.getMenus().clear();
                 menus.clear();
                 menuBar.getMenus().add(pluginMenu);
-                menus.addAll(currentDisplayPlugin.menus(CLI.objects.get(currentDisplayPlugin.displayType()), root.getCenter()));
+                menus.addAll(currentDisplayPlugin.menus(cli.objects.get(currentDisplayPlugin.displayType()), root.getCenter()));
                 menuBar.getMenus().add(fileMenu);
                 menuBar.getMenus().addAll(menus);
 
@@ -222,7 +235,7 @@ public class GUI_Copy extends Application{
                     newMenu.setOnAction(event1 -> {
                         Object ret = currentDisplayPlugin.newObject();
                         if(ret != null) {
-                            CLI.objects.put(currentDisplayPlugin.displayType(), ret);
+                            cli.objects.put(currentDisplayPlugin.displayType(), ret);
                             currentDisplayPlugin.refresh(ret);
                             refreshComplexPlugins();
                         }
@@ -231,13 +244,13 @@ public class GUI_Copy extends Application{
                     openMenu.setOnAction(event1 -> {
                         Object ret = currentDisplayPlugin.openFile();
                         if(ret != null) {
-                            CLI.objects.put(currentDisplayPlugin.displayType(), ret);
+                            cli.objects.put(currentDisplayPlugin.displayType(), ret);
                             currentDisplayPlugin.refresh(ret);
                             refreshComplexPlugins();
                         }
                     });
 
-                    saveMenu.setOnAction(event1 -> currentDisplayPlugin.saveFile(CLI.objects.get(currentDisplayPlugin.displayType())));
+                    saveMenu.setOnAction(event1 -> currentDisplayPlugin.saveFile(cli.objects.get(currentDisplayPlugin.displayType())));
                 } else {
                     //if no plugin is loaded, the menu-items don't have any function.
                     newMenu.setOnAction(event1 -> {});
@@ -298,7 +311,7 @@ public class GUI_Copy extends Application{
         root.setCenter(new Label("STUPS-Toolbox"));
         root.setBottom(functionsPane);
 
-        primaryStage.setScene(new Scene(root, 800, 600));
+    //    primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
             primaryStage.close();
@@ -307,8 +320,31 @@ public class GUI_Copy extends Application{
         //Now, that everything is loaded, we can start the Console.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
         //and the Main.GUI will be made visible, when the user gives the appropriate command.
-     //  new Thread(() -> CLI.start()).start();
+       new Thread(() -> cli.start()).start();
+    }
+    /**
+     * Initializes the root layout.
+     */
+    public void initRootLayout() {
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(GUI.class.getResource("view/Root.fxml"));
+            root = (BorderPane) loader.load();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+
+            // Give the controller access to the main app.
+            rootController = loader.getController();
+            rootController.setGui(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-
+    public CLI getCli() {
+        return cli;
+    }
 }

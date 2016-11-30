@@ -1,6 +1,7 @@
 package Main.view;
 
 import Main.GUI;
+import Main.GUI_Copy;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -9,18 +10,9 @@ import javafx.scene.control.MenuBar;
  * Created by Isabel on 28.11.2016.
  */
 public class RootController {
-    @FXML
-    private MenuBar menuBar;
-    @FXML
-    private Menu choosePlugin;
-    @FXML
-    private Menu file;
-    @FXML
-    private Menu export;
-    @FXML
-    private Menu options;
 
-    private GUI gui;
+
+    private GUI_Copy gui;
 
     /**
      * The constructor.
@@ -37,7 +29,7 @@ public class RootController {
 
     }
 
-    public void setGui(GUI gui) {
+    public void setGui(GUI_Copy gui) {
         this.gui = gui;
     }
 }

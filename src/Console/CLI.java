@@ -21,29 +21,29 @@ import java.util.*;
  */
 public class CLI {
 
-    private GUI gui;
+    private GUI_Copy gui;
     /**
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
-    public static HashMap<Class, Object> objects = new HashMap<>();
+    public HashMap<Class, Object> objects = new HashMap<>();
 
-    public static HashMap<Class, HashMap<Integer, Storable>> store= new HashMap<>();
+    public HashMap<Class, HashMap<Integer, Storable>> store= new HashMap<>();
 
-    private static HashMap<String,Class> lookUpTable =new HashMap<>();
+    private HashMap<String,Class> lookUpTable =new HashMap<>();
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
-    protected static TreeMap<String,Grammar> grammars=new TreeMap<>();
+    protected TreeMap<String,Grammar> grammars=new TreeMap<>();
 
-    public CLI(GUI gui) {
+    public CLI(GUI_Copy gui) {
         this.gui=gui;
     }
 
-    private static boolean isStoreFunction(String command) {
+    private boolean isStoreFunction(String command) {
         String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv","copy"};
         return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
     }
-    private static boolean storeFunctionCheckParameter(String[] parameters) {
+    private boolean storeFunctionCheckParameter(String[] parameters) {
         return parameters.length==2;
     }
 
