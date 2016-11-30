@@ -1,6 +1,7 @@
 package GUIPlugins.DisplayPlugins;
 
 import CLIPlugins.CLIPlugin;
+import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.GrammarTab;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
@@ -16,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -40,7 +42,7 @@ public class GrammarGUI implements DisplayPlugin {
     /**
      * This GUI's root pane.
      */
-    private TabPane rootPane;
+    private BorderPane rootPane;
 
     /**
      * Contains all {@link GrammarTab}s.
@@ -55,58 +57,10 @@ public class GrammarGUI implements DisplayPlugin {
     @Override
     public Node display(Object object) {
         grammar = (Grammar) object;
-        rootPane = new TabPane();
+        rootPane = new BorderPane();
         tabs = new HashSet<>();
 
-        //Load all tabs.
-        try {
-            String packagePath = Thread.currentThread().getContextClassLoader().getResources("GUIPlugins/DisplayPlugins/GrammarTabs").nextElement().getFile().replace("%20", " ");
-            File[] classes = new File(packagePath).listFiles();
-            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
-            for(File file : classes) {
-                if(file.getName().endsWith(".class") && !file.getName().equals("GrammarTab.class") && !file.getName().contains("$")) {
-                    tabs.add((GrammarTab) urlClassLoader.loadClass("GUIPlugins.DisplayPlugins.GrammarTabs." + file.getName().substring(0, file.getName().length() - 6)).newInstance());
-                }
-            }
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        //Add just the edit-tab, so it will always be the first one added.
-        for(GrammarTab tab : tabs) {
-            if(tab.getName().equals("Edit")) {
-                Tab editTab = new Tab(tab.getName());
-                editTab.setContent(tab.getFxNode(grammar));
-                editTab.setClosable(false);
-                editTab.setOnSelectionChanged(event -> {
-                    if(editTab.isSelected()) {
-                        editTab.setContent(tab.getFxNode(grammar));
-                    }
-                });
-                rootPane.getTabs().add(editTab);
-                rootPane.getSelectionModel().select(editTab);
-
-                tabMap.put(editTab, tab);
-            }
-        }
-
-        //Add the remaining tabs.
-        for(GrammarTab tab : tabs) {
-            if (!tab.getName().equals("Edit")) {
-                Tab currentTab = new Tab(tab.getName());
-                currentTab.setContent(tab.getFxNode(grammar));
-                currentTab.setClosable(false);
-                currentTab.setOnSelectionChanged(event -> {
-                    if(currentTab.isSelected()) {
-                        currentTab.setContent(tab.getFxNode(grammar));
-                    }
-                });
-                rootPane.getTabs().add(currentTab);
-
-                tabMap.put(currentTab, tab);
-            }
-        }
+        rootPane.setCenter(new EditTab().getFxNode(grammar));
 
         return rootPane;
     }
@@ -114,7 +68,7 @@ public class GrammarGUI implements DisplayPlugin {
     @Override
     public void refresh(Object object) {
         grammar = (Grammar) object;
-        rootPane.getSelectionModel().getSelectedItem().setContent(tabMap.get(rootPane.getSelectionModel().getSelectedItem()).getFxNode(grammar));
+
     }
 
     @Override
