@@ -239,7 +239,7 @@ public class AutomatonGUI implements DisplayPlugin {
         mouse.add(new MenuMousePlugin());
         visualizationViewer.setGraphMouse(mouse);
 
-        //Build the Main.GUI.
+        //Build the GUI
         BorderPane pane = new BorderPane();
         FlowPane buttonPane = new FlowPane();
         Label mouseLabel = new Label("Mouse Mode:");

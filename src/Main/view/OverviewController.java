@@ -2,21 +2,16 @@ package Main.view;
 
 import AutomatonSimulator.Automaton;
 import Console.CLI;
-import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.TabPlugins.TabPlugin;
+
 import Main.GUI;
-import Main.GUI_Copy;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.*;
-import sun.reflect.generics.tree.Tree;
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,17 +30,15 @@ public class OverviewController {
     @FXML
     FlowPane simpleFunctionPane;
 
-    HashSet<TabPlugin> tabPlugins=null;
-    HashMap<Class, Tab> tabs=new HashMap<>();
 
-    private GUI_Copy gui;
-    private CLI cli;
+    private GUI gui;
+
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
     public OverviewController() {
-//        makeTree();
+//
     }
     /**
      * Initializes the controller class. This method is automatically called
@@ -53,17 +46,16 @@ public class OverviewController {
      */
     @FXML
     private void initialize() {
-//        this.cli=gui.getCli();
-//        makeTree();
 
     }
     public void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
-        if(!cli.store.keySet().isEmpty()) {
+        if(!gui.getCli().store.keySet().isEmpty()) {
             /** top items **/
-            cli.store.keySet().stream()
+
+            gui.getCli().store.keySet().stream()
                     .forEach(clazz -> {
-                        List<TreeItem<String>> list= cli.store.get(clazz).keySet().stream()
+                        List<TreeItem<String>> list= gui.getCli().store.get(clazz).keySet().stream()
                                 .map(key -> new TreeItem<String>(key+""))
                                 .collect(Collectors.toList());
                         TreeItem<String> top=new TreeItem<String>(clazz.getSimpleName());
@@ -74,29 +66,14 @@ public class OverviewController {
 
             root.setExpanded(true);
             treeView.setRoot(root);
+
         }
     }
-    public void setGui(GUI_Copy gui) {
+    public void setGui(GUI gui) {
         this.gui = gui;
     }
 
-    public void addTabs(HashSet<TabPlugin> tabPlugins) {
-        tabPlugins.stream().forEach(tabPlugin -> {
-            tabPlugin.setContentPane(contentPane);
-            BorderPane pane=new BorderPane();
-            tabPlugin.setPane(pane);
-            Tab tab=new Tab(tabPlugin.getClass().getSimpleName(),pane);
-            tabPlugin.setTab(tab);
 
-            tabPlugin.getFxNode(new Automaton(),null);
-        });
-        this.tabPlugins=tabPlugins;
-        tabPlugins.stream().forEach(tabPlugin -> {
-            // creates a tab for every class in tabPlugins
-            tabs.put(tabPlugin.getClass(),tabPlugin.getTab());
-        });
-      //  tabPane.getTabs().addAll(tabs.values());
-    }
 
     public TabPane getTabPane() {
         return tabPane;

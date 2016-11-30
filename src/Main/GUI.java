@@ -15,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -28,7 +27,7 @@ import java.util.HashSet;
 /**
  * Created by fabian on 17.06.16.
  */
-public class GUI_Copy extends Application{
+public class GUI extends Application{
     /**
      * true, if the Main.GUI is visible. The Console.CLI will deactivate itself, if this is true.
      */
@@ -81,6 +80,7 @@ public class GUI_Copy extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
+        overviewController.makeTree();
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -290,7 +290,7 @@ public class GUI_Copy extends Application{
             pluginMenu.getItems().add(menuItem);
         }
 
-        //construct the rest of the Main.GUI. This is pretty straight forward.
+        //construct the rest of the GUI. This is pretty straight forward.
         menuBar.getMenus().add(pluginMenu);
 
         simpleFunctionsPane.setHgap(10);
@@ -311,7 +311,7 @@ public class GUI_Copy extends Application{
 
         //Now, that everything is loaded, we can start the Console.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
-        //and the Main.GUI will be made visible, when the user gives the appropriate command.
+        //and the GUI will be made visible, when the user gives the appropriate command.
        new Thread(() -> cli.start()).start();
     }
     /**
@@ -321,7 +321,7 @@ public class GUI_Copy extends Application{
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI_Copy.class.getResource("view/Root.fxml"));
+            loader.setLocation(GUI.class.getResource("view/Root.fxml"));
             root = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -342,7 +342,7 @@ public class GUI_Copy extends Application{
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI_Copy.class.getResource("view/Overview.fxml"));
+            loader.setLocation(GUI.class.getResource("view/Overview.fxml"));
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
@@ -350,6 +350,7 @@ public class GUI_Copy extends Application{
             // Give the controller access to the main app.
             overviewController = loader.getController();
             overviewController.setGui(this);
+          //  overviewController.makeTree();
             this.functionsPane=overviewController.getContentPane();
             this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
             this.complexFunctionsPane=overviewController.getTabPane();

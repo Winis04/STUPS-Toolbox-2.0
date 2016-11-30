@@ -4,7 +4,6 @@ import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 import Main.GUI;
-import Main.GUI_Copy;
 import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
@@ -21,7 +20,7 @@ import java.util.*;
  */
 public class CLI {
 
-    private GUI_Copy gui;
+    private GUI gui;
     /**
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
@@ -35,7 +34,7 @@ public class CLI {
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     protected TreeMap<String,Grammar> grammars=new TreeMap<>();
 
-    public CLI(GUI_Copy gui) {
+    public CLI(GUI gui) {
         this.gui=gui;
     }
 
