@@ -6,8 +6,8 @@ import javafx.scene.Node;
 /**
  * Created by fabian on 19.06.16.
  */
-public interface ComplexFunctionPlugin {
-
+public abstract class ComplexFunctionPlugin {
+    String name;
     /**
      * Returns a JavaFX-{@link Node}, e.g. a {@link javafx.scene.layout.Pane},
      * that contains all the necessary control elements, for this plugin.
@@ -16,14 +16,16 @@ public interface ComplexFunctionPlugin {
      * @param GUI The currently loaded display-plugin. This can be used, to interact with the plugin.
      * @return The JavaFX-{@link Node}.
      */
-    Node getFxNode(Object object, DisplayPlugin GUI);
+    public abstract Node getFxNode(Object object, DisplayPlugin GUI);
 
     /**
      * Returns this plugin's name.
      *
      * @return This plugin's name.
      */
-    String getName();
+    public String getName() {
+        return name;
+    }
 
     /**
      * Returns the object-type, that this plugin works with.
@@ -31,5 +33,5 @@ public interface ComplexFunctionPlugin {
      *
      * @return The object-type.
      */
-    Class displayPluginType();
+    public abstract Class displayPluginType();
 }

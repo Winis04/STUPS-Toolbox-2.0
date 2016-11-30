@@ -52,7 +52,7 @@ public class GUI_Copy extends Application{
     /**
      * Displays all complex plugins that match the display-type of the currently loaded display-plugin.
      */
-    private GridPane complexFunctionsPane = new GridPane();
+    private BorderPane complexFunctionsPane;
 
     /**
      *
@@ -102,7 +102,7 @@ public class GUI_Copy extends Application{
                 pane.getChildren().add(label);
                 pane.getChildren().add(plugin.getFxNode(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
 
-                complexFunctionsPane.add(pane, 0, i);
+                complexFunctionsPane.setCenter(pane);
                 i++;
             }
         }
@@ -301,17 +301,12 @@ public class GUI_Copy extends Application{
 
         //construct the rest of the Main.GUI. This is pretty straight forward.
         menuBar.getMenus().add(pluginMenu);
-        complexFunctionsPane.setVgap(5);
-        complexFunctionsPane.setPadding(new Insets(2, 0, 2, 5));
 
         simpleFunctionsPane.setHgap(10);
         simpleFunctionsPane.setPadding(new Insets(2, 0, 2, 5));
         simpleFunctionsPane.getChildren().add(functionsBox);
         simpleFunctionsPane.getChildren().add(functionsButton);
-        functionsPane.setCenter(complexFunctionsPane);
-        functionsPane.setRight(simpleFunctionsPane);
-        functionsPane.setStyle("-fx-border-color: black");
-        functionsPane.setVisible(false);
+
 
         root.setTop(menuBar);
      //   root.setCenter(new Label("STUPS-Toolbox"));
@@ -366,7 +361,7 @@ public class GUI_Copy extends Application{
             overviewController.setGui(this);
             this.functionsPane=overviewController.getContentPane();
             this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
-
+            this.complexFunctionsPane=overviewController.getTabPane();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 /**
  * Created by fabian on 19.06.16.
  */
-public class CheckStringPlugin implements ComplexFunctionPlugin {
+public class CheckStringPlugin extends ComplexFunctionPlugin {
 
     private String input = "";
     private String currentInput = "";
