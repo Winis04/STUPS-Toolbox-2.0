@@ -29,7 +29,7 @@ public class OverviewController {
     @FXML
     TreeView<String> treeView;
     @FXML
-    BorderPane tabPane;
+    TabPane tabPane;
     @FXML
     BorderPane contentPane;
     @FXML
@@ -98,7 +98,7 @@ public class OverviewController {
       //  tabPane.getTabs().addAll(tabs.values());
     }
 
-    public BorderPane getTabPane() {
+    public TabPane getTabPane() {
         return tabPane;
     }
 

@@ -2,6 +2,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import javafx.scene.Node;
+import javafx.scene.control.Tab;
 
 /**
  * Created by fabian on 19.06.16.
@@ -16,7 +17,7 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI The currently loaded display-plugin. This can be used, to interact with the plugin.
      * @return The JavaFX-{@link Node}.
      */
-    public abstract Node getFxNode(Object object, DisplayPlugin GUI);
+    abstract Node getFxNode(Object object, DisplayPlugin GUI);
 
     /**
      * Returns this plugin's name.
@@ -25,6 +26,12 @@ public abstract class ComplexFunctionPlugin {
      */
     public String getName() {
         return name;
+    }
+
+    public Tab getAsTab(Object object, DisplayPlugin GUI) {
+        Tab tab=new Tab(this.getName());
+        tab.setContent(getFxNode(object,GUI));
+        return tab;
     }
 
     /**

@@ -52,7 +52,7 @@ public class GUI_Copy extends Application{
     /**
      * Displays all complex plugins that match the display-type of the currently loaded display-plugin.
      */
-    private BorderPane complexFunctionsPane;
+    private TabPane complexFunctionsPane;
 
     /**
      *
@@ -90,20 +90,11 @@ public class GUI_Copy extends Application{
     }
 
     private void refreshComplexPlugins() {
-        complexFunctionsPane.getChildren().clear();
-        int i = 0;
+
         for(Class functionPlugin : complexFunctionPlugins.keySet()) {
             if(complexFunctionPlugins.get(functionPlugin).displayPluginType().equals(currentDisplayPlugin.getClass())) {
                 ComplexFunctionPlugin plugin = complexFunctionPlugins.get(functionPlugin);
-                FlowPane pane = new FlowPane();
-                Label label = new Label(plugin.getName() + ":");
-
-                pane.setHgap(10);
-                pane.getChildren().add(label);
-                pane.getChildren().add(plugin.getFxNode(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
-
-                complexFunctionsPane.setCenter(pane);
-                i++;
+                complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
             }
         }
     }
@@ -283,7 +274,7 @@ public class GUI_Copy extends Application{
                 simpleFunctionsPane.setVisible(true);
 
                 //if there are no function plugin, make the functionsPane invisible.
-                if(complexFunctionsPane.getChildren().isEmpty()) {
+                if(complexFunctionsPane.getTabs().isEmpty()) {
                     complexFunctionsPane.setVisible(false);
                 }
 
@@ -291,7 +282,7 @@ public class GUI_Copy extends Application{
                     simpleFunctionsPane.setVisible(false);
                 }
 
-                if(complexFunctionsPane.getChildren().isEmpty() && functionsBox.getItems().isEmpty()) {
+                if(complexFunctionsPane.getTabs().isEmpty() && functionsBox.getItems().isEmpty()) {
                     functionsPane.setVisible(false);
                 }
             });

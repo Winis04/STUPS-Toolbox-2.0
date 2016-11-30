@@ -9,10 +9,7 @@ import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
@@ -34,6 +31,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
     private State comingFromState, goingToState;
     private boolean accept;
 
+    private String name="Check String";
     @Override
     public Node getFxNode(Object object, DisplayPlugin GUI) {
         Automaton automaton = (Automaton) object;
@@ -117,8 +115,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
         rootPane.setVgap(5);
         rootPane.addRow(0, pane);
         rootPane.addRow(1, wordLabel);
-
-        return rootPane;
+       return rootPane;
     }
 
     @Override
