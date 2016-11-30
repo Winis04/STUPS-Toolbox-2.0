@@ -226,7 +226,7 @@ public class GUI_Copy extends Application{
                 }
 
                 //Now, that the display plugin and object are loaded, we can display the plugin.
-                root.setCenter(currentDisplayPlugin.display(object));
+                functionsPane.setCenter(currentDisplayPlugin.display(object));
 
                 //Setup the menubar.
                 menuBar.getMenus().clear();
