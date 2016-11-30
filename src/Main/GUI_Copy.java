@@ -4,6 +4,7 @@ import Console.CLI;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import Main.view.OverviewController;
 import Main.view.RootController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -11,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -56,6 +58,9 @@ public class GUI_Copy extends Application{
      *
      */
     private RootController rootController;
+    private OverviewController overviewController;
+
+    private BorderPane content;
 
     private BorderPane root;
     /**
@@ -308,8 +313,8 @@ public class GUI_Copy extends Application{
         functionsPane.setVisible(false);
 
         root.setTop(menuBar);
-        root.setCenter(new Label("STUPS-Toolbox"));
-        root.setBottom(functionsPane);
+     //   root.setCenter(new Label("STUPS-Toolbox"));
+      //  root.setBottom(functionsPane);
 
     //    primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> {
@@ -339,6 +344,26 @@ public class GUI_Copy extends Application{
             // Give the controller access to the main app.
             rootController = loader.getController();
             rootController.setGui(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Shows the person overview inside the root layout.
+     */
+    public void showPersonOverview() {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(GUI.class.getResource("view/Overview.fxml"));
+            AnchorPane overview = (AnchorPane) loader.load();
+
+            // Set person overview into the center of root layout.
+            //root.setCenter(overview);
+            // Give the controller access to the main app.
+            overviewController = loader.getController();
+            overviewController.setGui(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

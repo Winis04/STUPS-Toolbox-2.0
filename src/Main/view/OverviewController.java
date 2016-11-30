@@ -11,8 +11,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
 import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
@@ -30,9 +29,11 @@ public class OverviewController {
     @FXML
     TreeView<String> treeView;
     @FXML
-    TabPane tabPane;
+    GridPane tabPane;
     @FXML
     BorderPane contentPane;
+    @FXML
+    FlowPane simpleFunctionPane;
 
     HashSet<TabPlugin> tabPlugins=null;
     HashMap<Class, Tab> tabs=new HashMap<>();
@@ -94,6 +95,18 @@ public class OverviewController {
             // creates a tab for every class in tabPlugins
             tabs.put(tabPlugin.getClass(),tabPlugin.getTab());
         });
-        tabPane.getTabs().addAll(tabs.values());
+      //  tabPane.getTabs().addAll(tabs.values());
+    }
+
+    public GridPane getTabPane() {
+        return tabPane;
+    }
+
+    public BorderPane getContentPane() {
+        return contentPane;
+    }
+
+    public FlowPane getSimpleFunctionPane() {
+        return simpleFunctionPane;
     }
 }
