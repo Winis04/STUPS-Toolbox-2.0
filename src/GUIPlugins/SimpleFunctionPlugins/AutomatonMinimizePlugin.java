@@ -2,14 +2,13 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
-import Console.Storable;
-import javafx.scene.control.Menu;
+import Main.GUI;
 import javafx.scene.control.MenuItem;
 
 /**
- * Created by fabian on 27.07.16.
+ * Created by Isabel on 01.12.2016.
  */
-public class AutomotonMinimizeDFAPlugin implements SimpleFunctionPlugin {
+public class AutomatonMinimizePlugin implements SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         Automaton automaton = (Automaton) object;
@@ -32,7 +31,15 @@ public class AutomotonMinimizeDFAPlugin implements SimpleFunctionPlugin {
     }
 
     @Override
-    public MenuItem getMenuItem() {
-        return new MenuItem("Minimize");
+    public MenuItem getMenuItem(GUI gui) {
+        AutomatonMinimizePlugin plugin= this;
+        MenuItem item = new MenuItem(this.getName());
+        item.setOnAction(t -> {
+            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+            if(ret != null) {
+                gui.getCurrentDisplayPlugin().refresh(ret);
+            }
+        });
+        return item;
     }
 }

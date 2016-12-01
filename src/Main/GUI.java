@@ -282,7 +282,7 @@ public class GUI extends Application{
                 dynamicMenu.clear();
                 for(Class functionPlugin : simpleFunctionPlugins.keySet()) {
                     SimpleFunctionPlugin sfp=simpleFunctionPlugins.get(functionPlugin);
-                    dynamicMenu.add(sfp.getMenuItem());
+                    dynamicMenu.add(sfp.getMenuItem(this));
                     if(sfp.inputType().equals(object.getClass())) {
                         functionsBox.getItems().add(simpleFunctionPlugins.get(functionPlugin).getName());
                         executeMap.put(simpleFunctionPlugins.get(functionPlugin).getName(), simpleFunctionPlugins.get(functionPlugin));
@@ -385,5 +385,9 @@ public class GUI extends Application{
 
     public CLI getCli() {
         return cli;
+    }
+
+    public DisplayPlugin getCurrentDisplayPlugin() {
+        return currentDisplayPlugin;
     }
 }

@@ -3,6 +3,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import Console.Storable;
+import Main.GUI;
 import javafx.scene.control.MenuItem;
 
 /**
@@ -31,7 +32,16 @@ public class AutomatonRenameStatesPlugin implements SimpleFunctionPlugin {
     }
 
     @Override
-    public MenuItem getMenuItem() {
-        return new MenuItem("Rename States");
+    public MenuItem getMenuItem(GUI gui) {
+        AutomatonRenameStatesPlugin plugin= this;
+        MenuItem item = new MenuItem(this.getName());
+        item.setOnAction(t -> {
+            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+            if(ret != null) {
+                gui.getCurrentDisplayPlugin().refresh(ret);
+            }
+        });
+        return item;
     }
+
 }

@@ -3,6 +3,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import Console.Storable;
+import Main.GUI;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
@@ -33,7 +34,16 @@ public class AutomatonRemoveEpsilonTransitionsPlugin implements SimpleFunctionPl
     }
 
     @Override
-    public MenuItem getMenuItem() {
-        return new MenuItem("Remove Epsilon Transitions");
+    public MenuItem getMenuItem(GUI gui) {
+        AutomatonRemoveEpsilonTransitionsPlugin plugin= this;
+        MenuItem item = new MenuItem(this.getName());
+        item.setOnAction(t -> {
+            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+            if(ret != null) {
+                gui.getCurrentDisplayPlugin().refresh(ret);
+            }
+        });
+        return item;
     }
+
 }

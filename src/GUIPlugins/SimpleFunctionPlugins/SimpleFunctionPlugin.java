@@ -1,6 +1,7 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
 import Console.Storable;
+import Main.GUI;
 import javafx.scene.control.MenuItem;
 
 /**
@@ -49,5 +50,5 @@ public interface SimpleFunctionPlugin {
      * return a MenuItem for the SimpleFunctionPlugin.
      * @return
      */
-    MenuItem getMenuItem();
+    public MenuItem getMenuItem(GUI gui);
 }
