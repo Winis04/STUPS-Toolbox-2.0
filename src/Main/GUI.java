@@ -1,9 +1,14 @@
 package Main;
 
+import AutomatonSimulator.Automaton;
 import Console.CLI;
+import Console.Storable;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
+import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
+import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import GrammarSimulator.Grammar;
 import Main.view.OverviewController;
 import Main.view.RootController;
 import javafx.application.Application;
@@ -64,6 +69,8 @@ public class GUI extends Application{
     private BorderPane root;
     private BorderPane functionsPane;
     private FlowPane simpleFunctionsPane;
+
+    private  HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
     ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
@@ -133,7 +140,7 @@ public class GUI extends Application{
 
         //Initialize HashMaps for all display, simple, and complex plugins.
         //Each HashMap maps the class-type of each plugin to an instance of it.
-        HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
+
         HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins = new HashMap<>();
         complexFunctionPlugins = new HashMap<>();
         complexFunctionPlugins2 = new HashSet<>();
@@ -383,11 +390,23 @@ public class GUI extends Application{
         }
     }
 
+    public void refresh(Object object) {
+        functionsPane.setCenter(currentDisplayPlugin.refresh(object));
+    }
     public CLI getCli() {
         return cli;
     }
 
     public DisplayPlugin getCurrentDisplayPlugin() {
         return currentDisplayPlugin;
+    }
+
+
+    public void switchDisplayGui(Class clazz) {
+            if(clazz.equals(Grammar.class)) {
+                currentDisplayPlugin = displayPlugins.get(GrammarGUI.class);
+            } else {
+                currentDisplayPlugin = displayPlugins.get(AutomatonGUI.class);
+            }
     }
 }

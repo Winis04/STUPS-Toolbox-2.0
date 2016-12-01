@@ -2,22 +2,23 @@ package Main.view;
 
 
 
-import AutomatonSimulator.Automaton;
-import GrammarSimulator.Grammar;
+import Console.Storable;
 import Main.GUI;
-import com.sun.webkit.ContextMenuItem;
-import javafx.beans.binding.Bindings;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
 
 /**
  * Created by Isabel on 28.11.2016.
@@ -66,35 +67,16 @@ public class OverviewController {
                     .forEach(clazz -> {
                         // the name of the storable objects
                         TreeItem<String> top=new TreeItem<String>(clazz.getSimpleName());
+
                         // every object of the top-type
                         List<TreeItem<String>> list= gui.getCli().store.get(clazz).keySet().stream()
-                                .map(key -> new TreeItem<>(key+""))
+                                .map(key -> new TreeItem<>(key))
                                 .collect(Collectors.toList());
 
                         top.getChildren().addAll(list);
                         top.setExpanded(true);
                         root.getChildren().add(top);
                     });
-
-
-            /** context menus **/
-
-            /**
-             * grammar
-             */
-            MenuItem editGrammar=new MenuItem("edit");
-            ArrayList<MenuItem> grammarList=new ArrayList<>();
-            grammarList.add(editGrammar);
-            /**
-             * minimize
-             */
-            MenuItem minimize=new Menu("minimize");
-            ArrayList<MenuItem> autoList=new ArrayList<>();
-            autoList.add(minimize);
-            map.put(Grammar.class,grammarList);
-            map.put(Automaton.class,autoList);
-
-
 
             treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
                 if (e.getButton()==MouseButton.SECONDARY) {
@@ -119,6 +101,27 @@ public class OverviewController {
 
             root.setExpanded(true);
             treeView.setRoot(root);
+            treeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                // the selected Item
+                TreeItem<String> selectedItem = newValue;
+                if(!newValue.getParent().equals(root) && !newValue.equals(root)) {
+                    // the String that belongs to the parent treeItem
+                    String parent = selectedItem.getParent().getValue().toLowerCase();
+                    // we get the parents (and the childs class) by looking in the lookup table
+                    Class parentClass = gui.getCli().lookUpTable.get(parent);
+
+
+                    // now we can get the matching storable object
+                    Storable selectedStorable = gui.getCli().store.get(parentClass).get(selectedItem.getValue());
+                    // put it as the current grammar/automaton/..
+
+                    gui.getCli().objects.put(parentClass, selectedStorable);
+                    gui.refresh(selectedStorable);
+                } else {
+
+                }
+            });
 
 
         }
@@ -152,4 +155,6 @@ public class OverviewController {
     public TreeView<String> getTreeView() {
         return treeView;
     }
+
+
 }

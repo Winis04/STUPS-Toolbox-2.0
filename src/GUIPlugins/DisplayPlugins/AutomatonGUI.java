@@ -304,11 +304,12 @@ public class AutomatonGUI implements DisplayPlugin {
     }
 
     @Override
-    public void refresh(Object object) {
+    public Node refresh(Object object) {
         automaton = (Automaton) object;
         parseAutomatonToGraph();
         visualizationViewer.repaint();
         refreshCheckBoxes();
+        return this.display(object);
     }
 
     @Override

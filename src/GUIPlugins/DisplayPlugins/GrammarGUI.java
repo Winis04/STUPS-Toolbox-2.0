@@ -66,9 +66,9 @@ public class GrammarGUI implements DisplayPlugin {
     }
 
     @Override
-    public void refresh(Object object) {
+    public Node refresh(Object object) {
         grammar = (Grammar) object;
-
+        return this.display(grammar);
     }
 
     @Override

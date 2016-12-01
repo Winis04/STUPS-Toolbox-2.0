@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class Grammar implements Printable, Storable {
 
+
     /**
      * The grammar's terminal symbols.
      */
@@ -267,4 +268,5 @@ public class Grammar implements Printable, Storable {
     public Storable deep_copy() {
         return new Grammar(this, false);
     }
+
 }

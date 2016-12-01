@@ -32,7 +32,7 @@ public interface DisplayPlugin {
      *
      * @param object The object, that is being displayed.
      */
-    void refresh(Object object);
+    Node refresh(Object object);
 
     /**
      * This method is called by the main program, when the user desires to create a new object from scratch.

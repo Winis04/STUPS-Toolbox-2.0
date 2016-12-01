@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class Automaton implements Printable, Storable {
 
+    private String name;
     /**
      * Contains all the states of the automaton.
      */
@@ -323,6 +324,11 @@ public class Automaton implements Printable, Storable {
 
     public String getName() {
         return "A";
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name=name;
     }
 
 

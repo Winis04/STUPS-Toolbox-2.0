@@ -6,4 +6,5 @@ package Console;
 public interface Storable {
     Storable deep_copy();
     String getName();
+    void setName(String name);
 }
