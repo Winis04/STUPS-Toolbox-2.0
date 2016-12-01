@@ -25,7 +25,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "removes lambda-rules. Takes the strings 'no', 'short' or 'long' as a parameter, which determine the level of explanation.";
+        return "removes lambda-rules.";
     }
 
     @Override

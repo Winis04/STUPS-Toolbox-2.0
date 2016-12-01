@@ -23,7 +23,7 @@ public class PDAGoThroughInputPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return null;
+        return "doesn't work yet!";
     }
 
     @Override

@@ -22,7 +22,7 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "calculates the chomsky normal form. Takes the strings 'no', 'short' or 'long' as a parameter, which determine the level of explanation.";
+        return "calculates the chomsky normal form";
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PrintModePlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "sets the print-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'terminal' for output in the terminal";
+        return "sets the print-modus. 'no' for no output, 'latex' and 'path-to-file' for latex output in file, 'console' for output in the terminal";
     }
 
     @Override

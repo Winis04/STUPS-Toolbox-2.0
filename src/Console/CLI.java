@@ -137,9 +137,10 @@ public class CLI {
             }
 
             System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
-            System.out.println("'store-grammar' or 'store-g' -- stores the current grammar. Doesn't take any parameters");
-            System.out.println("'remove-grammar' or 'remove-g' __ removes the grammar at the given index. Takes an Index as a parameter");
-            System.out.println("'switch-grammar' or 'switch-g' -- switches the current grammar. Takes the index of the new grammar as a parameter"); //TODO:
+            System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
+            System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
+            System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this postion");
+            System.out.println("'copy' -- same as 'store', but the grammar is stored as a deep-copy" );
             System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
             System.out.println("'a' or 'about' -- Shows the release information");
             System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
