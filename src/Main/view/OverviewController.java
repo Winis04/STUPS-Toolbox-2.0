@@ -55,8 +55,7 @@ public class OverviewController {
 
     }
 
-    public void makeTree() {
-        dynamicContextMenu=new ContextMenu();
+    public void makeTree(ArrayList<MenuItem> dynamicMenu) {
 
         TreeItem<String> root=new TreeItem<>("Storables");
 
@@ -104,10 +103,11 @@ public class OverviewController {
                     //item is selected - this prevents fail when clicking on empty space
                     if (selected!=null) {
                         //open context menu on current screen position
+
                        if(selected.getParent().getValue().equals("Grammar")) {
-                           this.openContextMenu(map,Grammar.class,e.getScreenX(),e.getScreenY());
+                           this.openContextMenu(dynamicMenu,e.getScreenX(),e.getScreenY());
                        } else {
-                           this.openContextMenu(map,Automaton.class,e.getScreenX(),e.getScreenY());
+                           this.openContextMenu(dynamicMenu,e.getScreenX(),e.getScreenY());
                        }
                     }
                 } else {
@@ -124,9 +124,9 @@ public class OverviewController {
         }
     }
 
-    private void openContextMenu(HashMap<Class,List<MenuItem>> map, Class clazz,double x, double y) {
+    private void openContextMenu(List<MenuItem> list,double x, double y) {
         dynamicContextMenu.getItems().clear();
-        dynamicContextMenu.getItems().addAll(map.get(clazz));
+        dynamicContextMenu.getItems().addAll(list);
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);
@@ -147,5 +147,9 @@ public class OverviewController {
 
     public FlowPane getSimpleFunctionPane() {
         return simpleFunctionPane;
+    }
+
+    public TreeView<String> getTreeView() {
+        return treeView;
     }
 }

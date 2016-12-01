@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -44,8 +45,9 @@ public class GUI extends Application{
     private DisplayPlugin currentDisplayPlugin;
 
     /**
-     * Contains all complex plugins. The class-type of every plugin is mapped to a instane of the plugin.
+     * Contains all complex plugins. The class-type of every plugin is mapped to a instance of the plugin.
      */
+    private HashSet<ComplexFunctionPlugin> complexFunctionPlugins2 = new HashSet<>();
     private HashMap<Class, ComplexFunctionPlugin> complexFunctionPlugins = new HashMap<>();
 
     /**
@@ -62,6 +64,8 @@ public class GUI extends Application{
     private BorderPane root;
     private BorderPane functionsPane;
     private FlowPane simpleFunctionsPane;
+
+    ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.
      *
@@ -80,7 +84,7 @@ public class GUI extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
-        overviewController.makeTree();
+        overviewController.makeTree(dynamicMenu);
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -89,11 +93,26 @@ public class GUI extends Application{
         primaryStage.show();
     }
 
-    private void refreshComplexPlugins() {
+    private void initialize() {
+        refreshComplexPlugins();
+        refreshSimplePlugins();
+    }
+    private void refreshSimplePlugins() {
+
+    }
+    private void refreshComplexPlugins2() {
         complexFunctionsPane.getTabs().clear();
         for(Class functionPlugin : complexFunctionPlugins.keySet()) {
             if(complexFunctionPlugins.get(functionPlugin).displayPluginType().equals(currentDisplayPlugin.getClass())) {
                 ComplexFunctionPlugin plugin = complexFunctionPlugins.get(functionPlugin);
+                complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
+            }
+        }
+    }
+    private void refreshComplexPlugins() {
+        complexFunctionsPane.getTabs().clear();
+        for(ComplexFunctionPlugin plugin : complexFunctionPlugins2) {
+            if(plugin.displayPluginType().equals(currentDisplayPlugin.getClass())) {
                 complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
             }
         }
@@ -117,6 +136,7 @@ public class GUI extends Application{
         HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
         HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins = new HashMap<>();
         complexFunctionPlugins = new HashMap<>();
+        complexFunctionPlugins2 = new HashSet<>();
 
         //Maps the name-string of each simple plugin to an instance of it.
         //This is needed to execute a simple plugin, when the execute-button is pressed.
@@ -151,6 +171,7 @@ public class GUI extends Application{
                 if(file.getName().endsWith(".class") && !file.getName().equals("ComplexFunctionPlugin.class") && !file.getName().contains("$")) {
                     ComplexFunctionPlugin instance = (ComplexFunctionPlugin) urlClassLoader.loadClass("GUIPlugins.ComplexFunctionPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
                     complexFunctionPlugins.put(instance.getClass(), instance);
+                    complexFunctionPlugins2.add(instance);
                 }
             }
         } catch(Exception e) {
@@ -218,7 +239,7 @@ public class GUI extends Application{
 
                 //Now, that the display plugin and object are loaded, we can display the plugin.
                 functionsPane.setCenter(currentDisplayPlugin.display(object));
-
+                overviewController.getTreeView().setVisible(true);
                 //Setup the menubar.
                 menuBar.getMenus().clear();
                 menus.clear();
@@ -258,8 +279,11 @@ public class GUI extends Application{
                 //Display all simple plugins which input type matches the display type of the display plugin.
                 functionsBox.getItems().clear();
                 executeMap.clear();
+                dynamicMenu.clear();
                 for(Class functionPlugin : simpleFunctionPlugins.keySet()) {
-                    if(simpleFunctionPlugins.get(functionPlugin).inputType().equals(object.getClass())) {
+                    SimpleFunctionPlugin sfp=simpleFunctionPlugins.get(functionPlugin);
+                    dynamicMenu.add(sfp.getMenuItem());
+                    if(sfp.inputType().equals(object.getClass())) {
                         functionsBox.getItems().add(simpleFunctionPlugins.get(functionPlugin).getName());
                         executeMap.put(simpleFunctionPlugins.get(functionPlugin).getName(), simpleFunctionPlugins.get(functionPlugin));
                     }

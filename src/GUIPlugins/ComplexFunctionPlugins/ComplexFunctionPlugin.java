@@ -8,6 +8,8 @@ import javafx.scene.control.Tab;
  * Created by fabian on 19.06.16.
  */
 public abstract class ComplexFunctionPlugin {
+
+    abstract Class getInputType();
     String name;
     /**
      * Returns a JavaFX-{@link Node}, e.g. a {@link javafx.scene.layout.Pane},

@@ -32,6 +32,12 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
     private boolean accept;
 
     private String name="Check String";
+
+    @Override
+    public Class getInputType() {
+        return Automaton.class;
+    }
+
     @Override
     public Node getFxNode(Object object, DisplayPlugin GUI) {
         Automaton automaton = (Automaton) object;
