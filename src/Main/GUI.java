@@ -90,7 +90,7 @@ public class GUI extends Application{
     }
 
     private void refreshComplexPlugins() {
-
+        complexFunctionsPane.getTabs().clear();
         for(Class functionPlugin : complexFunctionPlugins.keySet()) {
             if(complexFunctionPlugins.get(functionPlugin).displayPluginType().equals(currentDisplayPlugin.getClass())) {
                 ComplexFunctionPlugin plugin = complexFunctionPlugins.get(functionPlugin);

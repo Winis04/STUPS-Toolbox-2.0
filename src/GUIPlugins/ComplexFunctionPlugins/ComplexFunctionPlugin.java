@@ -24,9 +24,8 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return This plugin's name.
      */
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
+
 
     public Tab getAsTab(Object object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
