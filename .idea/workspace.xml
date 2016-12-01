@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9bfd2792-5601-4b23-bad4-c0a87338db1d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CLIPlugins/GrammarChomskyNormalForm.java" afterPath="$PROJECT_DIR$/src/CLIPlugins/GrammarChomskyNormalForm.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CLIPlugins/GrammarEliminateUnitRules.java" afterPath="$PROJECT_DIR$/src/CLIPlugins/GrammarEliminateUnitRules.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CLIPlugins/GrammarRemoveLambdaPlugin.java" afterPath="$PROJECT_DIR$/src/CLIPlugins/GrammarRemoveLambdaPlugin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CLIPlugins/PDAGoThroughInputPlugin.java" afterPath="$PROJECT_DIR$/src/CLIPlugins/PDAGoThroughInputPlugin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java" afterPath="$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Console/CLI.java" afterPath="$PROJECT_DIR$/src/Console/CLI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonConvertToDFAPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonConvertToDFAPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRemoveEpsilonTransitionsPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRemoveEpsilonTransitionsPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomotonMinimizeDFAPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomotonMinimizeDFAPlugin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" />
     </list>
     <ignored path="stups-toolbox-2.0.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,8 +37,8 @@
       <file leaf-file-name="CLI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Console/CLI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="142" column="103" selection-start-line="142" selection-start-column="103" selection-end-line="142" selection-end-column="103" />
+            <state relative-caret-position="195">
+              <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,47 +46,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GrammarEliminateUnitRules.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLIPlugins/GrammarEliminateUnitRules.java">
+      <file leaf-file-name="GUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
-              <folding>
-                <element signature="e#493#494#0" expanded="true" />
-                <element signature="e#573#574#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GrammarCYK.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLIPlugins/GrammarCYK.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            <state relative-caret-position="187">
+              <caret line="178" column="115" selection-start-line="178" selection-start-column="115" selection-end-line="178" selection-end-column="115" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PDAGoThroughInputPlugin.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLIPlugins/PDAGoThroughInputPlugin.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
-              <folding>
-                <element signature="e#614#615#0" expanded="true" />
-                <element signature="e#656#657#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrintModePlugin.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PrintModePlugin.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="25" column="119" selection-start-line="25" selection-start-column="119" selection-end-line="25" selection-end-column="119" />
+            <state relative-caret-position="238">
+              <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -101,55 +76,80 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GrammarRemoveLambdaPlugin.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLIPlugins/GrammarRemoveLambdaPlugin.java">
+      <file leaf-file-name="AutomatonCompletePlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="27" column="36" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
+            <state relative-caret-position="153">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding>
-                <element signature="e#536#537#0" expanded="true" />
-                <element signature="e#582#583#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#735#736#0" expanded="true" />
+                <element signature="e#782#783#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GrammarChomskyNormalForm.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/CLIPlugins/GrammarChomskyNormalForm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="24" column="50" selection-start-line="24" selection-start-column="50" selection-end-line="24" selection-end-column="50" />
-              <folding>
-                <element signature="e#523#524#0" expanded="true" />
-                <element signature="e#582#583#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CYKGrammarPlugin.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CYKGrammarPlugin.java">
+      <file leaf-file-name="AutomatonConvertToDFAPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonConvertToDFAPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding>
-                <element signature="e#376#377#0" expanded="true" />
-                <element signature="e#415#416#0" expanded="true" />
-                <element signature="e#460#461#0" expanded="true" />
-                <element signature="e#488#489#0" expanded="true" />
-                <element signature="e#542#543#0" expanded="true" />
-                <element signature="e#581#582#0" expanded="true" />
+                <element signature="e#780#781#0" expanded="true" />
+                <element signature="e#833#834#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheckStringPlugin.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CheckStringPlugin.java">
+      <file leaf-file-name="AutomatonRemoveEpsilonTransitionsPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRemoveEpsilonTransitionsPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1020">
-              <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="136">
+              <caret line="14" column="34" selection-start-line="14" selection-start-column="3" selection-end-line="17" selection-end-column="5" />
+              <folding>
+                <element signature="e#842#843#0" expanded="true" />
+                <element signature="e#907#908#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AutomatonRenameStatesPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="12" column="34" selection-start-line="12" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+              <folding>
+                <element signature="e#770#771#0" expanded="true" />
+                <element signature="e#822#823#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AutomotonMinimizeDFAPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomotonMinimizeDFAPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="13" column="34" selection-start-line="13" selection-start-column="1" selection-end-line="16" selection-end-column="5" />
+              <folding>
+                <element signature="e#797#798#0" expanded="true" />
+                <element signature="e#844#845#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleFunctionPlugin.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="301">
+              <caret line="26" column="6" selection-start-line="26" selection-start-column="6" selection-end-line="26" selection-end-column="6" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -207,6 +207,12 @@
         <option value="$PROJECT_DIR$/src/CLIPlugins/GrammarChomskyNormalForm.java" />
         <option value="$PROJECT_DIR$/src/CLIPlugins/PDAGoThroughInputPlugin.java" />
         <option value="$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonConvertToDFAPlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRemoveEpsilonTransitionsPlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomotonMinimizeDFAPlugin.java" />
       </list>
     </option>
   </component>
@@ -347,7 +353,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="CLIPlugins" />
+              <option name="myItemId" value="GUIPlugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SimpleFunctionPlugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stups-toolbox-2.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="stups-toolbox-2.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GUIPlugins" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -674,7 +702,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -683,7 +711,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30676857" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30676857" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -738,30 +766,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/DisplayPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Console/CLI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3043">
-          <caret line="197" column="21" selection-start-line="197" selection-start-column="21" selection-end-line="197" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="544">
@@ -908,30 +912,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/view/StorableTreeView.java" />
     <entry file="file://$PROJECT_DIR$/src/Main/view/DynamicContextMenu.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1009,14 +989,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="94" column="9" selection-start-line="94" selection-start-column="9" selection-end-line="94" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -1044,16 +1016,6 @@
             <element signature="e#488#489#0" expanded="true" />
             <element signature="e#542#543#0" expanded="true" />
             <element signature="e#581#582#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Console/CLI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="142" column="103" selection-start-line="142" selection-start-column="103" selection-end-line="142" selection-end-column="103" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1120,9 +1082,93 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="25" column="119" selection-start-line="25" selection-start-column="119" selection-end-line="25" selection-end-column="119" />
+        <state relative-caret-position="238">
+          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Console/CLI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="178" column="115" selection-start-line="178" selection-start-column="115" selection-end-line="178" selection-end-column="115" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonConvertToDFAPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#780#781#0" expanded="true" />
+            <element signature="e#833#834#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#735#736#0" expanded="true" />
+            <element signature="e#782#783#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRemoveEpsilonTransitionsPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="34" selection-start-line="14" selection-start-column="3" selection-end-line="17" selection-end-column="5" />
+          <folding>
+            <element signature="e#842#843#0" expanded="true" />
+            <element signature="e#907#908#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" column="34" selection-start-line="12" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="e#770#771#0" expanded="true" />
+            <element signature="e#822#823#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomotonMinimizeDFAPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="13" column="34" selection-start-line="13" selection-start-column="1" selection-end-line="16" selection-end-column="5" />
+          <folding>
+            <element signature="e#797#798#0" expanded="true" />
+            <element signature="e#844#845#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="26" column="6" selection-start-line="26" selection-start-column="6" selection-end-line="26" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

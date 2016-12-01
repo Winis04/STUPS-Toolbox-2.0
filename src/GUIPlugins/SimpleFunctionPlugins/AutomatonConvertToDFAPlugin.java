@@ -3,6 +3,9 @@ package GUIPlugins.SimpleFunctionPlugins;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+
 /**
  * Created by fabian on 24.07.16.
  */
@@ -26,5 +29,10 @@ public class AutomatonConvertToDFAPlugin implements SimpleFunctionPlugin{
     @Override
     public Class outputType() {
         return Automaton.class;
+    }
+
+    @Override
+    public MenuItem getMenuItem() {
+        return new MenuItem("Convert to DFA");
     }
 }

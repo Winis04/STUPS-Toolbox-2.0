@@ -2,6 +2,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import javafx.scene.control.MenuItem;
 
 /**
  * Created by fabian on 28.07.16.
@@ -26,5 +27,10 @@ public class AutomatonCompletePlugin implements SimpleFunctionPlugin {
     @Override
     public Class outputType() {
         return Automaton.class;
+    }
+
+    @Override
+    public MenuItem getMenuItem() {
+        return new MenuItem("Complete");
     }
 }

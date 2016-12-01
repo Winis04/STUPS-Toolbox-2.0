@@ -1,8 +1,14 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
+import Console.Storable;
+import javafx.scene.control.MenuItem;
+
 /**
  * Created by fabian on 18.06.16.
+ *
+ * SimplePlugins are used on Storables and pop up as context menus of these
  */
+
 public interface SimpleFunctionPlugin {
 
     /**
@@ -38,4 +44,10 @@ public interface SimpleFunctionPlugin {
      * @return The object-type.
      */
     Class outputType();
+
+    /**
+     * return a MenuItem for the SimpleFunctionPlugin.
+     * @return
+     */
+    MenuItem getMenuItem();
 }
