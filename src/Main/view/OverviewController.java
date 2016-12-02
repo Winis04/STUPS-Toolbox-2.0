@@ -110,7 +110,7 @@ public class OverviewController {
             treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 // the selected Item
                 TreeItem<String> selectedItem = newValue;
-                System.out.println(newValue);
+               
                 if(newValue != null && !newValue.equals(root) &&!newValue.getParent().equals(root)) {
                     // the String that belongs to the parent treeItem
                     String parent = selectedItem.getParent().getValue().toLowerCase();
