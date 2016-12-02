@@ -200,118 +200,9 @@ public class GUI extends Application{
         });
 
         //Initialize the Menubar, the plugin menu, and the file menu.
-        MenuBar menuBar = new MenuBar();
 
-        Menu pluginMenu = new Menu("Choose Plugin");
-        Menu fileMenu = new Menu("File");
-
-        MenuItem newMenu = new MenuItem("New");
-        MenuItem openMenu = new MenuItem("Open");
-        MenuItem saveMenu = new MenuItem("Save");
-        fileMenu.getItems().addAll(newMenu, openMenu, saveMenu);
-
-        HashSet<Menu> menus = new HashSet<>();
 
         //Setup the setOnAction-method for the menu item of every display plugin.
-        for(Class type : displayPlugins.keySet()) {
-            MenuItem menuItem = new MenuItem(displayPlugins.get(type).getName());
-
-            menuItem.setOnAction(event -> {
-                //get the display plugin and its corresponding object.
-                currentDisplayPlugin = displayPlugins.get(type);
-                Object object = cli.objects.get(type);
-
-                //if the object doesn't exist, create a new one.
-                if(object == null) {
-                    try {
-                        object = displayPlugins.get(type).displayType().newInstance();
-                        cli.objects.put(type, object);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                //Now, that the display plugin and object are loaded, we can display the plugin.
-                functionsPane.setCenter(currentDisplayPlugin.display(object));
-             //   overviewController.getTreeView().setVisible(true);
-                //Setup the menubar.
-                menuBar.getMenus().clear();
-                menus.clear();
-                menuBar.getMenus().add(pluginMenu);
-                menus.addAll(currentDisplayPlugin.menus(cli.objects.get(currentDisplayPlugin.displayType()), root.getCenter()));
-                menuBar.getMenus().add(fileMenu);
-                menuBar.getMenus().addAll(menus);
-
-                //Setup the new, save and open menu-items.
-                if(currentDisplayPlugin != null) {
-                    newMenu.setOnAction(event1 -> {
-                        Object ret = currentDisplayPlugin.newObject();
-                        if(ret != null) {
-                            cli.objects.put(currentDisplayPlugin.displayType(), ret);
-                            currentDisplayPlugin.refresh(ret);
-                            refreshComplexPlugins();
-                        }
-                    });
-
-                    openMenu.setOnAction(event1 -> {
-                        Object ret = currentDisplayPlugin.openFile();
-                        if(ret != null) {
-                            cli.objects.put(currentDisplayPlugin.displayType(), ret);
-                            currentDisplayPlugin.refresh(ret);
-                            refreshComplexPlugins();
-                        }
-                    });
-
-                    saveMenu.setOnAction(event1 -> currentDisplayPlugin.saveFile(cli.objects.get(currentDisplayPlugin.displayType())));
-                } else {
-                    //if no plugin is loaded, the menu-items don't have any function.
-                    newMenu.setOnAction(event1 -> {});
-                    openMenu.setOnAction(event1 -> {});
-                    saveMenu.setOnAction(event1 -> {});
-                }
-
-                //Display all simple plugins which input type matches the display type of the display plugin.
-                functionsBox.getItems().clear();
-                executeMap.clear();
-                dynamicMenu.clear();
-                for(Class functionPlugin : simpleFunctionPlugins.keySet()) {
-                    SimpleFunctionPlugin sfp=simpleFunctionPlugins.get(functionPlugin);
-                    dynamicMenu.add(sfp.getMenuItem(this));
-                    if(sfp.inputType().equals(object.getClass())) {
-                        functionsBox.getItems().add(simpleFunctionPlugins.get(functionPlugin).getName());
-                        executeMap.put(simpleFunctionPlugins.get(functionPlugin).getName(), simpleFunctionPlugins.get(functionPlugin));
-                    }
-                }
-                functionsBox.getSelectionModel().selectFirst();
-
-                //Display all complex plugins which input type matches the display type of the display plugin.
-                refreshComplexPlugins();
-
-                functionsPane.setVisible(true);
-                complexFunctionsPane.setVisible(true);
-                simpleFunctionsPane.setVisible(true);
-
-
-                overviewController.makeTree(dynamicMenu);
-                //if there are no function plugin, make the functionsPane invisible.
-                if(complexFunctionsPane.getTabs().isEmpty()) {
-                    complexFunctionsPane.setVisible(false);
-                }
-
-                if(functionsBox.getItems().isEmpty()) {
-                    simpleFunctionsPane.setVisible(false);
-                }
-
-                if(complexFunctionsPane.getTabs().isEmpty() && functionsBox.getItems().isEmpty()) {
-                    functionsPane.setVisible(false);
-                }
-            });
-
-            pluginMenu.getItems().add(menuItem);
-        }
-
-        //construct the rest of the GUI. This is pretty straight forward.
-        menuBar.getMenus().add(pluginMenu);
 
         simpleFunctionsPane.setHgap(10);
         simpleFunctionsPane.setPadding(new Insets(2, 0, 2, 5));
@@ -319,14 +210,13 @@ public class GUI extends Application{
         simpleFunctionsPane.getChildren().add(functionsButton);
 
 
-        root.setTop(menuBar);
+
      //   root.setCenter(new Label("STUPS-Toolbox"));
       //  root.setBottom(functionsPane);
 
     //    primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
-
             primaryStage.close();
         });
 
@@ -397,8 +287,14 @@ public class GUI extends Application{
     public void switchDisplayGui(Class clazz) {
             if(clazz.equals(Grammar.class)) {
                 currentDisplayPlugin = displayPlugins.get(Grammar.class);
+                if(currentDisplayPlugin==null) {
+                    currentDisplayPlugin = new GrammarGUI();
+                }
             } else {
                 currentDisplayPlugin = displayPlugins.get(Automaton.class);
+                if(currentDisplayPlugin==null) {
+                    currentDisplayPlugin = new AutomatonGUI();
+                }
             }
     }
 }

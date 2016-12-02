@@ -104,12 +104,14 @@ public class OverviewController {
 
 
             root.setExpanded(true);
+
             treeView.setRoot(root);
             treeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 // the selected Item
                 TreeItem<String> selectedItem = newValue;
-                if(!newValue.getParent().equals(root) && !newValue.equals(root)) {
+                System.out.println(newValue);
+                if(newValue != null && !newValue.equals(root) &&!newValue.getParent().equals(root)) {
                     // the String that belongs to the parent treeItem
                     String parent = selectedItem.getParent().getValue().toLowerCase();
                     // we get the parents (and the childs class) by looking in the lookup table
