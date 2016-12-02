@@ -91,7 +91,7 @@ public class GUI extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
-        overviewController.makeTree(dynamicMenu);
+//        overviewController.makeTree(dynamicMenu);
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -100,22 +100,7 @@ public class GUI extends Application{
         primaryStage.show();
     }
 
-    private void initialize() {
-        refreshComplexPlugins();
-        refreshSimplePlugins();
-    }
-    private void refreshSimplePlugins() {
 
-    }
-    private void refreshComplexPlugins2() {
-        complexFunctionsPane.getTabs().clear();
-        for(Class functionPlugin : complexFunctionPlugins.keySet()) {
-            if(complexFunctionPlugins.get(functionPlugin).displayPluginType().equals(currentDisplayPlugin.getClass())) {
-                ComplexFunctionPlugin plugin = complexFunctionPlugins.get(functionPlugin);
-                complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
-            }
-        }
-    }
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         for(ComplexFunctionPlugin plugin : complexFunctionPlugins2) {
@@ -193,6 +178,7 @@ public class GUI extends Application{
       //  BorderPane root = new BorderPane();
         initRootLayout();
         showOverview();
+
      //   BorderPane functionsPane = new BorderPane();
        // FlowPane simpleFunctionsPane = new FlowPane();
 
@@ -305,6 +291,8 @@ public class GUI extends Application{
                 complexFunctionsPane.setVisible(true);
                 simpleFunctionsPane.setVisible(true);
 
+
+                overviewController.makeTree(dynamicMenu);
                 //if there are no function plugin, make the functionsPane invisible.
                 if(complexFunctionsPane.getTabs().isEmpty()) {
                     complexFunctionsPane.setVisible(false);
@@ -338,6 +326,7 @@ public class GUI extends Application{
     //    primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
+
             primaryStage.close();
         });
 

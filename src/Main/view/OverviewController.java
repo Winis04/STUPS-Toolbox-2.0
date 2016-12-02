@@ -58,7 +58,9 @@ public class OverviewController {
     }
 
     public void makeTree(ArrayList<MenuItem> dynamicMenu) {
-
+        if(treeView.getRoot()!=null) {
+            treeView.getRoot().getChildren().clear();
+        }
         TreeItem<String> root=new TreeItem<>("Storables");
 
         if(!gui.getCli().store.keySet().isEmpty()) {
