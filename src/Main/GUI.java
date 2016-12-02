@@ -157,7 +157,7 @@ public class GUI extends Application{
             for(File file : classes) {
                 if(file.getName().endsWith(".class") && !file.getName().equals("DisplayPlugin.class") && !file.getName().equals("ComplexDisplayPlugin.class") && !file.getName().contains("$")) {
                     DisplayPlugin instance = (DisplayPlugin) urlClassLoader.loadClass("GUIPlugins.DisplayPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
-                    displayPlugins.put(instance.getClass(), instance);
+                    displayPlugins.put(instance.displayType(), instance);
                 }
             }
 
@@ -226,19 +226,19 @@ public class GUI extends Application{
         HashSet<Menu> menus = new HashSet<>();
 
         //Setup the setOnAction-method for the menu item of every display plugin.
-        for(Class displayPlugin : displayPlugins.keySet()) {
-            MenuItem menuItem = new MenuItem(displayPlugins.get(displayPlugin).getName());
+        for(Class type : displayPlugins.keySet()) {
+            MenuItem menuItem = new MenuItem(displayPlugins.get(type).getName());
 
             menuItem.setOnAction(event -> {
                 //get the display plugin and its corresponding object.
-                currentDisplayPlugin = displayPlugins.get(displayPlugin);
-                Object object = cli.objects.get(displayPlugins.get(displayPlugin).displayType());
+                currentDisplayPlugin = displayPlugins.get(type);
+                Object object = cli.objects.get(displayPlugins.get(type).displayType());
 
                 //if the object doesn't exist, create a new one.
                 if(object == null) {
                     try {
-                        object = displayPlugins.get(displayPlugin).displayType().newInstance();
-                        cli.objects.put(displayPlugins.get(displayPlugin).displayType(), object);
+                        object = displayPlugins.get(type).displayType().newInstance();
+                        cli.objects.put(displayPlugins.get(type).displayType(), object);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -404,9 +404,9 @@ public class GUI extends Application{
 
     public void switchDisplayGui(Class clazz) {
             if(clazz.equals(Grammar.class)) {
-                currentDisplayPlugin = displayPlugins.get(GrammarGUI.class);
+                currentDisplayPlugin = displayPlugins.get(Grammar.class);
             } else {
-                currentDisplayPlugin = displayPlugins.get(AutomatonGUI.class);
+                currentDisplayPlugin = displayPlugins.get(Automaton.class);
             }
     }
 }

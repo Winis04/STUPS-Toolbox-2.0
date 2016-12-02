@@ -3,6 +3,7 @@ package Main.view;
 
 
 import Console.Storable;
+import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import Main.GUI;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -117,7 +118,9 @@ public class OverviewController {
                     // put it as the current grammar/automaton/..
 
                     gui.getCli().objects.put(parentClass, selectedStorable);
+                    gui.switchDisplayGui(parentClass);
                     gui.refresh(selectedStorable);
+
                 } else {
 
                 }
