@@ -371,7 +371,9 @@ public class GUI extends Application{
             // Give the controller access to the main app.
             overviewController = loader.getController();
             overviewController.setGui(this);
-          //  overviewController.makeTree();
+            if(overviewController.getTreeView().getRoot() == null) {
+                overviewController.makeTree(dynamicMenu);
+            }
             this.functionsPane=overviewController.getContentPane();
             this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
             this.complexFunctionsPane=overviewController.getTabPane();
