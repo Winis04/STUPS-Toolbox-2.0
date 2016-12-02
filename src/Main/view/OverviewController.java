@@ -58,6 +58,7 @@ public class OverviewController {
     }
 
     public void makeTree(ArrayList<MenuItem> dynamicMenu) {
+
         if(treeView.getRoot()!=null) {
             treeView.getRoot().getChildren().clear();
         }

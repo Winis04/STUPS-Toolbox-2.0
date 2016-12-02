@@ -91,7 +91,7 @@ public class GUI extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
-//        overviewController.makeTree(dynamicMenu);
+        overviewController.makeTree(dynamicMenu);
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -233,7 +233,7 @@ public class GUI extends Application{
 
                 //Now, that the display plugin and object are loaded, we can display the plugin.
                 functionsPane.setCenter(currentDisplayPlugin.display(object));
-                overviewController.getTreeView().setVisible(true);
+             //   overviewController.getTreeView().setVisible(true);
                 //Setup the menubar.
                 menuBar.getMenus().clear();
                 menus.clear();
