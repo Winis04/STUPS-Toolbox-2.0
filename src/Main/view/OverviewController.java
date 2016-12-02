@@ -4,6 +4,7 @@ package Main.view;
 
 import Console.Storable;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
+import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import Main.GUI;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,9 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import sun.reflect.generics.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import javax.media.j3d.ConeSound;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
@@ -57,7 +57,7 @@ public class OverviewController {
 
     }
 
-    public void makeTree(ArrayList<MenuItem> dynamicMenu) {
+    public void makeTree(Collection<SimpleFunctionPlugin> dynamicMenu) {
 
         if(treeView.getRoot()!=null) {
             treeView.getRoot().getChildren().clear();
@@ -85,16 +85,13 @@ public class OverviewController {
             treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
                 if (e.getButton()==MouseButton.SECONDARY) {
                     TreeItem selected = treeView.getSelectionModel().getSelectedItem();
-
+                    System.out.println("selected");
                     //item is selected - this prevents fail when clicking on empty space
                     if (selected!=null) {
+                        System.out.println("open contextMenu");
                         //open context menu on current screen position
+                        this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu,e.getScreenX(),e.getScreenY());
 
-                       if(selected.getParent().getValue().equals("Grammar")) {
-                           this.openContextMenu(dynamicMenu,e.getScreenX(),e.getScreenY());
-                       } else {
-                           this.openContextMenu(dynamicMenu,e.getScreenX(),e.getScreenY());
-                       }
                     }
                 } else {
                     //any other click cause hiding menu
@@ -110,7 +107,7 @@ public class OverviewController {
             treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 // the selected Item
                 TreeItem<String> selectedItem = newValue;
-               
+
                 if(newValue != null && !newValue.equals(root) &&!newValue.getParent().equals(root)) {
                     // the String that belongs to the parent treeItem
                     String parent = selectedItem.getParent().getValue().toLowerCase();
@@ -130,14 +127,27 @@ public class OverviewController {
 
                 }
             });
-
-
+         //   ContextMenu contextMenu = new ContextMenu();
+         //   contextMenu.getItems().addAll(gui.getSimpleFunctionPlugins().values().stream().map(x -> x.getMenuItem(gui)).collect(Collectors.toList()));
+         //   treeView.setContextMenu(contextMenu);
         }
     }
 
-    private void openContextMenu(List<MenuItem> list,double x, double y) {
+    private Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {
+        // the String that belongs to the parent treeItem
+        String parent = selectedItem.getParent().getValue().toLowerCase();
+        // we get the parents (and the childs class) by looking in the lookup table
+        Class parentClass = gui.getCli().lookUpTable.get(parent);
+        return parentClass;
+
+    }
+
+    private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
-        dynamicContextMenu.getItems().addAll(list);
+        dynamicContextMenu.getItems().addAll(list.stream()
+                .filter(sfp -> sfp.inputType().equals(parent))
+                .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
+        
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);

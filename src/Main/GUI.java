@@ -2,7 +2,6 @@ package Main;
 
 import AutomatonSimulator.Automaton;
 import Console.CLI;
-import Console.Storable;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
@@ -52,8 +51,8 @@ public class GUI extends Application{
     /**
      * Contains all complex plugins. The class-type of every plugin is mapped to a instance of the plugin.
      */
-    private HashSet<ComplexFunctionPlugin> complexFunctionPlugins2 = new HashSet<>();
-    private HashMap<Class, ComplexFunctionPlugin> complexFunctionPlugins = new HashMap<>();
+    private HashSet<ComplexFunctionPlugin> complexFunctionPlugins = new HashSet<>();
+
 
     /**
      * Displays all complex plugins that match the display-type of the currently loaded display-plugin.
@@ -70,9 +69,11 @@ public class GUI extends Application{
     private BorderPane functionsPane;
     private FlowPane simpleFunctionsPane;
 
+    private HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins;
+
     private  HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
-    ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
+   // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.
      *
@@ -91,7 +92,7 @@ public class GUI extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
-        overviewController.makeTree(dynamicMenu);
+        overviewController.makeTree(simpleFunctionPlugins.values());
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -103,7 +104,7 @@ public class GUI extends Application{
 
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
-        for(ComplexFunctionPlugin plugin : complexFunctionPlugins2) {
+        for(ComplexFunctionPlugin plugin : complexFunctionPlugins) {
             if(plugin.displayPluginType().equals(currentDisplayPlugin.getClass())) {
                 complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
             }
@@ -126,9 +127,8 @@ public class GUI extends Application{
         //Initialize HashMaps for all display, simple, and complex plugins.
         //Each HashMap maps the class-type of each plugin to an instance of it.
 
-        HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins = new HashMap<>();
-        complexFunctionPlugins = new HashMap<>();
-        complexFunctionPlugins2 = new HashSet<>();
+        simpleFunctionPlugins = new HashMap<>();
+        complexFunctionPlugins = new HashSet<>();
 
         //Maps the name-string of each simple plugin to an instance of it.
         //This is needed to execute a simple plugin, when the execute-button is pressed.
@@ -163,8 +163,7 @@ public class GUI extends Application{
             for(File file : classes) {
                 if(file.getName().endsWith(".class") && !file.getName().equals("ComplexFunctionPlugin.class") && !file.getName().contains("$")) {
                     ComplexFunctionPlugin instance = (ComplexFunctionPlugin) urlClassLoader.loadClass("GUIPlugins.ComplexFunctionPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
-                    complexFunctionPlugins.put(instance.getClass(), instance);
-                    complexFunctionPlugins2.add(instance);
+                    complexFunctionPlugins.add(instance);
                 }
             }
         } catch(Exception e) {
@@ -262,7 +261,7 @@ public class GUI extends Application{
             overviewController = loader.getController();
             overviewController.setGui(this);
             if(overviewController.getTreeView().getRoot() == null) {
-                overviewController.makeTree(dynamicMenu);
+                overviewController.makeTree(simpleFunctionPlugins.values());
             }
             this.functionsPane=overviewController.getContentPane();
             this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
@@ -278,6 +277,8 @@ public class GUI extends Application{
     public CLI getCli() {
         return cli;
     }
+
+
 
     public DisplayPlugin getCurrentDisplayPlugin() {
         return currentDisplayPlugin;
@@ -296,5 +297,9 @@ public class GUI extends Application{
                     currentDisplayPlugin = new AutomatonGUI();
                 }
             }
+    }
+
+    public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {
+        return simpleFunctionPlugins;
     }
 }
