@@ -264,7 +264,7 @@ public class Automaton implements Printable, Storable {
             }
         }
         Printer.println(";",writer);
-        Printer.println("\\end{tikzpicture}",writer);
+        Printer.println("\\end{tikzpicture}\n\n",writer);
 
     }
     /**

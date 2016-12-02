@@ -158,6 +158,7 @@ public class GUI extends Application{
                 if(file.getName().endsWith(".class") && !file.getName().equals("DisplayPlugin.class") && !file.getName().equals("ComplexDisplayPlugin.class") && !file.getName().contains("$")) {
                     DisplayPlugin instance = (DisplayPlugin) urlClassLoader.loadClass("GUIPlugins.DisplayPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
                     displayPlugins.put(instance.displayType(), instance);
+
                 }
             }
 
@@ -232,13 +233,13 @@ public class GUI extends Application{
             menuItem.setOnAction(event -> {
                 //get the display plugin and its corresponding object.
                 currentDisplayPlugin = displayPlugins.get(type);
-                Object object = cli.objects.get(displayPlugins.get(type).displayType());
+                Object object = cli.objects.get(type);
 
                 //if the object doesn't exist, create a new one.
                 if(object == null) {
                     try {
                         object = displayPlugins.get(type).displayType().newInstance();
-                        cli.objects.put(displayPlugins.get(type).displayType(), object);
+                        cli.objects.put(type, object);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

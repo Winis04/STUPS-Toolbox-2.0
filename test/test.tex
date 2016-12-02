@@ -8,117 +8,34 @@
 
 \begin{document}
 
-$G=\left(\{\epsilon, 0, 1\},\;\{ S, A, B, D, C, E\},\;S,\;R\right)$ with
-\begin{align*}
-	R=\{	S &\rightarrow ABD, \\ 
-	A &\rightarrow BB\;|\;ED, \\ 
-	B &\rightarrow \epsilon\;|\;AC, \\ 
-	D &\rightarrow 0, \\ 
-	C &\rightarrow \epsilon, \\ 
-	E &\rightarrow 1\}
-\end{align*}
-\section{Remove Lambda-Rules}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
 
-\begin{description}
-	\item[Before] \hfill \\ 
-		$G=\left(\{	0, \epsilon, 1\},\;\{ S, A, B, D, C, E\},\;S,\;R\right)$ with
-	\begin{align*}
-		R=\{	S &\rightarrow ABD, \\ 
-		A &\rightarrow BB\;|\;ED, \\ 
-		B &\rightarrow AC\;|\;\epsilon, \\ 
-		D &\rightarrow 0, \\ 
-		C &\rightarrow \epsilon, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 1] \hfill \\ 
-	nullables\\ 
-	$\{	A, 	B, 	C\}$
-	\item[Step 2] \hfill \\ 
-		$G'=\left(\{	0, \epsilon, 1\},\;\{ S, A, D, B, E, C\},\;S,\;R'\right)$ with
-	\begin{align*}
-		R'=\{	S &\rightarrow AD\;|\;D\;|\;ABD\;|\;BD, \\ 
-		A &\rightarrow \epsilon\;|\;BB\;|\;ED\;|\;B, \\ 
-		D &\rightarrow 0, \\ 
-		B &\rightarrow \epsilon\;|\;A\;|\;C\;|\;AC, \\ 
-		E &\rightarrow 1, \\ 
-		C &\rightarrow \epsilon\}
-	\end{align*}
-	\item[Step 3] \hfill \\ 
-	All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\ 
-	$G''=\left(\{	1, 0, \epsilon\},\;\{ S, A, B, D, E\},\;S,\;R''\right)$ with
-	\begin{align*}
-		R''=\{	S &\rightarrow ABD\;|\;BD\;|\;AD\;|\;D, \\ 
-		A &\rightarrow ED\;|\;BB\;|\;B, \\ 
-		B &\rightarrow A, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-\end{description}
+	\node[state,initial]	 (z0)		{z0};
+	\node[state]	 (z1)	[right of=z0]		{z1};
+	\node[state,accepting]	 (z2)	[right of=z1]		{z2};
+\path[->]
+(z0) 	 edge [bend left=90] node {a}	(z2)
+ edge [bend left=45] node {a}	(z1)
+(z1) 	 edge [loop below] node {a}	(z1)
+ edge [bend left=45] node {b}	(z2)
+(z2) 	 edge [bend left=90] node {a}	(z0)
+ edge [loop below] node {b}	(z2)
+;
+\end{tikzpicture}
 
-\section{Eliminate Unit Rules}
 
-\begin{description}
-	\item[Before] \hfill \\ 
-		$G=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;R\right)$ with
-	\begin{align*}
-		R=\{	S &\rightarrow AD\;|\;0\;|\;AAD, \\ 
-		A &\rightarrow ED\;|\;AA, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 1] \hfill \\ 
-	remove circles\\ 
-	$G'=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;R'\right)$ with
-	\begin{align*}
-		R'=\{	S &\rightarrow AD\;|\;D\;|\;AAD, \\ 
-		A &\rightarrow ED\;|\;AA, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 2] \hfill \\ 
-	number the nonterminals and remove unit rules beginning by the highest number.\\ 
-	$G''=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;R''\right)$ with
-	\begin{align*}
-		R''=\{	S &\rightarrow 0\;|\;AD\;|\;AAD, \\ 
-		A &\rightarrow ED\;|\;AA, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-\end{description}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
 
-\section{Chomsky - Normal - Form}
-
-\begin{description}
-	\item[Before] \hfill \\ 
-		$G=\left(\{	0, 1\},\;\{ S, A, D, P_1, E\},\;S,\;R\right)$ with
-	\begin{align*}
-		R=\{	S &\rightarrow AD\;|\;0\;|\;AP_1, \\ 
-		A &\rightarrow ED\;|\;AA, \\ 
-		D &\rightarrow 0, \\ 
-		P_1 &\rightarrow AD, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 1] \hfill \\ 
-	rules, that point only on one Nonterminal are already in chomsky normal form and we keep them\\ 
-		\item[Step 2] \hfill \\ 
-	in all other rules replace every appearance of Terminal a through a new Nonterminal\\ 
-	$G'=\left(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;R'\right)$ with
-	\begin{align*}
-		R'=\{	S &\rightarrow AD\;|\;0\;|\;AAD, \\ 
-		A &\rightarrow AA\;|\;ED, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 3] \hfill \\ 
-	in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule.\\ 
-	$G''=\left(\{	0, 1\},\;\{ S, A, D, P_1, E\},\;S,\;R''\right)$ with
-	\begin{align*}
-		R''=\{	S &\rightarrow 0\;|\;AD\;|\;AP_1, \\ 
-		A &\rightarrow AA\;|\;ED, \\ 
-		D &\rightarrow 0, \\ 
-		P_1 &\rightarrow AD, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-\end{description}
-
+	\node[state,initial]	 (z0)		{z0};
+	\node[state]	 (z1)	[right of=z0]		{z1};
+	\node[state,accepting]	 (z2)	[right of=z1]		{z2};
+\path[->]
+(z0) 	 edge [bend left=90] node {a}	(z2)
+ edge [bend left=45] node {a}	(z1)
+(z1) 	 edge [loop below] node {a}	(z1)
+ edge [bend left=45] node {b}	(z2)
+(z2) 	 edge [bend left=90] node {a}	(z0)
+ edge [loop below] node {b}	(z2)
+;
+\end{tikzpicture}
 \end{document}
