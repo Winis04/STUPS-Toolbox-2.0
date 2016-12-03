@@ -139,9 +139,11 @@ public class OverviewController {
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.inputType().equals(parent))
+                .filter(sfp -> sfp.operatesOnAllStorables()==false && sfp.inputType().equals(parent) )
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
-
+        dynamicContextMenu.getItems().addAll(list.stream()
+                .filter(sfp -> sfp.operatesOnAllStorables()==true)
+                .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);

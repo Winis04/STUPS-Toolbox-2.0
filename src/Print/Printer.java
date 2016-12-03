@@ -41,6 +41,9 @@ public class Printer {
                 break;
         }
     }
+    public static void print(String string) {
+        print(string,Printer.writer);
+    }
     public static void print(String string, BufferedWriter writer) {
         try {
             writer.write(string);
@@ -65,7 +68,7 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    public static void println(int i, BufferedWriter writer) {
+    private static void println(int i, BufferedWriter writer) {
         try {
             writer.write(i+"\n");
             writer.flush();

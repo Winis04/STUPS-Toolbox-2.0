@@ -12,6 +12,8 @@ import GrammarSimulator.Grammar;
  */
 
 public abstract class SimpleFunctionPlugin {
+
+    boolean operatesOnAllStorables = false;
     GUI gui = null;
 
     /**
@@ -71,5 +73,9 @@ public abstract class SimpleFunctionPlugin {
         });
         return item;
 
+    }
+
+    public boolean operatesOnAllStorables() {
+        return false;
     }
 }

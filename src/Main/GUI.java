@@ -2,6 +2,7 @@ package Main;
 
 import AutomatonSimulator.Automaton;
 import Console.CLI;
+import Console.Storable;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
@@ -98,6 +99,19 @@ public class GUI extends Application{
         }
 
         primaryStage.show();
+    }
+
+    public void refresh() {
+        overviewController.makeTree(simpleFunctionPlugins.values());
+        if(currentDisplayPlugin != null) {
+            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
+            refreshComplexPlugins();
+        }
+    }
+
+    public void addToStore(Storable storable, Class clazz, String name) {
+        cli.store.get(clazz).put(name,storable);
+        refresh();
     }
 
 
@@ -211,7 +225,7 @@ public class GUI extends Application{
     /**
      * Initializes the root layout.
      */
-    public void initRootLayout() {
+    private void initRootLayout() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
@@ -286,5 +300,9 @@ public class GUI extends Application{
 
     public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {
         return simpleFunctionPlugins;
+    }
+
+    public OverviewController getOverviewController() {
+        return overviewController;
     }
 }

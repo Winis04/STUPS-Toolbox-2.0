@@ -1466,6 +1466,13 @@ public class GrammarUtil {
             System.out.println("");
         }
     }
+    public static boolean languageContainsWord(Grammar grammarOld, String word) {
+        Grammar grammar = (Grammar) grammarOld.deep_copy();
+        removeLambdaRules(grammar);
+        eliminateUnitRules(grammar);
+        chomskyNormalForm(grammar);
+        return checkMatrix(cyk(grammar,word),grammar);
+    }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
         if(matrix != null) {
            return matrix.getCell(1, matrix.getWord().length() - 1).contains(grammar.getStartSymbol());
