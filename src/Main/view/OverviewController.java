@@ -3,23 +3,18 @@ package Main.view;
 
 
 import Console.Storable;
-import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import Main.GUI;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import sun.reflect.generics.tree.Tree;
 
-import javax.media.j3d.ConeSound;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
 
 /**
  * Created by Isabel on 28.11.2016.
@@ -31,8 +26,7 @@ public class OverviewController {
     TabPane tabPane;
     @FXML
     BorderPane contentPane;
-    @FXML
-    FlowPane simpleFunctionPane;
+
 
     ContextMenu dynamicContextMenu=new ContextMenu();
 
@@ -165,9 +159,6 @@ public class OverviewController {
         return contentPane;
     }
 
-    public FlowPane getSimpleFunctionPane() {
-        return simpleFunctionPane;
-    }
 
     public TreeView<String> getTreeView() {
         return treeView;

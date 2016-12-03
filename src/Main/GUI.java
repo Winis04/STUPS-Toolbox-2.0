@@ -67,7 +67,6 @@ public class GUI extends Application{
 
     private BorderPane root;
     private BorderPane functionsPane;
-    private FlowPane simpleFunctionsPane;
 
     private HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins;
 
@@ -198,22 +197,6 @@ public class GUI extends Application{
             }
         });
 
-        //Initialize the Menubar, the plugin menu, and the file menu.
-
-
-        //Setup the setOnAction-method for the menu item of every display plugin.
-
-        simpleFunctionsPane.setHgap(10);
-        simpleFunctionsPane.setPadding(new Insets(2, 0, 2, 5));
-        simpleFunctionsPane.getChildren().add(functionsBox);
-        simpleFunctionsPane.getChildren().add(functionsButton);
-
-
-
-     //   root.setCenter(new Label("STUPS-Toolbox"));
-      //  root.setBottom(functionsPane);
-
-    //    primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
             primaryStage.close();
@@ -264,7 +247,7 @@ public class GUI extends Application{
                 overviewController.makeTree(simpleFunctionPlugins.values());
             }
             this.functionsPane=overviewController.getContentPane();
-            this.simpleFunctionsPane=overviewController.getSimpleFunctionPane();
+
             this.complexFunctionsPane=overviewController.getTabPane();
         } catch (IOException e) {
             e.printStackTrace();
