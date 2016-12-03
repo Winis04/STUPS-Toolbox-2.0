@@ -44,7 +44,7 @@ public class GrammarGUI implements DisplayPlugin {
     /**
      * This GUI's root pane.
      */
-    private BorderPane rootPane;
+    private TabPane rootPane;
 
     /**
      * Contains all {@link GrammarTab}s.
@@ -59,22 +59,49 @@ public class GrammarGUI implements DisplayPlugin {
     @Override
     public Node display(Object object) {
         grammar = (Grammar) object;
-        rootPane = new BorderPane();
+
+        rootPane = new TabPane();
+
         tabs = new HashSet<>();
 
-        rootPane.setCenter(new EditTab().getFxNode(grammar));
+        rootPane.getTabs().clear();
+        Tab edit =new Tab("edit");
+        edit.setContent(new EditTab().getFxNode(grammar));
+        edit.setClosable(false);
+        rootPane.getTabs().add(edit);
 
         return rootPane;
     }
 
-    public void edit(Grammar grammar) {
-        rootPane.setCenter(new EditTab().getFxNode(grammar));
-    }
     public void firstfollow(Grammar grammar) {
-        rootPane.setCenter(new FirstFollowTab().getFxNode(grammar));
+        String name="First Follow";
+        if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
+            rootPane.getTabs().stream().forEach(tab -> {
+                if(tab.getText().equals(name)) {
+                    rootPane.getSelectionModel().select(tab);
+                }
+            });
+        } else {
+            Tab ff = new Tab(name);
+            ff.setContent(new FirstFollowTab().getFxNode(grammar));
+            ff.setClosable(true);
+            rootPane.getTabs().add(ff);
+        }
     }
     public void llParsingTableTab(Grammar grammar) {
-        rootPane.setCenter(new LLParsingTableTab().getFxNode(grammar));
+        String name="LL-parsing Table";
+        if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
+            rootPane.getTabs().stream().forEach(tab -> {
+                if(tab.getText().equals(name)) {
+                    rootPane.getSelectionModel().select(tab);
+                }
+            });
+        } else {
+            Tab ll = new Tab(name);
+            ll.setContent(new LLParsingTableTab().getFxNode(grammar));
+            ll.setClosable(true);
+            rootPane.getTabs().add(ll);
+        }
     }
 
     @Override

@@ -61,8 +61,12 @@ public abstract class SimpleFunctionPlugin {
         item.setOnAction(t -> {
             Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
             if(ret != null) {
-                gui.getCurrentDisplayPlugin().refresh(ret);
+
+              //  gui.getCurrentDisplayPlugin().refresh(ret);
+                gui.refresh(ret);
+
             }
+
         });
         return item;
 

@@ -86,7 +86,6 @@ public class OverviewController {
 
                         //open context menu on current screen position
                         this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu,e.getScreenX(),e.getScreenY());
-
                     }
                 } else {
                     //any other click cause hiding menu
