@@ -10,7 +10,7 @@ import javafx.scene.control.MenuItem;
 /**
  * Created by fabian on 18.06.16.
  */
-public class AutomatonRemoveEpsilonTransitionsPlugin implements SimpleFunctionPlugin {
+public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 
     @Override
     public Object execute(Object object) {
@@ -31,19 +31,6 @@ public class AutomatonRemoveEpsilonTransitionsPlugin implements SimpleFunctionPl
     @Override
     public Class outputType() {
         return Automaton.class;
-    }
-
-    @Override
-    public MenuItem getMenuItem(GUI gui) {
-        AutomatonRemoveEpsilonTransitionsPlugin plugin= this;
-        MenuItem item = new MenuItem(this.getName());
-        item.setOnAction(t -> {
-            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
-            if(ret != null) {
-                gui.getCurrentDisplayPlugin().refresh(ret);
-            }
-        });
-        return item;
     }
 
 }

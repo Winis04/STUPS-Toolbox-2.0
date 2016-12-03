@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 /**
  * Created by fabian on 28.07.16.
  */
-public class AutomatonCompletePlugin implements SimpleFunctionPlugin {
+public class AutomatonCompletePlugin extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         Automaton automaton = (Automaton) object;
@@ -33,21 +33,5 @@ public class AutomatonCompletePlugin implements SimpleFunctionPlugin {
         return Automaton.class;
     }
 
-    @Override
-    /**
-     * return a MenuItem for the SimpleFunctionPlugin.
-     * @return
-     */
-    public MenuItem getMenuItem(GUI gui) {
-        AutomatonCompletePlugin plugin= this;
-        MenuItem item = new MenuItem(this.getName());
-        item.setOnAction(t -> {
-            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
-            if(ret != null) {
-                gui.getCurrentDisplayPlugin().refresh(ret);
-            }
-        });
-        return item;
-    }
 
 }

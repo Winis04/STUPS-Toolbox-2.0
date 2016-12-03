@@ -9,7 +9,7 @@ import javafx.scene.control.MenuItem;
 /**
  * Created by fabian on 26.07.16.
  */
-public class AutomatonRenameStatesPlugin implements SimpleFunctionPlugin {
+public class AutomatonRenameStatesPlugin extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         Automaton automaton = (Automaton) object;
@@ -31,17 +31,5 @@ public class AutomatonRenameStatesPlugin implements SimpleFunctionPlugin {
         return Automaton.class;
     }
 
-    @Override
-    public MenuItem getMenuItem(GUI gui) {
-        AutomatonRenameStatesPlugin plugin= this;
-        MenuItem item = new MenuItem(this.getName());
-        item.setOnAction(t -> {
-            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
-            if(ret != null) {
-                gui.getCurrentDisplayPlugin().refresh(ret);
-            }
-        });
-        return item;
-    }
 
 }

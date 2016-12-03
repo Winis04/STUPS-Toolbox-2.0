@@ -153,6 +153,7 @@ public class GUI extends Application{
                 if(file.getName().endsWith(".class") && !file.getName().equals("SimpleFunctionPlugin.class") && !file.getName().contains("$")) {
                     SimpleFunctionPlugin instance = (SimpleFunctionPlugin) urlClassLoader.loadClass("GUIPlugins.SimpleFunctionPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
                     simpleFunctionPlugins.put(instance.getClass(), instance);
+                    instance.setGUI(this);
                 }
             }
 

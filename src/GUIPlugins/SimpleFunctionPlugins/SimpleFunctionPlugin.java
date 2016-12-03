@@ -10,7 +10,8 @@ import javafx.scene.control.MenuItem;
  * SimplePlugins are used on Storables and pop up as context menus of these
  */
 
-public interface SimpleFunctionPlugin {
+public abstract class SimpleFunctionPlugin {
+    GUI gui = null;
 
     /**
      * Takes an object, does something with it, and returns the changed object.
@@ -21,14 +22,14 @@ public interface SimpleFunctionPlugin {
      * @param object The object.
      * @return The changed object.
      */
-    Object execute(Object object);
+    public abstract Object execute(Object object);
 
     /**
      * Returns the plugin's name.
      *
      * @return The plugin's name.
      */
-    String getName();
+    abstract String getName();
 
     /**
      * Returns the desired object-type, needed by {@link #execute(Object)}.
@@ -36,7 +37,7 @@ public interface SimpleFunctionPlugin {
      *
      * @return The object-type.
      */
-    Class inputType();
+    public abstract Class inputType();
 
     /**
      * Returns the type of the object that {@link #execute(Object)} returns.
@@ -44,11 +45,26 @@ public interface SimpleFunctionPlugin {
      *
      * @return The object-type.
      */
-    Class outputType();
+    abstract Class outputType();
 
+
+    public void setGUI(GUI gui) {
+        this.gui=gui;
+    }
     /**
      * return a MenuItem for the SimpleFunctionPlugin.
      * @return
      */
-    public MenuItem getMenuItem(GUI gui);
+    public MenuItem getMenuItem(GUI gui) {
+        SimpleFunctionPlugin plugin= this;
+        MenuItem item = new MenuItem(this.getName());
+        item.setOnAction(t -> {
+            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+            if(ret != null) {
+                gui.getCurrentDisplayPlugin().refresh(ret);
+            }
+        });
+        return item;
+
+    }
 }

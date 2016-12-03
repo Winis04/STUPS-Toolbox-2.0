@@ -2,7 +2,9 @@ package GUIPlugins.DisplayPlugins;
 
 import CLIPlugins.CLIPlugin;
 import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
+import GUIPlugins.DisplayPlugins.GrammarTabs.FirstFollowTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.GrammarTab;
+import GUIPlugins.DisplayPlugins.GrammarTabs.LLParsingTableTab;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
@@ -63,6 +65,16 @@ public class GrammarGUI implements DisplayPlugin {
         rootPane.setCenter(new EditTab().getFxNode(grammar));
 
         return rootPane;
+    }
+
+    public void edit(Grammar grammar) {
+        rootPane.setCenter(new EditTab().getFxNode(grammar));
+    }
+    public void firstfollow(Grammar grammar) {
+        rootPane.setCenter(new FirstFollowTab().getFxNode(grammar));
+    }
+    public void llParsingTableTab(Grammar grammar) {
+        rootPane.setCenter(new LLParsingTableTab().getFxNode(grammar));
     }
 
     @Override

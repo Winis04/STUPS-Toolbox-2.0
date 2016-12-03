@@ -3,7 +3,9 @@ package Main.view;
 
 
 import Console.Storable;
+import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import GrammarSimulator.Grammar;
 import Main.GUI;
 
 import javafx.fxml.FXML;
