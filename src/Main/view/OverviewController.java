@@ -85,10 +85,9 @@ public class OverviewController {
             treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
                 if (e.getButton()==MouseButton.SECONDARY) {
                     TreeItem selected = treeView.getSelectionModel().getSelectedItem();
-                    System.out.println("selected");
                     //item is selected - this prevents fail when clicking on empty space
                     if (selected!=null) {
-                        System.out.println("open contextMenu");
+
                         //open context menu on current screen position
                         this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu,e.getScreenX(),e.getScreenY());
 
@@ -147,7 +146,7 @@ public class OverviewController {
         dynamicContextMenu.getItems().addAll(list.stream()
                 .filter(sfp -> sfp.inputType().equals(parent))
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
-        
+
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);

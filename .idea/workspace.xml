@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9bfd2792-5601-4b23-bad4-c0a87338db1d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main/GUI.java" afterPath="$PROJECT_DIR$/src/Main/GUI.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main/view/OverviewController.java" afterPath="$PROJECT_DIR$/src/Main/view/OverviewController.java" />
     </list>
@@ -32,46 +34,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GUI.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GUI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="263" column="74" selection-start-line="263" selection-start-column="74" selection-end-line="263" selection-end-column="74" />
+            <state relative-caret-position="235">
+              <caret line="107" column="80" selection-start-line="107" selection-start-column="80" selection-end-line="107" selection-end-column="80" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#11402#11403#0" expanded="true" />
+                <element signature="e#11479#11480#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SelectionModel.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/SelectionModel.java">
+      <file leaf-file-name="AutomatonGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/AutomatonGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="67" column="54" selection-start-line="67" selection-start-column="54" selection-end-line="67" selection-end-column="54" />
+            <state relative-caret-position="374">
+              <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OverviewController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DisplayPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/DisplayPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-368">
+              <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CYKGrammarPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CYKGrammarPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+              <folding>
+                <element signature="e#388#389#0" expanded="true" />
+                <element signature="e#424#425#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckStringPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CheckStringPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="202">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComplexFunctionPlugin.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OverviewController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="149" column="8" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
+            <state relative-caret-position="184">
+              <caret line="122" column="29" selection-start-line="122" selection-start-column="27" selection-end-line="122" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MultipleSelectionModelBase.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/MultipleSelectionModelBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -79,103 +116,9 @@
       <file leaf-file-name="TreeView.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/TreeView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
+            <state relative-caret-position="488">
               <caret line="1477" column="0" selection-start-line="1477" selection-start-column="0" selection-end-line="1477" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#67569#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#9829#9830#0" expanded="false" />
-                <element signature="e#9892#9893#0" expanded="false" />
-                <element signature="e#10333#10334#0" expanded="false" />
-                <element signature="e#10398#10399#0" expanded="false" />
-                <element signature="e#10877#10878#0" expanded="false" />
-                <element signature="e#10943#10944#0" expanded="false" />
-                <element signature="e#11504#11505#0" expanded="false" />
-                <element signature="e#11570#11571#0" expanded="false" />
-                <element signature="e#13820#13821#0" expanded="false" />
-                <element signature="e#13846#13847#0" expanded="false" />
-                <element signature="e#18122#18123#0" expanded="false" />
-                <element signature="e#18170#18171#0" expanded="false" />
-                <element signature="e#20227#20228#0" expanded="false" />
-                <element signature="e#20268#20269#0" expanded="false" />
-                <element signature="e#20496#20497#0" expanded="false" />
-                <element signature="e#20551#20552#0" expanded="false" />
-                <element signature="e#20690#20691#0" expanded="false" />
-                <element signature="e#20717#20718#0" expanded="false" />
-                <element signature="e#21056#21057#0" expanded="false" />
-                <element signature="e#21101#21102#0" expanded="false" />
-                <element signature="e#21316#21317#0" expanded="false" />
-                <element signature="e#21379#21380#0" expanded="false" />
-                <element signature="e#23548#23549#0" expanded="false" />
-                <element signature="e#23595#23596#0" expanded="false" />
-                <element signature="e#23730#23731#0" expanded="false" />
-                <element signature="e#23797#23798#0" expanded="false" />
-                <element signature="e#24909#24910#0" expanded="false" />
-                <element signature="e#24971#24972#0" expanded="false" />
-                <element signature="e#25022#25023#0" expanded="false" />
-                <element signature="e#25066#25067#0" expanded="false" />
-                <element signature="e#25827#25828#0" expanded="false" />
-                <element signature="e#25877#25878#0" expanded="false" />
-                <element signature="e#28106#28107#0" expanded="false" />
-                <element signature="e#28166#28167#0" expanded="false" />
-                <element signature="e#28219#28220#0" expanded="false" />
-                <element signature="e#28281#28282#0" expanded="false" />
-                <element signature="e#28453#28454#0" expanded="false" />
-                <element signature="e#28498#28499#0" expanded="false" />
-                <element signature="e#28538#28539#0" expanded="false" />
-                <element signature="e#28602#28603#0" expanded="false" />
-                <element signature="e#29150#29151#0" expanded="false" />
-                <element signature="e#29202#29203#0" expanded="false" />
-                <element signature="e#29386#29387#0" expanded="false" />
-                <element signature="e#29455#29456#0" expanded="false" />
-                <element signature="e#30454#30455#0" expanded="false" />
-                <element signature="e#30502#30503#0" expanded="false" />
-                <element signature="e#30679#30680#0" expanded="false" />
-                <element signature="e#30748#30749#0" expanded="false" />
-                <element signature="e#31136#31137#0" expanded="false" />
-                <element signature="e#31228#31229#0" expanded="false" />
-                <element signature="e#31570#31571#0" expanded="false" />
-                <element signature="e#31619#31620#0" expanded="false" />
-                <element signature="e#32599#32600#0" expanded="false" />
-                <element signature="e#32692#32693#0" expanded="false" />
-                <element signature="e#33035#33036#0" expanded="false" />
-                <element signature="e#33084#33085#0" expanded="false" />
-                <element signature="e#33711#33712#0" expanded="false" />
-                <element signature="e#33804#33805#0" expanded="false" />
-                <element signature="e#35418#35419#0" expanded="false" />
-                <element signature="e#35473#35474#0" expanded="false" />
-                <element signature="e#35764#35765#0" expanded="false" />
-                <element signature="e#35811#35812#0" expanded="false" />
-                <element signature="e#36273#36274#0" expanded="false" />
-                <element signature="e#36369#36370#0" expanded="false" />
-                <element signature="e#36437#36438#0" expanded="false" />
-                <element signature="e#36497#36498#0" expanded="false" />
-                <element signature="e#36566#36567#0" expanded="false" />
-                <element signature="e#36625#36626#0" expanded="false" />
-                <element signature="e#39740#39741#0" expanded="false" />
-                <element signature="e#39788#39789#0" expanded="false" />
-                <element signature="e#40254#40255#0" expanded="false" />
-                <element signature="e#40326#40327#0" expanded="false" />
-                <element signature="e#42428#42429#0" expanded="false" />
-                <element signature="e#42506#42507#0" expanded="false" />
-                <element signature="e#43149#43186#0" expanded="false" />
-                <element signature="e#43802#43803#0" expanded="false" />
-                <element signature="e#43846#43847#0" expanded="false" />
-                <element signature="e#47168#47169#0" expanded="false" />
-                <element signature="e#47230#47231#0" expanded="false" />
-                <element signature="e#47370#47371#0" expanded="false" />
-                <element signature="e#47409#47410#0" expanded="false" />
-                <element signature="e#47541#47542#0" expanded="false" />
-                <element signature="e#47580#47581#0" expanded="false" />
-                <element signature="e#47744#47745#0" expanded="false" />
-                <element signature="e#47783#47784#0" expanded="false" />
-                <element signature="e#60921#60922#0" expanded="false" />
-                <element signature="e#61006#61007#0" expanded="false" />
-                <element signature="e#63585#66826#0" expanded="false" />
-                <element signature="e#66825#66826#0" expanded="false" />
-                <element signature="e#66958#66959#0" expanded="false" />
-                <element signature="e#67044#67045#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,8 +126,8 @@
       <file leaf-file-name="Event.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/event/Event.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+            <state relative-caret-position="471">
+              <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -193,39 +136,12 @@
       <file leaf-file-name="Scene.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/Scene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="2494" column="0" selection-start-line="2494" selection-start-column="0" selection-end-line="2494" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AutomatonCompletePlugin.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReadOnlyIntegerWrapper.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/beans/property/ReadOnlyIntegerWrapper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IntegerPropertyBase.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/beans/property/IntegerPropertyBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="386">
+              <caret line="2510" column="54" selection-start-line="2510" selection-start-column="54" selection-end-line="2510" selection-end-column="54" />
+              <folding>
+                <element signature="e#66572#66573#0" expanded="true" />
+                <element signature="e#66618#66619#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -273,7 +189,6 @@
         <option value="$PROJECT_DIR$/src/CLIPlugins/GrammarRemoveLambdaPlugin.java" />
         <option value="$PROJECT_DIR$/src/CLIPlugins/GrammarChomskyNormalForm.java" />
         <option value="$PROJECT_DIR$/src/CLIPlugins/PDAGoThroughInputPlugin.java" />
-        <option value="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CheckStringPlugin.java" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CYKGrammarPlugin.java" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java" />
@@ -293,8 +208,9 @@
         <option value="$PROJECT_DIR$/src/CLIPlugins/PrintModePlugin.java" />
         <option value="$PROJECT_DIR$/src/Main/view/Overview.fxml" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/AutomatonGUI.java" />
-        <option value="$PROJECT_DIR$/src/Main/GUI.java" />
         <option value="$PROJECT_DIR$/src/Main/view/OverviewController.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java" />
+        <option value="$PROJECT_DIR$/src/Main/GUI.java" />
       </list>
     </option>
   </component>
@@ -330,7 +246,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -527,24 +443,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="GrammarSimulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stups-toolbox-2.0" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stups-toolbox-2.0" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Console" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -587,7 +485,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -908,7 +806,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -917,13 +815,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30676857" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30676857" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2952381" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969433" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -935,6 +832,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969433" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -964,12 +862,6 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main/GUI.java</url>
-          <line>288</line>
-          <properties />
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/GrammarGUI.java</url>
           <line>58</line>
           <properties />
@@ -981,8 +873,14 @@
           <properties />
           <option name="timeStamp" value="18" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main/GUI.java</url>
+          <line>108</line>
+          <properties />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="19" />
+      <option name="time" value="21" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1026,20 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CYKGrammarPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonMinimizeDFAPlugin.java" />
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonRenameStatesPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1063,14 +947,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/view/Root.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/GrammarTabs/GrammarTab.java">
@@ -1129,7 +1013,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="862" column="0" selection-start-line="862" selection-start-column="0" selection-end-line="862" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1152,7 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="293" column="0" selection-start-line="293" selection-start-column="0" selection-end-line="293" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1160,7 +1042,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1246,45 +1127,21 @@
         <state relative-caret-position="68">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
-            <element signature="e#387#388#0" expanded="true" />
-            <element signature="e#431#432#0" expanded="true" />
+            <element signature="e#387#388#0" expanded="false" />
+            <element signature="e#431#432#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/view/Overview.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/DisplayPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/AutomatonGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1516">
-          <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CheckStringPlugin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-62">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
@@ -1319,6 +1176,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/GrammarGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
@@ -1329,7 +1194,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/beans/property/ReadOnlyObjectPropertyBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
+        <state relative-caret-position="437">
           <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
           <folding>
             <element signature="e#1722#1723#0" expanded="false" />
@@ -1358,15 +1223,14 @@
         <state relative-caret-position="369">
           <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
           <folding>
-            <element signature="e#0#1732#0" expanded="false" />
-            <element signature="imports" expanded="false" />
+            <element signature="e#1665#1666#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/beans/property/ReadOnlyIntegerWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
+        <state relative-caret-position="488">
           <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
           <folding />
         </state>
@@ -1398,146 +1262,92 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/TreeView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
+        <state relative-caret-position="488">
           <caret line="1477" column="0" selection-start-line="1477" selection-start-column="0" selection-end-line="1477" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#67569#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#9829#9830#0" expanded="false" />
-            <element signature="e#9892#9893#0" expanded="false" />
-            <element signature="e#10333#10334#0" expanded="false" />
-            <element signature="e#10398#10399#0" expanded="false" />
-            <element signature="e#10877#10878#0" expanded="false" />
-            <element signature="e#10943#10944#0" expanded="false" />
-            <element signature="e#11504#11505#0" expanded="false" />
-            <element signature="e#11570#11571#0" expanded="false" />
-            <element signature="e#13820#13821#0" expanded="false" />
-            <element signature="e#13846#13847#0" expanded="false" />
-            <element signature="e#18122#18123#0" expanded="false" />
-            <element signature="e#18170#18171#0" expanded="false" />
-            <element signature="e#20227#20228#0" expanded="false" />
-            <element signature="e#20268#20269#0" expanded="false" />
-            <element signature="e#20496#20497#0" expanded="false" />
-            <element signature="e#20551#20552#0" expanded="false" />
-            <element signature="e#20690#20691#0" expanded="false" />
-            <element signature="e#20717#20718#0" expanded="false" />
-            <element signature="e#21056#21057#0" expanded="false" />
-            <element signature="e#21101#21102#0" expanded="false" />
-            <element signature="e#21316#21317#0" expanded="false" />
-            <element signature="e#21379#21380#0" expanded="false" />
-            <element signature="e#23548#23549#0" expanded="false" />
-            <element signature="e#23595#23596#0" expanded="false" />
-            <element signature="e#23730#23731#0" expanded="false" />
-            <element signature="e#23797#23798#0" expanded="false" />
-            <element signature="e#24909#24910#0" expanded="false" />
-            <element signature="e#24971#24972#0" expanded="false" />
-            <element signature="e#25022#25023#0" expanded="false" />
-            <element signature="e#25066#25067#0" expanded="false" />
-            <element signature="e#25827#25828#0" expanded="false" />
-            <element signature="e#25877#25878#0" expanded="false" />
-            <element signature="e#28106#28107#0" expanded="false" />
-            <element signature="e#28166#28167#0" expanded="false" />
-            <element signature="e#28219#28220#0" expanded="false" />
-            <element signature="e#28281#28282#0" expanded="false" />
-            <element signature="e#28453#28454#0" expanded="false" />
-            <element signature="e#28498#28499#0" expanded="false" />
-            <element signature="e#28538#28539#0" expanded="false" />
-            <element signature="e#28602#28603#0" expanded="false" />
-            <element signature="e#29150#29151#0" expanded="false" />
-            <element signature="e#29202#29203#0" expanded="false" />
-            <element signature="e#29386#29387#0" expanded="false" />
-            <element signature="e#29455#29456#0" expanded="false" />
-            <element signature="e#30454#30455#0" expanded="false" />
-            <element signature="e#30502#30503#0" expanded="false" />
-            <element signature="e#30679#30680#0" expanded="false" />
-            <element signature="e#30748#30749#0" expanded="false" />
-            <element signature="e#31136#31137#0" expanded="false" />
-            <element signature="e#31228#31229#0" expanded="false" />
-            <element signature="e#31570#31571#0" expanded="false" />
-            <element signature="e#31619#31620#0" expanded="false" />
-            <element signature="e#32599#32600#0" expanded="false" />
-            <element signature="e#32692#32693#0" expanded="false" />
-            <element signature="e#33035#33036#0" expanded="false" />
-            <element signature="e#33084#33085#0" expanded="false" />
-            <element signature="e#33711#33712#0" expanded="false" />
-            <element signature="e#33804#33805#0" expanded="false" />
-            <element signature="e#35418#35419#0" expanded="false" />
-            <element signature="e#35473#35474#0" expanded="false" />
-            <element signature="e#35764#35765#0" expanded="false" />
-            <element signature="e#35811#35812#0" expanded="false" />
-            <element signature="e#36273#36274#0" expanded="false" />
-            <element signature="e#36369#36370#0" expanded="false" />
-            <element signature="e#36437#36438#0" expanded="false" />
-            <element signature="e#36497#36498#0" expanded="false" />
-            <element signature="e#36566#36567#0" expanded="false" />
-            <element signature="e#36625#36626#0" expanded="false" />
-            <element signature="e#39740#39741#0" expanded="false" />
-            <element signature="e#39788#39789#0" expanded="false" />
-            <element signature="e#40254#40255#0" expanded="false" />
-            <element signature="e#40326#40327#0" expanded="false" />
-            <element signature="e#42428#42429#0" expanded="false" />
-            <element signature="e#42506#42507#0" expanded="false" />
-            <element signature="e#43149#43186#0" expanded="false" />
-            <element signature="e#43802#43803#0" expanded="false" />
-            <element signature="e#43846#43847#0" expanded="false" />
-            <element signature="e#47168#47169#0" expanded="false" />
-            <element signature="e#47230#47231#0" expanded="false" />
-            <element signature="e#47370#47371#0" expanded="false" />
-            <element signature="e#47409#47410#0" expanded="false" />
-            <element signature="e#47541#47542#0" expanded="false" />
-            <element signature="e#47580#47581#0" expanded="false" />
-            <element signature="e#47744#47745#0" expanded="false" />
-            <element signature="e#47783#47784#0" expanded="false" />
-            <element signature="e#60921#60922#0" expanded="false" />
-            <element signature="e#61006#61007#0" expanded="false" />
-            <element signature="e#63585#66826#0" expanded="false" />
-            <element signature="e#66825#66826#0" expanded="false" />
-            <element signature="e#66958#66959#0" expanded="false" />
-            <element signature="e#67044#67045#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/Scene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="2494" column="0" selection-start-line="2494" selection-start-column="0" selection-end-line="2494" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/event/Event.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="198" column="0" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+        <state relative-caret-position="471">
+          <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/Scene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="263" column="74" selection-start-line="263" selection-start-column="74" selection-end-line="263" selection-end-column="74" />
+        <state relative-caret-position="386">
+          <caret line="2510" column="54" selection-start-line="2510" selection-start-column="54" selection-end-line="2510" selection-end-column="54" />
+          <folding>
+            <element signature="e#66572#66573#0" expanded="true" />
+            <element signature="e#66618#66619#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="122" column="29" selection-start-line="122" selection-start-column="27" selection-end-line="122" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/AutomatonCompletePlugin.java">
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CYKGrammarPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+        <state relative-caret-position="153">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+          <folding>
+            <element signature="e#388#389#0" expanded="true" />
+            <element signature="e#424#425#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/AutomatonGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="144" column="32" selection-start-line="144" selection-start-column="32" selection-end-line="144" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/DisplayPlugins/DisplayPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="149" column="8" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
+        <state relative-caret-position="-368">
+          <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/CheckStringPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUIPlugins/ComplexFunctionPlugins/ComplexFunctionPlugin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="107" column="80" selection-start-line="107" selection-start-column="80" selection-end-line="107" selection-end-column="80" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#11402#11403#0" expanded="true" />
+            <element signature="e#11479#11480#0" expanded="true" />
           </folding>
         </state>
       </provider>

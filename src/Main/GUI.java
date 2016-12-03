@@ -105,7 +105,7 @@ public class GUI extends Application{
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         for(ComplexFunctionPlugin plugin : complexFunctionPlugins) {
-            if(plugin.displayPluginType().equals(currentDisplayPlugin.getClass())) {
+            if(plugin.getInputType().equals(currentDisplayPlugin.displayType())) {
                 complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
             }
         }
@@ -177,7 +177,7 @@ public class GUI extends Application{
       //  BorderPane root = new BorderPane();
         initRootLayout();
         showOverview();
-
+            overviewController.getTabPane().getTabs().add(new Tab("Hallo"));
      //   BorderPane functionsPane = new BorderPane();
        // FlowPane simpleFunctionsPane = new FlowPane();
 
@@ -297,6 +297,7 @@ public class GUI extends Application{
                     currentDisplayPlugin = new AutomatonGUI();
                 }
             }
+            refreshComplexPlugins();
     }
 
     public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {
