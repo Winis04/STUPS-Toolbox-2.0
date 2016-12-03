@@ -2,6 +2,7 @@
 .idea/
 *.iml
 *.iws
+*.xml
 src/META-INF/
 out/
 doc/
