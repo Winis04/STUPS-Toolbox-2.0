@@ -1,8 +1,9 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import Console.Storable;
+
 import Main.GUI;
 import javafx.scene.control.MenuItem;
+import GrammarSimulator.Grammar;
 
 /**
  * Created by fabian on 18.06.16.
