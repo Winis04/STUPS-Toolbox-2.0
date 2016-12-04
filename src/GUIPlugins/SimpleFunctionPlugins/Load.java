@@ -14,7 +14,7 @@ import java.io.*;
 public class Load extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
-        String name = gui.getOverviewController().getClassOfCurrentSelected().getSimpleName();
+        String name = gui.getOverviewController().getSupertypeOfCurrentSelected().getSimpleName();
         File file = gui.loadFile(name);
         if(name.equals("Grammar")) {
             try {

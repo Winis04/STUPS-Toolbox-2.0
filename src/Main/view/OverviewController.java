@@ -165,12 +165,13 @@ public class OverviewController {
     }
 
 
-    public Class getClassOfCurrentSelected() {
-        return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getValue().toLowerCase());
+    public Class getSupertypeOfCurrentSelected() {
+        if(treeView.getSelectionModel().getSelectedItem().getParent()!=null) {
+            return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase());
+        }
+        return null;
     }
-    public Class getClassOfParentOfCurrentSelected() {
-        return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase());
-    }
+
     public void setGui(GUI gui) {
         this.gui = gui;
     }
