@@ -1,9 +1,12 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
+import AutomatonSimulator.Automaton;
+import AutomatonSimulator.AutomatonUtil;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Console.Storable;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -15,18 +18,11 @@ public class Load extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Grammar")) {
-            File file = gui.loadFile("Grammar");
+
             try {
-                BufferedReader grammarReader = new BufferedReader(new FileReader(file));
-                String string = "";
-                String line;
-                while ((line = grammarReader.readLine()) != null) {
-                    string = string + line + "\n";
-                }
+                String string = readFile("Grammar");
                 Grammar grammar = GrammarUtil.parse(string);
-                gui.getCli().objects.put(Grammar.class, grammar);
-                gui.switchDisplayGui(Grammar.class);
-                gui.refresh(grammar);
+                load(Grammar.class,grammar);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -38,8 +34,41 @@ public class Load extends SimpleFunctionPlugin {
                 e.printStackTrace();
             }
         }
+        if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Automaton")) {
 
+            try {
+                String string = readFile("Automaon");
+                Automaton automaton = AutomatonUtil.parse(string);
+                load(Automaton.class,automaton);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (AutomatonParser.lexer.LexerException e) {
+                e.printStackTrace();
+            } catch (AutomatonParser.parser.ParserException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
+    }
+
+    private String readFile(String titel) throws IOException {
+        File file = gui.loadFile(titel);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String string = "";
+        String line;
+        while ((line = reader.readLine()) != null) {
+            string = string + line + "\n";
+        }
+        return string;
+    }
+
+    private void load(Class typ, Storable storable) {
+        gui.getCli().objects.put(typ, storable);
+        gui.switchDisplayGui(typ);
+        gui.refresh(storable);
     }
 
     @Override
