@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9bfd2792-5601-4b23-bad4-c0a87338db1d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Load.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Load.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" afterPath="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main/view/OverviewController.java" afterPath="$PROJECT_DIR$/src/Main/view/OverviewController.java" />
     </list>
     <ignored path="stups-toolbox-2.0.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SimpleFunctionPlugin.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SimpleFunctionPlugin.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="69" column="66" selection-start-line="69" selection-start-column="66" selection-end-line="69" selection-end-column="66" />
+            <state relative-caret-position="224">
+              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,22 +46,9 @@
       <file leaf-file-name="Event.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/event/Event.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
+            <state relative-caret-position="2720">
               <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#5920#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#1925#1926#0" expanded="false" />
-                <element signature="e#1968#1969#0" expanded="false" />
-                <element signature="e#2975#2976#0" expanded="false" />
-                <element signature="e#3004#3005#0" expanded="false" />
-                <element signature="e#3304#3305#0" expanded="false" />
-                <element signature="e#3336#3337#0" expanded="false" />
-                <element signature="e#4362#4363#0" expanded="false" />
-                <element signature="e#4393#4394#0" expanded="false" />
-                <element signature="e#4519#4520#0" expanded="false" />
-                <element signature="e#4550#4551#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -72,17 +56,17 @@
       <file leaf-file-name="Scene.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/Scene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="38590">
               <caret line="2494" column="0" selection-start-line="2494" selection-start-column="0" selection-end-line="2494" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OverviewController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OverviewController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
+            <state relative-caret-position="1253">
               <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
               <folding />
             </state>
@@ -92,8 +76,8 @@
       <file leaf-file-name="Copy.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+            <state relative-caret-position="411">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -104,7 +88,7 @@
       <file leaf-file-name="Remove.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Remove.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
+            <state relative-caret-position="85">
               <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
               <folding />
             </state>
@@ -114,7 +98,7 @@
       <file leaf-file-name="Load.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Load.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="170">
               <caret line="16" column="81" selection-start-line="16" selection-start-column="81" selection-end-line="16" selection-end-column="81" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -128,7 +112,7 @@
       <file leaf-file-name="SelectionModel.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/SelectionModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="680">
               <caret line="67" column="54" selection-start-line="67" selection-start-column="54" selection-end-line="67" selection-end-column="54" />
               <folding />
             </state>
@@ -138,7 +122,7 @@
       <file leaf-file-name="MultipleSelectionModelBase.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/MultipleSelectionModelBase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="5066">
               <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
               <folding />
             </state>
@@ -148,103 +132,9 @@
       <file leaf-file-name="TreeView.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/TreeView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
+            <state relative-caret-position="22576">
               <caret line="1477" column="0" selection-start-line="1477" selection-start-column="0" selection-end-line="1477" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#67569#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#9829#9830#0" expanded="false" />
-                <element signature="e#9892#9893#0" expanded="false" />
-                <element signature="e#10333#10334#0" expanded="false" />
-                <element signature="e#10398#10399#0" expanded="false" />
-                <element signature="e#10877#10878#0" expanded="false" />
-                <element signature="e#10943#10944#0" expanded="false" />
-                <element signature="e#11504#11505#0" expanded="false" />
-                <element signature="e#11570#11571#0" expanded="false" />
-                <element signature="e#13820#13821#0" expanded="false" />
-                <element signature="e#13846#13847#0" expanded="false" />
-                <element signature="e#18122#18123#0" expanded="false" />
-                <element signature="e#18170#18171#0" expanded="false" />
-                <element signature="e#20227#20228#0" expanded="false" />
-                <element signature="e#20268#20269#0" expanded="false" />
-                <element signature="e#20496#20497#0" expanded="false" />
-                <element signature="e#20551#20552#0" expanded="false" />
-                <element signature="e#20690#20691#0" expanded="false" />
-                <element signature="e#20717#20718#0" expanded="false" />
-                <element signature="e#21056#21057#0" expanded="false" />
-                <element signature="e#21101#21102#0" expanded="false" />
-                <element signature="e#21316#21317#0" expanded="false" />
-                <element signature="e#21379#21380#0" expanded="false" />
-                <element signature="e#23548#23549#0" expanded="false" />
-                <element signature="e#23595#23596#0" expanded="false" />
-                <element signature="e#23730#23731#0" expanded="false" />
-                <element signature="e#23797#23798#0" expanded="false" />
-                <element signature="e#24909#24910#0" expanded="false" />
-                <element signature="e#24971#24972#0" expanded="false" />
-                <element signature="e#25022#25023#0" expanded="false" />
-                <element signature="e#25066#25067#0" expanded="false" />
-                <element signature="e#25827#25828#0" expanded="false" />
-                <element signature="e#25877#25878#0" expanded="false" />
-                <element signature="e#28106#28107#0" expanded="false" />
-                <element signature="e#28166#28167#0" expanded="false" />
-                <element signature="e#28219#28220#0" expanded="false" />
-                <element signature="e#28281#28282#0" expanded="false" />
-                <element signature="e#28453#28454#0" expanded="false" />
-                <element signature="e#28498#28499#0" expanded="false" />
-                <element signature="e#28538#28539#0" expanded="false" />
-                <element signature="e#28602#28603#0" expanded="false" />
-                <element signature="e#29150#29151#0" expanded="false" />
-                <element signature="e#29202#29203#0" expanded="false" />
-                <element signature="e#29386#29387#0" expanded="false" />
-                <element signature="e#29455#29456#0" expanded="false" />
-                <element signature="e#30454#30455#0" expanded="false" />
-                <element signature="e#30502#30503#0" expanded="false" />
-                <element signature="e#30679#30680#0" expanded="false" />
-                <element signature="e#30748#30749#0" expanded="false" />
-                <element signature="e#31136#31137#0" expanded="false" />
-                <element signature="e#31228#31229#0" expanded="false" />
-                <element signature="e#31570#31571#0" expanded="false" />
-                <element signature="e#31619#31620#0" expanded="false" />
-                <element signature="e#32599#32600#0" expanded="false" />
-                <element signature="e#32692#32693#0" expanded="false" />
-                <element signature="e#33035#33036#0" expanded="false" />
-                <element signature="e#33084#33085#0" expanded="false" />
-                <element signature="e#33711#33712#0" expanded="false" />
-                <element signature="e#33804#33805#0" expanded="false" />
-                <element signature="e#35418#35419#0" expanded="false" />
-                <element signature="e#35473#35474#0" expanded="false" />
-                <element signature="e#35764#35765#0" expanded="false" />
-                <element signature="e#35811#35812#0" expanded="false" />
-                <element signature="e#36273#36274#0" expanded="false" />
-                <element signature="e#36369#36370#0" expanded="false" />
-                <element signature="e#36437#36438#0" expanded="false" />
-                <element signature="e#36497#36498#0" expanded="false" />
-                <element signature="e#36566#36567#0" expanded="false" />
-                <element signature="e#36625#36626#0" expanded="false" />
-                <element signature="e#39740#39741#0" expanded="false" />
-                <element signature="e#39788#39789#0" expanded="false" />
-                <element signature="e#40254#40255#0" expanded="false" />
-                <element signature="e#40326#40327#0" expanded="false" />
-                <element signature="e#42428#42429#0" expanded="false" />
-                <element signature="e#42506#42507#0" expanded="false" />
-                <element signature="e#43149#43186#0" expanded="false" />
-                <element signature="e#43802#43803#0" expanded="false" />
-                <element signature="e#43846#43847#0" expanded="false" />
-                <element signature="e#47168#47169#0" expanded="false" />
-                <element signature="e#47230#47231#0" expanded="false" />
-                <element signature="e#47370#47371#0" expanded="false" />
-                <element signature="e#47409#47410#0" expanded="false" />
-                <element signature="e#47541#47542#0" expanded="false" />
-                <element signature="e#47580#47581#0" expanded="false" />
-                <element signature="e#47744#47745#0" expanded="false" />
-                <element signature="e#47783#47784#0" expanded="false" />
-                <element signature="e#60921#60922#0" expanded="false" />
-                <element signature="e#61006#61007#0" expanded="false" />
-                <element signature="e#63585#66826#0" expanded="false" />
-                <element signature="e#66825#66826#0" expanded="false" />
-                <element signature="e#66958#66959#0" expanded="false" />
-                <element signature="e#67044#67045#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -318,9 +208,9 @@
         <option value="$PROJECT_DIR$/src/GrammarSimulator/Grammar.java" />
         <option value="$PROJECT_DIR$/src/Main/GUI.java" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Load.java" />
-        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java" />
         <option value="$PROJECT_DIR$/src/Main/view/OverviewController.java" />
         <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java" />
+        <option value="$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java" />
       </list>
     </option>
   </component>
@@ -355,7 +245,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -528,6 +417,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
@@ -866,7 +756,6 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30676857" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -882,6 +771,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1034,7 +924,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1042,7 +931,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1150,7 +1038,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="20723">
           <caret line="1294" column="0" selection-start-line="1294" selection-start-column="0" selection-end-line="1294" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1158,7 +1045,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6001">
           <caret line="436" column="0" selection-start-line="436" selection-start-column="0" selection-end-line="436" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1166,7 +1052,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2737">
           <caret line="219" column="0" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1174,9 +1059,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6154">
           <caret line="462" column="0" selection-start-line="462" selection-start-column="0" selection-end-line="462" selection-end-column="0" />
-          <folding>
-            <element signature="e#15741#15742#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1184,7 +1066,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1192,10 +1073,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-          <folding>
-            <element signature="e#3194#3195#0" expanded="false" />
-            <element signature="e#3227#3228#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1214,7 +1091,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
           <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1230,7 +1106,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
           <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1249,7 +1124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
           <caret line="541" column="0" selection-start-line="541" selection-start-column="0" selection-end-line="541" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1257,9 +1131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="205" column="0" selection-start-line="205" selection-start-column="0" selection-end-line="205" selection-end-column="0" />
-          <folding>
-            <element signature="e#8250#8251#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1277,9 +1148,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
           <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-          <folding>
-            <element signature="e#1722#1723#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1287,7 +1155,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1295,7 +1162,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1303,10 +1169,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
           <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#1732#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1314,21 +1176,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="488">
           <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#2918#0" expanded="false" />
-            <element signature="e#1008#1009#0" expanded="false" />
-            <element signature="e#1043#1044#0" expanded="false" />
-            <element signature="e#1358#1359#0" expanded="false" />
-            <element signature="e#1391#1392#0" expanded="false" />
-            <element signature="e#1808#1809#0" expanded="false" />
-            <element signature="e#1855#1856#0" expanded="false" />
-            <element signature="e#2601#2602#0" expanded="false" />
-            <element signature="e#2665#2666#0" expanded="false" />
-            <element signature="e#2718#2719#0" expanded="false" />
-            <element signature="e#2786#2787#0" expanded="false" />
-            <element signature="e#2839#2840#0" expanded="false" />
-            <element signature="e#2907#2908#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1336,26 +1183,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#7329#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1606#1607#0" expanded="false" />
-            <element signature="e#1647#1648#0" expanded="false" />
-            <element signature="e#2711#2712#0" expanded="false" />
-            <element signature="e#2773#2774#0" expanded="false" />
-            <element signature="e#3950#3951#0" expanded="false" />
-            <element signature="e#3991#3992#0" expanded="false" />
-            <element signature="e#4781#4782#0" expanded="false" />
-            <element signature="e#4850#4851#0" expanded="false" />
-            <element signature="e#6973#6974#0" expanded="false" />
-            <element signature="e#7033#7034#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/SelectionModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="680">
           <caret line="67" column="54" selection-start-line="67" selection-start-column="54" selection-end-line="67" selection-end-column="54" />
           <folding />
         </state>
@@ -1363,7 +1196,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/MultipleSelectionModelBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="5066">
           <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
           <folding />
         </state>
@@ -1371,130 +1204,23 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/control/TreeView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
+        <state relative-caret-position="22576">
           <caret line="1477" column="0" selection-start-line="1477" selection-start-column="0" selection-end-line="1477" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#67569#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#9829#9830#0" expanded="false" />
-            <element signature="e#9892#9893#0" expanded="false" />
-            <element signature="e#10333#10334#0" expanded="false" />
-            <element signature="e#10398#10399#0" expanded="false" />
-            <element signature="e#10877#10878#0" expanded="false" />
-            <element signature="e#10943#10944#0" expanded="false" />
-            <element signature="e#11504#11505#0" expanded="false" />
-            <element signature="e#11570#11571#0" expanded="false" />
-            <element signature="e#13820#13821#0" expanded="false" />
-            <element signature="e#13846#13847#0" expanded="false" />
-            <element signature="e#18122#18123#0" expanded="false" />
-            <element signature="e#18170#18171#0" expanded="false" />
-            <element signature="e#20227#20228#0" expanded="false" />
-            <element signature="e#20268#20269#0" expanded="false" />
-            <element signature="e#20496#20497#0" expanded="false" />
-            <element signature="e#20551#20552#0" expanded="false" />
-            <element signature="e#20690#20691#0" expanded="false" />
-            <element signature="e#20717#20718#0" expanded="false" />
-            <element signature="e#21056#21057#0" expanded="false" />
-            <element signature="e#21101#21102#0" expanded="false" />
-            <element signature="e#21316#21317#0" expanded="false" />
-            <element signature="e#21379#21380#0" expanded="false" />
-            <element signature="e#23548#23549#0" expanded="false" />
-            <element signature="e#23595#23596#0" expanded="false" />
-            <element signature="e#23730#23731#0" expanded="false" />
-            <element signature="e#23797#23798#0" expanded="false" />
-            <element signature="e#24909#24910#0" expanded="false" />
-            <element signature="e#24971#24972#0" expanded="false" />
-            <element signature="e#25022#25023#0" expanded="false" />
-            <element signature="e#25066#25067#0" expanded="false" />
-            <element signature="e#25827#25828#0" expanded="false" />
-            <element signature="e#25877#25878#0" expanded="false" />
-            <element signature="e#28106#28107#0" expanded="false" />
-            <element signature="e#28166#28167#0" expanded="false" />
-            <element signature="e#28219#28220#0" expanded="false" />
-            <element signature="e#28281#28282#0" expanded="false" />
-            <element signature="e#28453#28454#0" expanded="false" />
-            <element signature="e#28498#28499#0" expanded="false" />
-            <element signature="e#28538#28539#0" expanded="false" />
-            <element signature="e#28602#28603#0" expanded="false" />
-            <element signature="e#29150#29151#0" expanded="false" />
-            <element signature="e#29202#29203#0" expanded="false" />
-            <element signature="e#29386#29387#0" expanded="false" />
-            <element signature="e#29455#29456#0" expanded="false" />
-            <element signature="e#30454#30455#0" expanded="false" />
-            <element signature="e#30502#30503#0" expanded="false" />
-            <element signature="e#30679#30680#0" expanded="false" />
-            <element signature="e#30748#30749#0" expanded="false" />
-            <element signature="e#31136#31137#0" expanded="false" />
-            <element signature="e#31228#31229#0" expanded="false" />
-            <element signature="e#31570#31571#0" expanded="false" />
-            <element signature="e#31619#31620#0" expanded="false" />
-            <element signature="e#32599#32600#0" expanded="false" />
-            <element signature="e#32692#32693#0" expanded="false" />
-            <element signature="e#33035#33036#0" expanded="false" />
-            <element signature="e#33084#33085#0" expanded="false" />
-            <element signature="e#33711#33712#0" expanded="false" />
-            <element signature="e#33804#33805#0" expanded="false" />
-            <element signature="e#35418#35419#0" expanded="false" />
-            <element signature="e#35473#35474#0" expanded="false" />
-            <element signature="e#35764#35765#0" expanded="false" />
-            <element signature="e#35811#35812#0" expanded="false" />
-            <element signature="e#36273#36274#0" expanded="false" />
-            <element signature="e#36369#36370#0" expanded="false" />
-            <element signature="e#36437#36438#0" expanded="false" />
-            <element signature="e#36497#36498#0" expanded="false" />
-            <element signature="e#36566#36567#0" expanded="false" />
-            <element signature="e#36625#36626#0" expanded="false" />
-            <element signature="e#39740#39741#0" expanded="false" />
-            <element signature="e#39788#39789#0" expanded="false" />
-            <element signature="e#40254#40255#0" expanded="false" />
-            <element signature="e#40326#40327#0" expanded="false" />
-            <element signature="e#42428#42429#0" expanded="false" />
-            <element signature="e#42506#42507#0" expanded="false" />
-            <element signature="e#43149#43186#0" expanded="false" />
-            <element signature="e#43802#43803#0" expanded="false" />
-            <element signature="e#43846#43847#0" expanded="false" />
-            <element signature="e#47168#47169#0" expanded="false" />
-            <element signature="e#47230#47231#0" expanded="false" />
-            <element signature="e#47370#47371#0" expanded="false" />
-            <element signature="e#47409#47410#0" expanded="false" />
-            <element signature="e#47541#47542#0" expanded="false" />
-            <element signature="e#47580#47581#0" expanded="false" />
-            <element signature="e#47744#47745#0" expanded="false" />
-            <element signature="e#47783#47784#0" expanded="false" />
-            <element signature="e#60921#60922#0" expanded="false" />
-            <element signature="e#61006#61007#0" expanded="false" />
-            <element signature="e#63585#66826#0" expanded="false" />
-            <element signature="e#66825#66826#0" expanded="false" />
-            <element signature="e#66958#66959#0" expanded="false" />
-            <element signature="e#67044#67045#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/event/Event.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
+        <state relative-caret-position="2720">
           <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#5920#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1925#1926#0" expanded="false" />
-            <element signature="e#1968#1969#0" expanded="false" />
-            <element signature="e#2975#2976#0" expanded="false" />
-            <element signature="e#3004#3005#0" expanded="false" />
-            <element signature="e#3304#3305#0" expanded="false" />
-            <element signature="e#3336#3337#0" expanded="false" />
-            <element signature="e#4362#4363#0" expanded="false" />
-            <element signature="e#4393#4394#0" expanded="false" />
-            <element signature="e#4519#4520#0" expanded="false" />
-            <element signature="e#4550#4551#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/javafx-src.zip!/javafx/scene/Scene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="38590">
           <caret line="2494" column="0" selection-start-line="2494" selection-start-column="0" selection-end-line="2494" selection-end-column="0" />
           <folding />
         </state>
@@ -1502,7 +1228,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Remove.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
+        <state relative-caret-position="85">
           <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
           <folding />
         </state>
@@ -1510,7 +1236,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Load.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="170">
           <caret line="16" column="81" selection-start-line="16" selection-start-column="81" selection-end-line="16" selection-end-column="81" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1520,10 +1246,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1253">
+          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/Copy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        <state relative-caret-position="411">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1532,19 +1266,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUIPlugins/SimpleFunctionPlugins/SimpleFunctionPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="69" column="66" selection-start-line="69" selection-start-column="66" selection-end-line="69" selection-end-column="66" />
+        <state relative-caret-position="224">
+          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main/view/OverviewController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>

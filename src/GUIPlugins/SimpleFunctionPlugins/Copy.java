@@ -44,13 +44,13 @@ public class Copy extends SimpleFunctionPlugin {
 
     @Override
     public Class inputType() {
-        System.out.println(gui.getOverviewController().getSupertypeOfCurrentSelected());
-        return gui.getOverviewController().getSupertypeOfCurrentSelected();
+        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
     }
 
     @Override
     Class outputType() {
-        System.out.println(gui.getOverviewController().getSupertypeOfCurrentSelected());
-       return Grammar.class;
+        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
     }
 }
