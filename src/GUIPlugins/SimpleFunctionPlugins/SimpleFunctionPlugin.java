@@ -67,6 +67,7 @@ public abstract class SimpleFunctionPlugin {
 
             if(ret != null) {
 
+
                 gui.refresh(ret);
 
             }

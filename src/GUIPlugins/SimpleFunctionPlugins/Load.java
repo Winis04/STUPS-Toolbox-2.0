@@ -14,9 +14,8 @@ import java.io.*;
 public class Load extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
-        String name = gui.getOverviewController().getSupertypeOfCurrentSelected().getSimpleName();
-        File file = gui.loadFile(name);
-        if(name.equals("Grammar")) {
+        if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Grammar")) {
+            File file = gui.loadFile("Grammar");
             try {
                 BufferedReader grammarReader = new BufferedReader(new FileReader(file));
                 String string = "";
@@ -25,7 +24,10 @@ public class Load extends SimpleFunctionPlugin {
                     string = string + line + "\n";
                 }
                 Grammar grammar = GrammarUtil.parse(string);
-               return grammar;
+                gui.getCli().objects.put(Grammar.class, grammar);
+                gui.switchDisplayGui(Grammar.class);
+                gui.refresh(grammar);
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -35,9 +37,8 @@ public class Load extends SimpleFunctionPlugin {
             } catch (ParserException e) {
                 e.printStackTrace();
             }
-
-
         }
+
         return null;
     }
 
@@ -53,7 +54,7 @@ public class Load extends SimpleFunctionPlugin {
 
     @Override
     Class outputType() {
-        return Grammar.class;
+        return null;
     }
 
     @Override

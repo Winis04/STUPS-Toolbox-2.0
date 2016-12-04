@@ -164,14 +164,6 @@ public class OverviewController {
         dynamicContextMenu.show(treeView, x, y);
     }
 
-
-    public Class getSupertypeOfCurrentSelected() {
-        if(treeView.getSelectionModel().getSelectedItem().getParent()!=null) {
-            return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase());
-        }
-        return null;
-    }
-
     public void setGui(GUI gui) {
         this.gui = gui;
     }
