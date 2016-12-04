@@ -67,10 +67,7 @@ public abstract class SimpleFunctionPlugin {
 
             if(ret != null) {
 
-                gui.getCli().objects.put(plugin.outputType(),ret);
-             //   gui.getCli().objects.put(plugin.outputType(), ret);
-               // gui.switchDisplayGui(plugin.outputType());
-                //gui.refresh(ret);
+                gui.refresh(ret);
 
             }
 
