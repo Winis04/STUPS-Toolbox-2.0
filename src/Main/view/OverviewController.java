@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -161,6 +162,14 @@ public class OverviewController {
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);
+    }
+
+
+    public Class getClassOfCurrentSelected() {
+        return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getValue().toLowerCase());
+    }
+    public Class getClassOfParentOfCurrentSelected() {
+        return gui.getCli().lookUpTable.get(treeView.getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase());
     }
     public void setGui(GUI gui) {
         this.gui = gui;

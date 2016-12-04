@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -242,6 +243,12 @@ public class GUI extends Application{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public File loadFile(String string) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("load "+string);
+        File file = fileChooser.showOpenDialog(primaryStage);
+        return file;
     }
     /**
      * Shows the person overview inside the root layout.

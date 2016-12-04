@@ -1,8 +1,11 @@
 package Main.view;
 
 
+import Console.Storable;
 import Main.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 
 /**
  * Created by Isabel on 28.11.2016.
@@ -11,6 +14,8 @@ public class RootController {
 
 
     private GUI gui;
+    @FXML
+    BorderPane borderPane;
 
     /**
      * The constructor.
@@ -26,6 +31,7 @@ public class RootController {
     private void initialize() {
 
     }
+
 
     public void setGui(GUI gui) {
         this.gui = gui;
