@@ -25,7 +25,7 @@ public class Load extends SimpleFunctionPlugin {
                     string = string + line + "\n";
                 }
                 Grammar grammar = GrammarUtil.parse(string);
-                return grammar;
+               return grammar;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

@@ -64,9 +64,11 @@ public abstract class SimpleFunctionPlugin {
         MenuItem item = new MenuItem(this.getName());
         item.setOnAction(t -> {
             Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+
             if(ret != null) {
 
-              //  gui.getCurrentDisplayPlugin().refresh(ret);
+                gui.getCli().objects.put(plugin.outputType(), ret);
+                gui.switchDisplayGui(plugin.outputType());
                 gui.refresh(ret);
 
             }

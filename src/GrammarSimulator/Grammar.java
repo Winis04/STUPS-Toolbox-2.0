@@ -47,6 +47,7 @@ public class Grammar implements Printable, Storable {
      */
     public Grammar() {
         Terminal terminal = new Terminal("a");
+        this.name="G";
         ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
         this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
         this.terminals = new HashSet<>(Arrays.asList(terminal));

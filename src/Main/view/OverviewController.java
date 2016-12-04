@@ -108,7 +108,7 @@ public class OverviewController {
                 // the selected Item
                 TreeItem<String> selectedItem = newValue;
 
-                if(newValue != null && !newValue.equals(root) &&!newValue.getParent().equals(root)) {
+                if(newValue != null && !newValue.equals(root) && newValue.getParent()!= null &&!newValue.getParent().equals(root) && newValue.getParent().getParent()!=null) {
                     // the String that belongs to the parent treeItem
                     String parent = selectedItem.getParent().getValue().toLowerCase();
                     // we get the parents (and the childs class) by looking in the lookup table

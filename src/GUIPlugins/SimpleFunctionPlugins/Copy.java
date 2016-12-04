@@ -23,8 +23,7 @@ public class Copy extends SimpleFunctionPlugin {
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().equals("Grammar")) {
             Grammar grammar = (Grammar) copy;
             String name = grammar.getName();
-            grammar.setName(name+"_Copy");
-           gui.addToStore(grammar,Grammar.class,name+"_Copy");
+             gui.addToStore(grammar,Grammar.class,name+"_Copy");
             return copy;
         } else if (gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().equals("Automaton")) {
             Automaton automaton = (Automaton) copy;
@@ -45,13 +44,11 @@ public class Copy extends SimpleFunctionPlugin {
 
     @Override
     public Class inputType() {
-        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return Grammar.class;
     }
 
     @Override
     Class outputType() {
-        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return Grammar.class;
     }
 }
