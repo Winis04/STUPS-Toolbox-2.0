@@ -85,7 +85,12 @@ public class OverviewController {
                     if (selected!=null) {
 
                         //open context menu on current screen position
-                        this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu,e.getScreenX(),e.getScreenY());
+                        if(selected.getParent().equals(root)) {
+                            String clazz = selected.getValue().toString().toLowerCase();
+                            this.openContextMenuOnSuperClass(gui.getCli().lookUpTable.get(clazz),dynamicMenu,e.getScreenX(),e.getScreenY());
+                        } else {
+                            this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu, e.getScreenX(), e.getScreenY());
+                        }
                     }
                 } else {
                     //any other click cause hiding menu
@@ -139,10 +144,19 @@ public class OverviewController {
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables()==false && sfp.inputType().equals(parent) )
+                .filter(sfp -> sfp.operatesOnAllStorables()==false && sfp.operatesOnSuperClass()==false && sfp.inputType().equals(parent) )
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables()==true)
+                .filter(sfp -> sfp.operatesOnAllStorables()==true && sfp.operatesOnSuperClass()==false)
+                .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
+
+        //show menu
+        dynamicContextMenu.show(treeView, x, y);
+    }
+    private void openContextMenuOnSuperClass(Class clazz, Collection<SimpleFunctionPlugin> list, double x, double y) {
+        dynamicContextMenu.getItems().clear();
+        dynamicContextMenu.getItems().addAll(list.stream()
+                .filter(sfp -> sfp.operatesOnSuperClass()==true)
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu

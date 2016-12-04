@@ -19,13 +19,19 @@ public class Load extends SimpleFunctionPlugin{
 
     @Override
     public Class inputType() {
-        return Grammar.class;
+        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
     }
 
     @Override
     Class outputType() {
-        return null;
-      //  String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-      //  return gui.getCli().lookUpTable.get(parent);
+       // return null;
+       String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
+    }
+
+    @Override
+    public boolean operatesOnSuperClass() {
+        return true;
     }
 }
