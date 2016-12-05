@@ -3,6 +3,7 @@ package Main.view;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import CLIPlugins.PrintModePlugin;
 import Console.Storable;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
@@ -10,6 +11,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -46,7 +48,18 @@ public class RootController {
      */
     @FXML
     private void initialize() {
-
+    }
+    @FXML
+    private void latexModeOn() {
+        borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
+        PrintModePlugin printModePlugin = new PrintModePlugin();
+        printModePlugin.execute(null,new String[]{"latex","test/gui_test.tex","--force"});
+    }
+    @FXML
+    private void latexModeOff() {
+        borderPane.setStyle("-fx-border-witdth: 0;");
+        PrintModePlugin printModePlugin = new PrintModePlugin();
+        printModePlugin.execute(null,new String[]{"no"});
     }
 
     @FXML
@@ -146,6 +159,8 @@ public class RootController {
             AutomatonUtil.toGraphViz(automaton,file);
         }
     }
+
+
 
 
     public void setGui(GUI gui) {

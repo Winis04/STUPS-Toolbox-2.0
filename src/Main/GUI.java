@@ -11,6 +11,8 @@ import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
 import Main.view.OverviewController;
 import Main.view.RootController;
+import Print.PrintMode;
+import Print.Printer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -91,6 +93,7 @@ public class GUI extends Application{
      * This method is called when 'gui' is entered into the Console.CLI and shows the Main.GUI.
      */
     public void show() {
+        Printer.printmode = PrintMode.NO;
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
@@ -329,6 +332,21 @@ public class GUI extends Application{
                 }
             }
             refreshComplexPlugins();
+    }
+
+    public void errorDialog(String string) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText(string);
+        alert.showAndWait();
+    }
+
+    public void infoDialog(String string) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(string);
+
+        alert.showAndWait();
     }
 
     public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {

@@ -90,6 +90,30 @@ public class Printer {
         }
     }
 
+    public static void printWithTitel(String titel, Printable printable) {
+        switch(printmode) {
+            case NO:
+                break;
+            case CONSOLE:
+                printWithTitelLatex(titel,printable);
+                break;
+            case LATEX:
+                printWithTitelConsole(titel, printable);
+                break;
+        }
+
+    }
+
+    public static void printWithTitelLatex(String titel, Printable printable) {
+        Printer.print("\\section{"+titel+"}\n\n",writer);
+        printable.printLatex(writer,getSpace(deepnes));
+
+    }
+
+    public static void printWithTitelConsole(String titel, Printable printable) {
+        Printer.print(titel+"\n\n",writer);
+        printable.printConsole(writer);
+    }
 
 
     public static void setWriter(BufferedWriter writer) {

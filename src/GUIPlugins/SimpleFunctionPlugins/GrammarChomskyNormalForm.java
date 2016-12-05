@@ -12,21 +12,19 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         Grammar grammar = (Grammar) object;
-
+        if(object == null) {
+            gui.errorDialog("Please load a Grammar befor using this command");
+            return null;
+        }
         if(!GrammarUtil.isLambdaFree(grammar)) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Can't do this!");
-            alert.setHeaderText("This grammar has lambda-rules");
-            alert.setContentText("Remove them first by calling 'Remove Lambda Rules'!");
-            alert.showAndWait();
+            gui.errorDialog("Can't do this! The grammar has lambda-rules!");
         } else if(GrammarUtil.hasUnitRules(grammar)) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Can't do this!");
-            alert.setHeaderText("This grammar has unit Rules");
-            alert.setContentText("Remove them first by calling 'eliminate unit rules'!");
-            alert.showAndWait();
+            gui.errorDialog("Can't do this! The grammar has unit-rules");
+        } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            gui.infoDialog("Can't do this! The grammar is already in chomsky normal-form");
         } else {
-            GrammarUtil.chomskyNormalForm(grammar);
+            CLIPlugins.GrammarChomskyNormalForm plugin = new CLIPlugins.GrammarChomskyNormalForm();
+            plugin.execute(object,new String[]{});
         }
         return grammar;
     }

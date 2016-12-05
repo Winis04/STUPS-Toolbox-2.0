@@ -9,8 +9,17 @@ import GrammarSimulator.GrammarUtil;
 public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
+        if(object == null) {
+            gui.errorDialog("Please load a grammar before using this command!");
+            return null;
+        }
         Grammar grammar = (Grammar) object;
-        GrammarUtil.eliminateUnitRules(grammar);
+        if(!GrammarUtil.hasUnitRules(grammar)) {
+            gui.infoDialog("this grammar has no unit rules!");
+        } else {
+            CLIPlugins.GrammarEliminateUnitRules cliPlugin = new CLIPlugins.GrammarEliminateUnitRules();
+            cliPlugin.execute(object,new String[]{});
+        }
         return grammar;
     }
 

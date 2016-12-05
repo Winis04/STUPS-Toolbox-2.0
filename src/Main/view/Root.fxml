@@ -34,8 +34,8 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Latex">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#startLatex" text="Start Latex Export" />
-                      <MenuItem mnemonicParsing="false" text="End Latex" />
+                        <MenuItem mnemonicParsing="false" onAction="#latexModeOn" text="Start Latex Export" />
+                      <MenuItem mnemonicParsing="false" onAction="#latexModeOff" text="End Latex" />
                     </items>
                   </Menu>
                </items>
