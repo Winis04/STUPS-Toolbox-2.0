@@ -8,6 +8,8 @@ import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
 import Main.GUI;
 
+import Print.PrintMode;
+import Print.Printer;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -136,7 +138,13 @@ public class OverviewController {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
                 .filter(sfp -> sfp.operatesOnAllStorables()==false && sfp.operatesOnSuperClass()==false && sfp.inputType().equals(parent) )
-                .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
+                .map(sfp -> {
+                    MenuItem item = sfp.getMenuItem(gui);
+                    if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
+                        item.setStyle("-fx-border-color: blue");
+                    }
+                    return item;
+                }).collect(Collectors.toList()));
         dynamicContextMenu.getItems().addAll(list.stream()
                 .filter(sfp -> sfp.operatesOnAllStorables()==true && sfp.operatesOnSuperClass()==false)
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));

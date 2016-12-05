@@ -37,4 +37,9 @@ public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
     Class outputType() {
         return Grammar.class;
     }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
+    }
 }

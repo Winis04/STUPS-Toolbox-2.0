@@ -273,6 +273,13 @@ public class GUI extends Application{
         return file;
     }
 
+    public File fileChooser(String titel) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(titel);
+        File file = fileChooser.showOpenDialog(primaryStage);
+        return file;
+    }
+
     public File openFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save "+string);

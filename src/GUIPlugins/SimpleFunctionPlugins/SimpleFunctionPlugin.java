@@ -81,4 +81,8 @@ public abstract class SimpleFunctionPlugin {
     public boolean operatesOnSuperClass() {
         return false;
     }
+
+    public boolean createsOutput() {
+        return false;
+    }
 }

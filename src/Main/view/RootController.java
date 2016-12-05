@@ -52,8 +52,13 @@ public class RootController {
     @FXML
     private void latexModeOn() {
         borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
+
+
+        File file = gui.fileChooser("choose");
+        String path = file.getAbsolutePath();
+
         PrintModePlugin printModePlugin = new PrintModePlugin();
-        printModePlugin.execute(null,new String[]{"latex","test/gui_test.tex","--force"});
+        printModePlugin.execute(null,new String[]{"latex",path,"--force"});
     }
     @FXML
     private void latexModeOff() {

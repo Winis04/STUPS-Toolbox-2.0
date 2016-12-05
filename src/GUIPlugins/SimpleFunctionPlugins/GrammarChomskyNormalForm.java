@@ -43,4 +43,9 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     Class outputType() {
         return Grammar.class;
     }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
+    }
 }
