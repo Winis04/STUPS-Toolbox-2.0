@@ -56,56 +56,6 @@ public class CLI {
             }
 
         } else if(isStoreFunction(command) && doStoreCommand(command,parameters[0],parameters[1])) {
-            if(storeFunctionCheckParameter(parameters)) {
-                try {
-                    Integer i = Integer.parseInt(parameters[1]);
-                    //first: detect which object should be stored
-                    Class clazz = lookUpTable.get(parameters[0].toLowerCase());
-
-                    if (clazz == null) {
-                        System.out.println("There are no objects of type " + parameters[0]);
-                    } else {
-                        HashMap<String, Storable> correctMap = store.get(clazz);
-                        if (command.equals("store") || command.equals("str") || command.equals("copy")) {
-                            Object object = objects.get(clazz);
-                            if (object == null) {
-                                System.out.println("Please load an object of type " + parameters[0] + " before using this command!");
-                            } else {
-                                Storable toBeStored;
-                                if(command.equals("copy")) {
-                                    toBeStored = ((Storable) object).deep_copy();
-                                } else {
-                                    toBeStored = ((Storable) object);
-
-                                }
-                                if (correctMap == null) {
-                                    HashMap<Integer, Storable> tmp = new HashMap<>();
-                                    tmp.put(i, toBeStored);
-                                    store.put(clazz, tmp);
-                                } else {
-                                    correctMap.put(i, toBeStored);
-                                    //    store.get(clazz).put(i, toBeStored);
-                                }
-                            }
-                        } else if (command.equals("switch") || command.equals("swt")) {
-                            Storable theNewCurrent = correctMap.get(i);
-                            if (theNewCurrent == null) {
-                                System.out.println("no Object with this Index"); //TODO
-                            } else {
-                                objects.put(clazz, theNewCurrent);
-                            }
-                        } else if (command.equals("remove") || command.equals("rmv")) {
-                            correctMap.remove(i);
-                        } else {
-                            System.out.println("something went wrong");
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("invalid input: Input is not an Integer");
-                }
-            } else {
-                System.out.println("please enter a storable type (e.g. grammar) and key as parameters!");
-            }
         } else if(command.equals("sa")||command.equals("show-all")) {
             if(parameters.length==1) {
                 Class clazz = lookUpTable.get(parameters[0].toLowerCase());
