@@ -19,37 +19,11 @@ public class Load extends SimpleFunctionPlugin {
     public Object execute(Object object) {
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Grammar")) {
 
-            try {
-                String string = readFile("Grammar");
-                Grammar grammar = GrammarUtil.parse(string);
-                load(Grammar.class,grammar);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LexerException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
-                e.printStackTrace();
-            }
+            gui.getRootController().loadGrammar();
         }
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Automaton")) {
 
-            try {
-                String string = readFile("Automaon");
-                Automaton automaton = AutomatonUtil.parse(string);
-                load(Automaton.class,automaton);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (AutomatonParser.lexer.LexerException e) {
-                e.printStackTrace();
-            } catch (AutomatonParser.parser.ParserException e) {
-                e.printStackTrace();
-            }
+            gui.getRootController().loadAutomaton();
         }
         return null;
     }

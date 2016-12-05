@@ -300,13 +300,34 @@ public class GrammarUtil {
             writer.write(grammar.getStartSymbol().getName());
 
             writer.write("}\n\n");
+            writer.flush();
 
             writeRules(writer, grammar);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public static void save(Grammar grammar, File file) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
+            writer.write("{");
+
+            writeTerminals(writer, grammar);
+            writer.write("; ");
+
+            writeNonterminals(writer, grammar);
+            writer.write("; ");
+
+            writer.write(grammar.getStartSymbol().getName());
+
+            writer.write("}\n\n");
+
+            writeRules(writer, grammar);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Writes a given grammar to a file, so it can be loaded again later.
      *

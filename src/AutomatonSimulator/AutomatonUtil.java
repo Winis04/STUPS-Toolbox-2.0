@@ -498,7 +498,34 @@ public class AutomatonUtil {
             e.printStackTrace();
         }
     }
+    /**
+     * Writes a given automaton to a file, so it can be loaded again later.
+     *
+     * @param automaton The automaton.
+     * @param file The file
+     */
+    public static void save(Automaton automaton, File file) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
+            writer.write("{");
+
+            writeStates(writer, automaton, false);
+            writer.write("; ");
+
+            writer.write(automaton.getStartState().getName() + "; ");
+
+            writeStates(writer, automaton, true);
+
+            writer.write("}\n\n");
+
+            writeRules(writer, automaton);
+
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Writes a given automaton to a file, so it can be loaded again later.
      *
@@ -527,7 +554,41 @@ public class AutomatonUtil {
             e.printStackTrace();
         }
     }
+    /**
+     * Saves a given automaton to a .dot-file.
+     *
+     * @param automaton The automaton.
+     * @param file The filename.
+     */
+    public static void toGraphViz(Automaton automaton, File file) {
+        try {
+            //Write the header.
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write("digraph Automaton {\n");
+            writer.write("graph[rankdir=LR];\n");
 
+            //Write the automaton's rules.
+            writeRulesGraphViz(writer, automaton.getStartState(), new HashSet<>());
+
+            //Mark the start state with an arrow pointing towards it.
+            writer.write("start [shape = none];\n");
+            writer.write("start -> " + automaton.getStartState().getName() + "\n");
+
+            //Mark all final states with double circles.
+            for(State state : automaton.getStates()) {
+                if(state.isFinal()) {
+                    writer.write(state.getName() + "[shape = doublecircle];");
+                    writer.newLine();
+                }
+            }
+
+            //Close the file.
+            writer.write("}");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Saves a given automaton to a .dot-file.
      *

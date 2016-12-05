@@ -1,5 +1,6 @@
 package GUIPlugins.DisplayPlugins;
 
+import Main.GUI;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Menu;
@@ -84,4 +85,6 @@ public interface DisplayPlugin {
      * @return The object-type.
      */
     Class displayType();
+
+    void setGUI(GUI gui);
 }

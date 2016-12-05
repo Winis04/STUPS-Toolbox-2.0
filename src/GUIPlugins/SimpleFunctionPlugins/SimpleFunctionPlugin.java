@@ -66,8 +66,6 @@ public abstract class SimpleFunctionPlugin {
             Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
 
             if(ret != null) {
-
-
                 gui.refresh(ret);
 
             }

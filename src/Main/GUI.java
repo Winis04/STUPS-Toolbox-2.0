@@ -111,7 +111,9 @@ public class GUI extends Application{
     }
 
     public void addToStore(Storable storable, Class clazz, String name) {
-        cli.store.get(clazz).put(name,storable);
+        cli.store.putIfAbsent(clazz, new HashMap<>());
+        cli.store.get(clazz).put(name, storable);
+        storable.setName(name);
         refresh();
     }
 
@@ -157,6 +159,7 @@ public class GUI extends Application{
                 if(file.getName().endsWith(".class") && !file.getName().equals("DisplayPlugin.class") && !file.getName().equals("ComplexDisplayPlugin.class") && !file.getName().contains("$")) {
                     DisplayPlugin instance = (DisplayPlugin) urlClassLoader.loadClass("GUIPlugins.DisplayPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
                     displayPlugins.put(instance.displayType(), instance);
+                    instance.setGUI(this);
 
                 }
             }
@@ -250,6 +253,13 @@ public class GUI extends Application{
         File file = fileChooser.showOpenDialog(primaryStage);
         return file;
     }
+
+    public File openFile(String string) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("save "+string);
+        File file = fileChooser.showSaveDialog(primaryStage);
+        return file;
+    }
     /**
      * Shows the person overview inside the root layout.
      */
@@ -311,5 +321,9 @@ public class GUI extends Application{
 
     public OverviewController getOverviewController() {
         return overviewController;
+    }
+
+    public RootController getRootController() {
+        return rootController;
     }
 }

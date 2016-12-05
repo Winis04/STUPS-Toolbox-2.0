@@ -11,6 +11,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Nonterminal;
 import GrammarSimulator.Symbol;
+import Main.GUI;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -56,6 +57,8 @@ public class GrammarGUI implements DisplayPlugin {
      */
     private HashMap<Tab, GrammarTab> tabMap = new HashMap<>();
 
+    private GUI gui;
+
     @Override
     public Node display(Object object) {
         grammar = (Grammar) object;
@@ -66,7 +69,7 @@ public class GrammarGUI implements DisplayPlugin {
 
         rootPane.getTabs().clear();
         Tab edit =new Tab("edit");
-        edit.setContent(new EditTab().getFxNode(grammar));
+        edit.setContent(new EditTab(gui).getFxNode(grammar));
         edit.setClosable(false);
         rootPane.getTabs().add(edit);
 
@@ -179,5 +182,10 @@ public class GrammarGUI implements DisplayPlugin {
     @Override
     public Class displayType() {
         return Grammar.class;
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui=gui;
     }
 }

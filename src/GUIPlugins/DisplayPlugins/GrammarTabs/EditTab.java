@@ -1,6 +1,7 @@
 package GUIPlugins.DisplayPlugins.GrammarTabs;
 
 import GrammarSimulator.*;
+import Main.GUI;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -18,6 +19,8 @@ import java.util.*;
  * Created by fabian on 15.08.16.
  */
 public class EditTab implements GrammarTab {
+
+    private GUI gui;
 
     /**
      * Maps each terminal's name to its Terminal.
@@ -49,6 +52,9 @@ public class EditTab implements GrammarTab {
      */
     ContextMenu mouseMenu = new ContextMenu();
 
+    public EditTab(GUI gui) {
+        this.gui=gui;
+    }
     @Override
     public Node getFxNode(Grammar grammar) {
         //Initialize nonterminalsMap.
@@ -89,9 +95,20 @@ public class EditTab implements GrammarTab {
                         writeTopLabels(grammar);
                         writeRules(grammar, editPane);
                     });
-
+                    MenuItem store = new MenuItem("Store");
+                    store.setOnAction(event1 -> {
+                        TextInputDialog dialog = new TextInputDialog("G");
+                        dialog.setTitle("Store this grammar");
+                        dialog.setContentText("Enter the name of the grammar: ");
+                        Optional<String> result = dialog.showAndWait();
+                        result.ifPresent(name -> {
+                          //  gui.getCli().objects.put(Grammar.class,grammar);
+                            gui.addToStore(grammar,Grammar.class,name);
+                        });
+                    });
                     mouseMenu.getItems().clear();
                     mouseMenu.getItems().add(addItem);
+                    mouseMenu.getItems().add(store);
                     mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
                 }
             } else if(event.getButton().equals(MouseButton.PRIMARY)) {

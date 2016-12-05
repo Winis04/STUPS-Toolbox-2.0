@@ -6,6 +6,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
+import Main.GUI;
 import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -137,6 +138,8 @@ public class AutomatonGUI implements DisplayPlugin {
     private CheckBox isCompleteBox;
 
     private CheckBox isMinimalBox;
+
+    private GUI gui;
 
     @Override
     public Node display(Object object) {
@@ -480,6 +483,11 @@ public class AutomatonGUI implements DisplayPlugin {
     @Override
     public Class displayType() {
         return Automaton.class;
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui=gui;
     }
 
     /**
