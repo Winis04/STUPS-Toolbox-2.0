@@ -110,20 +110,7 @@ public class OverviewController {
 
                 if(newValue != null && !newValue.equals(root) && newValue.getParent()!= null &&!newValue.getParent().equals(root) && newValue.getParent().getParent()!=null) {
                     // the String that belongs to the parent treeItem
-                    String parent = selectedItem.getParent().getValue().toLowerCase();
-                    // we get the parents (and the childs class) by looking in the lookup table
-                    Class parentClass = gui.getCli().lookUpTable.get(parent);
-
-
-                    // now we can get the matching storable object
-                    Storable selectedStorable = gui.getCli().store.get(parentClass).get(selectedItem.getValue());
-                    // put it as the current grammar/automaton/..
-
-                    gui.getCli().objects.put(parentClass, selectedStorable);
-                    gui.switchDisplayGui(parentClass);
-                    gui.refresh(selectedStorable);
-
-                } else {
+                   gui.switchStorable(selectedItem);
 
                 }
             });

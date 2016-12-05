@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -109,6 +110,11 @@ public class EditTab implements GrammarTab {
                     mouseMenu.getItems().clear();
                     mouseMenu.getItems().add(addItem);
                     mouseMenu.getItems().add(store);
+                    if(gui.getCli().storeContains(grammar,Grammar.class)) {
+                        store.setDisable(true);
+                    } else {
+                        store.setDisable(false);
+                    }
                     mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
                 }
             } else if(event.getButton().equals(MouseButton.PRIMARY)) {

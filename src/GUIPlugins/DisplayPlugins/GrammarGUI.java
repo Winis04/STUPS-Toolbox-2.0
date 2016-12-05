@@ -20,10 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -109,8 +106,7 @@ public class GrammarGUI implements DisplayPlugin {
 
     @Override
     public Node refresh(Object object) {
-        grammar = (Grammar) object;
-        return this.display(grammar);
+        return this.display(object);
     }
 
     @Override

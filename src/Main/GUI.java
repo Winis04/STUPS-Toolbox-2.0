@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
@@ -115,6 +116,21 @@ public class GUI extends Application{
         cli.store.get(clazz).put(name, storable);
         storable.setName(name);
         refresh();
+    }
+
+    public void switchStorable(TreeItem<String> selectedItem) {
+        String parent = selectedItem.getParent().getValue().toLowerCase();
+        // we get the parents (and the childs class) by looking in the lookup table
+        Class parentClass = cli.lookUpTable.get(parent);
+
+
+        // now we can get the matching storable object
+        Storable selectedStorable = cli.store.get(parentClass).get(selectedItem.getValue());
+        // put it as the current grammar/automaton/..
+
+        cli.objects.put(parentClass, selectedStorable);
+        switchDisplayGui(parentClass);
+        refresh(selectedStorable);
     }
 
 

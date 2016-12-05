@@ -6,6 +6,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
+import GrammarSimulator.Grammar;
 import Main.GUI;
 import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.graph.Graph;
@@ -797,6 +798,7 @@ public class AutomatonGUI implements DisplayPlugin {
                     }
                 });
 
+
                 //This entry allows the user to add new rule to state.
                 menu.add(new AbstractAction("Add Rule") {
                     @Override
@@ -863,6 +865,24 @@ public class AutomatonGUI implements DisplayPlugin {
                         });
                     }
                 });
+                if(!gui.getCli().storeContains(automaton,Automaton.class)) {
+                    menu.add(new AbstractAction("Store") {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Platform.runLater(() -> {
+                                TextInputDialog dialog = new TextInputDialog("A");
+                                dialog.setTitle("Store this automaton");
+                                dialog.setContentText("Enter the name of the automaton: ");
+                                Optional<String> result = dialog.showAndWait();
+                                result.ifPresent(name -> {
+                                    //  gui.getCli().objects.put(Grammar.class,grammar);
+                                    gui.addToStore(automaton, Automaton.class, name);
+                                });
+                            });
+
+                        }
+                    });
+                }
             }
             menu.show(visualizationViewer, mouseEvent.getX(), mouseEvent.getY());
         }

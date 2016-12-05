@@ -169,6 +169,19 @@ public class CLI {
         return true;
     }
 
+    public boolean storeContains(Storable storable, Class type) {
+        if(store.get(type)==null) {
+            return false;
+        }
+        if(store.get(type).values().isEmpty()) {
+            return false;
+        }
+        if(store.get(type).values().contains(storable)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * This method starts the Console.CLI and enters an endless loop, listening for user input.
      */

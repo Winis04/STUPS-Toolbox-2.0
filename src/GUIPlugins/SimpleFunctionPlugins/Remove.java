@@ -19,9 +19,13 @@ public class Remove extends SimpleFunctionPlugin {
     @Override
     public Object execute(Object object) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
-
-        gui.getOverviewController().getTreeView().getSelectionModel().select(selectedItem.nextSibling());
+        TreeItem<String> sibling=selectedItem.nextSibling();
+        if(sibling!=null) {
+            gui.getOverviewController().getTreeView().getSelectionModel().select(sibling);
+            gui.switchStorable(sibling);
+        }
         selectedItem.getParent().getChildren().remove(selectedItem);
+
         return null;
     }
 
