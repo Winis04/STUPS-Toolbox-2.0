@@ -83,7 +83,7 @@ public class OverviewController {
                 if (e.getButton()==MouseButton.SECONDARY) {
                     TreeItem selected = treeView.getSelectionModel().getSelectedItem();
                     //item is selected - this prevents fail when clicking on empty space
-                    if (selected!=null) {
+                    if (selected!=null && !selected.equals(root)) {
 
                         //open context menu on current screen position
                         if(selected.getParent().equals(root)) {
@@ -114,6 +114,8 @@ public class OverviewController {
 
                 }
             });
+            treeView.setEditable(true);
+           // treeView.setEditable(true);
          //   ContextMenu contextMenu = new ContextMenu();
          //   contextMenu.getItems().addAll(gui.getSimpleFunctionPlugins().values().stream().map(x -> x.getMenuItem(gui)).collect(Collectors.toList()));
          //   treeView.setContextMenu(contextMenu);
@@ -129,12 +131,6 @@ public class OverviewController {
 
     }
 
-    private Storable getStorableToTreeItem(TreeItem<String> item) {
-        String name = item.getValue();
-        String parentName = item.getParent().getValue().toLowerCase();
-        Class clazz = gui.getCli().lookUpTable.get(parentName);
-        return gui.getCli().store.get(clazz).get(name);
-    }
 
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
