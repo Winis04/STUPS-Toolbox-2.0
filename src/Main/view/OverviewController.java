@@ -120,13 +120,20 @@ public class OverviewController {
         }
     }
 
-    private Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {
+    public Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the childs class) by looking in the lookup table
         Class parentClass = gui.getCli().lookUpTable.get(parent);
         return parentClass;
 
+    }
+
+    private Storable getStorableToTreeItem(TreeItem<String> item) {
+        String name = item.getValue();
+        String parentName = item.getParent().getValue().toLowerCase();
+        Class clazz = gui.getCli().lookUpTable.get(parentName);
+        return gui.getCli().store.get(clazz).get(name);
     }
 
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
