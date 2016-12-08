@@ -215,7 +215,7 @@ public class GUI extends Application{
       //  BorderPane root = new BorderPane();
         initRootLayout();
         showOverview();
-            overviewController.getTabPane().getTabs().add(new Tab("Hallo"));
+
      //   BorderPane functionsPane = new BorderPane();
        // FlowPane simpleFunctionsPane = new FlowPane();
 
@@ -250,6 +250,7 @@ public class GUI extends Application{
      * Initializes the root layout.
      */
     private void initRootLayout() {
+
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();

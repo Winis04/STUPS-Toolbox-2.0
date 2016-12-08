@@ -119,26 +119,28 @@ public class RootController {
     @FXML
     public void loadGrammar() {
         File file = gui.loadFile("Grammar");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String string = "";
-            String line;
-            while ((line = reader.readLine()) != null) {
-                string = string + line + "\n";
+        if(file!=null) {
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                String string = "";
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    string = string + line + "\n";
+                }
+                Grammar grammar = GrammarUtil.parse(string);
+                gui.getCli().objects.put(Grammar.class, grammar);
+                gui.switchDisplayGui(Grammar.class);
+                gui.refresh(grammar);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LexerException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
             }
-            Grammar grammar = GrammarUtil.parse(string);
-            gui.getCli().objects.put(Grammar.class, grammar);
-            gui.switchDisplayGui(Grammar.class);
-            gui.refresh(grammar);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (ParserException e) {
-            e.printStackTrace();
         }
 
     }
