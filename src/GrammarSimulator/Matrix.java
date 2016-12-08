@@ -101,6 +101,7 @@ public class Matrix implements Printable{
         horizontalLine(writer);
     }
 
+
     private void horizontalLine(BufferedWriter writer) {
         Printer.print("+---",writer);
         for(int i=1;i<columns;i++) {

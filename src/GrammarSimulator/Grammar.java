@@ -2,10 +2,15 @@ package GrammarSimulator;
 
 
 import Console.Storable;
+import GrammarParser.lexer.LexerException;
+import GrammarParser.parser.ParserException;
 import Print.Printable;
 import Print.Printer;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 import static Print.Printer.makeToGreek;
@@ -270,4 +275,22 @@ public class Grammar implements Printable, Storable {
         return new Grammar(this, false);
     }
 
+    @Override
+    public void printToSave(String path) {
+      GrammarUtil.save(this,path);
+    }
+
+    @Override
+    public Storable restoreFromFile(File file) {
+        try {
+            return GrammarUtil.parse(file);
+        } catch (ParserException e) {
+            e.printStackTrace();
+        } catch (LexerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

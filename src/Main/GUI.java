@@ -238,6 +238,7 @@ public class GUI extends Application{
 
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
+            Printer.printmode=PrintMode.CONSOLE;
             primaryStage.close();
         });
 

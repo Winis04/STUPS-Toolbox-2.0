@@ -1,5 +1,7 @@
 package AutomatonSimulator;
 
+import AutomatonParser.lexer.LexerException;
+import AutomatonParser.parser.ParserException;
 import Console.Storable;
 import Print.Printable;
 import Print.Printer;
@@ -323,7 +325,7 @@ public class Automaton implements Printable, Storable {
     }
 
     public String getName() {
-        return "A";
+        return name;
     }
 
     @Override
@@ -332,4 +334,22 @@ public class Automaton implements Printable, Storable {
     }
 
 
+    @Override
+    public void printToSave(String path) {
+        AutomatonUtil.save(this,path);
+    }
+
+    @Override
+    public Storable restoreFromFile(File file) {
+        try {
+            return AutomatonUtil.parse(file);
+        } catch (ParserException e) {
+            e.printStackTrace();
+        } catch (LexerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

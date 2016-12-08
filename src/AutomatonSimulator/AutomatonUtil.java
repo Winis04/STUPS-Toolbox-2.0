@@ -446,6 +446,21 @@ public class AutomatonUtil {
         return setIsLoop(visitor.getAutomaton());
     }
 
+    public static Automaton parse(File file) throws IOException, LexerException, ParserException {
+        String name = file.getName();
+        Automaton automaton;
+        BufferedReader automatonReader = new BufferedReader(new FileReader(file));
+        String string = "";
+        String line;
+        while ((line = automatonReader.readLine()) != null) {
+            string = string + line + "\n";
+        }
+        automaton = AutomatonUtil.parse(string);
+        automaton.setName(name);
+        automatonReader.close();
+        return automaton;
+    }
+
     private static Automaton setIsLoop(Automaton automaton) {
         automaton.getStates().stream().forEach(state -> {
             state.getRules().stream().forEach(rule -> {

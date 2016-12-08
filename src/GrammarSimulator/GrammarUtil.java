@@ -251,6 +251,22 @@ public class GrammarUtil {
         return g;
     }
 
+    public static Grammar parse(File file) throws IOException, LexerException, ParserException {
+        String name = file.getName();
+        Grammar grammar = null;
+        BufferedReader grammarReader = new BufferedReader(new FileReader(file));
+        String string = "";
+        String line;
+        while ((line = grammarReader.readLine()) != null) {
+            string = string + line + "\n";
+        }
+        grammar = GrammarUtil.parse(string);
+        grammar.setName(name);
+        grammarReader.close();
+        return grammar;
+
+    }
+
     /**
      * Returns an ArrayList that contains all terminals in order of their appearance in the grammars's rules.
      *

@@ -2,15 +2,22 @@ package Console;
 
 import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
+import GrammarParser.lexer.LexerException;
+import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
 import Main.GUI;
+import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.application.Platform;
+import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -98,10 +105,11 @@ public class CLI {
             System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
         } else if(command.equals("e") || command.equals("exit")) {
             System.out.println("Goodbye!");
-            if(!Printer.writerIsNull()) {
+            if(!Printer.writerIsNull() && Printer.printmode== PrintMode.LATEX) {
                 Printer.printEndOfLatex();
                 Printer.closeWriter();
             }
+            save_workspace();
             System.exit(0);
         } else if(command.equals("a") || command.equals("about")) {
             System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
@@ -194,6 +202,7 @@ public class CLI {
         String input, command, parameters[];
         ArrayList<CLIPlugin> plugins = new ArrayList<>();
         objects.put(null, null);
+        restore_workspace();
 
         //Load all Console.CLI plugins.
         try {
@@ -265,5 +274,87 @@ public class CLI {
             }
         }
     }
+
+
+    private boolean save_workspace() {
+        File workspace = new File("workspace");
+        if(workspace.exists()) {
+            deleteDirectory(workspace);
+        }
+        workspace.mkdir();
+        store.keySet().stream().forEach(key -> {
+            if(!store.get(key).isEmpty()) {
+                File subDir = new File("workspace\\\\" + key.getSimpleName());
+                if (!subDir.exists()) {
+                    subDir.mkdir();
+                }
+                store.get(key).values().stream().forEach(storable -> {
+                    String name = storable.getName();
+                    storable.printToSave("workspace\\\\" + key.getSimpleName() + "\\\\" + name);
+                });
+            }
+        });
+
+
+        return true;
+
+
+    }
+
+    private boolean deleteDirectory(File file) {
+        if(file.isDirectory()) {
+            File[] list = file.listFiles();
+            for(File child : list) {
+                deleteDirectory(child);
+            }
+        }
+        file.delete();
+        return true;
+    }
+
+    private boolean restore_workspace() {
+        File dir = new File("workspace");
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                // get the class belonging to that directory
+                Class clazz = lookUpTable.get(child.getName().toLowerCase());
+                try {
+                    // a instance of this class to parse the saved storable
+                    Storable storable = (Storable) clazz.newInstance();
+                    // go through every file in the directory
+                    File[] files = child.listFiles();
+                    for(File file : files) {
+                        // the parsed object
+                        Storable restored = storable.restoreFromFile(file);
+                        // store it in the store
+                        HashMap<String, Storable> correctMap = store.get(clazz);
+                        String i=restored.getName();
+                        if (correctMap == null) {
+                            HashMap<String, Storable> tmp = new HashMap<>();
+                            tmp.put(i, restored);
+                            store.put(clazz, tmp);
+                        } else {
+                            correctMap.put(i, restored);
+                            //    store.get(clazz).put(i, toBeStored);
+                        }
+                    }
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            // Handle the case where dir is not really a directory.
+            // Checking dir.isDirectory() above would not be sufficient
+            // to avoid race conditions with another process that deletes
+            // directories.
+        }
+        return true;
+    }
+
+
+
 
 }

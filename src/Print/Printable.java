@@ -8,4 +8,5 @@ import java.io.BufferedWriter;
 public interface Printable {
     void printLatex(BufferedWriter writer, String space);
     void printConsole(BufferedWriter writer);
+
 }

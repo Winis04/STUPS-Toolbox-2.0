@@ -42,10 +42,10 @@ public class GrammarLoadPlugin implements CLIPlugin {
         Grammar grammar = null;
         try {
             String filename = parameters[0];
-            BufferedReader automatonReader = new BufferedReader(new FileReader(filename));
+            BufferedReader grammarReader = new BufferedReader(new FileReader(filename));
             String file = "";
             String line;
-            while ((line = automatonReader.readLine()) != null) {
+            while ((line = grammarReader.readLine()) != null) {
                 file = file + line + "\n";
             }
             grammar = GrammarUtil.parse(file);
