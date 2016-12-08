@@ -10,6 +10,7 @@ import Print.Printable;
 import Print.Printer;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 
 import java.io.*;
@@ -21,6 +22,10 @@ import java.util.*;
  * Created by fabian on 15.06.16.
  */
 public class CLI {
+    /**
+     * the workspace: contains the objects of the last session
+     **/
+    private File workspace = new File("workspace");
 
     private GUI gui;
     /**
@@ -58,7 +63,7 @@ public class CLI {
 
         } else if(isStoreFunction(command) && doStoreCommand(command,parameters[0],parameters[1])) {
         } else if(command.equals("sa")||command.equals("show-all")) {
-            if(parameters.length==1) {
+            if (parameters.length == 1) {
                 Class clazz = lookUpTable.get(parameters[0].toLowerCase());
                 if (clazz == null) {
                     System.out.println("no such objects stored");
@@ -73,7 +78,13 @@ public class CLI {
             } else {
                 System.out.println("Please enter a storable type as a parameter for this command!");
             }
+        } else if(command.equals("clear_store")) {
+            store.clear();
+        } else if(command.equals("switch_workspace")) {
+            if(parameters.length==1) {
+                switchWorkspace(parameters[0]);
 
+            }
         } else if(command.equals("h") || command.equals("help")) {
 
             for(CLIPlugin plugin : plugins) {
@@ -90,6 +101,7 @@ public class CLI {
             }
 
             System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
+            System.out.println("'clear_store' -- deletes every stored item");
             System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
             System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
             System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this postion");
@@ -269,45 +281,77 @@ public class CLI {
         }
     }
 
+    /**
+     * saves the current workspace
+     */
 
-    private boolean save_workspace() {
-        File workspace = new File("workspace");
+    private void save_workspace() {
+        File workspace = this.workspace;
+        String path = this.workspace.getPath()+"\\\\";
         if(workspace.exists()) {
             deleteDirectory(workspace);
         }
         workspace.mkdir();
         store.keySet().stream().forEach(key -> {
             if(!store.get(key).isEmpty()) {
-                File subDir = new File("workspace\\\\" + key.getSimpleName());
+                File subDir = new File(path + key.getSimpleName());
                 if (!subDir.exists()) {
                     subDir.mkdir();
                 }
                 store.get(key).values().stream().forEach(storable -> {
                     String name = storable.getName();
-                    storable.printToSave("workspace\\\\" + key.getSimpleName() + "\\\\" + name);
+                    storable.printToSave(path + key.getSimpleName() + "\\\\" + name);
                 });
             }
         });
 
-
-        return true;
-
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
+            bufferedWriter.write(this.workspace.getAbsolutePath()+"\n");
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private boolean deleteDirectory(File file) {
-        if(file.isDirectory()) {
+    /**
+     * deletes a directory and all files in it
+     * @param file the directory, that should be deleted
+     */
+    private void deleteDirectory(File file) {
+        if(file.exists() && file.isDirectory()) {
             File[] list = file.listFiles();
             for(File child : list) {
                 deleteDirectory(child);
             }
         }
         file.delete();
-        return true;
     }
 
+    /**
+     * restores the workspace, that means, it fills the store with the objects that are saved in the current workspace-folder
+     * @return true, if it went well
+     */
     private boolean restore_workspace() {
-        File dir = new File("workspace");
+        String path = "workspace";
+        if(new File("path_to_workspace").exists()) {
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("path_to_workspace"));
+                path=reader.readLine();
+                reader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        File ret = new File(path);
+
+        this.workspace = ret;
+        File dir = ret;
+        store.clear();
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
@@ -348,7 +392,42 @@ public class CLI {
         return true;
     }
 
+    /**
+     * switches the workspace
+     * @param filename
+     */
+    public void switchWorkspace(String filename) {
+        //save old workspace
+        save_workspace();
+        //update store
+        store.clear();
 
-
+        File file = new File(filename);
+        if(file.exists()) {
+            if(file.isDirectory()) {
+                try {
+                    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
+                    bufferedWriter.write(filename+"\n");
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                this.workspace = file;
+                restore_workspace();
+            }
+        } else {
+            file.mkdir();
+            try {
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
+                bufferedWriter.write(filename+"\n");
+                bufferedWriter.flush();
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.workspace = file;
+        }
+    }
 
 }
