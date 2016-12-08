@@ -101,6 +101,7 @@ public class CLI {
 
             System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
             System.out.println("'clear_store' -- deletes every stored item");
+            System.out.println("'switch_workspace' -- takes a directory as a parameter. Changes the workspace");
             System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
             System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
             System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this postion");
