@@ -2,23 +2,17 @@ package Console;
 
 import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
-import GrammarParser.lexer.LexerException;
-import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
+
 import Main.GUI;
 import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import javafx.application.Platform;
-import org.apache.commons.io.FileUtils;
+
 
 import java.io.*;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
