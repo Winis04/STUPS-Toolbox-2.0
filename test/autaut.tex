@@ -8,16 +8,4 @@
 
 \begin{document}
 
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
-
-	\node[state,initial]	 (z0)		{z0};
-	\node[state]	 (z1)	[right of=z0]		{z1};
-	\node[state,accepting]	 (z2)	[right of=z1]		{z2};
-\path[->]
-(z0) 	 edge node {a}	(z1)
-(z1) 	 edge [loop below] node {a}	(z1)
- edge node {b}	(z2)
-(z2) 	 edge [loop below] node {b}	(z2)
-;
-\end{tikzpicture}
 \end{document}

@@ -13,6 +13,7 @@ import Main.view.OverviewController;
 import Main.view.RootController;
 import Print.PrintMode;
 import Print.Printer;
+import cern.colt.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -273,9 +274,14 @@ public class GUI extends Application{
         return file;
     }
 
-    public File fileChooser(String titel) {
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+    public File fileChooser(String titel,String description, ArrayList<String> ext) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(titel);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(description,ext);
+        fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(primaryStage);
         return file;
     }

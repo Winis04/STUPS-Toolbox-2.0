@@ -8,42 +8,4 @@
 
 \begin{document}
 
-\section{Remove Lambda-Rules}
-
-\begin{description}
-	\item[Before] \hfill \\ 
-		$G=\left(\{	\epsilon, 0, 1\},\;\{ S, A, B, D, E, C\},\;S,\;R\right)$ with
-	\begin{align*}
-		R=\{	S &\rightarrow ABD, \\ 
-		A &\rightarrow ED\;|\;BB, \\ 
-		B &\rightarrow \epsilon\;|\;AC, \\ 
-		D &\rightarrow 0, \\ 
-		E &\rightarrow 1, \\ 
-		C &\rightarrow \epsilon\}
-	\end{align*}
-	\item[Step 1] \hfill \\ 
-	nullables\\ 
-	$\{	A, 	B, 	C\}$
-	\item[Step 2] \hfill \\ 
-		$G'=\left(\{	0, \epsilon, 1\},\;\{ S, D, B, A, C, E\},\;S,\;R'\right)$ with
-	\begin{align*}
-		R'=\{	S &\rightarrow D\;|\;BD\;|\;AD\;|\;ABD, \\ 
-		D &\rightarrow 0, \\ 
-		B &\rightarrow AC\;|\;\epsilon\;|\;A\;|\;C, \\ 
-		A &\rightarrow B\;|\;ED\;|\;\epsilon\;|\;BB, \\ 
-		C &\rightarrow \epsilon, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-	\item[Step 3] \hfill \\ 
-	All lambda-rules are removed and all nonterminals, that do not appear on any right side.\\ 
-	$G''=\left(\{	1, 0\},\;\{ S, B, D, A, E\},\;S,\;R''\right)$ with
-	\begin{align*}
-		R''=\{	S &\rightarrow BD\;|\;ABD\;|\;D\;|\;AD, \\ 
-		B &\rightarrow A, \\ 
-		D &\rightarrow 0, \\ 
-		A &\rightarrow ED\;|\;BB\;|\;B, \\ 
-		E &\rightarrow 1\}
-	\end{align*}
-\end{description}
-
 \end{document}

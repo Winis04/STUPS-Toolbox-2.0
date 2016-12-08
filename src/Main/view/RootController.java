@@ -4,26 +4,32 @@ package Main.view;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import CLIPlugins.PrintModePlugin;
-import Console.Storable;
+import java.util.Arrays;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
+import java.util.ArrayList;
+
+
 import java.io.*;
+
 
 /**
  * Created by Isabel on 28.11.2016.
  */
 public class RootController {
+
+    boolean showLatexDialog=true;
+
+    boolean inLatexMode=false;
 
 
     private GUI gui;
@@ -35,6 +41,10 @@ public class RootController {
     Menu Help;
     @FXML
     Menu Export;
+    @FXML
+    MenuItem latexModeOn;
+    @FXML
+    MenuItem latexModeOff;
 
     /**
      * The constructor.
@@ -51,26 +61,50 @@ public class RootController {
     }
     @FXML
     private void latexModeOn() {
-        borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
+        String[] arr = new String[]{"*.tex"};
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(arr));
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("choose latex file");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("latex","*.tex");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(gui.getPrimaryStage());
+
+        if(file!=null) {
+            inLatexMode = true;
+            latexModeOn.setDisable(true);
+            latexModeOff.setDisable(false);
+            borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
 
 
-        File file = gui.fileChooser("choose");
-        String path = file.getAbsolutePath();
+            String path = file.getAbsolutePath();
 
-        PrintModePlugin printModePlugin = new PrintModePlugin();
-        printModePlugin.execute(null,new String[]{"latex",path,"--force"});
+
+            if (showLatexDialog) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "display this information again?", ButtonType.YES, ButtonType.NO);
+                alert.setHeaderText("You are now in Latex-mode. Every blue-squared command writes in the file you just choose until you end the latex-mode!");
+
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.NO) {
+                    showLatexDialog = false;
+                }
+            }
+
+
+            PrintModePlugin printModePlugin = new PrintModePlugin();
+            printModePlugin.execute(null, new String[]{"latex", path, "--force"});
+        }
     }
     @FXML
     private void latexModeOff() {
-        borderPane.setStyle("-fx-border-witdth: 0;");
+        inLatexMode=false;
+        latexModeOn.setDisable(false);
+        latexModeOff.setDisable(true);
+        borderPane.setStyle("");
         PrintModePlugin printModePlugin = new PrintModePlugin();
         printModePlugin.execute(null,new String[]{"no"});
     }
 
-    @FXML
-    public void startLatex() {
-
-    }
 
     @FXML
     public void about() {
