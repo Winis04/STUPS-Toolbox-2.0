@@ -1529,17 +1529,21 @@ public class GrammarUtil {
         PushDownAutomaton pda=new PushDownAutomaton();
         State onlyState=new State(true,"z");
         pda.getStates().add(onlyState);
+        /** fill the input- and stackalphabet **/
         for(Symbol s : g.getTerminals()) {
             PushDownAutomatonUtil.addToInputAlphabet(PushDownAutomatonUtil.asInputLetter(s),pda);
             PushDownAutomatonUtil.addToStackAlphabet(PushDownAutomatonUtil.asStackLetter(s),pda);
         }
+        /** add nullsymbol **/
+        PushDownAutomatonUtil.addToStackAlphabet(PushDownAutomatonUtil.asStackLetter(Terminal.NULLSYMBOL),pda);
         PushDownAutomatonUtil.addToInputAlphabet(PushDownAutomatonUtil.asInputLetter(Terminal.NULLSYMBOL),pda);
+        /** add every nonterminal to the stack alphabet **/
         for(Symbol s : g.getNonterminals()) {
             PushDownAutomatonUtil.addToStackAlphabet(PushDownAutomatonUtil.asStackLetter(s),pda);
         }
         pda.setStartState(onlyState);
         pda.setInitalStackLetter(PushDownAutomatonUtil.getStackLetterWithName(g.getStartSymbol().getName(),pda));
-        // rules :
+        /** create the rules **/
         for(Nonterminal nonterminal : g.getNonterminals()) {
             GrammarUtil.nonterminalToRule(nonterminal,pda);
         }
