@@ -75,7 +75,7 @@ public class Rule {
     }
 
     public void setOldToS(StackLetter oldToS) {
-        oldToS = oldToS;
+        this.oldToS=oldToS;
     }
 
     public void setGoingTo(State goingTo) {

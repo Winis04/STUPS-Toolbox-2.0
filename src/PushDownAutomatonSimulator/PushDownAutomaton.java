@@ -16,15 +16,15 @@ public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
      */
-    private HashSet<State> states;
+    private HashMap<String, State> states;
     /**
      * the input alphabet
      */
-    private HashSet<InputLetter> inputAlphabet;
+    private HashMap<String, InputLetter> inputAlphabet;
     /**
      * the stack alphabet;
      */
-    private HashSet<StackLetter> stackAlphabet;
+    private HashMap<String, StackLetter> stackAlphabet;
     /**
      * the PDA's start state
      */
@@ -46,7 +46,7 @@ public class PushDownAutomaton implements Printable, Storable{
      */
     private ArrayList<InputLetter> currentInput;
 
-    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
+    public PushDownAutomaton(HashMap<String, State> states, HashMap<String, InputLetter> inputAlphabet, HashMap<String, StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
@@ -61,23 +61,23 @@ public class PushDownAutomaton implements Printable, Storable{
 
     public PushDownAutomaton() {
 
-        this.states=new HashSet<>();
-        this.inputAlphabet=new HashSet<>();
-        this.stackAlphabet=new HashSet<>();
+        this.states=new HashMap<>();
+        this.inputAlphabet=new HashMap<>();
+        this.stackAlphabet=new HashMap<>();
         this.stack=new Stack<>();
         this.currentInput=new ArrayList<>();
         this.currentState=startState;
     }
 
-    public HashSet<State> getStates() {
+    public HashMap<String, State> getStates() {
         return states;
     }
 
-    public HashSet<InputLetter> getInputAlphabet() {
+    public HashMap<String, InputLetter> getInputAlphabet() {
         return inputAlphabet;
     }
 
-    public HashSet<StackLetter> getStackAlphabet() {
+    public HashMap<String, StackLetter> getStackAlphabet() {
         return stackAlphabet;
     }
 
@@ -90,15 +90,15 @@ public class PushDownAutomaton implements Printable, Storable{
         return initalStackLetter;
     }
 
-    public void setStates(HashSet<State> states) {
+    public void setStates(HashMap<String, State> states) {
         this.states = states;
     }
 
-    public void setInputAlphabet(HashSet<InputLetter> inputAlphabet) {
+    public void setInputAlphabet(HashMap<String, InputLetter> inputAlphabet) {
         this.inputAlphabet = inputAlphabet;
     }
 
-    public void setStackAlphabet(HashSet<StackLetter> stackAlphabet) {
+    public void setStackAlphabet(HashMap<String, StackLetter> stackAlphabet) {
         this.stackAlphabet = stackAlphabet;
     }
 
@@ -149,6 +149,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     }
 
+
     @Override
     public void printToSave(String path) {
 
@@ -167,17 +168,17 @@ public class PushDownAutomaton implements Printable, Storable{
     @Override
     public void printConsole(BufferedWriter writer) {
         System.out.println("States: ");
-        System.out.println(this.getStates().stream().map(state -> state.getName()).collect(joining(", ")));
+        System.out.println(this.getStates().values().stream().map(state -> state.getName()).collect(joining(", ")));
         System.out.println("Start State");
         System.out.println(this.getStartState().getName());
         System.out.println("Input Alphabet: ");
-        System.out.println(this.getInputAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        System.out.println(this.getInputAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
         System.out.println("Stack Alphabet: ");
-        System.out.println(this.getStackAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        System.out.println(this.getStackAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
         System.out.println("initial stack symbol:");
         System.out.println(this.getInitalStackLetter().getName());
         System.out.println("rules:");
-        this.getStates().stream().forEach(state -> {
+        this.getStates().values().stream().forEach(state -> {
             if(state.getRules()!=null && !state.getRules().isEmpty()) {
                 state.getRules().stream().forEach(rule -> {
                     System.out.printf("%s, %s, %s --> ",rule.getComingFrom().getName(),rule.getReadIn().getName(),rule.getOldToS().getName());

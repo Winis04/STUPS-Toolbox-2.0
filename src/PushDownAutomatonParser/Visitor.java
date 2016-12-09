@@ -68,7 +68,7 @@ public class Visitor extends DepthFirstAdapter {
     @Override
     public void outARoot(ARoot node) {
 
-        pushDownAutomaton = new PushDownAutomaton(toHashSet(states),toHashSet(inputAlphabet),toHashSet(stackAlphabet),start_state,initialStackLetter);
+        pushDownAutomaton = new PushDownAutomaton(states,inputAlphabet,stackAlphabet,start_state,initialStackLetter);
 
     }
 

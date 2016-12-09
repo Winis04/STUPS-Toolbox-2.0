@@ -54,17 +54,17 @@ public class PushDownAutomatonUtil {
 
     public static void print(PushDownAutomaton pda) {
         out.println("States: ");
-        out.println(pda.getStates().stream().map(state -> state.getName()).collect(joining(", ")));
+        out.println(pda.getStates().values().stream().map(state -> state.getName()).collect(joining(", ")));
         out.println("Start State");
         out.println(pda.getStartState().getName());
         out.println("Input Alphabet: ");
-        out.println(pda.getInputAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        out.println(pda.getInputAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
         out.println("Stack Alphabet: ");
-        out.println(pda.getStackAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        out.println(pda.getStackAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
         out.println("initial stack symbol:");
         out.println(pda.getInitalStackLetter().getName());
         out.println("rules:");
-        pda.getStates().stream().forEach(state -> {
+        pda.getStates().values().stream().forEach(state -> {
             state.getRules().stream().forEach(rule -> {
                 System.out.printf("%s, %s, %s --> %s, %s\n",state.getName(),rule.getReadIn().getName(),rule.getOldToS().getName(),rule.getGoingTo().getName(), rule.getNewToS().stream().map(symbol -> symbol.getName()).collect(joining(", ")));
 
@@ -126,9 +126,15 @@ public class PushDownAutomatonUtil {
 
 
     public static InputLetter asInputLetter(Symbol s) {
+        if(s.equals(Terminal.NULLSYMBOL)) {
+            return InputLetter.NULLSYMBOL;
+        }
         return new InputLetter(s.getName());
     }
     public static StackLetter asStackLetter(Symbol s) {
+        if(s.equals(Terminal.NULLSYMBOL)) {
+            return StackLetter.NULLSYMBOL;
+        }
         return new StackLetter(s.getName());
     }
     public static InputLetter asInputLetter(String s) {
@@ -138,8 +144,8 @@ public class PushDownAutomatonUtil {
         return new StackLetter(s);
     }
     public static boolean addToStackAlphabet(StackLetter st, PushDownAutomaton pda) {
-        if(!pda.getStackAlphabet().stream().anyMatch(letter -> letter.getName().equals(st.getName()))) {
-            pda.getStackAlphabet().add(st);
+        if(pda.getStackAlphabet().get(st.getName())==null) {
+            pda.getStackAlphabet().put(st.getName(), st);
             return true;
         } else {
             return false;
@@ -147,35 +153,20 @@ public class PushDownAutomatonUtil {
 
     }
     public static boolean addToInputAlphabet(InputLetter ip, PushDownAutomaton pda) {
-        if(!pda.getInputAlphabet().stream().anyMatch(letter -> letter.getName().equals(ip.getName()))) {
-            pda.getInputAlphabet().add(ip);
+        if(pda.getInputAlphabet().get(ip.getName())==null) {
+            pda.getInputAlphabet().put(ip.getName(),ip);
             return true;
         } else {
             return false;
         }
     }
     public static StackLetter getStackLetterWithName(String s, PushDownAutomaton pda) {
-        for(StackLetter st : pda.getStackAlphabet()) {
-            if(st.getName().equals(s)) {
-                return st;
-            }
-        }
-        return null;
+        return pda.getStackAlphabet().get(s);
     }
     public static InputLetter getInputLetterWithName(String s, PushDownAutomaton pda) {
-        for(InputLetter ip : pda.getInputAlphabet()) {
-            if(ip.getName().equals(s)) {
-                return ip;
-            }
-        }
-        return null;
+       return pda.getInputAlphabet().get(s);
     }
     public static State getStateWithName(String name, PushDownAutomaton pda) {
-        for(State s : pda.getStates()) {
-            if(s.getName().equals(name)) {
-                return s;
-            }
-        }
-        return null;
+        return pda.getStates().get(name);
     }
 }

@@ -8,6 +8,8 @@ import java.util.Stack;
 public class StackLetter {
     private String name;
 
+    public static final StackLetter NULLSYMBOL = new StackLetter("epsilon");
+
     public StackLetter(String name) {
         this.name = name;
     }
