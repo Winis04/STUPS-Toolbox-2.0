@@ -51,7 +51,6 @@ public class PDALoadPlugin implements CLIPlugin {
                 file = file + line + "\n";
             }
             pda = PushDownAutomatonUtil.parse(file);
-            System.out.println("bla");
 
 
         } catch (FileNotFoundException e) {

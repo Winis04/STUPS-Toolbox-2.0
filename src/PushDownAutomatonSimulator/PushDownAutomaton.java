@@ -45,6 +45,7 @@ public class PushDownAutomaton implements Printable, Storable{
      * the current Input
      */
     private ArrayList<InputLetter> currentInput;
+
     public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
@@ -55,6 +56,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.stack.add(initalStackLetter);
         this.currentInput=new ArrayList<>();
         this.currentState=startState;
+
     }
 
     public PushDownAutomaton() {
@@ -175,6 +177,14 @@ public class PushDownAutomaton implements Printable, Storable{
         System.out.println("initial stack symbol:");
         System.out.println(this.getInitalStackLetter().getName());
         System.out.println("rules:");
+        this.getStates().stream().forEach(state -> {
+            if(state.getRules()!=null && !state.getRules().isEmpty()) {
+                state.getRules().stream().forEach(rule -> {
+                    System.out.printf("%s, %s, %s --> ",rule.getComingFrom().getName(),rule.getReadIn().getName(),rule.getOldToS().getName());
+                    System.out.printf("%s, %s\n",rule.getGoingTo().getName(),rule.getNewToS().stream().map(sym -> sym.getName()).collect(joining(", ")));
+                });
+            }
+        });
 
     }
 }

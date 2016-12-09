@@ -16,13 +16,14 @@ import java.util.List;
  */
 public class Visitor extends DepthFirstAdapter {
     private PushDownAutomaton pushDownAutomaton;
-    private State start_state = null;
-    private StackLetter initialStackLetter = null;
+    private State start_state;
+    private StackLetter initialStackLetter;
     private HashMap<String, State> states = new HashMap<>();
     private HashMap<String, InputLetter> inputAlphabet = new HashMap<>();
     private HashMap<String, StackLetter> stackAlphabet = new HashMap<>();
     @Override
     public void inASymbols(ASymbols node) {
+
         for(TSymbol inputLetter : node.getInputletters()) {
             String name = inputLetter.getText().replaceAll("'","");
             inputAlphabet.put(name, new InputLetter(name));
@@ -42,6 +43,7 @@ public class Visitor extends DepthFirstAdapter {
 
     @Override
     public void inARule(ARule node) {
+
         State comingFrom;
         InputLetter input;
         StackLetter tos;
@@ -52,10 +54,10 @@ public class Visitor extends DepthFirstAdapter {
         input = inputAlphabet.get(list.get(1).getText().replaceAll("'",""));
         tos = stackAlphabet.get(list.get(2).getText().replaceAll("'",""));
 
-        list = node.getGoingTo();
-        goingTo = states.get(list.get(0).getText().replaceAll("'",""));
-        list.remove(0);
-        for(TSymbol symbol : list) {
+        List<TSymbol> list2 = node.getGoingTo();
+        goingTo = states.get(list2.get(0).getText().replaceAll("'",""));
+        list2.remove(0);
+        for(TSymbol symbol : list2) {
             newStack.add(stackAlphabet.get(symbol.getText().replaceAll("'","")));
         }
 
@@ -65,12 +67,13 @@ public class Visitor extends DepthFirstAdapter {
     }
     @Override
     public void outARoot(ARoot node) {
+
         pushDownAutomaton = new PushDownAutomaton(toHashSet(states),toHashSet(inputAlphabet),toHashSet(stackAlphabet),start_state,initialStackLetter);
 
     }
 
     public PushDownAutomaton getPushDownAutomaton() {
-        System.out.println("here");
+
         return pushDownAutomaton;
     }
 
