@@ -1552,7 +1552,7 @@ public class GrammarUtil {
             list.add(PushDownAutomatonUtil.asStackLetter(Terminal.NULLSYMBOL));
             tmp.setNewToS(list);
             tmp.setGoingTo(pda.getStartState());
-            pda.getRules().add(tmp);
+
             pda.setCurrentState(pda.getStartState());
         }
         return pda;
@@ -1565,7 +1565,6 @@ public class GrammarUtil {
             tmp.setOldToS(PushDownAutomatonUtil.asStackLetter(nt));
             tmp.setGoingTo(pda.getStartState());
             tmp.setNewToS(GrammarUtil.calculateNewTos(list));
-            pda.getRules().add(tmp);
         }
     }
     private static ArrayList<StackLetter> calculateNewTos(ArrayList<Symbol> list) {

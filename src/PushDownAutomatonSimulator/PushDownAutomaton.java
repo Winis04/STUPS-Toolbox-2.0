@@ -1,14 +1,18 @@
 package PushDownAutomatonSimulator;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Stack;
+import Console.Storable;
+import Print.Printable;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.util.*;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created by Isabel on 29.10.2016.
  */
-public class PushDownAutomaton {
+public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
      */
@@ -30,10 +34,6 @@ public class PushDownAutomaton {
      */
     private StackLetter initalStackLetter;
     /**
-     * the rules of this pda
-     */
-    private ArrayList<Rule> rules;
-    /**
      * the stack;
      */
     private Stack<StackLetter> stack;
@@ -45,13 +45,12 @@ public class PushDownAutomaton {
      * the current Input
      */
     private ArrayList<InputLetter> currentInput;
-    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, ArrayList<Rule> rules) {
+    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
         this.startState = startState;
         this.initalStackLetter = initalStackLetter;
-        this.rules = rules;
         this.stack=new Stack<>();
         this.stack.add(initalStackLetter);
         this.currentInput=new ArrayList<>();
@@ -63,7 +62,6 @@ public class PushDownAutomaton {
         this.states=new HashSet<>();
         this.inputAlphabet=new HashSet<>();
         this.stackAlphabet=new HashSet<>();
-        this.rules=new ArrayList<>();
         this.stack=new Stack<>();
         this.currentInput=new ArrayList<>();
         this.currentState=startState;
@@ -85,9 +83,6 @@ public class PushDownAutomaton {
         return startState;
     }
 
-    public ArrayList<Rule> getRules() {
-        return rules;
-    }
 
     public StackLetter getInitalStackLetter() {
         return initalStackLetter;
@@ -116,10 +111,6 @@ public class PushDownAutomaton {
         this.initalStackLetter = initalStackLetter;
     }
 
-    public void setRules(ArrayList<Rule> rules) {
-        this.rules = rules;
-    }
-
     public Stack<StackLetter> getStack() {
         return stack;
     }
@@ -138,5 +129,52 @@ public class PushDownAutomaton {
 
     public void setCurrentInput(ArrayList<InputLetter> currentInput) {
         this.currentInput = currentInput;
+    }
+
+
+    @Override
+    public Storable deep_copy() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void setName(String name) {
+
+    }
+
+    @Override
+    public void printToSave(String path) {
+
+    }
+
+    @Override
+    public Storable restoreFromFile(File file) {
+        return null;
+    }
+
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+
+    }
+
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        System.out.println("States: ");
+        System.out.println(this.getStates().stream().map(state -> state.getName()).collect(joining(", ")));
+        System.out.println("Start State");
+        System.out.println(this.getStartState().getName());
+        System.out.println("Input Alphabet: ");
+        System.out.println(this.getInputAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        System.out.println("Stack Alphabet: ");
+        System.out.println(this.getStackAlphabet().stream().map(letter -> letter.getName()).collect(joining(", ")));
+        System.out.println("initial stack symbol:");
+        System.out.println(this.getInitalStackLetter().getName());
+        System.out.println("rules:");
+
     }
 }

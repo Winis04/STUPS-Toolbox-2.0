@@ -42,18 +42,13 @@ public class PDAGoThroughInputPlugin implements CLIPlugin {
             return null;
         }
         int j=Integer.parseInt(parameters[0]);
-        if(j>= pda.getRules().size()) {
-            System.out.println("Number too big");
-            errorFlag = true;
-            return null;
-        }
+
         if(j < 0) {
             System.out.println("Number negative!");
             errorFlag = true;
             return null;
         }
 
-        PushDownAutomatonUtil.doRule(pda.getRules().get(j),pda);
         return null;
     }
 

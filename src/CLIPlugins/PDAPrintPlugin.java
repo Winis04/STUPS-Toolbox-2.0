@@ -1,5 +1,7 @@
 package CLIPlugins;
 
+import GrammarSimulator.Grammar;
+import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
@@ -27,12 +29,12 @@ public class PDAPrintPlugin implements CLIPlugin {
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
-            System.out.println("Please use 'a', or 'automaton' to load an automaton before using this command!");
+            System.out.println("Please load a grammar before using this command!");
             errorFlag = true;
             return null;
         }
-        PushDownAutomaton pda = (PushDownAutomaton) object;
-        PushDownAutomatonUtil.print(pda);
+        PushDownAutomaton pushDownAutomaton = (PushDownAutomaton) object;
+        Printer.print(pushDownAutomaton);
         return null;
     }
 

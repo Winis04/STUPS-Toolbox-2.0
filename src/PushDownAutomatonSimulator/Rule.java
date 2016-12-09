@@ -18,7 +18,7 @@ public class Rule {
     /**
      * the old top of stack
      */
-    private StackLetter OldToS;
+    private StackLetter oldToS;
     /**
      * the start this rule points to
      */
@@ -31,14 +31,14 @@ public class Rule {
     public Rule(State goingTo, InputLetter readIn, StackLetter oldToS, ArrayList<StackLetter> newToS) {
         this.goingTo = goingTo;
         this.readIn = readIn;
-        OldToS = oldToS;
+        this.oldToS = oldToS;
         this.newToS = newToS;
     }
 
     public Rule(State comingFrom, InputLetter readIn, StackLetter oldToS, State goingTo, ArrayList<StackLetter> newToS) {
         this.comingFrom = comingFrom;
         this.readIn = readIn;
-        OldToS = oldToS;
+        this.oldToS = oldToS;
         this.goingTo = goingTo;
         this.newToS = newToS;
     }
@@ -55,7 +55,7 @@ public class Rule {
     }
 
     public StackLetter getOldToS() {
-        return OldToS;
+        return oldToS;
     }
 
     public ArrayList<StackLetter> getNewToS() {
@@ -75,7 +75,7 @@ public class Rule {
     }
 
     public void setOldToS(StackLetter oldToS) {
-        OldToS = oldToS;
+        oldToS = oldToS;
     }
 
     public void setGoingTo(State goingTo) {

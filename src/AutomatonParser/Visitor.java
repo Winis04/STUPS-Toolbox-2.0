@@ -6,7 +6,6 @@ import AutomatonSimulator.State;
 import AutomatonParser.analysis.DepthFirstAdapter;
 import AutomatonParser.node.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 

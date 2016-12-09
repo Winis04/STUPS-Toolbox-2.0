@@ -1,7 +1,0 @@
-{'a','b';'#','a';z0,z1,z2;z0;'#'}
-
-z0, a, # --> z0, a, #
-z0, a, a --> z0, a, a
-z0, b, a --> z1, 'epsilon'
-z1, b, a --> z1, 'epsilon'
-z1, 'epsilon', # --> z2, 'epsilon'

@@ -1,0 +1,37 @@
+Package PushDownAutomatonParser;
+
+Helpers
+    letter = ['a'..'z'] | ['A'..'Z'];
+    digit = ['0'..'9'];
+    tab = 9;
+    lf = 10;
+    cr = 13;
+
+Tokens
+    whitespace =  (' ' | tab | cr | lf)+;
+    arrow = '-->';
+    l_bracket = '(';
+    r_bracket = ')';
+    l_bracket2 = '{';
+    r_bracket2 = '}';
+    semicolon = ';';
+    comma = ',';
+    line = '|';
+    identifier = ('_' | letter)('_'  | letter | digit)*;
+    symbol = ''' [[0..0xffff] - ''']+ ''';
+
+Ignored Tokens
+    whitespace;
+
+Productions
+    s {-> root} = {grammar} symbols rule_list {-> New root(symbols, [rule_list.rule])};
+    symbols {-> symbols} = {symbols} l_bracket2 [inputletters]: symbol_list [first_semi]: semicolon [stackletters]: symbol_list [second_semi]: semicolon [states]: identifierlist [third_semi]: semicolon [start_state]: identifier [last_semi]: semicolon [bottom]: symbol r_bracket2 {-> New symbols([inputletters.symbol], [stackletters.symbol], [states.identifier], start_state, bottom)};
+    identifierlist {-> identifier*} = {single_id} identifier {-> [identifier]} | {mult_id} identifier comma identifierlist {-> [identifier, identifierlist.identifier]};
+    symbol_list {-> symbol*} = {single_symbol} symbol {-> [symbol]} | {mult_symbol} symbol comma symbol_list {-> [symbol, symbol_list.symbol]};
+    rule_list {-> rule*} = {single_rule} rule {-> [rule.rule]} | {mult_rule} rule rule_list {-> [rule, rule_list.rule]};
+    rule {-> rule} = {rule} [coming_from]: symbol_list arrow [going_to]: symbol_list {-> New rule([coming_from.symbol], [going_to.symbol])};
+
+Abstract Syntax Tree
+    root = symbols rule*;
+    symbols = [inputletters]: symbol* [stackletters]: symbol* [states]: identifier* [start_state]: identifier [bottom]: symbol;
+    rule = [coming_from]: symbol* [going_to]: symbol*;

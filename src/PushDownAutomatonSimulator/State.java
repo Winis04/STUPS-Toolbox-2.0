@@ -33,7 +33,7 @@ public class State {
 
     public State(String name) {
         this.isStart= false;
-
+        this.name = name;
         this.rules=new HashSet<>();
     }
 
@@ -47,5 +47,17 @@ public class State {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public HashSet<Rule> getRules() {
+        return rules;
+    }
+
+    public void setRules(HashSet<Rule> rules) {
+        this.rules = rules;
     }
 }
