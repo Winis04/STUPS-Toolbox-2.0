@@ -170,6 +170,10 @@ public class RootController {
         }
 
     }
+    @FXML
+    public void loadPushDownAutomaton() {
+
+    }
 
     @FXML
     public void saveCurrentGrammar() {
@@ -189,6 +193,11 @@ public class RootController {
             File file = gui.openFile("Automaton");
             AutomatonUtil.save(automaton,file);
         }
+    }
+
+    @FXML
+    public void saveCurrentPushDownAutomaton() {
+        
     }
 
     @FXML

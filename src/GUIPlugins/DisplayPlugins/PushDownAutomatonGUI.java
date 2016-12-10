@@ -26,21 +26,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     }
 
     @Override
-    public Object openFile() {
-        return null;
-    }
-
-    @Override
-    public void saveFile(Object object) {
-
-    }
-
-    @Override
-    public HashSet<Menu> menus(Object object, Node node) {
-        return null;
-    }
-
-    @Override
     public String getName() {
         return null;
     }

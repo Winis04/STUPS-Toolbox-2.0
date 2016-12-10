@@ -49,39 +49,35 @@ public class PushDownAutomatonUtil {
         return pda;
 
     }
+    public static void save(PushDownAutomaton pda, String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+
+            writer.write("{'");
+            writer.write(pda.getInputAlphabet().keySet().stream().collect(joining("', '")));
+            writer.write("';'");
+            writer.write(pda.getStackAlphabet().keySet().stream().collect(joining("', '")));
+            writer.write("';'");
+            writer.write(pda.getStates().keySet().stream().collect(joining(", ")));
+            writer.write("; ");
+            writer.write(pda.getStartState().getName());
+            writer.write("; '");
+            writer.write(pda.getInitalStackLetter().getName());
+            writer.write("'}\n");
+
+            pda.getStates().values().stream().filter(state -> state.getRules()!=null && !state.getRules().isEmpty())
+                    .forEach(state -> {
+                        
+                    });
+            writer.flush();
+            writer.close();
 
 
-
-    public static void print(PushDownAutomaton pda) {
-        out.println("States: ");
-        out.println(pda.getStates().values().stream().map(state -> state.getName()).collect(joining(", ")));
-        out.println("Start State");
-        out.println(pda.getStartState().getName());
-        out.println("Input Alphabet: ");
-        out.println(pda.getInputAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
-        out.println("Stack Alphabet: ");
-        out.println(pda.getStackAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", ")));
-        out.println("initial stack symbol:");
-        out.println(pda.getInitalStackLetter().getName());
-        out.println("rules:");
-        pda.getStates().values().stream().forEach(state -> {
-            state.getRules().stream().forEach(rule -> {
-                System.out.printf("%s, %s, %s --> %s, %s\n",state.getName(),rule.getReadIn().getName(),rule.getOldToS().getName(),rule.getGoingTo().getName(), rule.getNewToS().stream().map(symbol -> symbol.getName()).collect(joining(", ")));
-
-            });
-        });
-        if(!pda.getStack().isEmpty()) {
-            out.println("current Stack:");
-            out.print(pda.getStack().stream().map(el -> el.getName()).collect(joining("\n")));
-            System.out.println(" \t\t<- ToS");
-        } else {
-            System.out.println("Stack is empty, input is accepted!");
-        }
-        if(!pda.getCurrentInput().isEmpty()) {
-            out.println("current Input:");
-            out.println(pda.getCurrentInput().stream().map(x -> x.getName()).collect(joining(" ")));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     public static boolean doRule(Rule rule, PushDownAutomaton pda) {
         if(!equals(rule.getComingFrom(),pda.getCurrentState())) { // the rule can not be applied. WRONG STATE

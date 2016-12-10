@@ -15,6 +15,7 @@
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar" />
                         <MenuItem mnemonicParsing="false" onAction="#loadAutomaton" text="Automaton" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadPushDownAutomaton" text="PushDownAutomaton" />
                     </items>
                   </Menu>
                </items>
@@ -30,6 +31,7 @@
                           </items>
                         </Menu>
                       <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton" text="PushDownAutomaton" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Latex">

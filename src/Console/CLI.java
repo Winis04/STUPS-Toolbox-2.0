@@ -9,6 +9,7 @@ import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
 
+import PushDownAutomatonSimulator.PushDownAutomaton;
 import javafx.application.Platform;
 
 
@@ -203,6 +204,8 @@ public class CLI {
     public void start() {
         lookUpTable.put("grammar",Grammar.class);
         lookUpTable.put("automaton",Automaton.class);
+        lookUpTable.put("pda",PushDownAutomaton.class);
+        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
         //Print a welcome message and initialize some variables.
         System.out.println("Welcome to the STUPS-Toolbox!\nPlease enter a command!\nFor a list of commands enter 'h' or 'help'...");
         String input, command, parameters[];

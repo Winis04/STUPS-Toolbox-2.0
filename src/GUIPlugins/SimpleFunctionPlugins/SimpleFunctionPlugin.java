@@ -13,8 +13,9 @@ import GrammarSimulator.Grammar;
 
 public abstract class SimpleFunctionPlugin {
 
-
-    boolean operatesOnAllStorables = false;
+    /**
+     * reference to the gui
+     */
     GUI gui = null;
 
     /**
@@ -51,13 +52,16 @@ public abstract class SimpleFunctionPlugin {
      */
     abstract Class outputType();
 
+    /**
+     * must be called, if the plugin should have access to the gui. this is necessary, if the plugin does more than manipulation of one object
+     */
 
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
     /**
-     * return a MenuItem for the SimpleFunctionPlugin.
-     * @return
+     * return a MenuItem for the SimpleFunctionPlugin, that is shown in the context-menu of the treeView
+     * @return the MenuItem
      */
     public MenuItem getMenuItem(GUI gui) {
         SimpleFunctionPlugin plugin= this;
@@ -75,13 +79,26 @@ public abstract class SimpleFunctionPlugin {
 
     }
 
+    /**
+     * should be overwritten, if the plugin should be able to operate on more than one type of storables, e.g. {@LINK Copy}
+     * @return default: false
+     */
     public boolean operatesOnAllStorables() {
         return false;
     }
+
+    /**
+     * should be overwritten, if the plugin should only operates on the "superclasses", e.g. {@LINK Load} TODO: better Word for superclass
+     * @return default: false
+     */
     public boolean operatesOnSuperClass() {
         return false;
     }
 
+    /**
+     * states, if the plugin creates output. plugins with output are blue borded when in latex mode
+     * @return
+     */
     public boolean createsOutput() {
         return false;
     }

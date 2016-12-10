@@ -45,34 +45,6 @@ public interface DisplayPlugin {
     Object newObject();
 
     /**
-     * This method is called by the main program, when the user desires to load an object from a file.
-     * What it should do, is show some sort of window that lets the user choose a file (e.g. with {@link javafx.stage.FileChooser}),
-     * parse the file into an object and update the view.
-     *
-     * @return The opened object.
-     */
-    Object openFile();
-
-    /**
-     * This method is called by the main program, when the user desires to save the given object to a file.
-     * What it should do, is show some sort of window that lets the user choose a file (e.g. with {@link javafx.stage.FileChooser}),
-     * and save the object to file, so that it can be loaded by {@link #openFile()}.
-     *
-     * @param object The object, that should be saved.
-     */
-    void saveFile(Object object);
-
-    /**
-     * Returns a set of optional Menus, that will be displayed besides the Filemenu in the menubar.
-     * May also return null, if there are no additional menus for this plugin.
-     *
-     * @param object The object, that is being displayed.
-     * @param node The JavaFX-{@link Node}, that displays the object.
-     * @return The set of Menus.
-     */
-    HashSet<Menu> menus(Object object, Node node);
-
-    /**
      * Returns this plugin's name.
      *
      * @return This plugin's name.

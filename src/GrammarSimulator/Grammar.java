@@ -109,41 +109,7 @@ public class Grammar implements Printable, Storable {
     }
 
 
-    /**
-     * Getter-method for {@link #terminals}.
-     *
-     * @return {@link #terminals}
-     */
-    public HashSet<Terminal> getTerminals() {
-        return terminals;
-    }
 
-    /**
-     * Getter-method for {@link #nonterminals}.
-     *
-     * @return {@link #nonterminals}
-     */
-    public HashSet<Nonterminal> getNonterminals() {
-        return nonterminals;
-    }
-
-    /**
-     * Getter-method for {@link #startSymbol}.
-     *
-     * @return {@link #startSymbol}
-     */
-    public Nonterminal getStartSymbol() {
-        return startSymbol;
-    }
-
-    /**
-     * Setter-method for {@link #startSymbol}.
-     *
-     * @param startSymbol The new value for {@link #startSymbol}.
-     */
-    public void setStartSymbol(Nonterminal startSymbol) {
-        this.startSymbol = startSymbol;
-    }
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
@@ -292,5 +258,42 @@ public class Grammar implements Printable, Storable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /** GETTER AND SETTER **/
+    /**
+     * Getter-method for {@link #terminals}.
+     *
+     * @return {@link #terminals}
+     */
+    public HashSet<Terminal> getTerminals() {
+        return terminals;
+    }
+
+    /**
+     * Getter-method for {@link #nonterminals}.
+     *
+     * @return {@link #nonterminals}
+     */
+    public HashSet<Nonterminal> getNonterminals() {
+        return nonterminals;
+    }
+
+    /**
+     * Getter-method for {@link #startSymbol}.
+     *
+     * @return {@link #startSymbol}
+     */
+    public Nonterminal getStartSymbol() {
+        return startSymbol;
+    }
+
+    /**
+     * Setter-method for {@link #startSymbol}.
+     *
+     * @param startSymbol The new value for {@link #startSymbol}.
+     */
+    public void setStartSymbol(Nonterminal startSymbol) {
+        this.startSymbol = startSymbol;
     }
 }

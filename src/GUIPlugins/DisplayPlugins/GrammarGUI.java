@@ -115,62 +115,6 @@ public class GrammarGUI implements DisplayPlugin {
     }
 
     @Override
-    public Object openFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open file");
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        if(selectedFile == null) {
-            return null;
-        }
-        String file = "";
-        try {
-            BufferedReader automatonReader = new BufferedReader(new FileReader(selectedFile.getPath()));
-            String line;
-            while ((line = automatonReader.readLine()) != null) {
-                file = file + line + "\n";
-            }
-            return GrammarUtil.parse(file);
-        } catch (FileNotFoundException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("STUPS-Toolbox");
-            alert.setHeaderText("File not found!");
-            alert.showAndWait();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("STUPS-Toolbox");
-            alert.setHeaderText("Unable to write to file!");
-            alert.showAndWait();
-        } catch (LexerException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("STUPS-Toolbox");
-            alert.setHeaderText("Error while parsing the file!");
-            alert.showAndWait();
-        } catch (ParserException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("STUPS-Toolbox");
-            alert.setHeaderText("Error while parsing the file!");
-            alert.showAndWait();
-        }
-
-        return  null;
-    }
-
-    @Override
-    public void saveFile(Object object) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save file");
-        File selectedFile = fileChooser.showSaveDialog(new Stage());
-        if(selectedFile != null) {
-            GrammarUtil.save((Grammar) object, selectedFile.getAbsolutePath());
-        }
-    }
-
-    @Override
-    public HashSet<Menu> menus(Object object, Node node) {
-        return new HashSet<>();
-    }
-
-    @Override
     public String getName() {
         return "Grammar";
     }
