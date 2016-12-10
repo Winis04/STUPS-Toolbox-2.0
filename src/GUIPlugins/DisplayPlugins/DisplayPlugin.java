@@ -37,7 +37,7 @@ public interface DisplayPlugin {
 
     /**
      * This method is called by the main program, when the user desires to create a new object from scratch.
-     * What it should do, is create the new object and update the view.
+     * What it should do, is, create the new object and update the view.
      *
      * @return The newly created object.
      */
