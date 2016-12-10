@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.*;
  */
 public class PushDownAutomatonUtil {
 
+
     public static PushDownAutomaton parse(String fileInput) throws ParserException, IOException, LexerException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
@@ -45,6 +46,7 @@ public class PushDownAutomatonUtil {
             string = string + line + "\n";
         }
         pda = PushDownAutomatonUtil.parse(string);
+        pda.setName(name);
         grammarReader.close();
         return pda;
 
@@ -57,17 +59,27 @@ public class PushDownAutomatonUtil {
             writer.write(pda.getInputAlphabet().keySet().stream().collect(joining("', '")));
             writer.write("';'");
             writer.write(pda.getStackAlphabet().keySet().stream().collect(joining("', '")));
-            writer.write("';'");
+            writer.write("';");
             writer.write(pda.getStates().keySet().stream().collect(joining(", ")));
             writer.write("; ");
             writer.write(pda.getStartState().getName());
             writer.write("; '");
             writer.write(pda.getInitalStackLetter().getName());
-            writer.write("'}\n");
+            writer.write("'}\n\n");
 
             pda.getStates().values().stream().filter(state -> state.getRules()!=null && !state.getRules().isEmpty())
                     .forEach(state -> {
-                        
+                        state.getRules().stream().forEach(rule -> {
+                            try {
+                                writer.write("'"+rule.getComingFrom().getName()+"', '");
+                                writer.write(rule.getReadIn().getName()+"', '");
+                                writer.write(rule.getOldToS().getName()+"' --> '");
+                                writer.write(rule.getGoingTo().getName()+"', '");
+                                writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '"))+"'\n");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
                     });
             writer.flush();
             writer.close();
