@@ -1,6 +1,7 @@
 package PushDownAutomatonParser;
 
 
+import GrammarSimulator.Symbol;
 import PushDownAutomatonParser.analysis.DepthFirstAdapter;
 import PushDownAutomatonParser.node.*;
 import PushDownAutomatonSimulator.*;
@@ -26,12 +27,23 @@ public class Visitor extends DepthFirstAdapter {
 
         for(TSymbol inputLetter : node.getInputletters()) {
             String name = inputLetter.getText().replaceAll("'","");
-            inputAlphabet.put(name, new InputLetter(name));
+            if(name.equals("epsilon") || name.equals("lambda")) {
+                inputAlphabet.put(InputLetter.NULLSYMBOL_NAME,InputLetter.NULLSYMBOL);
+            } else {
+                inputAlphabet.put(name, new InputLetter(name));
+            }
         }
+        inputAlphabet.put(InputLetter.NULLSYMBOL_NAME,InputLetter.NULLSYMBOL);
         for(TSymbol stackLetter : node.getStackletters()) {
             String name = stackLetter.getText().replaceAll("'","");
-            stackAlphabet.put(name, new StackLetter(name));
+            if(name.equals("epsilon") || name.equals("lambda")) {
+                stackAlphabet.put(StackLetter.NULLSYMBOL_NAME,StackLetter.NULLSYMBOL);
+            } else {
+                stackAlphabet.put(name, new StackLetter(name));
+            }
         }
+        stackAlphabet.put(StackLetter.NULLSYMBOL_NAME,StackLetter.NULLSYMBOL);
+
         for(TIdentifier state : node.getStates()) {
             String name = state.getText().replaceAll("'","");
             states.put(name,new State(name));
@@ -51,14 +63,27 @@ public class Visitor extends DepthFirstAdapter {
         ArrayList<StackLetter> newStack = new ArrayList<>();
         List<TSymbol> list = node.getComingFrom();
         comingFrom = states.get(list.get(0).getText().replaceAll("'",""));
-        input = inputAlphabet.get(list.get(1).getText().replaceAll("'",""));
-        tos = stackAlphabet.get(list.get(2).getText().replaceAll("'",""));
+        if(list.get(1).getText().replaceAll("'","").equals("epsilon")||list.get(1).getText().replaceAll("'","").equals("lambda")) {
+            input = InputLetter.NULLSYMBOL;
+        } else {
+             input = inputAlphabet.get(list.get(1).getText().replaceAll("'",""));
+        }
+
+        if(list.get(2).getText().replaceAll("'","").equals("epsilon")||list.get(2).getText().replaceAll("'","").equals("lambda"))  {
+            tos = StackLetter.NULLSYMBOL;
+        } else {
+            tos = stackAlphabet.get(list.get(2).getText().replaceAll("'", ""));
+        }
 
         List<TSymbol> list2 = node.getGoingTo();
         goingTo = states.get(list2.get(0).getText().replaceAll("'",""));
         list2.remove(0);
         for(TSymbol symbol : list2) {
-            newStack.add(stackAlphabet.get(symbol.getText().replaceAll("'","")));
+            if(symbol.getText().replaceAll("'","").equals("epsilon") || symbol.getText().replaceAll("'","").equals("lambda")) {
+                newStack.add(StackLetter.NULLSYMBOL);
+            } else {
+                newStack.add(stackAlphabet.get(symbol.getText().replaceAll("'", "")));
+            }
         }
 
         Rule rule = new Rule(comingFrom,input,tos,goingTo,newStack);

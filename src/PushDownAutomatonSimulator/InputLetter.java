@@ -7,6 +7,7 @@ package PushDownAutomatonSimulator;
 public class InputLetter {
 
     public static final InputLetter NULLSYMBOL = new InputLetter("epsilon");
+    public static final String NULLSYMBOL_NAME = InputLetter.NULLSYMBOL.getName();
     private String name;
 
     public InputLetter(String name) {
