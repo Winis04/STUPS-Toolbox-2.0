@@ -89,6 +89,7 @@ public class Automaton implements Printable, Storable {
                             });
                 });
         this.allInputs=oldAutomaton.allInputs;
+        this.previousAutomaton = (Automaton) oldAutomaton.getPreviousVersion();
     }
 
     /**

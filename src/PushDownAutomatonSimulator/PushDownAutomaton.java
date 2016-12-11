@@ -118,6 +118,7 @@ public class PushDownAutomaton implements Printable, Storable{
             });
         });
         this.states.values().stream().forEach(state -> state.getRules().stream().forEach(rule -> rules.add(rule)));
+        this.previousPDA = (PushDownAutomaton) pda.getPreviousVersion();
     }
     public PushDownAutomaton() {
 
