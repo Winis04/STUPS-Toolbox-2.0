@@ -117,6 +117,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
         pane.setHgap(10);
         pane.getChildren().add(field);
         pane.getChildren().add(button);
+        pane.setVgap(10);
 
         rootPane.setVgap(5);
         rootPane.addRow(0, pane);

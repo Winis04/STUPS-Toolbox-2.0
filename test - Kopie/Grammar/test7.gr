@@ -1,0 +1,10 @@
+{'epsilon', '1', '0'; S, A, B, D, C, E; S}
+
+S --> 'A','B','D'
+A --> 'E','D'
+A --> 'B','B'
+B --> 'epsilon'
+B --> 'A','C'
+D --> '0'
+C --> 'epsilon'
+E --> '1'

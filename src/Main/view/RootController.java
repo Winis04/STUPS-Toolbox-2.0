@@ -93,6 +93,7 @@ public class RootController {
 
             PrintModePlugin printModePlugin = new PrintModePlugin();
             printModePlugin.execute(null, new String[]{"latex", path, "--force"});
+            gui.refreshPlugins();
         }
     }
     @FXML
@@ -101,8 +102,10 @@ public class RootController {
         latexModeOn.setDisable(false);
         latexModeOff.setDisable(true);
         borderPane.setStyle("");
+
         PrintModePlugin printModePlugin = new PrintModePlugin();
         printModePlugin.execute(null,new String[]{"no"});
+        gui.refreshPlugins();
     }
 
 

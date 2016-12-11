@@ -39,7 +39,12 @@ public class GrammarCYK implements CLIPlugin {
             errorFlag = true;
             return null;
         }
+
         Grammar grammar = (Grammar) object;
+        if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
+            System.out.println("Is not in chomsky normal form");
+            return null;
+        }
         Matrix matrix=GrammarUtil.cyk(grammar,parameters[0]);
         if(matrix != null) {
             Printer.print(matrix);

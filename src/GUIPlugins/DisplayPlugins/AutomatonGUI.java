@@ -790,4 +790,9 @@ public class AutomatonGUI implements DisplayPlugin {
     public VisualizationViewer<String, Integer> getVisualizationViewer() {
         return visualizationViewer;
     }
+
+    @Override
+    public GUI getGUI() {
+        return gui;
+    }
 }

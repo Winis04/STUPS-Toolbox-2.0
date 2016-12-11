@@ -128,4 +128,13 @@ public class GrammarGUI implements DisplayPlugin {
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
+
+    @Override
+    public GUI getGUI() {
+        return gui;
+    }
+
+    public TabPane getRootPane() {
+        return rootPane;
+    }
 }

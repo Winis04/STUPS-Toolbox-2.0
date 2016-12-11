@@ -138,13 +138,21 @@ public class GUI extends Application{
         switchDisplayGui(parentClass);
         refresh(selectedStorable);
     }
-
+    public void refreshPlugins() {
+        refreshComplexPlugins();
+    }
 
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         for(ComplexFunctionPlugin plugin : complexFunctionPlugins) {
             if(plugin.getInputType().equals(currentDisplayPlugin.displayType())) {
-                complexFunctionsPane.getTabs().add(plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin));
+                Tab current = plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()),currentDisplayPlugin);
+                if(Printer.printmode==PrintMode.LATEX && plugin.createsOutput()) {
+                    current.setStyle("-fx-background-color: aqua;");
+                } else {
+                    current.setStyle("");
+                }
+                complexFunctionsPane.getTabs().add(current);
             }
         }
     }
@@ -271,6 +279,7 @@ public class GUI extends Application{
             e.printStackTrace();
         }
     }
+
     public File loadFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load "+string);
@@ -358,6 +367,13 @@ public class GUI extends Application{
             refreshComplexPlugins();
     }
 
+    public void dialog(Alert.AlertType type, String titel, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(titel);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
     public void errorDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");

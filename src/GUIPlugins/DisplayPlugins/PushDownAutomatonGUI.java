@@ -76,4 +76,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
+
+    @Override
+    public GUI getGUI() {
+        return gui;
+    }
 }

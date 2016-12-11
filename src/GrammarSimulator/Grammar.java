@@ -47,6 +47,7 @@ public class Grammar implements Printable, Storable {
     private String suffix="";
 
 
+
     /**
      * The constructor for an empty grammar.
      */

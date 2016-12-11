@@ -59,4 +59,6 @@ public interface DisplayPlugin {
     Class displayType();
 
     void setGUI(GUI gui);
+    GUI getGUI();
+
 }
