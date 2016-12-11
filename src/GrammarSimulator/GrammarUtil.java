@@ -751,6 +751,7 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
     public static ArrayList<Printable> removeLambdaRules(Grammar grammar) {
+        grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
         Grammar grammar0=new Grammar(grammar,false);
@@ -938,6 +939,7 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
     public static ArrayList<Printable> eliminateUnitRules(Grammar grammar) {
+        grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(3);
 
 
@@ -1212,6 +1214,7 @@ public class GrammarUtil {
 
 
     public static ArrayList<Printable> chomskyNormalForm(Grammar grammar) {
+        grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(4);
 
 

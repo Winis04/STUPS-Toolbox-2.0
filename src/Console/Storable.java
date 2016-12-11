@@ -11,6 +11,7 @@ public interface Storable {
     void setName(String name);
     void printToSave(String path);
     Storable restoreFromFile(File file);
-
+    void savePreviousVersion();
+    Storable getPreviousVersion();
 
 }

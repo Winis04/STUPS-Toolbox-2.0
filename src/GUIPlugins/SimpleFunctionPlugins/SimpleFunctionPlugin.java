@@ -66,6 +66,9 @@ public abstract class SimpleFunctionPlugin {
     public MenuItem getMenuItem(GUI gui) {
         SimpleFunctionPlugin plugin= this;
         MenuItem item = new MenuItem(this.getName());
+        if(plugin.shouldBeDisabled()) {
+            item.setDisable(true);
+        }
         item.setOnAction(t -> {
             Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
 
@@ -79,6 +82,9 @@ public abstract class SimpleFunctionPlugin {
 
     }
 
+    public boolean shouldBeDisabled() {
+        return false;
+    }
     /**
      * should be overwritten, if the plugin should be able to operate on more than one type of storables, e.g. {@LINK Copy}
      * @return default: false

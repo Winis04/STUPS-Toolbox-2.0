@@ -38,6 +38,8 @@ public class Automaton implements Printable, Storable {
      */
     private boolean epsilonCycle = false;
 
+    private Automaton previousAutomaton;
+
     /**
      * The constructor for an automaton with a given set of states and rules.
      *
@@ -351,5 +353,15 @@ public class Automaton implements Printable, Storable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void savePreviousVersion() {
+        this.previousAutomaton = (Automaton) this.deep_copy();
+    }
+
+    @Override
+    public Storable getPreviousVersion() {
+        return previousAutomaton;
     }
 }

@@ -9,7 +9,6 @@ import Print.Printer;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -46,6 +45,7 @@ public class Grammar implements Printable, Storable {
      */
     private String suffix="";
 
+    private Grammar previousVersion=null;
 
 
     /**
@@ -107,6 +107,7 @@ public class Grammar implements Printable, Storable {
         }
         this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
         GrammarUtil.replaceLambda(this);
+        this.previousVersion = (Grammar) old.getPreviousVersion();
     }
 
 
@@ -259,6 +260,23 @@ public class Grammar implements Printable, Storable {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+
+
+    @Override
+    public void savePreviousVersion() {
+        this.previousVersion = (Grammar) this.deep_copy();
+    }
+
+    @Override
+    public Storable getPreviousVersion() {
+        if(previousVersion != null) {
+            return previousVersion;
+        } else {
+            return null;
+        }
     }
 
     /** GETTER AND SETTER **/

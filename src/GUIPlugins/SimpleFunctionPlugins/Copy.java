@@ -20,6 +20,7 @@ public class Copy extends SimpleFunctionPlugin {
 
         Storable storable = (Storable) object;
         Storable copy = storable.deep_copy();
+        //TODO automatisation
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().equals("Grammar")) {
             Grammar grammar = (Grammar) copy;
             String name = grammar.getName();

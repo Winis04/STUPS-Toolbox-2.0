@@ -54,6 +54,7 @@ public class PushDownAutomaton implements Printable, Storable{
      * the name of the pda
      */
     private String name="P";
+    private PushDownAutomaton previousPDA;
     private ArrayList<Rule> rules = new ArrayList<>();
     public PushDownAutomaton(HashMap<String, State> states, HashMap<String, InputLetter> inputAlphabet, HashMap<String, StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
         this.states = states;
@@ -161,6 +162,16 @@ public class PushDownAutomaton implements Printable, Storable{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void savePreviousVersion() {
+        this.previousPDA = (PushDownAutomaton) this.deep_copy();
+    }
+
+    @Override
+    public Storable getPreviousVersion() {
+        return previousPDA;
     }
 
     @Override
