@@ -1,16 +1,14 @@
 package Print;
 
-import GrammarSimulator.*;
+
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Isabel on 18.11.2016.
@@ -221,6 +219,16 @@ public class Printer {
             res+="\t";
         }
         return res;
+    }
+
+    public static String checkIfLatexSpecial(String string) {
+        String[] special = new String[]{"#","epsilon","lambda","alpha","beta","$","%","{","}","&","_",""};
+        List<String> list = Arrays.asList(special);
+        if(Printer.printmode==PrintMode.LATEX && list.contains(string)) {
+            return "\\"+string;
+        } else {
+            return string;
+        }
     }
 
 

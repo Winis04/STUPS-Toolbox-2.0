@@ -1,11 +1,16 @@
 package PushDownAutomatonSimulator;
 
+import Print.Printable;
+import Print.Printer;
+
+import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created by Isabel on 29.10.2016.
  */
-public class Rule {
+public class Rule implements Printable{
     /**
      * the state that rule comes from
      */
@@ -86,4 +91,23 @@ public class Rule {
         this.newToS = newToS;
     }
 
+    @Override
+    public void printLatex(BufferedWriter writer, String space) {
+        Printer.print(space+"$"+this.getComingFrom().getName(),writer);
+        Printer.print(Printer.checkIfLatexSpecial(this.getReadIn().getName()),writer);
+        Printer.print(Printer.checkIfLatexSpecial(this.getOldToS().getName()),writer);
+        Printer.print(" \\rightarrow ",writer);
+        Printer.print(Printer.checkIfLatexSpecial(this.getGoingTo().getName()),writer);
+        Printer.print(this.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(Collectors.joining(""))+"$",writer);
+    }
+
+    @Override
+    public void printConsole(BufferedWriter writer) {
+        Printer.print(this.getComingFrom().getName(),writer);
+        Printer.print(this.getReadIn().getName(),writer);
+        Printer.print(this.getOldToS().getName(),writer);
+        Printer.print(" --> ",writer);
+        Printer.print(this.getGoingTo().getName(),writer);
+        Printer.print(this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""))+"\n",writer);
+    }
 }

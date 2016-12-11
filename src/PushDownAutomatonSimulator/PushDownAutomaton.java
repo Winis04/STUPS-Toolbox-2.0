@@ -54,6 +54,7 @@ public class PushDownAutomaton implements Printable, Storable{
      * the name of the pda
      */
     private String name="P";
+    private ArrayList<Rule> rules = new ArrayList<>();
     public PushDownAutomaton(HashMap<String, State> states, HashMap<String, InputLetter> inputAlphabet, HashMap<String, StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
@@ -64,6 +65,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.stack.add(initalStackLetter);
         this.currentInput=new ArrayList<>();
         this.currentState=startState;
+        this.states.values().stream().forEach(state -> state.getRules().stream().forEach(rule -> rules.add(rule)));
 
     }
 
@@ -114,6 +116,7 @@ public class PushDownAutomaton implements Printable, Storable{
                 current.getRules().add(tmp);
             });
         });
+        this.states.values().stream().forEach(state -> state.getRules().stream().forEach(rule -> rules.add(rule)));
     }
     public PushDownAutomaton() {
 
@@ -162,6 +165,49 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
+        Printer.print(space+"\\begin{table}[h!]\n",writer);
+        Printer.print(space+"\t\\centering\n",writer);
+        Printer.print(space+"\t\\caption{PDA}\n",writer);
+        String s="|lcl|lcl|";
+        Printer.print(space+"\t\\begin{tabular}{"+s+"}\n",writer);
+        //1 & 2 & 3\\
+        //\hline
+        int ruleNumber=this.rules.size();
+        int half = ruleNumber/2;
+        if(2*half < ruleNumber) {
+            half++;
+        }
+        Rule current;
+        for(int i=0;i<ruleNumber;i+=2) {
+            Printer.print(space+"\t\t\\hline\n",writer);
+            current = this.rules.get(i);
+            Printer.print(space+"\t\t $",writer);
+            Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()),writer);
+            Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()),writer);
+            Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()),writer);
+            Printer.print("$ & $ \\rightarrow $ & $",writer);
+            Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()),writer);
+            Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining("")),writer);
+
+            if(i+1<ruleNumber) {
+                Printer.print("$ & $",writer);
+                current = this.rules.get(i + 1);
+                Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()), writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()), writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()), writer);
+                Printer.print("$ & $ \\rightarrow $ & $", writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()), writer);
+                Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining("")), writer);
+                Printer.print("$ \\\\\n",writer);
+            } else {
+                Printer.print("$ & & &\\\\\n");
+            }
+        }
+        Printer.print(space+"\t\t\\hline\n",writer);
+        /** begin table **/
+
+        Printer.print(space+"\t\\end{tabular}\n",writer);
+        Printer.print(space+"\\end{table}\n\n",writer);
 
     }
 
