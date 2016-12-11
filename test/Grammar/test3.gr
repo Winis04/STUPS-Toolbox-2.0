@@ -1,9 +1,10 @@
-{'0', '1', 'lambda'; A, B, C, D, E, S; S}
-S --> 'A', 'B', 'D'
-A --> 'E', 'D'
+{'epsilon', '1', '0'; S, A, B, D, E, C; S}
+
+S --> 'A','B','D'
+A --> 'E','D'
 A --> 'B','B'
-B --> 'A', 'C'
-B --> 'lambda'
-C --> 'lambda'
+B --> 'A','C'
+B --> 'epsilon'
 D --> '0'
 E --> '1'
+C --> 'epsilon'

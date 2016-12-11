@@ -304,5 +304,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.currentInput = currentInput;
     }
 
-
+    public ArrayList<Rule> getRules() {
+        return rules;
+    }
 }

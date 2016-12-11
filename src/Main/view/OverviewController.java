@@ -69,7 +69,7 @@ public class OverviewController {
             gui.getCli().store.keySet().stream()
                     .forEach(clazz -> {
                         // the name of the storable objects
-                        TreeItem<String> top=new TreeItem<String>(clazz.getSimpleName());
+                        TreeItem<String> top= new TreeItem<>(clazz.getSimpleName());
 
                         // every object of the top-type
                         List<TreeItem<String>> list= gui.getCli().store.get(clazz).keySet().stream()

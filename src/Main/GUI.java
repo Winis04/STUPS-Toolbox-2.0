@@ -7,12 +7,14 @@ import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
+import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
 import Main.view.OverviewController;
 import Main.view.RootController;
 import Print.PrintMode;
 import Print.Printer;
+import PushDownAutomatonSimulator.PushDownAutomaton;
 import cern.colt.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -340,11 +342,18 @@ public class GUI extends Application{
                 if(currentDisplayPlugin==null) {
                     currentDisplayPlugin = new GrammarGUI();
                 }
-            } else {
+            } else if(clazz.equals(Automaton.class)){
                 currentDisplayPlugin = displayPlugins.get(Automaton.class);
                 if(currentDisplayPlugin==null) {
                     currentDisplayPlugin = new AutomatonGUI();
                 }
+            } else if(clazz.equals(PushDownAutomaton.class)) {
+                currentDisplayPlugin = displayPlugins.get(PushDownAutomaton.class);
+                if(currentDisplayPlugin==null) {
+                    currentDisplayPlugin = new PushDownAutomatonGUI();
+                }
+            } else {
+                //TODO: if you create a new storable you must add the matching gui here
             }
             refreshComplexPlugins();
     }

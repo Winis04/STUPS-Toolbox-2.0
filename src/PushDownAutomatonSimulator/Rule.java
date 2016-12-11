@@ -110,4 +110,14 @@ public class Rule implements Printable{
         Printer.print(this.getGoingTo().getName(),writer);
         Printer.print(this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""))+"\n",writer);
     }
+
+    public String asString() {
+        String s=this.getComingFrom().getName();
+        s+=this.getReadIn().getName();
+        s+=this.getOldToS().getName();
+        s+=" --> ";
+        s+=this.getGoingTo().getName();
+        s+=this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""));
+        return s;
+    }
 }
