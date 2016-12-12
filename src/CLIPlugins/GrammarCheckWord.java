@@ -2,17 +2,16 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Matrix;
 import Print.Printer;
 
 /**
- * Created by Isabel on 03.12.2016.
+ * Created by Isabel on 12.12.2016.
  */
-public class GrammarCheckContains implements CLIPlugin {
+public class GrammarCheckWord implements CLIPlugin {
     boolean errorFlag=false;
     @Override
     public String[] getNames() {
-        return new String[]{"check"};
+        return new String[]{"csg","check-string-grammar"};
     }
 
     @Override

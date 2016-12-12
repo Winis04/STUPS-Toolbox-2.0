@@ -2,13 +2,16 @@ package GUIPlugins.DisplayPlugins;
 
 import Main.GUI;
 import PushDownAutomatonSimulator.PushDownAutomaton;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -16,9 +19,10 @@ import java.util.HashSet;
  */
 public class PushDownAutomatonGUI implements DisplayPlugin {
     private GUI gui;
+    private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     @Override
     public Node display(Object object) {
-
+        rulesAsButtons = new ArrayList<>();
         PushDownAutomaton pda = (PushDownAutomaton) object;
         int ruleNumber = pda.getRules().size();
         int half = ruleNumber/2;
@@ -26,23 +30,25 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             half++;
         }
         GridPane root = new GridPane();
-        /** add columns **/
-        root.addColumn(0,new Label(""));
-        root.addColumn(1,new Label(""));
-        /** add rows **/
-        for(int i=0;i<half;i++) {
-            root.addRow(i,new Label(""));
-        }
+
         /** fill with content **/
         for(int c=0;c<=1;c++) {
             for(int r=0;r<half;r++) {
                 if(c*half+r<ruleNumber) {
-                    Label cellLabel = new Label(pda.getRules().get(c * half + r).asString());
+                    Button cellLabel = new Button(pda.getRules().get(c * half + r).asString());
+                    cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    cellLabel.setDisable(true);
+                    rulesAsButtons.add(cellLabel);
+
                     root.add(cellLabel, c, r);
+                    GridPane.setFillWidth(cellLabel, true);
+                    GridPane.setFillHeight(cellLabel, true);
+
                 }
             }
         }
         root.setAlignment(Pos.CENTER);
+      //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(root);
@@ -80,5 +86,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     @Override
     public GUI getGUI() {
         return gui;
+    }
+
+    public ArrayList<Button> getRulesAsButtons() {
+        return rulesAsButtons;
     }
 }

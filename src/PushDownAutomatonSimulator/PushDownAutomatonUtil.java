@@ -97,18 +97,18 @@ public class PushDownAutomatonUtil {
         } else if(!equals(rule.getOldToS(),pda.getStack().peek())) { //the rule can not be applied. WRONG TOS
             return false;
         } else {
-            if(equals(rule.getReadIn(),asInputLetter(Terminal.NULLSYMBOL))) {
-                pda.getStack().pop();
-                if(!(rule.getNewToS().size()==1 && equals(rule.getNewToS().get(0),asStackLetter(Terminal.NULLSYMBOL)))) {
+            if(equals(rule.getReadIn(),InputLetter.NULLSYMBOL)) { //the letter that should be read in is the NULLSYMBOL
+                pda.getStack().pop(); //pop the stack
+                if(!(rule.getNewToS().size()==1 && equals(rule.getNewToS().get(0),StackLetter.NULLSYMBOL))) { // if the new TOS is onyl the NULLSYMBOL, do nothing, else push new tos
                     for(int i=rule.getNewToS().size()-1;i>-1;i--) {
                         pda.getStack().push(rule.getNewToS().get(i));
                     }
                 }
-                pda.setCurrentState(rule.getGoingTo());
+                pda.setCurrentState(rule.getGoingTo()); //set the current state
                 return true;
-            } else if(equals(rule.getReadIn(),pda.getCurrentInput().get(0))) {
+            } else if(equals(rule.getReadIn(),pda.getCurrentInput().get(0))) { //if the letter the rule takes equals the first letter in the word
                 pda.getStack().pop();
-                if(!(rule.getNewToS().size()==1 && equals(rule.getNewToS().get(0),asStackLetter(Terminal.NULLSYMBOL)))) {
+                if(!(rule.getNewToS().size()==1 && equals(rule.getNewToS().get(0),StackLetter.NULLSYMBOL))) {
                     for (int i = rule.getNewToS().size() - 1; i > -1; i--) {
                         pda.getStack().push(rule.getNewToS().get(i));
                     }
