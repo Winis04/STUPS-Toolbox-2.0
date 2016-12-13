@@ -58,6 +58,7 @@ src/*/parser/
 *.pdf
 *.jar
 *.xml
+*.tex
 de/*
 workspace/*
 

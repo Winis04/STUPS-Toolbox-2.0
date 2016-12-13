@@ -264,8 +264,8 @@ public class GUI extends Application{
 
         try {
             // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("view/Root.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/Main/view/Root.fxml"));
+            //loader.setLocation(GUI.class.getResource("view/Root.fxml"));
             root = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -314,7 +314,7 @@ public class GUI extends Application{
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("view/Overview.fxml"));
+            loader.setLocation(GUI.class.getResource("/src/Main/view/Overview.fxml"));
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
