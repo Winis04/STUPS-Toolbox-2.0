@@ -3,5 +3,5 @@
 'z0', 'a', 'a' --> 'z0', 'a', 'a'
 'z0', 'b', 'a' --> 'z1', 'epsilon'
 'z0', 'a', '#' --> 'z0', 'a', '#'
-'z1', 'epsilon', '#' --> 'z2', 'epsilon'
 'z1', 'b', 'a' --> 'z1', 'epsilon'
+'z1', 'epsilon', '#' --> 'z2', 'epsilon'

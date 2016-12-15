@@ -290,7 +290,7 @@ public class CLI {
 
     private void save_workspace() {
         File workspace = this.workspace;
-        String path = this.workspace.getPath()+"\\\\";
+        String path = this.workspace.getPath()+"/";
         if(workspace.exists()) {
             deleteDirectory(workspace);
         }
@@ -303,7 +303,7 @@ public class CLI {
                 }
                 store.get(key).values().stream().forEach(storable -> {
                     String name = storable.getName();
-                    storable.printToSave(path + key.getSimpleName() + "\\\\" + name);
+                    storable.printToSave(path + key.getSimpleName() + "/" + name);
                 });
             }
         });
