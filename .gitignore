@@ -36,10 +36,6 @@ log.txt
 *.txt
 *.dot
 toolbox.sh
-src/*/analysis/
-src/*/lexer/
-src/*/node/
-src/*/parser/
 *.toc
 *.aux
 *.blg
@@ -56,7 +52,6 @@ src/*/parser/
 *.vrb
 *.synctex.gz
 *.pdf
-*.jar
 *.xml
 *.tex
 de/*
