@@ -11,6 +11,8 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
 
+import PushDownAutomatonSimulator.PushDownAutomaton;
+import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -175,6 +177,28 @@ public class RootController {
     }
     @FXML
     public void loadPushDownAutomaton() {
+        File file = gui.loadFile("Pushdown-Automaton");
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String string = "";
+            String line;
+            while ((line = reader.readLine()) != null) {
+                string = string + line + "\n";
+            }
+            PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string);
+            gui.getCli().objects.put(PushDownAutomaton.class, automaton);
+            gui.switchDisplayGui(PushDownAutomaton.class);
+            gui.refresh(automaton);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (PushDownAutomatonParser.lexer.LexerException e) {
+            e.printStackTrace();
+        } catch (PushDownAutomatonParser.parser.ParserException e) {
+            e.printStackTrace();
+        }
 
     }
 

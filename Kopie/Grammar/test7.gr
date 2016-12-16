@@ -1,8 +1,8 @@
-{'epsilon', '1', '0'; S, A, B, D, E, C; S}
+{'0', 'epsilon', '1'; S, A, B, D, E, C; S}
 
 S --> 'A','B','D'
-A --> 'E','D'
 A --> 'B','B'
+A --> 'E','D'
 B --> 'A','C'
 B --> 'epsilon'
 D --> '0'
