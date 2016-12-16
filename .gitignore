@@ -60,6 +60,7 @@ src/*/parser/
 *.xml
 *.tex
 de/*
+de/
 workspace/*
 
 #isabel
