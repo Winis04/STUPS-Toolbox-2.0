@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.view.RootController">
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+         <menus>
+            <Menu mnemonicParsing="false" text="Import">
+               <items>
+                  <Menu mnemonicParsing="false" text="Load">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadAutomaton" text="Automaton" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadPushDownAutomaton" text="PushDownAutomaton" />
+                    </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu fx:id="Export" mnemonicParsing="false" text="Export">
+               <items>
+                  <Menu mnemonicParsing="false" text="Save">
+                    <items>
+                        <Menu mnemonicParsing="false" text="Automaton">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#toGraphViz" text="as .dot" />
+                              <MenuItem mnemonicParsing="false" onAction="#saveCurrentAutomaton" text="in file" />
+                          </items>
+                        </Menu>
+                      <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton" text="PushDownAutomaton" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Latex">
+                    <items>
+                        <MenuItem fx:id="latexModeOn" mnemonicParsing="false" onAction="#latexModeOn" text="Start Latex Export" />
+                      <MenuItem fx:id="latexModeOff" disable="true" mnemonicParsing="false" onAction="#latexModeOff" text="End Latex" />
+                    </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu fx:id="Help" mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+              </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

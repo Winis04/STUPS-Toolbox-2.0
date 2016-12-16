@@ -9,14 +9,10 @@ dependencies{
 	compile 'junit:junit:4.12'
 }
 task itsme() {
-	def list  = []
 	new File("src/main/sablecc") . eachFile ( ) { file ->
-		list << file
-		println file.getAbsolutePath()
-	}
-	list.each{ file ->
 		exec {
 			commandLine 'java','-jar','sablecc.jar','-d','generated-src',file.getAbsolutePath()
 		}
 	}
+
 }
