@@ -8,13 +8,15 @@ dependencies{
 	compile group: 'net.sf.jung', name: 'jung2', version: '2.0.1'
 	compile 'junit:junit:4.12'
 }
-
-task runSablecc(dependsOn:jar) << {
-  javaexec { 
-    main="-jar";
-    args = [
-            "D:/Studium/Bachelorarbeit III/stups-toolbox-2.0/sablecc.jar"
-            "src/main/sablecc/GrammarParser.scc"
-           ]
-  } 
+task itsme() {
+	def list  = []
+	new File("src/main/sablecc") . eachFile ( ) { file ->
+		list << file
+		println file.getAbsolutePath()
+	}
+	list.each{ file ->
+		exec {
+			commandLine 'java','-jar','sablecc.jar','-d','generated-src',file.getAbsolutePath()
+		}
+	}
 }
