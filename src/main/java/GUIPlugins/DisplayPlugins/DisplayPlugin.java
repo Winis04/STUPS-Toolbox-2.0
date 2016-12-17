@@ -1,14 +1,7 @@
 package GUIPlugins.DisplayPlugins;
 
-import Main.GUI;
-import javafx.collections.ObservableList;
+import bla.GUI;
 import javafx.scene.Node;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 
 
 /**

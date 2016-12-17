@@ -1,13 +1,12 @@
 package GUIPlugins.DisplayPlugins.GrammarTabs;
 
 import GrammarSimulator.*;
-import Main.GUI;
+import bla.GUI;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;

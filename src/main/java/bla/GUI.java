@@ -1,4 +1,4 @@
-package Main;
+package bla;
 
 import AutomatonSimulator.Automaton;
 import Console.CLI;
@@ -10,14 +10,15 @@ import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
-import Main.view.OverviewController;
-import Main.view.RootController;
+import bla.view.OverviewController;
+import bla.view.RootController;
 import Print.PrintMode;
 import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -38,7 +39,7 @@ import java.util.HashSet;
  */
 public class GUI extends Application{
     /**
-     * true, if the Main.GUI is visible. The Console.CLI will deactivate itself, if this is true.
+     * true, if the bla.GUI is visible. The Console.CLI will deactivate itself, if this is true.
      */
     public boolean IS_VISIBLE = false;
 
@@ -89,12 +90,12 @@ public class GUI extends Application{
     private CLI cli;
 
     /**
-     * This method is called when 'gui' is entered into the Console.CLI and shows the Main.GUI.
+     * This method is called when 'gui' is entered into the Console.CLI and shows the bla.GUI.
      */
     public void show() {
         Printer.printmode = PrintMode.NO;
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
-        //as the displayed object may have changed since the Main.GUI was last opened.
+        //as the displayed object may have changed since the bla.GUI was last opened.
         IS_VISIBLE = true;
         overviewController.makeTree(simpleFunctionPlugins.values());
         if(currentDisplayPlugin != null) {
@@ -156,7 +157,7 @@ public class GUI extends Application{
     /**
      * This method is called by the launch()-call in the main-method. It gets executed when the program is started.
      *
-     * @param stage The Main.GUI's main stage.
+     * @param stage The bla.GUI's main stage.
      */
     @Override
     public void start(Stage stage) {
@@ -260,8 +261,8 @@ public class GUI extends Application{
 
         try {
             // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Root.fxml"));
-            //loader.setLocation(GUI.class.getResource("view/Root.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/Root.fxml"));
             root = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -310,7 +311,7 @@ public class GUI extends Application{
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("Main/view/Overview.fxml"));
+            loader.setLocation(getClass().getResource("/Overview.fxml"));
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.

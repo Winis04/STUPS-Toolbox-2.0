@@ -1,12 +1,9 @@
-package Main.view;
+package bla.view;
 
 
 
-import Console.Storable;
-import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
-import GrammarSimulator.Grammar;
-import Main.GUI;
+import bla.GUI;
 
 import Print.PrintMode;
 import Print.Printer;
@@ -15,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
 
 import java.util.*;
 import java.util.stream.Collectors;

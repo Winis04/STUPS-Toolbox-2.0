@@ -1,32 +1,14 @@
 package GUIPlugins.DisplayPlugins;
 
-import CLIPlugins.CLIPlugin;
 import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.FirstFollowTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.GrammarTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.LLParsingTableTab;
-import GrammarParser.lexer.LexerException;
-import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Nonterminal;
-import GrammarSimulator.Symbol;
-import Main.GUI;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import bla.GUI;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.*;
 
 /**

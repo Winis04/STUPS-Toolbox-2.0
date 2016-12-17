@@ -1,5 +1,7 @@
 package AutomatonSimulator;
 
+
+
 import AutomatonParser.analysis.DepthFirstAdapter;
 import AutomatonParser.node.*;
 

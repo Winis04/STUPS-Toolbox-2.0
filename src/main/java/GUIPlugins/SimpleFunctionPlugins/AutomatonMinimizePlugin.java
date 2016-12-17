@@ -2,8 +2,6 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
-import Main.GUI;
-import javafx.scene.control.MenuItem;
 
 /**
  * Created by Isabel on 01.12.2016.

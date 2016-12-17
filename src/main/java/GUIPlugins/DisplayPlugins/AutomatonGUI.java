@@ -4,17 +4,16 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
-import Main.GUI;
+import bla.GUI;
 
-import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
-import edu.uci.ics.jung.algorithms.layout.KKLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.*;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
@@ -237,7 +236,7 @@ public class AutomatonGUI implements DisplayPlugin {
         //Initialize the mouse and set it to be used by the visualizationViewer.
         AbstractModalGraphMouse mouse = new DefaultModalGraphMouse();
         mouse.setMode(ModalGraphMouse.Mode.PICKING);
-        mouse.add((GraphMousePlugin) new MenuMousePlugin());
+        mouse.add(new MenuMousePlugin());
         visualizationViewer.setGraphMouse(mouse);
 
         //Build the GUI

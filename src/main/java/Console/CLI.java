@@ -4,7 +4,7 @@ import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 
-import Main.GUI;
+import bla.GUI;
 import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
@@ -231,7 +231,7 @@ public class CLI {
         //Enter an endless loop and listen for user input.
         while(true) {
 
-            //Sleep, while the Main.GUI is visible.
+            //Sleep, while the bla.GUI is visible.
             while(gui.IS_VISIBLE) {
                 try {
                     Thread.sleep(500);

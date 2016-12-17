@@ -1,16 +1,14 @@
-package Main.view;
+package bla.view;
 
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import CLIPlugins.PrintModePlugin;
-import java.util.Arrays;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import Main.GUI;
-
+import bla.GUI;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
@@ -18,10 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
-import java.util.ArrayList;
-
-
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
