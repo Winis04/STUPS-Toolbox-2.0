@@ -1,21 +1,11 @@
 package PushDownAutomatonSimulator;
 
-import AutomatonSimulator.Automaton;
+
 import GrammarSimulator.Symbol;
 import GrammarSimulator.Terminal;
-import PushDownAutomatonParser.Visitor;
-import PushDownAutomatonParser.lexer.Lexer;
-import PushDownAutomatonParser.lexer.LexerException;
-import PushDownAutomatonParser.node.Start;
-import PushDownAutomatonParser.parser.Parser;
-import PushDownAutomatonParser.parser.ParserException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.stream.Collectors;
 
-import static java.lang.System.out;
 import static java.util.stream.Collectors.*;
 
 /**

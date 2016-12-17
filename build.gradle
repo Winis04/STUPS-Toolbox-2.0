@@ -8,11 +8,19 @@ dependencies{
 	compile group: 'net.sf.jung', name: 'jung2', version: '2.0.1'
 	compile 'junit:junit:4.12'
 }
-task itsme() {
+task runSableCC() {
 	new File("src/main/sablecc") . eachFile ( ) { file ->
 		exec {
 			commandLine 'java','-jar','sablecc.jar','-d','generated-src',file.getAbsolutePath()
 		}
 	}
+}
 
+sourceSets {
+	main {
+        java {
+            srcDir 'src'
+			srcDir 'generated-src'
+        }
+	}
 }
