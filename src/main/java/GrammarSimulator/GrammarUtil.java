@@ -1,6 +1,5 @@
 package GrammarSimulator;
 
-import GrammarParser.Visitor;
 import GrammarParser.lexer.Lexer;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.node.Start;

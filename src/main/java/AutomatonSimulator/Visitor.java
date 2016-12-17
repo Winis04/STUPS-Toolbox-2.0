@@ -1,8 +1,5 @@
-package AutomatonParser;
+package AutomatonSimulator;
 
-import AutomatonSimulator.Automaton;
-import AutomatonSimulator.Rule;
-import AutomatonSimulator.State;
 import AutomatonParser.analysis.DepthFirstAdapter;
 import AutomatonParser.node.*;
 

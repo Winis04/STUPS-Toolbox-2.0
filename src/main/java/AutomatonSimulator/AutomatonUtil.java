@@ -1,6 +1,5 @@
 package AutomatonSimulator;
 
-import AutomatonParser.Visitor;
 import AutomatonParser.lexer.Lexer;
 import AutomatonParser.lexer.LexerException;
 import AutomatonParser.node.Start;

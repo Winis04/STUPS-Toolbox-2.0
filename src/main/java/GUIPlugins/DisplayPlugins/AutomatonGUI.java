@@ -1,14 +1,14 @@
 package GUIPlugins.DisplayPlugins;
 
-import AutomatonParser.lexer.LexerException;
-import AutomatonParser.parser.ParserException;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
-import GrammarSimulator.Grammar;
 import Main.GUI;
-import edu.uci.ics.jung.algorithms.layout.*;
+
+import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
+import edu.uci.ics.jung.algorithms.layout.KKLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -23,19 +23,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -240,7 +237,7 @@ public class AutomatonGUI implements DisplayPlugin {
         //Initialize the mouse and set it to be used by the visualizationViewer.
         AbstractModalGraphMouse mouse = new DefaultModalGraphMouse();
         mouse.setMode(ModalGraphMouse.Mode.PICKING);
-        mouse.add(new MenuMousePlugin());
+        mouse.add((GraphMousePlugin) new MenuMousePlugin());
         visualizationViewer.setGraphMouse(mouse);
 
         //Build the GUI

@@ -5,7 +5,18 @@ repositories {
     mavenCentral()
 }
 dependencies{
-	compile group: 'net.sf.jung', name: 'jung2', version: '2.0.1'
+	compile 'net.sf.jung:jung2:2.0.1'
+	compile 'net.sf.jung:jung-parent:2.1.1'
+	compile 'net.sf.jung:jung-3d-demos:2.0.1'
+	compile 'net.sf.jung:jung-3d:2.0.1'
+	compile 'net.sf.jung:jung-jai-samples:2.0.1'
+	compile 'net.sf.jung:jung-jai:2.0.1'
+	compile 'net.sf.jung:jung-samples:2.1.1'
+	compile 'net.sf.jung:jung-visualization:2.1.1'
+	compile 'net.sf.jung:jung-io:2.1.1'
+	compile 'net.sf.jung:jung-algorithms:2.1.1'
+	compile 'net.sf.jung:jung-graph-impl:2.1.1'
+	compile 'net.sf.jung:jung-api:2.1.1'
 	compile 'junit:junit:4.12'
 }
 task runSableCC() {

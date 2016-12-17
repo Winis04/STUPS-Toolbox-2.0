@@ -1,10 +1,8 @@
-package PushDownAutomatonParser;
+package PushDownAutomatonSimulator;
 
 
-import GrammarSimulator.Symbol;
 import PushDownAutomatonParser.analysis.DepthFirstAdapter;
 import PushDownAutomatonParser.node.*;
-import PushDownAutomatonSimulator.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

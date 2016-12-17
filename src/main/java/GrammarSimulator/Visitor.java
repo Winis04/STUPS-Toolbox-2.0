@@ -1,4 +1,4 @@
-package GrammarParser;
+package GrammarSimulator;
 
 import GrammarParser.analysis.DepthFirstAdapter;
 import GrammarParser.node.*;

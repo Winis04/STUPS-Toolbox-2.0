@@ -15,19 +15,15 @@ import Main.view.RootController;
 import Print.PrintMode;
 import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
-import cern.colt.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
@@ -264,7 +260,7 @@ public class GUI extends Application{
 
         try {
             // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/Main/view/Root.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Root.fxml"));
             //loader.setLocation(GUI.class.getResource("view/Root.fxml"));
             root = (BorderPane) loader.load();
 
@@ -314,7 +310,7 @@ public class GUI extends Application{
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("/src/Main/view/Overview.fxml"));
+            loader.setLocation(GUI.class.getResource("Main/view/Overview.fxml"));
             AnchorPane overview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
