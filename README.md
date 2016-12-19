@@ -1,8 +1,7 @@
-=================
 Stups-Toolbox-2.0
-=================
+==============
 a toolbox for visualizing algorithm and structures of theoretical computer science
-----------------------------------------------------------------------------------
+--------------
 
 
 How to build this project with Gradle
