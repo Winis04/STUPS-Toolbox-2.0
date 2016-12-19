@@ -5,7 +5,7 @@ import GUIPlugins.DisplayPlugins.GrammarTabs.FirstFollowTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.GrammarTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.LLParsingTableTab;
 import GrammarSimulator.Grammar;
-import bla.GUI;
+import Main.GUI;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 

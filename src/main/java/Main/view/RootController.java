@@ -1,4 +1,4 @@
-package bla.view;
+package Main.view;
 
 
 import AutomatonSimulator.Automaton;
@@ -8,7 +8,7 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import bla.GUI;
+import Main.GUI;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;

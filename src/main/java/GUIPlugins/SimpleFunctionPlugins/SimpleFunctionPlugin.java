@@ -1,7 +1,7 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
 
-import bla.GUI;
+import Main.GUI;
 import javafx.scene.control.MenuItem;
 
 /**

@@ -1,6 +1,6 @@
 package GUIPlugins.DisplayPlugins;
 
-import bla.GUI;
+import Main.GUI;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.geometry.Pos;

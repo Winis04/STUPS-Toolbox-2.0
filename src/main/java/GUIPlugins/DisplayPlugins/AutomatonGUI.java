@@ -4,7 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
-import bla.GUI;
+import Main.GUI;
 
 import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.graph.Graph;

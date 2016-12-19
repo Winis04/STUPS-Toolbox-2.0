@@ -1,9 +1,9 @@
-package bla.view;
+package Main.view;
 
 
 
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
-import bla.GUI;
+import Main.GUI;
 
 import Print.PrintMode;
 import Print.Printer;

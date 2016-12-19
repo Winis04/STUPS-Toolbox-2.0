@@ -1,7 +1,7 @@
 package GUIPlugins.DisplayPlugins.GrammarTabs;
 
 import GrammarSimulator.*;
-import bla.GUI;
+import Main.GUI;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
