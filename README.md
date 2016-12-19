@@ -1,3 +1,10 @@
+=================
+Stups-Toolbox-2.0
+=================
+a toolbox for visualizing algorithm and structures of theoretical computer science
+----------------------------------------------------------------------------------
+
+
 How to build this project with Gradle
 ==============
 
@@ -7,7 +14,16 @@ You can build this project using the provided gradle executables
 - for an executable jar call: **gradlew shadowJar** You find the jar "stups-toolbox-2.0-all.jar" in build/libs
 - to build the project call **gradlew build**
 
-How to further develope this project using sableCC
+How to use this program
+==============
+
+You can start this program by calling the .jar. 
+View all command by calling *help*.
+Start the gui by calling *gui*
+exit the programm by calling *exit*
+
+
+How to further develope this project using SableCC
 ==============
 If you want to further develope this project, follow these steps
 
@@ -16,14 +32,20 @@ If you want to further develope this project, follow these steps
 	
 	+ let us call the new typ *Turing*
 	+ create a File *TuringParser.scc* in src/main/sablecc
-	+ in the first Line write *Package TuringParser*.
+	+ write *Package TuringParser* in the first line.
 	+ it is very important, that the file has exactly this name, because otherwise the sablecc-gradle-workaround won't work
 	+ create a package *TuringSimulator* (optional)
 	+ and in this package a class *Turing.class*
 	+ at the beginning of the *start()*-method of Main.CLI add your new type to the lookup-table, otherwise the GUI won't work
-	+ to do so, call *lookup-table.put("turing",Turing.class)*
+	+ to do so, call *lookUpTable.put("turing",Turing.class)*
 	+ to enable the gui to display your new type, create a *TuringGUI.class* inside the package *GUIPlugins.DisplayPlugins* and
 	let it extend *DisplayPlugin*.
+	
+How to further develope this project without using SableCC
+==============
+If you want to further develope this project without using SableCC simply skip the step with the .scc*
+
+
 
 
 
