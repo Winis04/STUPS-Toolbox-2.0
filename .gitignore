@@ -62,3 +62,5 @@ workspace/*
 /path_to_workspace
 /generated-src
 /build
+/lib
+/test
