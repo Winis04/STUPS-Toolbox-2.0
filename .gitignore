@@ -56,7 +56,6 @@ toolbox.sh
 *.tex
 de/*
 de/
-workspace/*
 
 #isabel
 /path_to_workspace
