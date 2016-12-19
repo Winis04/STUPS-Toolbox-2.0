@@ -7,16 +7,23 @@ You can build this project using the provided gradle executables
 - for an executable jar call: **gradlew shadowJar** You find the jar "stups-toolbox-2.0-all.jar" in build/libs
 - to build the project call **gradlew build**
 
-How to further develope this project
+How to further develope this project using sableCC
 ==============
 If you want to further develope this project, follow these steps
 
 - To import the project in IntelliJ or Eclipse, simply call **gradlew idea** or **gradlew eclipse**
 - **ATTENTION** if you want to add a new type of storables (e.g. *turing machine*) read the following paragraph very carefully
 	
-	+ step one
-	+ step two
-	
+	+ let us call the new typ *Turing*
+	+ create a File *TuringParser.scc* in src/main/sablecc
+	+ in the first Line write *Package TuringParser*.
+	+ it is very important, that the file has exactly this name, because otherwise the sablecc-gradle-workaround won't work
+	+ create a package *TuringSimulator* (optional)
+	+ and in this package a class *Turing.class*
+	+ at the beginning of the *start()*-method of Main.CLI add your new type to the lookup-table, otherwise the GUI won't work
+	+ to do so, call *lookup-table.put("turing",Turing.class)*
+	+ to enable the gui to display your new type, create a *TuringGUI.class* inside the package *GUIPlugins.DisplayPlugins* and
+	let it extend *DisplayPlugin*.
 
 
 
