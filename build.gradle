@@ -14,7 +14,25 @@ dependencies{
 	compile 'junit:junit:4.12'
 	compile 'de.hhu.stups:sablecc:3.2.10'
 }
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
 
+apply plugin: 'com.github.johnrengelman.shadow'
+
+jar {
+  manifest {
+    attributes(
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+      'Main-Class': 'Main.GUI'
+    )
+  }
+}
 
 task copyDepJars(type: Copy) {
   from configurations.compile
@@ -55,7 +73,6 @@ task doNecessaryAdjustments() {
 		}
 	}
 }
-
 
 
 runSableCC.mustRunAfter copyDepJars

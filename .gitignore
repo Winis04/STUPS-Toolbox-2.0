@@ -61,3 +61,4 @@ workspace/*
 #isabel
 /path_to_workspace
 /generated-src
+/build
