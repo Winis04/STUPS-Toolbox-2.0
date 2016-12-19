@@ -20,14 +20,14 @@ dependencies{
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
-        mavenLocal()
     }
     dependencies {
-       // some external dependencies to be loaded (with needed one)
-       classpath 'org.reflections:reflections:0.9.10'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
     }
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
 
 jar {
   manifest {
