@@ -78,7 +78,13 @@ task doNecessaryAdjustments() {
 	}
 }
 
+task sableCC() {
+	doLast{
+		println("sableCC complete!")
+	}
+}
 
+sableCC.dependsOn doNecessaryAdjustments
 runSableCC.mustRunAfter copyDepJars
 runSableCC.dependsOn copyDepJars
 doNecessaryAdjustments.mustRunAfter runSableCC
