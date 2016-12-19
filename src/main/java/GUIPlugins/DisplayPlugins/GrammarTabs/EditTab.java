@@ -244,8 +244,9 @@ public class EditTab implements GrammarTab {
 
                         field.setOnKeyPressed(event1 -> {
                             if(event1.getCode().equals(KeyCode.ENTER)) {
-                                editSymbol(grammar, oldName, field.getText());
-
+                                if(!field.getText().isEmpty()) {
+                                    editSymbol(grammar, oldName, field.getText());
+                                }
                                 writeTopLabels(grammar);
                                 writeRules(grammar, editPane);
                             }

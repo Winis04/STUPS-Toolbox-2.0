@@ -1,6 +1,6 @@
 Stups-Toolbox-2.0
 ==============
-a toolbox for visualizing algorithm and structures of theoretical computer science
+a toolbox for visualizing algorithms and structures of theoretical computer science
 --------------
 
 
