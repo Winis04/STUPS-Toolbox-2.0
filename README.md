@@ -13,7 +13,10 @@ If you want to further develope this project, follow these steps
 
 - To import the project in IntelliJ or Eclipse, simply call **gradlew idea** or **gradlew eclipse**
 - **ATTENTION** if you want to add a new type of storables (e.g. *turing machine*) read the following paragraph very carefully
-
+	
+	+ step one
+	+ step two
+	
 
 
 
