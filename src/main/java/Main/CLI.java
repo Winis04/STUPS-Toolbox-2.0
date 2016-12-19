@@ -373,8 +373,10 @@ public class CLI {
                             HashMap<String, Storable> tmp = new HashMap<>();
                             tmp.put(i, restored);
                             store.put(clazz, tmp);
+                            objects.put(clazz,restored);
                         } else {
                             correctMap.put(i, restored);
+                            objects.put(clazz,restored);
                             //    store.get(clazz).put(i, toBeStored);
                         }
                     }
