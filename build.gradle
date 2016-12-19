@@ -2,7 +2,9 @@ apply plugin: 'java'
 
 apply plugin: 'idea'
 repositories {
+    jcenter()
     mavenCentral()
+    mavenLocal()
 }
 dependencies{
 	compile 'net.sf.jung:jung2:2.0.1'
@@ -14,6 +16,17 @@ dependencies{
 	compile 'junit:junit:4.12'
 	compile 'org.reflections:reflections:0.9.10'
 	compile 'de.hhu.stups:sablecc:3.2.10'
+}
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+       // some external dependencies to be loaded (with needed one)
+       classpath 'org.reflections:reflections:0.9.10'
+    }
 }
 
 jar {

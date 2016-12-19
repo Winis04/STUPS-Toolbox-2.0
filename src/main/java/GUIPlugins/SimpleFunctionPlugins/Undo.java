@@ -1,6 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import Console.Storable;
+import Main.Storable;
 
 /**
  * Created by Isabel on 03.12.2016.

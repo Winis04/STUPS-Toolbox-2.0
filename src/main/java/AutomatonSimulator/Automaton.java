@@ -2,7 +2,7 @@ package AutomatonSimulator;
 
 import AutomatonParser.lexer.LexerException;
 import AutomatonParser.parser.ParserException;
-import Console.Storable;
+import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 

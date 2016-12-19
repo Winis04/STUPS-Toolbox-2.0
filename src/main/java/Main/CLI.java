@@ -1,16 +1,16 @@
-package Console;
+package Main;
 
 import AutomatonSimulator.Automaton;
 import CLIPlugins.*;
 import GrammarSimulator.Grammar;
 
-import Main.GUI;
 import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
 
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import javafx.application.Platform;
+import org.reflections.Reflections;
 
 
 import java.io.*;
@@ -199,7 +199,7 @@ public class CLI {
     }
 
     /**
-     * This method starts the Console.CLI and enters an endless loop, listening for user input.
+     * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
     public void start() {
         lookUpTable.put("grammar",Grammar.class);
@@ -213,20 +213,18 @@ public class CLI {
         objects.put(null, null);
         restore_workspace();
 
-        //Load all Console.CLI plugins.
-        try {
-            String packagePath = Thread.currentThread().getContextClassLoader().getResources("CLIPlugins").nextElement().getFile().replace("%20", " ");
-            File[] classes = new File(packagePath).listFiles();
-            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
-            for(File file : classes) {
-                if(file.getName().endsWith(".class") && !file.getName().equals("CLIPlugin.class") && !file.getName().contains("$")) {
-                    plugins.add((CLIPlugin) urlClassLoader.loadClass("CLIPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance());
-                }
+        Reflections reflections = new Reflections("CLIPlugins");
+        Set<Class<? extends CLIPlugin>> s = reflections.getSubTypesOf(CLIPlugin.class);
+        s.stream().forEach(r -> {
+            try {
+                CLIPlugin plugin = (CLIPlugin) r.newInstance();
+                plugins.add(plugin);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        });
 
         //Enter an endless loop and listen for user input.
         while(true) {

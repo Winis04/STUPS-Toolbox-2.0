@@ -1,6 +1,6 @@
 package PushDownAutomatonSimulator;
 
-import Console.Storable;
+import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 import PushDownAutomatonParser.lexer.LexerException;

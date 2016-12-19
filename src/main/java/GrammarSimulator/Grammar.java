@@ -1,7 +1,7 @@
 package GrammarSimulator;
 
 
-import Console.Storable;
+import Main.Storable;
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import Print.Printable;

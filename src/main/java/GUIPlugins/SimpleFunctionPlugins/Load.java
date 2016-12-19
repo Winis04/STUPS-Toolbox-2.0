@@ -1,13 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import AutomatonSimulator.Automaton;
-import AutomatonSimulator.AutomatonUtil;
-import GrammarParser.lexer.LexerException;
-import GrammarParser.parser.ParserException;
-import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
-import Console.Storable;
-import javafx.stage.FileChooser;
+import Main.Storable;
 
 import java.io.*;
 

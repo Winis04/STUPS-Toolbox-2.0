@@ -1,8 +1,5 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import AutomatonSimulator.Automaton;
-import Console.Storable;
-import GrammarSimulator.Grammar;
 import javafx.scene.control.TreeItem;
 
 /**

@@ -1,8 +1,6 @@
 package Main;
 
 import AutomatonSimulator.Automaton;
-import Console.CLI;
-import Console.Storable;
 import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
@@ -24,21 +22,22 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  * Created by fabian on 17.06.16.
  */
 public class GUI extends Application{
     /**
-     * true, if the Main.GUI is visible. The Console.CLI will deactivate itself, if this is true.
+     * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
      */
     public boolean IS_VISIBLE = false;
 
@@ -89,7 +88,7 @@ public class GUI extends Application{
     private CLI cli;
 
     /**
-     * This method is called when 'gui' is entered into the Console.CLI and shows the Main.GUI.
+     * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
     public void show() {
         Printer.printmode = PrintMode.NO;
@@ -176,43 +175,47 @@ public class GUI extends Application{
         //This is needed to execute a simple plugin, when the execute-button is pressed.
         HashMap<String, SimpleFunctionPlugin> executeMap = new HashMap<>();
 
-        //Load one instance for each plugin in the packages "DisplayPlugin, SimpleFunctionPlugin and ComplexFunctionPlugin.
-        try {
-            String packagePath = Thread.currentThread().getContextClassLoader().getResources("GUIPlugins/DisplayPlugins").nextElement().getFile().replace("%20", " ");
-            File[] classes = new File(packagePath).listFiles();
-            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
-            for(File file : classes) {
-                if(file.getName().endsWith(".class") && !file.getName().equals("DisplayPlugin.class") && !file.getName().equals("ComplexDisplayPlugin.class") && !file.getName().contains("$")) {
-                    DisplayPlugin instance = (DisplayPlugin) urlClassLoader.loadClass("GUIPlugins.DisplayPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
-                    displayPlugins.put(instance.displayType(), instance);
-                    instance.setGUI(this);
-
-                }
+        // load every plugin
+        Reflections reflections = new Reflections("GUIPlugins/DisplayPlugins");
+        Set<Class<? extends DisplayPlugin>> s = reflections.getSubTypesOf(DisplayPlugin.class);
+        s.stream().forEach(r -> {
+            try {
+                DisplayPlugin displayPlugin = (DisplayPlugin) r.newInstance();
+                displayPlugins.put(displayPlugin.displayType(),displayPlugin);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
+        });
 
-            packagePath = Thread.currentThread().getContextClassLoader().getResources("GUIPlugins/SimpleFunctionPlugins").nextElement().getFile().replace("%20", " ");
-            classes = new File(packagePath).listFiles();
-            urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
-            for(File file : classes) {
-                if(file.getName().endsWith(".class") && !file.getName().equals("SimpleFunctionPlugin.class") && !file.getName().contains("$")) {
-                    SimpleFunctionPlugin instance = (SimpleFunctionPlugin) urlClassLoader.loadClass("GUIPlugins.SimpleFunctionPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
-                    simpleFunctionPlugins.put(instance.getClass(), instance);
-                    instance.setGUI(this);
-                }
+        reflections = new Reflections("GUIPlugins/ComplexFunctionPlugins");
+        Set<Class<? extends ComplexFunctionPlugin>> s2 = reflections.getSubTypesOf(ComplexFunctionPlugin.class);
+        s2.stream().forEach(cfp -> {
+            ComplexFunctionPlugin plugin = null;
+            try {
+                plugin = (ComplexFunctionPlugin) cfp.newInstance();
+                complexFunctionPlugins.add(plugin);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
+        });
 
-            packagePath = Thread.currentThread().getContextClassLoader().getResources("GUIPlugins/ComplexFunctionPlugins").nextElement().getFile().replace("%20", " ");
-            classes = new File(packagePath).listFiles();
-            urlClassLoader = URLClassLoader.newInstance(new URL[]{new URL("file://" + packagePath)});
-            for(File file : classes) {
-                if(file.getName().endsWith(".class") && !file.getName().equals("ComplexFunctionPlugin.class") && !file.getName().contains("$")) {
-                    ComplexFunctionPlugin instance = (ComplexFunctionPlugin) urlClassLoader.loadClass("GUIPlugins.ComplexFunctionPlugins." + file.getName().substring(0, file.getName().length() - 6)).newInstance();
-                    complexFunctionPlugins.add(instance);
-                }
+        reflections = new Reflections("GUIPlugins/SimpleFunctionPlugins");
+        Set<Class<? extends SimpleFunctionPlugin>> s3 = reflections.getSubTypesOf(SimpleFunctionPlugin.class);
+        s3.stream().forEach(sfp -> {
+            try {
+                SimpleFunctionPlugin plugin = (SimpleFunctionPlugin) sfp.newInstance();
+                simpleFunctionPlugins.put(plugin.getClass(),plugin);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        });
+
 
         primaryStage.setTitle("STUPS-Toolbox");
 
@@ -230,7 +233,7 @@ public class GUI extends Application{
         Button functionsButton = new Button("Execute");
 
         //When the functionsButton is pressed, the input-type for the selected simple plugin is loaded into "input",
-        //so that we can get the corresponding object from the HashMap "Console.CLI.objects".
+        //so that we can get the corresponding object from the HashMap "Main.CLI.objects".
         //Then we can call the plugin's execute-method with the object as a parameter.
         functionsButton.setOnAction(event -> {
             Class input = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).inputType();
@@ -248,7 +251,7 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
-        //Now, that everything is loaded, we can start the Console.CLI in a different Thread.
+        //Now, that everything is loaded, we can start the Main.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
         //and the GUI will be made visible, when the user gives the appropriate command.
        new Thread(() -> cli.start()).start();

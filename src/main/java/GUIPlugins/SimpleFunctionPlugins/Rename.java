@@ -1,10 +1,9 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import Console.Storable;
+import Main.Storable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 
 import java.util.Optional;
 
