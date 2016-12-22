@@ -122,26 +122,28 @@ public class RootController {
     public void loadGrammar() {
         File file = gui.loadFile("Grammar");
         if(file!=null) {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(file));
-                String string = "";
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    string = string + line + "\n";
+            if (file != null) {
+                BufferedReader reader = null;
+                try {
+                    reader = new BufferedReader(new FileReader(file));
+                    String string = "";
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        string = string + line + "\n";
+                    }
+                    Grammar grammar = GrammarUtil.parse(string);
+                    gui.getCli().objects.put(Grammar.class, grammar);
+                    gui.switchDisplayGui(Grammar.class);
+                    gui.refresh(grammar);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (LexerException e) {
+                    e.printStackTrace();
+                } catch (ParserException e) {
+                    e.printStackTrace();
                 }
-                Grammar grammar = GrammarUtil.parse(string);
-                gui.getCli().objects.put(Grammar.class, grammar);
-                gui.switchDisplayGui(Grammar.class);
-                gui.refresh(grammar);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LexerException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
-                e.printStackTrace();
             }
         }
 
@@ -150,25 +152,27 @@ public class RootController {
     public void loadAutomaton() {
         File file = gui.loadFile("Automaton");
         BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String string = "";
-            String line;
-            while ((line = reader.readLine()) != null) {
-                string = string + line + "\n";
+        if(file!=null) {
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                String string = "";
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    string = string + line + "\n";
+                }
+                Automaton automaton = AutomatonUtil.parse(string);
+                gui.getCli().objects.put(Automaton.class, automaton);
+                gui.switchDisplayGui(Automaton.class);
+                gui.refresh(automaton);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (AutomatonParser.lexer.LexerException e) {
+                e.printStackTrace();
+            } catch (AutomatonParser.parser.ParserException e) {
+                e.printStackTrace();
             }
-            Automaton automaton = AutomatonUtil.parse(string);
-            gui.getCli().objects.put(Automaton.class, automaton);
-            gui.switchDisplayGui(Automaton.class);
-            gui.refresh(automaton);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (AutomatonParser.lexer.LexerException e) {
-            e.printStackTrace();
-        } catch (AutomatonParser.parser.ParserException e) {
-            e.printStackTrace();
         }
 
     }
@@ -176,25 +180,27 @@ public class RootController {
     public void loadPushDownAutomaton() {
         File file = gui.loadFile("Pushdown-Automaton");
         BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String string = "";
-            String line;
-            while ((line = reader.readLine()) != null) {
-                string = string + line + "\n";
+        if(file!=null) {
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                String string = "";
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    string = string + line + "\n";
+                }
+                PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string);
+                gui.getCli().objects.put(PushDownAutomaton.class, automaton);
+                gui.switchDisplayGui(PushDownAutomaton.class);
+                gui.refresh(automaton);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (PushDownAutomatonParser.lexer.LexerException e) {
+                e.printStackTrace();
+            } catch (PushDownAutomatonParser.parser.ParserException e) {
+                e.printStackTrace();
             }
-            PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string);
-            gui.getCli().objects.put(PushDownAutomaton.class, automaton);
-            gui.switchDisplayGui(PushDownAutomaton.class);
-            gui.refresh(automaton);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PushDownAutomatonParser.lexer.LexerException e) {
-            e.printStackTrace();
-        } catch (PushDownAutomatonParser.parser.ParserException e) {
-            e.printStackTrace();
         }
 
     }
@@ -205,7 +211,9 @@ public class RootController {
         if(object != null) {
             Grammar grammar = (Grammar) object;
             File file = gui.openFile("Grammar");
-            GrammarUtil.save(grammar,file);
+            if(file!=null) {
+                GrammarUtil.save(grammar, file);
+            }
         }
     }
 
@@ -215,7 +223,9 @@ public class RootController {
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFile("Automaton");
-            AutomatonUtil.save(automaton,file);
+            if(file!=null) {
+                AutomatonUtil.save(automaton, file);
+            }
         }
     }
 
@@ -230,7 +240,9 @@ public class RootController {
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFile("Automaton");
-            AutomatonUtil.toGraphViz(automaton,file);
+            if(file!=null) {
+                AutomatonUtil.toGraphViz(automaton, file);
+            }
         }
     }
 
