@@ -1640,7 +1640,7 @@ public class GrammarUtil {
     public static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
-            Nonterminal newSymbol=new Nonterminal("S#",new HashSet<>());
+            Nonterminal newSymbol=new Nonterminal("S_0",new HashSet<>());
             g.getNonterminals().add(newSymbol);
             for(Nonterminal nt : g.getNonterminals()) {
                 HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
