@@ -182,6 +182,7 @@ public class GUI extends Application{
             try {
                 DisplayPlugin displayPlugin = (DisplayPlugin) r.newInstance();
                 displayPlugins.put(displayPlugin.displayType(),displayPlugin);
+                displayPlugin.setGUI(this);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -209,6 +210,7 @@ public class GUI extends Application{
             try {
                 SimpleFunctionPlugin plugin = (SimpleFunctionPlugin) sfp.newInstance();
                 simpleFunctionPlugins.put(plugin.getClass(),plugin);
+                plugin.setGUI(this);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
