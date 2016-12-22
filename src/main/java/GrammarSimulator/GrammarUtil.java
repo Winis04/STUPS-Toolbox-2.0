@@ -14,6 +14,7 @@ import PushDownAutomatonSimulator.*;
 
 
 import java.io.*;
+import java.sql.Wrapper;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
@@ -549,7 +550,8 @@ public class GrammarUtil {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
         HashMap<Nonterminal, HashSet<Terminal>> firsts = calculateFirst(grammar);
-        boolean changed = true;
+        ArrayList<Boolean> wrapper = new ArrayList<>();
+        wrapper.add(new Boolean(true));
 
         //Initialize the result-map.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
@@ -557,8 +559,8 @@ public class GrammarUtil {
         }
         result.get(grammar.getStartSymbol()).add(new Terminal("$"));
 
-        while(changed) {
-            changed = false;
+        while(wrapper.get(0)) {
+            wrapper.set(0,new Boolean(false));
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
                         .map(rule -> rule.getRightSide()).forEach(symbolList -> {
@@ -571,7 +573,7 @@ public class GrammarUtil {
                                     //contains the follow-set of the current nonterminal.
                                     if (!result.get(symbolList.get(i)).containsAll(result.get(nonterminal))) {
                                         result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                        changed = true;
+                                        wrapper.set(0,new Boolean(true));
                                     }
                                 }
                             } else {
@@ -588,7 +590,7 @@ public class GrammarUtil {
                                         //If the current symbol is a nonterminal, we have to add its first-set
                                         //to the follow-set of symbolList.get(i).
                                         result.get(symbolList.get(i)).addAll(firsts.get(symbolList.get(j)));
-                                        changed = true;
+                                        wrapper.set(0,new Boolean(true));
                                     }
 
                                     if (nullable.contains(symbolList.get(j)) && j < symbolList.size() - 1) {
@@ -600,13 +602,13 @@ public class GrammarUtil {
                                                 if(!result.get(symbolList.get(i)).contains(symbolList.get(k))) {
                                                     //If the current symbol is a terminal, add it to the follow-set of symbolList.get(i).
                                                     result.get(symbolList.get(i)).add((Terminal) symbolList.get(k));
-                                                    changed = true;
+                                                    wrapper.set(0,new Boolean(true));
                                                 }
                                             } else if (symbolList.get(k) instanceof Nonterminal) {
                                                 if(!result.get(symbolList.get(i)).containsAll(firsts.get(symbolList.get(k)))) {
                                                     //If the current symbol is a nonterminal, add its first-set to the follow-set of symbolList.get(i).
                                                     result.get(symbolList.get(i)).addAll(firsts.get(symbolList.get(k)));
-                                                    changed = true;
+                                                    wrapper.set(0,new Boolean(true));
                                                 }
                                             }
                                             k++;
@@ -618,7 +620,7 @@ public class GrammarUtil {
                                                 //and this symbol is a nonterminal, we have to add the follow-set of this nonterminal
                                                 //to the follow-set of symbol-list.get(i);
                                                 result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                                changed = true;
+                                                wrapper.set(0,new Boolean(true));
                                             }
                                         }
                                     } else if (j == symbolList.size() - 1 && nullable.contains(symbolList.get(j))) {
@@ -627,7 +629,7 @@ public class GrammarUtil {
                                             //and this symbol is a nonterminal, we have to add the follow-set of this nonterminal
                                             //to the follow-set of symbol-list.get(i);
                                             result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                            changed = true;
+                                            wrapper.set(0,new Boolean(true));
                                         }
                                     }
 
@@ -635,7 +637,7 @@ public class GrammarUtil {
                                     if(!result.get(symbolList.get(i)).contains(symbolList.get(j))) {
                                         //If symbolList.get(j) is a terminal, we can just add it to the follow-set of symbolList.get(i).
                                         result.get(symbolList.get(i)).add((Terminal) symbolList.get(j));
-                                        changed = true;
+                                        wrapper.set(0,new Boolean(true));
                                     }
                                 }
                             }
@@ -1321,9 +1323,10 @@ public class GrammarUtil {
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
-        return grammar.getNonterminals().stream().allMatch(nonterminal ->
-                nonterminal.getSymbolLists().stream().allMatch(list ->
-                        (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof  Nonterminal))));
+        return grammar.getRules().stream()
+                .filter(rule -> !rule.getComingFrom().isStart())
+                .map(rule -> rule.getRightSide())
+                .allMatch(list -> (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof Nonterminal)));
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
@@ -1574,18 +1577,20 @@ public class GrammarUtil {
         pda.setCurrentState(pda.getStartState());
         return pda;
     }
-    private static void nonterminalToRule(Nonterminal nt, PushDownAutomaton pda) {
-        for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-            Rule tmp=new Rule();
-            tmp.setComingFrom(pda.getStartState());
-            tmp.setReadIn(InputLetter.NULLSYMBOL);
-            System.out.println(nt.getName());
-            System.out.println(pda.getStackAlphabet().get(nt.getName()));
-            tmp.setOldToS(pda.getStackAlphabet().get(nt.getName()));
-            tmp.setGoingTo(pda.getStartState());
-            tmp.setNewToS(GrammarUtil.calculateNewTos(list,pda));
-            pda.getStartState().getRules().add(tmp);
-        }
+    private static void nonterminalToRule(Nonterminal nt, PushDownAutomaton pda, Grammar grammar) {
+        grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
+                .map(rule -> rule.getRightSide())
+                .forEach(list -> {
+                    PushDownAutomatonSimulator.Rule tmp=new PushDownAutomatonSimulator.Rule();
+                    tmp.setComingFrom(pda.getStartState());
+                    tmp.setReadIn(InputLetter.NULLSYMBOL);
+                    System.out.println(nt.getName());
+                    System.out.println(pda.getStackAlphabet().get(nt.getName()));
+                    tmp.setOldToS(pda.getStackAlphabet().get(nt.getName()));
+                    tmp.setGoingTo(pda.getStartState());
+                    tmp.setNewToS(GrammarUtil.calculateNewTos(list,pda));
+                    pda.getStartState().getRules().add(tmp);
+                });
     }
     private static ArrayList<StackLetter> calculateNewTos(ArrayList<Symbol> list, PushDownAutomaton pda) {
         ArrayList<StackLetter> res=new ArrayList<>();
@@ -1685,9 +1690,9 @@ public class GrammarUtil {
      * @return true, if it is on a right side
      */
     public static boolean startSymbolOnRightSide(Grammar g) {
-
-        return g.getNonterminals().stream().anyMatch(nt -> nt.getSymbolLists().stream().
-        anyMatch(list -> list.stream().anyMatch(symbol -> symbol.equals(g.getStartSymbol()))));
+        return g.getRules().stream().map(rule -> rule.getRightSide())
+                .anyMatch(list -> list.stream().anyMatch(symol -> symol.equals(g.getStartSymbol())));
+        
     }
     /**
      * checks if a grammar is without any rules pointing on lambda
