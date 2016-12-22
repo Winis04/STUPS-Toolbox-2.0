@@ -15,6 +15,7 @@ import PushDownAutomatonSimulator.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
@@ -39,26 +40,29 @@ public class GrammarUtil {
      * @param visitedSymbols Keeps track of which nonterminals have already been visited. Should initially be empty.
      * @return The ArrayList.
      */
-    private static ArrayList<Terminal> getTerminalsInOrder(Nonterminal comingFrom, ArrayList<Terminal> terminals, HashSet<Nonterminal> visitedSymbols) {
+    private static ArrayList<Terminal> getTerminalsInOrder(Nonterminal comingFrom, ArrayList<Terminal> terminals, HashSet<Nonterminal> visitedSymbols, Grammar grammar) {
         if (!visitedSymbols.contains(comingFrom)) {
             HashSet<Nonterminal> nextSymbols = new HashSet<>();
 
             //Add all terminals, that comingFrom points to to the list
             //and all nonterminals, that comingFrom points to, to nextSymbols.
-            for (ArrayList<Symbol> symbols : comingFrom.getSymbolLists()) {
-                for(Symbol currentSymbol : symbols) {
-                    if (currentSymbol instanceof Terminal && !terminals.contains(currentSymbol)) {
-                        terminals.add((Terminal) currentSymbol);
-                    } else if(currentSymbol instanceof Nonterminal){
-                        nextSymbols.add((Nonterminal) currentSymbol);
+            grammar.getRules().stream()
+                    .filter(rule -> rule.getComingFrom().equals(comingFrom))
+                    .map(rule -> rule.getRightSide()).forEach(rightSide -> {
+                rightSide.stream().forEach(symbol -> {
+                    if(symbol instanceof  Terminal && !terminals.contains(symbol)) {
+                        terminals.add((Terminal) symbol);
+                    } else if(symbol instanceof  Nonterminal) {
+                        nextSymbols.add((Nonterminal) symbol);
                     }
-                }
-            }
+                });
+            });
+
             visitedSymbols.add(comingFrom);
 
             //Call this method recursively with all symbols in nextSymbols as comingFrom.
             for (Nonterminal goingTo : nextSymbols) {
-                getTerminalsInOrder(goingTo, terminals, visitedSymbols);
+                getTerminalsInOrder(goingTo, terminals, visitedSymbols,grammar);
             }
         }
 
@@ -73,7 +77,7 @@ public class GrammarUtil {
      * @param nonterminals Should be empty initially.
      * @return The ArrayList.
      */
-    private static ArrayList<Nonterminal> getNonterminalsInOrder(Nonterminal comingFrom, ArrayList<Nonterminal> nonterminals) {
+    private static ArrayList<Nonterminal> getNonterminalsInOrder(Nonterminal comingFrom, ArrayList<Nonterminal> nonterminals, Grammar grammar) {
         HashSet<Nonterminal> nextSymbols = new HashSet<>();
 
         try {
@@ -84,21 +88,24 @@ public class GrammarUtil {
             }
 
             //Do the same for all symbols, that comingFrom points to.
-            for(ArrayList<Symbol> symbols : comingFrom.getSymbolLists()) {
-                for(Symbol currentSymbol : symbols) {
-                    if (currentSymbol instanceof Nonterminal && !nonterminals.contains(currentSymbol)) {
-                        nonterminals.add((Nonterminal) currentSymbol);
-                        nextSymbols.add((Nonterminal) currentSymbol);
-                    }
-                }
-            }
+            grammar.getRules().stream()
+                    .filter(rule -> rule.getComingFrom().equals(comingFrom))
+                    .map(rule -> rule.getRightSide())
+                    .forEach(rightSide -> {
+                        rightSide.stream().forEach(symbol -> {
+                            if(symbol instanceof Nonterminal && !nonterminals.contains(symbol)) {
+                                nonterminals.add((Nonterminal) symbol);
+                                nextSymbols.add((Nonterminal) symbol);
+                            }
+                        });
+                    });
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         //Call this method recursively with all symbols in nextSymbols as comingFrom.
         for(Nonterminal goingTo : nextSymbols) {
-            getNonterminalsInOrder(goingTo, nonterminals);
+            getNonterminalsInOrder(goingTo, nonterminals,grammar);
         }
 
         return nonterminals;
@@ -161,19 +168,26 @@ public class GrammarUtil {
         //Iterate through all symbol lists of every nonterminal and print them.
         try {
             for (Nonterminal nonterminal : nonterminals) {
-                for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
-                    writer.write(nonterminal.getName() + " --> ");
-                    Iterator<Symbol> it = symbolList.iterator();
-                    while (it.hasNext()) {
-                        Symbol currentSymbol = it.next();
-                        writer.write("'" + currentSymbol.getName() + "'");
+                grammar.getRules().stream()
+                        .filter(rule -> rule.getRightSide().equals(nonterminal))
+                        .map(rule -> rule.getRightSide())
+                        .forEach(symbolList -> {
+                            try {
+                                writer.write(nonterminal.getName() + " --> ");
+                                Iterator<Symbol> it = symbolList.iterator();
+                                while (it.hasNext()) {
+                                    Symbol currentSymbol = it.next();
+                                    writer.write("'" + currentSymbol.getName() + "'");
 
-                        if (it.hasNext()) {
-                            writer.write(",");
-                        }
-                    }
-                    writer.newLine();
-                }
+                                    if (it.hasNext()) {
+                                        writer.write(",");
+                                    }
+                                }
+                                writer.newLine();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
             }
             writer.flush();
         } catch (IOException e) {
@@ -273,7 +287,7 @@ public class GrammarUtil {
      * @return The ArrayList.
      */
     public static ArrayList<Terminal> getTerminalsInOrder(Grammar grammar) {
-        ArrayList<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>());
+        ArrayList<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>(),grammar);
         HashSet<Terminal> missingTerminals = new HashSet<>(grammar.getTerminals());
         missingTerminals.removeAll(terminals);
         terminals.addAll(missingTerminals);
@@ -287,7 +301,7 @@ public class GrammarUtil {
      * @return The ArrayList.
      */
     public static ArrayList<Nonterminal> getNonterminalsInOrder(Grammar grammar) {
-        ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>());
+        ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(),grammar);
         HashSet<Nonterminal> missingTerminals = new HashSet<>(grammar.getNonterminals());
         missingTerminals.removeAll(nonterminals);
         nonterminals.addAll(missingTerminals);
@@ -424,18 +438,20 @@ public class GrammarUtil {
      */
     public static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
         PrintableSet result=new PrintableSet(1);
-        boolean changed = true;
+        ArrayList<Boolean> wrapper = new ArrayList<>();
+        wrapper.add(new Boolean(true));
 
-        while(changed) {
-            changed = false;
+        while(wrapper.get(0)) {
+            wrapper.set(0,new Boolean(true));
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
+
                     if(symbolList.stream().allMatch(symbol -> (symbol.getName().equals("epsilon") || result.contains(symbol))) && !result.contains(nonterminal)) {
                         result.add(nonterminal);
-
-                        changed=true;
+                        wrapper.set(0,new Boolean(true));
                     }
-                }
+                });
             }
         }
 
@@ -449,18 +465,19 @@ public class GrammarUtil {
      */
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
         HashSet<Nonterminal> result= new HashSet<>();
-        boolean changed = true;
+        ArrayList<Boolean> wrapper = new ArrayList<>();
+        wrapper.add(new Boolean(true));
 
-        while(changed) {
-            changed = false;
+        while(wrapper.get(0)) {
+            wrapper.set(0,new Boolean(false));
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
                     if(symbolList.stream().allMatch(symbol -> (symbol.getName().equals("epsilon") || result.contains(symbol))) && !result.contains(nonterminal)) {
                         result.add(nonterminal);
-
-                        changed=true;
+                        wrapper.set(0,new Boolean(true));
                     }
-                }
+                });
             }
         }
 
@@ -477,17 +494,19 @@ public class GrammarUtil {
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFirst(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
-        boolean changed = true;
 
         //Initialize the result-map.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             result.put(nonterminal, new HashSet<>());
         }
-
-        while(changed) {
-            changed = false;
+        ArrayList<Boolean> wrapper = new ArrayList<>();
+        wrapper.set(0,new Boolean(true));
+        while(wrapper.get(0)) {
+            wrapper.set(0,new Boolean(false));
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+
+                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
                     for (int i = 0; i < symbolList.size(); i++) {
                         if (symbolList.get(i) instanceof Terminal) {
                             if (!symbolList.get(i).getName().equals("epsilon") ) {
@@ -495,7 +514,7 @@ public class GrammarUtil {
                                     //If the current symbol is a terminal and not the empty word,
                                     //add it to the first-set of the current nonterminal.
                                     result.get(nonterminal).add((Terminal) symbolList.get(i));
-                                    changed = true;
+                                    wrapper.set(0,new Boolean(true));
                                 }
                                 break;
                             }
@@ -503,7 +522,7 @@ public class GrammarUtil {
                             if(!result.get(nonterminal).containsAll(result.get(symbolList.get(i)))) {
                                 //If the current symbol is a nonterminal, add its first-set to the first-set of the current nonterminal.
                                 result.get(nonterminal).addAll(result.get(symbolList.get(i)));
-                                changed = true;
+                                wrapper.set(0,new Boolean(true));
                             }
                             if (!nullable.contains(symbolList.get(i))) {
                                 break;
@@ -512,7 +531,7 @@ public class GrammarUtil {
                             break;
                         }
                     }
-                }
+                }); //
             }
         }
 
@@ -541,7 +560,8 @@ public class GrammarUtil {
         while(changed) {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                for (ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
                     //Go through each list of symbols and calculate the follow-set of each nonterminal in these lists.
                     for (int i = 0; i < symbolList.size(); i++) {
                         if (symbolList.get(i) instanceof Nonterminal) {
@@ -621,7 +641,7 @@ public class GrammarUtil {
                             }
                         }
                     }
-                }
+                });//
             }
         }
 
@@ -662,7 +682,8 @@ public class GrammarUtil {
 
         //Iterate through every first-set of every rule.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
-            for(ArrayList<Symbol> symbolList : nonterminal.getSymbolLists()) {
+            grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                    .map(rule -> rule.getRightSide()).forEach(symbolList -> {
                 HashSet<Terminal> currentFirst = calculateFirstOfList(symbolList, nullable, firsts, grammar);
                 for(Terminal terminal : currentFirst) {
                     //Add the current rule to result.get(nonterminal).get(terminal).
@@ -694,7 +715,7 @@ public class GrammarUtil {
                         }
                     }
                 }
-            }
+            }); //
         }
 
         return result;
@@ -702,21 +723,16 @@ public class GrammarUtil {
 
 
     public static void removeUnneccesaryEpsilons(Grammar g) {
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> res=new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> temp=(ArrayList<Symbol>) list.stream().filter(x -> !x.equals(Terminal.NULLSYMBOL)).collect(Collectors.toList());
-                if(temp.size()!=0) {
-                    res.add(temp);
-                } else {
-                    temp=new ArrayList<>();
-                    temp.add(Terminal.NULLSYMBOL);
-                    res.add(temp);
-                }
+        g.getRules().stream().forEach(rule -> {
+            if(rule.getRightSide().size()!=1) {
+                List<Symbol> tmp = new ArrayList<Symbol>();
+                tmp = rule.getRightSide().stream()
+                        .filter(symbol -> !symbol.equals(Terminal.NULLSYMBOL))
+                        .collect(Collectors.toList());
+                rule.setRightSide((ArrayList<Symbol>) tmp);
             }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(res);
-        }
+        });
+
     }
 
     static void replaceLambda(Grammar g) {
@@ -735,13 +751,14 @@ public class GrammarUtil {
             g.getTerminals().add(Terminal.NULLSYMBOL);
         }
         for(Nonterminal nt : g.getNonterminals()) {
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
+            g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
+                    .map(rule -> rule.getRightSide()).forEach(list -> {
                 for(int i=0;i<list.size();i++) {
                     if(list.get(i).equals(new Terminal("epsilon"))||list.get(i).equals(new Terminal("lambda"))) {
                         list.set(i,Terminal.NULLSYMBOL);
                     }
                 }
-            }
+            }); //
         }
     }
     /******************************************************************************************************************
@@ -800,39 +817,31 @@ public class GrammarUtil {
     private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
         boolean startSymbolPointsOnLamda=GrammarUtil.startSymbolPointsOnLambda(g);
         // delete lambda-rules
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
-
-            tmp.addAll(nt.getSymbolLists().stream()
-                    .filter(list -> !list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)))
-                    .collect(Collectors.toList()));
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmp);
-        }
+        HashSet<Rule> tmp2 = new HashSet<>();
+        g.getRules().stream()
+                .filter(rule -> !rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)))
+                .forEach(rule -> tmp2.add(rule));
+        g.setRules(tmp2);
         //these nonterminals can be removed. Store them in toRemove
         List<Symbol> toRemove = new ArrayList<>();
         for(Nonterminal nt : g.getNonterminals()) {
-            if(nt.getSymbolLists().isEmpty()) {
+            if(g.getRules().stream().allMatch(rule -> !rule.getComingFrom().equals(nt))) {
                 toRemove.add(nt);
             }
         }
         // the symbols that can be removed are replaced by the nullsymbol
-        for(Nonterminal nt : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> tmpList=new ArrayList<>();
-                for(int i=0;i<list.size();i++) {
-                    if(toRemove.contains(list.get(i))) {
-                        tmpList.add(Terminal.NULLSYMBOL);
-                    } else {
-                        tmpList.add(list.get(i));
-                    }
+        g.getRules().stream().forEach(rule -> {
+            ArrayList<Symbol> tmpList = new ArrayList<>();
+            ArrayList<Symbol> list = rule.getRightSide();
+            for(int i=0;i<list.size();i++) {
+                if(toRemove.contains(list.get(i))) {
+                    tmpList.add(Terminal.NULLSYMBOL);
+                } else {
+                    tmpList.add(list.get(i));
                 }
-                tmp.add(tmpList);
+                rule.setRightSide(tmpList);
             }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmp);
-        }
+        });
         // the nonterminal set of the grammar needs to be updated
         ArrayList<Symbol> bla=new ArrayList<>();
         bla.addAll(g.getNonterminals());
@@ -852,7 +861,9 @@ public class GrammarUtil {
             ArrayList<Symbol> tmp=new ArrayList<>();
             tmp.add(Terminal.NULLSYMBOL);
             g.getTerminals().add(Terminal.NULLSYMBOL);
-            g.getStartSymbol().getSymbolLists().add(tmp);
+            Rule rule = new Rule(g.getStartSymbol());
+            rule.setRightSide(tmp);
+            g.getRules().add(rule);
         }
 
     }

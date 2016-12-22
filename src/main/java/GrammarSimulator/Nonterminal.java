@@ -22,10 +22,6 @@ public class Nonterminal implements Symbol, Printable {
      */
     private String name;
 
-    /**
-     * The set of all the lists of {@link Symbol}s to which this nonterminal points.
-     */
-    private HashSet<ArrayList<Symbol>> symbolLists;
 
     /**
      * The constructor.
@@ -33,9 +29,8 @@ public class Nonterminal implements Symbol, Printable {
      * @param name The nonterminal's name.
      * @param symbolLists The set of all the lists of {@link Symbol}s to which this nonterminal points.
      */
-    public Nonterminal(String name, HashSet<ArrayList<Symbol>> symbolLists) {
+    public Nonterminal(String name) {
         this.name = name;
-        this.symbolLists = symbolLists;
         this.isStart = false;
     }
 
@@ -48,19 +43,6 @@ public class Nonterminal implements Symbol, Printable {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Getter-method for {@link #symbolLists}.
-     *
-     * @return {@link #symbolLists}
-     */
-    public HashSet<ArrayList<Symbol>> getSymbolLists() {
-        return symbolLists;
-    }
-
-    public void setSymbolLists(HashSet<ArrayList<Symbol>> symbolLists) {
-        this.symbolLists = symbolLists;
     }
 
     @Override

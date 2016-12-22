@@ -20,7 +20,7 @@ public class Visitor extends DepthFirstAdapter {
     private Nonterminal startSymbol;
     private HashMap<String, Terminal> terminals;
     private HashMap<String, Nonterminal> nonterminals;
-
+    private HashSet<Rule> rules;
 
     @Override
     public void inASymbols(ASymbols node) {
@@ -28,14 +28,14 @@ public class Visitor extends DepthFirstAdapter {
         nonterminals = new HashMap<>();
 
         for(TIdentifier nonterminal : node.getNonterminals()) {
-            nonterminals.put(nonterminal.getText(), new Nonterminal(nonterminal.getText(), new HashSet<>()));
+            nonterminals.put(nonterminal.getText(), new Nonterminal(nonterminal.getText()));
         }
 
         for(TSymbol terminal : node.getTerminals()) {
             terminals.put(terminal.getText().replaceAll("'", ""), new Terminal(terminal.getText().replaceAll("'", "")));
         }
 
-        startSymbol = new Nonterminal(node.getStartSymbol().getText(), new HashSet<>());
+        startSymbol = new Nonterminal(node.getStartSymbol().getText());
         nonterminals.put(startSymbol.getName(), startSymbol);
     }
 
@@ -53,13 +53,15 @@ public class Visitor extends DepthFirstAdapter {
             System.exit(1);
         }
 
-        ArrayList<Symbol> symbols = new ArrayList<>();
+        Rule rule = new Rule(new Nonterminal(node.getComingFrom().getText()));
+        ArrayList<Symbol> rightSide = new ArrayList<>();
+
         for(TSymbol symbol : node.getGoingTo()) {
             if(terminals.containsKey(symbol.getText().replaceAll("'", ""))) {
-                symbols.add(terminals.get(symbol.getText().replaceAll("'", "")));
+                rightSide.add(new Terminal(symbol.getText().replaceAll("'", "")));
             }
             else if((nonterminals.containsKey(symbol.getText().replaceAll("'", "")))) {
-                symbols.add(nonterminals.get(symbol.getText().replaceAll("'", "")));
+                rightSide.add(new Nonterminal(symbol.getText().replaceAll("'", "")));
             }
             else {
                 //TODO: fix this. if it is an epsilon, add it to the set
@@ -67,7 +69,8 @@ public class Visitor extends DepthFirstAdapter {
                 System.exit(1);
             }
         }
-        nonterminals.get(node.getComingFrom().getText()).getSymbolLists().add(symbols);
+        rule.setRightSide(rightSide);
+        rules.add(rule);
     }
 
     @Override

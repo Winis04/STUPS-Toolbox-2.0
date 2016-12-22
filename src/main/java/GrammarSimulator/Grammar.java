@@ -36,6 +36,11 @@ public class Grammar implements Printable, Storable {
      * The grammar's start symbol.
      */
     private Nonterminal startSymbol;
+
+    /**
+     * the grammars rule
+     */
+    private HashSet<Rule> rules;
     /**
      * the grammars name (optional)
      */
@@ -58,6 +63,7 @@ public class Grammar implements Printable, Storable {
         this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
         this.terminals = new HashSet<>(Arrays.asList(terminal));
         this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
+        this.rules = new HashSet<>();
         this.startSymbol.markAsStart();
     }
 
@@ -84,23 +90,6 @@ public class Grammar implements Printable, Storable {
         this.nonterminals=new HashSet<>();
         for(Terminal t : old.getTerminals()) { //adds the Terminals
             this.terminals.add(new Terminal(t.getName()));
-        }
-        for(Nonterminal nt : old.getNonterminals()) { //adds the Nonterminals, but without rules
-            this.nonterminals.add(new Nonterminal(nt.getName(),new HashSet<ArrayList<Symbol>>()));
-        }
-        for(Nonterminal oldNt : old.getNonterminals()) {
-            Nonterminal newNt=this.getNonterminal(oldNt.getName()); //the matching Nonterminal in the new grammar
-            for(ArrayList<Symbol> list : oldNt.getSymbolLists()) { // copy the lists
-                ArrayList<Symbol> tmp=new ArrayList<>();
-                for(Symbol symbol : list) {
-                    if(symbol instanceof Terminal) {
-                        tmp.add(this.getTerminal(symbol.getName()));
-                    } else {
-                        tmp.add(this.getNonterminal(symbol.getName()));
-                    }
-                }
-                newNt.getSymbolLists().add(tmp);
-            }
         }
         this.name=old.getNameWithoutSuffix();
         this.suffix=old.getSuffix();
@@ -317,5 +306,13 @@ public class Grammar implements Printable, Storable {
      */
     public void setStartSymbol(Nonterminal startSymbol) {
         this.startSymbol = startSymbol;
+    }
+
+    public HashSet<Rule> getRules() {
+        return rules;
+    }
+
+    public void setRules(HashSet<Rule> rules) {
+        this.rules = rules;
     }
 }
