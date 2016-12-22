@@ -15,6 +15,8 @@ import static Print.Printer.printmode;
  */
 public class Nonterminal implements Symbol, Printable {
 
+    private boolean isStart;
+
     /**
      * The nonterminal's name.
      */
@@ -34,6 +36,7 @@ public class Nonterminal implements Symbol, Printable {
     public Nonterminal(String name, HashSet<ArrayList<Symbol>> symbolLists) {
         this.name = name;
         this.symbolLists = symbolLists;
+        this.isStart = false;
     }
 
 
@@ -73,5 +76,12 @@ public class Nonterminal implements Symbol, Printable {
     @Override
     public void printConsole(BufferedWriter writer) {
         Printer.print(this.getName(),writer);
+    }
+
+    public boolean isStart() {
+        return  isStart;
+    }
+    public void markAsStart() {
+        this.isStart = true;
     }
 }

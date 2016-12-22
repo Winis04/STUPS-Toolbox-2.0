@@ -58,6 +58,7 @@ public class Grammar implements Printable, Storable {
         this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
         this.terminals = new HashSet<>(Arrays.asList(terminal));
         this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
+        this.startSymbol.markAsStart();
     }
 
     /**
@@ -71,6 +72,7 @@ public class Grammar implements Printable, Storable {
         this.terminals = terminals;
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
+        this.startSymbol.markAsStart();
     }
 
     /**
@@ -106,6 +108,7 @@ public class Grammar implements Printable, Storable {
             this.modifyName();
         }
         this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
+        this.startSymbol.markAsStart();
         GrammarUtil.replaceLambda(this);
         this.previousVersion = (Grammar) old.getPreviousVersion();
     }
