@@ -55,7 +55,7 @@ public class Visitor extends DepthFirstAdapter {
         }
 
         Rule rule = new Rule(new Nonterminal(node.getComingFrom().getText()));
-        ArrayList<Symbol> rightSide = new ArrayList<>();
+        RightSide<Symbol> rightSide = new RightSide<>();
 
         for(TSymbol symbol : node.getGoingTo()) {
             if(terminals.containsKey(symbol.getText().replaceAll("'", ""))) {

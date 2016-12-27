@@ -20,6 +20,7 @@ import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by fabian on 06.08.16.
@@ -450,24 +451,31 @@ public class GrammarUtil {
      * @return A HashSet containing all nullable nonterminals,
      */
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
-        HashSet<Nonterminal> result= new HashSet<>();
-        ArrayList<Boolean> wrapper = new ArrayList<>();
-        wrapper.add(new Boolean(true));
 
-        while(wrapper.get(0)) {
-            wrapper.set(0,new Boolean(false));
-            for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
-                    if(symbolList.stream().allMatch(symbol -> (symbol.getName().equals("epsilon") || result.contains(symbol))) && !result.contains(nonterminal)) {
-                        result.add(nonterminal);
-                        wrapper.set(0,new Boolean(true));
-                    }
-                });
+
+
+        HashSet<Nonterminal> nullable = new HashSet<>();
+        boolean changed=true;
+        while(changed) {
+            changed = false;
+            HashSet<Nonterminal> newNullables = new HashSet<>();
+
+            grammar.getRules().stream()
+                    //all rules that point on lambda//nullables
+                    .filter(rule -> rule.getRightSide().stream().allMatch(symbol -> nullable.stream().anyMatch(elem -> elem.equals(symbol)) || symbol.equals(Terminal.NULLSYMBOL)))
+                    .map(Rule::getComingFrom)
+                    .filter(nt -> !nullable.stream().anyMatch(elem -> elem.equals(nt))) //TODO: without this, it does not work
+                    .forEach(newNullables::add);
+            int sizeBefore = nullable.size();
+            nullable.addAll(newNullables);
+            int sizeAfter = nullable.size();
+            if(sizeBefore!=sizeAfter) {
+                changed = true;
             }
-        }
 
-        return  result;
+
+        }
+        return nullable;
     }
 
     /**
@@ -710,13 +718,13 @@ public class GrammarUtil {
 
 
     public static void removeUnneccesaryEpsilons(Grammar g) {
-        g.getRules().stream().forEach(rule -> {
-            if(rule.getRightSide().size()!=1) {
-                List<Symbol> tmp = new ArrayList<Symbol>();
+        g.getRules().forEach(rule -> {
+            if (rule.getRightSide().size() != 1) {
+                List<Symbol> tmp = new RightSide<>();
                 tmp = rule.getRightSide().stream()
                         .filter(symbol -> !symbol.equals(Terminal.NULLSYMBOL))
                         .collect(Collectors.toList());
-                rule.setRightSide((ArrayList<Symbol>) tmp);
+                rule.setRightSide(tmp);
             }
         });
 
@@ -724,7 +732,7 @@ public class GrammarUtil {
 
     static void replaceLambda(Grammar g) {
         g.getRules().forEach(rule -> {
-            ArrayList<Symbol> right = new ArrayList<Symbol>();
+            RightSide<Symbol> right = new RightSide<Symbol>();
             rule.getRightSide().forEach(sym -> {
                 if(sym.getName().equals("epsilon")||sym.getName().equals("lambda")) {
                     right.add(Terminal.NULLSYMBOL);
@@ -805,15 +813,15 @@ public class GrammarUtil {
         }
         // the symbols that can be removed are replaced by the nullsymbol
         g.getRules().stream().forEach(rule -> {
-            ArrayList<Symbol> tmpList = new ArrayList<>();
-            ArrayList<Symbol> list = rule.getRightSide();
+            RightSide<Symbol> tmpList = new RightSide<Symbol>();
+            RightSide<Symbol> list = rule.getRightSide();
             for(int i=0;i<list.size();i++) {
                 if(toRemove.contains(list.get(i))) {
                     tmpList.add(Terminal.NULLSYMBOL);
                 } else {
                     tmpList.add(list.get(i));
                 }
-                rule.setRightSide(tmpList);
+                rule.setRightSide((RightSide<Symbol>) tmpList);
             }
         });
         // the nonterminal set of the grammar needs to be updated
@@ -832,7 +840,7 @@ public class GrammarUtil {
             g.getTerminals().remove(Terminal.NULLSYMBOL);
         }
         if(startSymbolPointsOnLamda) {
-            ArrayList<Symbol> tmp=new ArrayList<>();
+            RightSide<Symbol> tmp=new RightSide<>();
             tmp.add(Terminal.NULLSYMBOL);
             g.getTerminals().add(Terminal.NULLSYMBOL);
             Rule rule = new Rule(g.getStartSymbol());
@@ -842,6 +850,10 @@ public class GrammarUtil {
 
     }
 
+    private static boolean containsNullable(Rule rule, HashSet<Nonterminal> nullable) {
+        return rule.getRightSide().stream()
+                .anyMatch(symbol -> nullable.stream().anyMatch(elem -> elem.equals(symbol)));
+    }
     /**
      * the second step of the algorithm to delete lambda-rules.
      * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced
@@ -853,10 +865,51 @@ public class GrammarUtil {
     private static void removeLambdaRules_StepTwo(Grammar grammar, HashSet<Nonterminal> nullable) {
         boolean pointsOnLambda=GrammarUtil.startSymbolPointsOnLambda(grammar);
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
+        Queue<Rule> queue = new LinkedList<>();
+        RightSide<Rule> alreadySeen = new RightSide<>();
+        grammar.getRules().stream().filter(rule -> containsNullable(rule,nullable))
+                .forEach(queue::add);
+        if(!queue.isEmpty()) {
+            boolean changed= true;
+            while(changed) {
+                System.out.println(": "+ queue.stream()
+                        .map(rule ->
+                                rule.getComingFrom().getName()+" --> "+rule.getRightSide().stream()
+                                        .map(s -> s.getName()).collect(joining(", ")))
+                        .collect(joining("||")));
+                changed=false;
+                Rule current = queue.poll();
+                Rule fresh = new Rule(current.getComingFrom());
+                RightSide<Symbol> freshRight = new RightSide<>();
+                freshRight.addAll(current.getRightSide());
+                fresh.setRightSide(freshRight);
+                for(int i=0;i<current.getRightSide().size();i++) {
+                    // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
+                    int finalI = i;
+                    if(nullable.stream().anyMatch(elem -> elem.equals(fresh.getRightSide().get(finalI)))) {
+                        fresh.getRightSide().set(i,Terminal.NULLSYMBOL);
+                        if(queue.stream().anyMatch(elem -> elem.equals(fresh)) || alreadySeen.contains(fresh)) {
+                            // if the queue already contains this new Rule, undo the changes and go on with the rule
+                            fresh.getRightSide().set(i,current.getRightSide().get(i));
+                        } else {
+                            queue.add(fresh);
+                            queue.add(current);
+                            changed = true; //--> change
+                            break;
+                        }
+                    }
+                }
+                //if there can't be anything changed about this rule, remove it **/
+                alreadySeen.add(current);
+            }
+            grammar.getRules().addAll(queue);
+            grammar.getRules().addAll(alreadySeen);
+        }
 
+        /** old
         grammar.getNonterminals().forEach(nonterminal -> {
             //contains all rules for this nonterminal which need to be edited
-            Queue<ArrayList<Symbol>> queue = new LinkedList<>();
+            Queue<RightSide<Symbol>> queue = new LinkedList<>();
 
             queue.addAll(GrammarUtil.getSymbolListsWithoutEmptyRules(nonterminal, grammar));
             if (!queue.isEmpty()) {
@@ -866,14 +919,15 @@ public class GrammarUtil {
                 while (changed && !queue.isEmpty()) { //stop, if there is no change anymore
                     changed = false;
                     // gets the current head of the queue and removes it
-                    ArrayList<Symbol> current = queue.poll();
+                    RightSide<Symbol> current = queue.poll();
 
-                    ArrayList<Symbol> newRightSide = new ArrayList<>();
+                    RightSide<Symbol> newRightSide = new RightSide<>();
                     newRightSide.addAll(current);
                     for (int i = 0; i < current.size(); i++) {
                         // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
                         //if(nullable.stream().anyMatch(nullables -> nullables.getNameWithSuffix().equals(current.get(i).getNameWithSuffix())))
-                        if (nullable.contains(current.get(i))) {
+                        int finalI = i;
+                        if (nullable.stream().anyMatch(elem -> elem.equals(current.get(finalI)))) {
                             newRightSide.set(i, Terminal.NULLSYMBOL);
                             if (queue.contains(newRightSide)) {
                                 // if the queue already contains this new Rule, undo the changes and go on with the rule
@@ -902,13 +956,11 @@ public class GrammarUtil {
 
                     }
                 }
-
-                /** old **/
                 queue.forEach(list -> {
                     Rule rule = new Rule(nonterminal,list);
                     grammar.getRules().add(rule);
                 });
-                alreadySeen.stream().filter(list -> !queue.contains(list)).forEach(list -> {
+                alreadySeen.stream().filter(list -> !queue.stream().anyMatch(elem -> elem.equals(list))).forEach(list -> {
                     grammar.getRules().add(new Rule(nonterminal,list));
                 });
             }
@@ -918,7 +970,7 @@ public class GrammarUtil {
             tmp.add(Terminal.NULLSYMBOL);
             grammar.getTerminals().add(Terminal.NULLSYMBOL);
             grammar.getRules().add(new Rule(grammar.getStartSymbol(),tmp));
-        }
+        } **/
     }
 
     /******************************************************************************************************************
@@ -1167,7 +1219,7 @@ public class GrammarUtil {
             if (rule.getComingFrom().equals(toBeReplaced)) {
                 rule.setComingFrom(newNonterminal);
             }
-            ArrayList<Symbol> newRightSide = new ArrayList<Symbol>();
+           RightSide<Symbol> newRightSide = new RightSide<Symbol>();
             rule.getRightSide().forEach(symbol -> {
                 if (symbol.equals(toBeReplaced)) {
                     newRightSide.add(newNonterminal);
@@ -1479,13 +1531,13 @@ public class GrammarUtil {
      * @param g the Grammar g
      * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
      */
-    private static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+    private static HashSet<RightSide<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+        HashSet<RightSide<Symbol>> tmp = new HashSet<>();
         g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).map(Rule::getRightSide)
                 .forEach(tmp::add);
-        HashSet<ArrayList<Symbol>> res=new HashSet<>();
-        for(ArrayList<Symbol> list : tmp) {
-            boolean allNull=true;
+        HashSet<RightSide<Symbol>> res=new HashSet<>();
+        for(RightSide<Symbol> list : tmp) {
+            boolean allNull;
             allNull=list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL));
             if(!allNull) {
                 res.add(list);
@@ -1511,7 +1563,7 @@ public class GrammarUtil {
             g.getRules().stream()
                     .filter(rule -> rule.getComingFrom().equals(g.getStartSymbol()))
                     .forEach(rule -> {
-                        ArrayList<Symbol> tmp = new ArrayList<Symbol>();
+                        RightSide<Symbol> tmp = new RightSide<Symbol>();
                         rule.getRightSide().forEach(symbol -> {
                             if (symbol.equals(g.getStartSymbol())) {
                                 tmp.add(newSymbol);

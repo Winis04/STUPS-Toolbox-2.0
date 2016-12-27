@@ -1,29 +1,31 @@
 package GrammarSimulator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by isabel on 22.12.16.
  */
 public class Rule {
     private Nonterminal comingFrom;
-    private ArrayList<Symbol> rightSide;
+    private RightSide<Symbol> rightSide;
 
     public Rule(Nonterminal comingFrom) {
         this.comingFrom = comingFrom;
-        this.rightSide = new ArrayList<>();
+        this.rightSide = new RightSide<>();
     }
 
     public Rule(Nonterminal comingFrom, ArrayList<Symbol> rightSide) {
         this.comingFrom = comingFrom;
 
-        this.rightSide = rightSide;
+        this.rightSide = new RightSide<>();
+        this.rightSide.addAll(rightSide);
 
     }
 
     public Rule(Rule old) {
         this.comingFrom = new Nonterminal(old.getComingFrom().getName());
-        this.rightSide = new ArrayList<>();
+        this.rightSide = new RightSide<>();
         old.getRightSide().forEach(symbol -> {
             if (symbol instanceof Nonterminal) {
                 this.rightSide.add(new Nonterminal(symbol.getName()));
@@ -41,15 +43,33 @@ public class Rule {
         this.comingFrom = comingFrom;
     }
 
-    public ArrayList<Symbol> getRightSide() {
+    public RightSide<Symbol> getRightSide() {
         return rightSide;
     }
 
-    public void setRightSide(ArrayList<Symbol> rightSide) {
+    public void setRightSide(List<Symbol> rightSide) {
+        this.rightSide = new RightSide<>();
+        this.rightSide.addAll(rightSide);
+    }
+    public void setRightSide(RightSide<Symbol> rightSide) {
         this.rightSide = rightSide;
     }
 
     public Rule copy() {
         return new Rule(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Rule) {
+            Rule other = (Rule) o;
+            if(this.comingFrom.equals(other.comingFrom) && this.rightSide.equals(other.rightSide)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

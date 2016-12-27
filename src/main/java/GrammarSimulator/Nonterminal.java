@@ -27,7 +27,6 @@ public class Nonterminal implements Symbol, Printable {
      * The constructor.
      *
      * @param name The nonterminal's name.
-     * @param symbolLists The set of all the lists of {@link Symbol}s to which this nonterminal points.
      */
     public Nonterminal(String name) {
         this.name = name;
@@ -46,11 +45,6 @@ public class Nonterminal implements Symbol, Printable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Nonterminal && ((Nonterminal)o).getName().equals(name);
-    }
-
-    @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(space+this.getName(),writer);
     }
@@ -65,5 +59,19 @@ public class Nonterminal implements Symbol, Printable {
     }
     public void markAsStart() {
         this.isStart = true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Nonterminal) {
+            Nonterminal other = (Nonterminal) o;
+            if(other.name.equals(this.name)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
