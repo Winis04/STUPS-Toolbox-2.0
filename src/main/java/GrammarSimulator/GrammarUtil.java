@@ -1309,7 +1309,7 @@ public class GrammarUtil {
         }
         return g;
     }
-    public static boolean isInChomskyNormalForm(Grammar grammar) {
+    public static boolean isInChomskyNormalForm(Grammar grammar) { //todo: currently not working. Is wrong
         return grammar.getNonterminals().stream().allMatch(nonterminal ->
                 nonterminal.getSymbolLists().stream().allMatch(list ->
                         (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof  Nonterminal))));
