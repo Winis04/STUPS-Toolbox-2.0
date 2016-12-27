@@ -1012,7 +1012,8 @@ public class GrammarUtil {
 
 
         for(Node node : result) {
-            node.getValue().getSymbolLists().stream().forEach(list -> {
+            g.getRules().stream().filter(rule -> rule.getComingFrom().equals(node.getValue()))
+                    .map(rule -> rule.getRightSide()).forEach(list -> {
                 if(list.size()==1 && list.get(0) instanceof Nonterminal) {
                     Nonterminal nt = (Nonterminal) list.get(0);
                     result.stream().forEach(child -> {
@@ -1025,12 +1026,13 @@ public class GrammarUtil {
         }
         return result;
     }
-    private static boolean isLeftSideOfUnitRule(Nonterminal nonterminal) {
-       return nonterminal.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal);
+    private static boolean isLeftSideOfUnitRule(Nonterminal nonterminal, Grammar grammar) {
+        return grammar.getRules().stream()
+                .anyMatch(rule -> rule.getComingFrom().equals(nonterminal) && rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof  Nonterminal);
     }
     private static boolean isRightSideOfUnitRule(Nonterminal right, Grammar g) {
-
-        return g.getNonterminals().stream().anyMatch(nt -> nt.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0).getName().equals(right.getName())));
+        return g.getRules().stream()
+                .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0).equals(right));
     }
 
     /**
@@ -1564,7 +1566,7 @@ public class GrammarUtil {
             GrammarUtil.nonterminalToRule(nonterminal,pda);
         }
         for(Terminal a : g.getTerminals()) {
-            Rule tmp=new Rule();
+            PushDownAutomatonSimulator.Rule tmp=new PushDownAutomatonSimulator.Rule();
             tmp.setComingFrom(pda.getStartState());
             tmp.setReadIn(pda.getInputAlphabet().get(a.getName()));
             tmp.setOldToS(pda.getStackAlphabet().get(a.getName()));
@@ -1656,8 +1658,10 @@ public class GrammarUtil {
     public static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
-            Nonterminal newSymbol=new Nonterminal("S_0",new HashSet<>());
+            Nonterminal newSymbol=new Nonterminal("S_0";
             g.getNonterminals().add(newSymbol);
+            
+            /** old **/
             for(Nonterminal nt : g.getNonterminals()) {
                 HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
                 for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -1681,8 +1685,9 @@ public class GrammarUtil {
         return false;
     }
     public static boolean hasUnitRules(Grammar g) {
-       return g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0) instanceof Nonterminal));
-    }
+        return g.getRules().stream()
+                .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Nonterminal);
+      }
     /**
      * checks, if the startsymbol occurs on a right side of any rule
      * @author Isabel Wingen
@@ -1702,9 +1707,8 @@ public class GrammarUtil {
      * @return true, if the grammar is lambda-free
      */
     public static boolean isLambdaFree(Grammar g) {
-     return   !g.getNonterminals().stream().filter(nt -> !nt.isStart()).anyMatch(nonterminal ->
-             nonterminal.getSymbolLists().stream().anyMatch(list ->
-                     list.stream().anyMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL))));
+        return g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
+                .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
     }
 
     /**
@@ -1722,8 +1726,8 @@ public class GrammarUtil {
      * @return
      */
     public static boolean startSymbolPointsOnLambda(Grammar g) {
-        return g.getStartSymbol().getSymbolLists().stream().anyMatch(list -> list.stream().
-                allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
+        return g.getRules().stream()
+                .anyMatch(rule -> rule.getRightSide().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
     public static boolean isCircleFree(Grammar g) {
         //TODO
