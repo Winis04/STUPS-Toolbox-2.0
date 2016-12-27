@@ -882,7 +882,7 @@ public class GrammarUtil {
         boolean pointsOnLambda=GrammarUtil.startSymbolPointsOnLambda(grammar);
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
 
-        grammar.getNonterminals().stream().forEach(nonterminal -> {
+        grammar.getNonterminals().forEach(nonterminal -> {
             //contains all rules for this nonterminal which need to be edited
             Queue<ArrayList<Symbol>> queue = new LinkedList<>();
 
@@ -890,7 +890,7 @@ public class GrammarUtil {
             if (!queue.isEmpty()) {
                 boolean changed = true;
                 //contains every rule that is already edited
-                HashSet<ArrayList<Symbol>> alreadySeen=new HashSet<>();
+                HashSet<ArrayList<Symbol>> alreadySeen = new HashSet<>();
                 while (changed && !queue.isEmpty()) { //stop, if there is no change anymore
                     changed = false;
                     // gets the current head of the queue and removes it
@@ -898,7 +898,6 @@ public class GrammarUtil {
 
                     ArrayList<Symbol> newRightSide = new ArrayList<>();
                     newRightSide.addAll(current);
-                    HashSet<ArrayList<Symbol>> toAdd = new HashSet<>();
                     for (int i = 0; i < current.size(); i++) {
                         // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
                         //if(nullable.stream().anyMatch(nullables -> nullables.getNameWithSuffix().equals(current.get(i).getNameWithSuffix())))
@@ -922,25 +921,31 @@ public class GrammarUtil {
                     // if nothing was changed, check if the rule was already seen
                     if (!changed) {
                         // if yes, add it at the end
-                        if(alreadySeen.contains(current)) {
+                        if (alreadySeen.contains(current)) {
                             queue.add(current);
                         } else {
                             alreadySeen.add(current);
-                            changed=true;
+                            changed = true;
                         }
 
                     }
                 }
-                nonterminal.getSymbolLists().clear();
-                nonterminal.getSymbolLists().addAll(queue);
-                nonterminal.getSymbolLists().addAll(alreadySeen);
+
+                /** old **/
+                queue.forEach(list -> {
+                    Rule rule = new Rule(nonterminal,list);
+                    grammar.getRules().add(rule);
+                });
+                alreadySeen.stream().filter(list -> !queue.contains(list)).forEach(list -> {
+                    grammar.getRules().add(new Rule(nonterminal,list));
+                });
             }
         });
         if(pointsOnLambda) {
             ArrayList<Symbol> tmp=new ArrayList<>();
             tmp.add(Terminal.NULLSYMBOL);
             grammar.getTerminals().add(Terminal.NULLSYMBOL);
-            grammar.getStartSymbol().getSymbolLists().add(tmp);
+            grammar.getRules().add(new Rule(grammar.getStartSymbol(),tmp));
         }
     }
 
@@ -1007,7 +1012,7 @@ public class GrammarUtil {
     private static HashSet<Node> findUnitRules(Grammar g) {
         HashSet<Node> result=new HashSet<>();
         g.getNonterminals().stream().
-                filter(nonterminal -> GrammarUtil.isLeftSideOfUnitRule(nonterminal) || GrammarUtil.isRightSideOfUnitRule(nonterminal,g)).
+                filter(nonterminal -> GrammarUtil.isLeftSideOfUnitRule(nonterminal,g) || GrammarUtil.isRightSideOfUnitRule(nonterminal,g)).
                 forEach(x -> result.add(new Node(x)));
 
 
@@ -1098,8 +1103,8 @@ public class GrammarUtil {
 
 
     /**
-     * removes the unit rules in a Grammar, only possible if there are no circle
-     * TODO
+     * removes the unit rules in a Grammar, only possible if there are no circles
+     * TODO What does this do? why does it return a list? is nowhere used
      * @param nodes the nonterminals as nodes. to obtain them, use
      * @param g the grammar g
      * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
@@ -1107,22 +1112,23 @@ public class GrammarUtil {
     private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
         for(int i=0;i<sorted.size();i++) {
-           Node current=sorted.get(i);
-            for(Node child : current.getChildren()) {
-                current.getValue().getSymbolLists().addAll(child.getValue().getSymbolLists());
+           Node current=sorted.get(i); //the current node
+            for(Node child : current.getChildren()) { //add all rules from the child to the current node
+                g.getRules().stream().filter(rule -> rule.getComingFrom().equals(child.getValue()))
+                        .forEach(rule -> {
+                            Rule tmp = rule.copy();
+                            tmp.setComingFrom(current.getValue());
+                            g.getRules().add(tmp);
+                        });
             }
         }
-        for(Node node : nodes) {
-            Nonterminal nt=node.getValue();
-            HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                if(list.size()>1 || !(list.get(0) instanceof Nonterminal)) {
-                    tmpSet.add(list);
-                }
-            }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmpSet);
-        }
+
+        // remove the unit rules
+        HashSet<Rule> withoutUnit = new HashSet<>();
+        g.getRules().stream()
+                .filter(rule -> rule.getRightSide().size()>1 || rule.getRightSide().get(0) instanceof Terminal)
+                .forEach(withoutUnit::add);
+        g.setRules(withoutUnit);
         return sorted;
     }
 
@@ -1185,40 +1191,21 @@ public class GrammarUtil {
      * @param g the grammar g
      */
     private static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
-        for(Nonterminal nt : g.getNonterminals()) {
-            // a temporary HashSet containing the changed (and not changed) rules
-            HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                ArrayList<Symbol> tmpList=new ArrayList<>();
-                for(int i=0;i<list.size();i++) {
-                    if(list.get(i).equals(toBeReplaced)) {
-                        tmpList.add(newNonterminal);
-                    } else {
-                        tmpList.add(list.get(i));
-                    }
-                }
-                //tmpList contains the new rule which is now added to the hashset.
-                //because we add them to the new hashset no duplicates can occure
-                tmpSet.add(tmpList);
+        g.getRules().forEach(rule -> {
+            if (rule.getComingFrom().equals(toBeReplaced)) {
+                rule.setComingFrom(newNonterminal);
             }
-            nt.getSymbolLists().clear();
-            nt.getSymbolLists().addAll(tmpSet);
-        }
-        newNonterminal.getSymbolLists().addAll(toBeReplaced.getSymbolLists());
-        g.getNonterminals().remove(toBeReplaced);
-        if(g.getStartSymbol().equals(toBeReplaced)) {
-            g.setStartSymbol(newNonterminal);
-        }
-        for(Nonterminal nonterminal : g.getNonterminals()) {
-            HashSet<ArrayList<Symbol>> tmp=new HashSet<>();
-            for(ArrayList<Symbol> list : nonterminal.getSymbolLists()) {
-                if(list.size()>1 || !(list.get(0) instanceof Nonterminal) || !list.get(0).equals(nonterminal)) {
-                    tmp.add(list);
+            ArrayList<Symbol> newRightSide = new ArrayList<Symbol>();
+            rule.getRightSide().forEach(symbol -> {
+                if (symbol.equals(toBeReplaced)) {
+                    newRightSide.add(newNonterminal);
+                } else {
+                    newRightSide.add(symbol);
                 }
-            }
-            nonterminal.getSymbolLists().clear();
-            nonterminal.getSymbolLists().addAll(tmp);
-        }
+            });
+            rule.setRightSide(newRightSide);
+        });
+
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
@@ -1250,6 +1237,7 @@ public class GrammarUtil {
     }
 
     private static Grammar chomskyNormalForm_StepOne(Grammar g) {
+        /**
         HashSet<Nonterminal> newNonTerminals=new HashSet<>();
         for(Nonterminal nt : g.getNonterminals()) {
             for(ArrayList<Symbol> list : nt.getSymbolLists()) {
@@ -1286,6 +1274,7 @@ public class GrammarUtil {
 
             }
         }
+         **/
         return g;
     }
 
@@ -1294,6 +1283,7 @@ public class GrammarUtil {
      * @param g
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g) {
+        /**
         int counter=1;
         boolean changed=true;
         while(changed) {
@@ -1322,6 +1312,7 @@ public class GrammarUtil {
             }
             g.getNonterminals().addAll(newNonTerminals);
         }
+         **/
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
@@ -1364,11 +1355,11 @@ public class GrammarUtil {
         Matrix m=GrammarUtil.createMatrix(word);
         for(int i=1;i<=word.length();i++) {
             final int j=i;
-            ArrayList<Nonterminal> tmp=(ArrayList<Nonterminal>) g.getNonterminals().stream().
-                    filter(nt -> nt.getSymbolLists().stream().
-                            anyMatch(list ->
-                                    list.size()==1 && GrammarUtil.pointsOnCurrentChar(word,j,list))).
-                    collect(Collectors.toList());
+
+            ArrayList<Nonterminal> tmp=(ArrayList<Nonterminal>)  g.getRules().stream()
+                    .filter(rule -> rule.getRightSide().size()==1 && GrammarUtil.pointsOnCurrentChar(word,j,rule.getRightSide()))
+                    .map(rule -> rule.getComingFrom())
+                    .collect(Collectors.toList());
             for(Nonterminal nt : tmp) {
                 m.addToCell(i,0,nt);
             }
@@ -1380,15 +1371,21 @@ public class GrammarUtil {
                 for(int k=0;k<j;k++) {
 
                     for(Nonterminal nonterminal : g.getNonterminals()) {
-                        for(ArrayList<Symbol> list : nonterminal.getSymbolLists()) {
-                            if(list.size()==2) {
-                                Nonterminal b= (Nonterminal) list.get(0);
-                                Nonterminal c= (Nonterminal) list.get(1);
-                                if(m.getCell(i,k).contains(b) && m.getCell(i+k+1,j-k-1).contains(c)) {
-                                    m.addToCell(i,j,nonterminal);
-                                }
-                            }
-                        }
+                        int finalI = i;
+                        int finalK = k;
+                        int finalJ = j;
+                        g.getRules().stream()
+                                .filter(rule -> rule.getComingFrom().equals(nonterminal))
+                                .map(rule -> rule.getRightSide())
+                                .forEach(list -> {
+                                    if(list.size()==2) {
+                                        Nonterminal b= (Nonterminal) list.get(0);
+                                        Nonterminal c= (Nonterminal) list.get(1);
+                                        if(m.getCell(finalI, finalK).contains(b) && m.getCell(finalI + finalK +1, finalJ - finalK -1).contains(c)) {
+                                            m.addToCell(finalI, finalJ,nonterminal);
+                                        }
+                                    }
+                                });
                     }
                 }
             }
@@ -1397,130 +1394,6 @@ public class GrammarUtil {
 
     }
 
-    /**
-     * Calculates some syntax trees of the word in the matrix
-     * @param matrix
-     * @param grammar
-     * @return
-     */
-    public static LinkedHashSet<Node> makeSyntaxTrees(Matrix matrix, Grammar grammar) {
-        if(checkMatrix(matrix,grammar)) { // does the language contains the word?
-            LinkedHashSet<Node> result=new LinkedHashSet<>(); //every node is the start of a tree
-            int j=matrix.getNumberOfRows()-1;
-            int i=1;
-            Nonterminal s=grammar.getStartSymbol();
-            if(s.getSymbolLists().stream().anyMatch(list -> list.size()==1 && list.get(0).getName().equals(matrix.getWord()))) {
-                result.add(new Node(s));
-            }
-            for(int k=0;k<j;k++) {
-                for(ArrayList<Symbol> list : s.getSymbolLists()) {
-                    if(list.size()==2) {
-                        Nonterminal b = (Nonterminal) list.get(0);
-                        Nonterminal c = (Nonterminal) list.get(1);
-                        if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) { // is this rule S -> BC the cause that S in the left-top corner?
-                                                                                                            // if yes, add B and C as children
-                            Node start=new Node(s);
-                            Node left=new Node(b);
-                            Node right=new Node(c);
-                            result.add(start);     // a tree was found
-
-                            start.getChildren().add(left);
-                            makeSyntaxTrees(matrix,grammar,k,i,left);  //continue with the left node and find out, why it is where it is
-                            start.getChildren().add(right);
-                            makeSyntaxTrees(matrix,grammar,j-k-1,i+k+1,right); //continue with the right node and find out why it is where it is
-                        }
-                    }
-                }
-            }
-            return result;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * find the tree that starts with the Node node, at column i and row j
-     * @param matrix the matrix of the cyk
-     * @param grammar a grammar in cnf
-     * @param j the current row
-     * @param i the current column
-     * @param node the current node
-     */
-    private static void makeSyntaxTrees(Matrix matrix, Grammar grammar, int j, int i, Node node) {
-        for(int k=0;k<j;k++) {
-            for(ArrayList<Symbol> list : node.getValue().getSymbolLists()) {
-                if(list.size()==2) {
-                    Nonterminal b = (Nonterminal) list.get(0);
-                    Nonterminal c = (Nonterminal) list.get(1);
-                    if(matrix.getCell(i,k).contains(b) && matrix.getCell(i+k+1,j-k-1).contains(c)) {
-                        Node left=new Node(b);
-                        Node right=new Node(c);
-                        node.getChildren().add(left);
-                        makeSyntaxTrees(matrix,grammar,k,i,left);
-                        node.getChildren().add(right);
-                        makeSyntaxTrees(matrix,grammar,j-k-1,i+k+1,right);
-                        return; //TODO: the loop stops here. this causes that ONE tree will be found but not ALL
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * prints all syntax trees
-     * @param matrix the matrix of the cyk
-     * @param grammar the grammar to thy cyk in cnf
-     */
-    public static void printSyntaxTrees(Matrix matrix, Grammar grammar) {
-        if(GrammarUtil.checkMatrix(matrix,grammar)) {
-            LinkedHashSet<Node> trees = GrammarUtil.makeSyntaxTrees(matrix, grammar);
-            for (Node node : trees) {
-                printSyntaxTree(matrix, grammar, node);
-            }
-        }
-    }
-    private static void printSyntaxTree(Matrix matrix, Grammar grammar, Node start) {
-        ArrayList<Node> list=new ArrayList<>();
-        list.addAll(start.getChildren());
-        System.out.printf("%s",start.getName());
-        if(start.getChildren().isEmpty()) {
-            System.out.println(" |- "+matrix.getWord());
-        } else {
-            boolean changed = true;
-            int rowcount=0;
-            while (changed) {
-                changed = false;
-                System.out.printf(" |- %s", list.stream().map(child -> child.getName()).collect(joining(", ")));
-                if(rowcount==5) {
-                    rowcount=0;
-                    System.out.println("");
-                    System.out.print(" ");
-                }
-                rowcount++;
-                int i = 0;
-                boolean stop = false;
-                while (!changed && i < list.size()) {
-                    Node toRemove = list.get(i);
-                    if (!toRemove.getChildren().isEmpty()) { // if the node has no children it is a leaf and points on a terminal symbol
-                        list.remove(i);
-                        list.addAll(i, toRemove.getChildren());
-                        changed = true;
-                    } else {
-                        if (!list.get(i).isVisited()) {
-                            list.remove(i);
-                            Node terminalNode = new Node(matrix.getWord().substring(i, i + 1)); // little cheat, because node only contains nonterminals. TODO: fix this!
-                            // so a new nonterminal with the name of the terminal is created
-                            terminalNode.setVisited(true);                                      // checks if this node without children was already replaced
-                            list.add(i, terminalNode);                                          // where this nonterminal was, there must be the i-th letter of the word
-                            changed = true;
-                        }
-                    }
-                    i++;
-                }
-            }
-            System.out.println("");
-        }
-    }
     public static boolean languageContainsWord(Grammar grammarOld, String word) {
         Grammar grammar = (Grammar) grammarOld.deep_copy();
         removeLambdaRules(grammar);
@@ -1563,7 +1436,7 @@ public class GrammarUtil {
         pda.setInitalStackLetter(PushDownAutomatonUtil.getStackLetterWithName(g.getStartSymbol().getName(),pda));
         /** create the rules **/
         for(Nonterminal nonterminal : g.getNonterminals()) {
-            GrammarUtil.nonterminalToRule(nonterminal,pda);
+            GrammarUtil.nonterminalToRule(nonterminal,pda,g);
         }
         for(Terminal a : g.getTerminals()) {
             PushDownAutomatonSimulator.Rule tmp=new PushDownAutomatonSimulator.Rule();
@@ -1635,12 +1508,14 @@ public class GrammarUtil {
      * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
      */
     private static HashSet<ArrayList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
+        HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
+        g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).map(Rule::getRightSide)
+                .forEach(tmp::add);
         HashSet<ArrayList<Symbol>> res=new HashSet<>();
         for(ArrayList<Symbol> list : tmp) {
             boolean allNull=true;
             allNull=list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL));
-            if(allNull==false) {
+            if(!allNull) {
                 res.add(list);
             }
         }
@@ -1658,27 +1533,29 @@ public class GrammarUtil {
     public static boolean specialRuleForEmptyWord(Grammar g) {
         if(GrammarUtil.startSymbolPointsOnLambda(g) && GrammarUtil.startSymbolOnRightSide(g)) {
 
-            Nonterminal newSymbol=new Nonterminal("S_0";
+            Nonterminal newSymbol=new Nonterminal("S_0");
             g.getNonterminals().add(newSymbol);
-            
-            /** old **/
-            for(Nonterminal nt : g.getNonterminals()) {
-                HashSet<ArrayList<Symbol>> newRightSide=new HashSet<>();
-                for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                    ArrayList<Symbol> tmp=new ArrayList<>();
-                    for(Symbol sym : list) {
-                        if(sym.equals(g.getStartSymbol())) {
-                            tmp.add(newSymbol);
-                        } else {
-                            tmp.add(sym);
-                        }
-                    }
-                    newRightSide.add(tmp);
-                }
-                nt.getSymbolLists().clear();
-                nt.getSymbolLists().addAll(newRightSide);
-            }
-            newSymbol.getSymbolLists().addAll(g.getStartSymbol().getSymbolLists());
+
+            g.getRules().stream()
+                    .filter(rule -> rule.getComingFrom().equals(g.getStartSymbol()))
+                    .forEach(rule -> {
+                        ArrayList<Symbol> tmp = new ArrayList<Symbol>();
+                        rule.getRightSide().forEach(symbol -> {
+                            if (symbol.equals(g.getStartSymbol())) {
+                                tmp.add(newSymbol);
+                            } else {
+                                tmp.add(symbol);
+                            }
+                        });
+                        rule.setRightSide(tmp);
+                    });
+            HashSet<Rule> newRules = new HashSet<>();
+            g.getRules().stream().filter(rule -> rule.getRightSide().equals(g.getStartSymbol())).forEach(rule -> {
+                Rule copy = rule.copy();
+                copy.setComingFrom(newSymbol);
+                newRules.add(copy);
+            });
+            g.getRules().addAll(newRules);
             return true;
 
         }

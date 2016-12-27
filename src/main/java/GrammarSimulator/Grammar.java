@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static Print.Printer.makeToGreek;
 
@@ -60,9 +61,9 @@ public class Grammar implements Printable, Storable {
         Terminal terminal = new Terminal("a");
         this.name="G";
         ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
-        this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
-        this.terminals = new HashSet<>(Arrays.asList(terminal));
-        this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
+        this.startSymbol = new Nonterminal("S");
+        this.terminals = new HashSet<>(Collections.singletonList(terminal));
+        this.nonterminals = new HashSet<>(Collections.singletonList(startSymbol));
         this.rules = new HashSet<>();
         this.startSymbol.markAsStart();
     }
@@ -128,13 +129,13 @@ public class Grammar implements Printable, Storable {
         Printer.print(GrammarUtil.getNonterminalsInOrder(this).stream().
                 map(nonterminal -> {
                     String start="\t"+nonterminal.getName() + " &\\rightarrow ";
-                    HashSet<ArrayList<Symbol>> tmp=nonterminal.getSymbolLists();
-                    start+=tmp.stream().
-                            map(list -> list.stream().
-                                    map(symbol -> symbol.getName()).
-                                    map(string -> makeToGreek(string)).
-                                    collect(joining(""))).
-                            collect(joining("\\;|\\;"));
+                    start += getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                            .map(Rule::getRightSide)
+                            .map(list -> list.stream()
+                                    .map(Symbol::getName)
+                                    .map(Printer::makeToGreek)
+                                    .collect(joining("")))
+                            .collect(joining("\\;|\\;"));
                     return start;
                 }).collect(joining(", \\\\ \n"+space)),writer);
 
@@ -165,10 +166,11 @@ public class Grammar implements Printable, Storable {
 
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
             Printer.print(nt.getName() + " --> ",writer);
-            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
-            Printer.print(tmp.stream()
-                    .map(list -> list.stream().map(symbol -> symbol.getName()).collect(joining("")))
+            Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
+                    .map(Rule::getRightSide)
+                    .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
                     .collect(joining(" | ")),writer);
+//            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
            // HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
             //Printer.print(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
             Printer.print("\n",writer);

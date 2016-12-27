@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 15.08.16.
@@ -168,150 +169,151 @@ public class EditTab implements GrammarTab {
     private void writeRules(Grammar grammar, GridPane editPane) {
         editPane.getChildren().clear();
 
-        int i = 0;
+        final int[] i = {0};
         for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
-            for (ArrayList<Symbol> symbols : nonterminal.getSymbolLists()) {
-                //Create the labels that display the current nonterminal and symbol list.
-                Label nonterminalLabel = new Label(nonterminal.getName());
-                Label symbolsLabel = new Label();
-                Label arrowLabel = new Label("-->");
+           grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                    .map(Rule::getRightSide).forEach(symbols -> {
+               //Create the labels that display the current nonterminal and symbol list.
+               Label nonterminalLabel = new Label(nonterminal.getName());
+               Label symbolsLabel = new Label();
+               Label arrowLabel = new Label("-->");
 
-                if (nonterminal.equals(grammar.getStartSymbol())) {
-                    nonterminalLabel.setStyle("-fx-font-weight: bold");
-                }
+               if (nonterminal.equals(grammar.getStartSymbol())) {
+                   nonterminalLabel.setStyle("-fx-font-weight: bold");
+               }
 
-                Pane nonterminalPane = new Pane(nonterminalLabel);
-                Pane symbolsPane = new Pane(symbolsLabel);
+               Pane nonterminalPane = new Pane(nonterminalLabel);
+               Pane symbolsPane = new Pane(symbolsLabel);
 
-                StringBuilder symbolString = new StringBuilder();
-                Iterator<Symbol> it = symbols.iterator();
-                while (it.hasNext()) {
-                    symbolString.append(it.next().getName());
+               StringBuilder symbolString = new StringBuilder();
+               Iterator<Symbol> it = symbols.iterator();
+               while (it.hasNext()) {
+                   symbolString.append(it.next().getName());
 
-                    if (it.hasNext()) {
-                        symbolString.append(", ");
-                    }
-                }
-                symbolsLabel.setText(symbolString.toString());
+                   if (it.hasNext()) {
+                       symbolString.append(", ");
+                   }
+               }
+               symbolsLabel.setText(symbolString.toString());
 
-                nonterminalPane.setOnMouseClicked(event -> {
-                    if (event.getButton().equals(MouseButton.SECONDARY)) {
-                        //If the user right-clicks the nonterminal, show a context-menu,
-                        //that gives him the opportunity to edit and delete it.
-                        MenuItem deleteItem = new MenuItem("Delete Symbol");
-                        MenuItem editItem = new MenuItem("Edit Symbol");
-                        MenuItem setAsStartSymbolItem = new MenuItem("Set as start symbol");
+               nonterminalPane.setOnMouseClicked(event -> {
+                   if (event.getButton().equals(MouseButton.SECONDARY)) {
+                       //If the user right-clicks the nonterminal, show a context-menu,
+                       //that gives him the opportunity to edit and delete it.
+                       MenuItem deleteItem = new MenuItem("Delete Symbol");
+                       MenuItem editItem = new MenuItem("Edit Symbol");
+                       MenuItem setAsStartSymbolItem = new MenuItem("Set as start symbol");
 
-                        deleteItem.setOnAction(event1 -> {
-                            deleteSymbol(grammar, nonterminal);
+                       deleteItem.setOnAction(event1 -> {
+                           deleteSymbol(grammar, nonterminal);
 
-                            writeTopLabels(grammar);
-                            writeRules(grammar, editPane);
-                        });
+                           writeTopLabels(grammar);
+                           writeRules(grammar, editPane);
+                       });
 
-                        editItem.setOnAction(event1 -> {
-                            TextField field = new TextField(nonterminal.getName());
+                       editItem.setOnAction(event1 -> {
+                           TextField field = new TextField(nonterminal.getName());
 
-                            field.setOnKeyPressed(event2 -> {
-                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                    editSymbol(grammar, nonterminal.getName(), field.getText());
+                           field.setOnKeyPressed(event2 -> {
+                               if (event2.getCode().equals(KeyCode.ENTER)) {
+                                   editSymbol(grammar, nonterminal.getName(), field.getText());
 
-                                    writeTopLabels(grammar);
-                                    writeRules(grammar, editPane);
-                                }
-                            });
+                                   writeTopLabels(grammar);
+                                   writeRules(grammar, editPane);
+                               }
+                           });
 
-                            nonterminalPane.getChildren().remove(nonterminalLabel);
-                            nonterminalPane.getChildren().add(field);
-                        });
+                           nonterminalPane.getChildren().remove(nonterminalLabel);
+                           nonterminalPane.getChildren().add(field);
+                       });
 
-                        setAsStartSymbolItem.setOnAction(event1 -> {
-                            grammar.setStartSymbol(nonterminal);
+                       setAsStartSymbolItem.setOnAction(event1 -> {
+                           grammar.setStartSymbol(nonterminal);
 
-                            writeTopLabels(grammar);
-                            writeRules(grammar, editPane);
-                        });
+                           writeTopLabels(grammar);
+                           writeRules(grammar, editPane);
+                       });
 
-                        mouseMenu.getItems().clear();
-                        mouseMenu.getItems().addAll(editItem, deleteItem, setAsStartSymbolItem);
-                        mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
+                       mouseMenu.getItems().clear();
+                       mouseMenu.getItems().addAll(editItem, deleteItem, setAsStartSymbolItem);
+                       mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
 
-                    } else if (event.getClickCount() == 2) {
-                        //If the user double-clicks the nonterminal, replace the label with a textfield,
-                        //so that the user can edit it.
-                        String oldName = nonterminal.getName();
-                        TextField field = new TextField(oldName);
+                   } else if (event.getClickCount() == 2) {
+                       //If the user double-clicks the nonterminal, replace the label with a textfield,
+                       //so that the user can edit it.
+                       String oldName = nonterminal.getName();
+                       TextField field = new TextField(oldName);
 
-                        field.setOnKeyPressed(event1 -> {
-                            if(event1.getCode().equals(KeyCode.ENTER)) {
-                                if(!field.getText().isEmpty()) {
-                                    editSymbol(grammar, oldName, field.getText());
-                                }
-                                writeTopLabels(grammar);
-                                writeRules(grammar, editPane);
-                            }
-                        });
+                       field.setOnKeyPressed(event1 -> {
+                           if(event1.getCode().equals(KeyCode.ENTER)) {
+                               if(!field.getText().isEmpty()) {
+                                   editSymbol(grammar, oldName, field.getText());
+                               }
+                               writeTopLabels(grammar);
+                               writeRules(grammar, editPane);
+                           }
+                       });
 
-                        nonterminalPane.getChildren().remove(nonterminalLabel);
-                        nonterminalPane.getChildren().add(field);
-                    }
-                });
+                       nonterminalPane.getChildren().remove(nonterminalLabel);
+                       nonterminalPane.getChildren().add(field);
+                   }
+               });
 
-                symbolsPane.setOnMouseClicked(event -> {
-                    if (event.getButton().equals(MouseButton.SECONDARY)) {
-                        //If the user right-clicks the symbol list, show a context-menu,
-                        //that gives him the opportunity to edit the symbols and delete the entire rule.
-                        MenuItem deleteItem = new MenuItem("Delete Rule");
-                        MenuItem editItem = new MenuItem("Edit List");
+               symbolsPane.setOnMouseClicked(event -> {
+                   if (event.getButton().equals(MouseButton.SECONDARY)) {
+                       //If the user right-clicks the symbol list, show a context-menu,
+                       //that gives him the opportunity to edit the symbols and delete the entire rule.
+                       MenuItem deleteItem = new MenuItem("Delete Rule");
+                       MenuItem editItem = new MenuItem("Edit List");
 
-                        deleteItem.setOnAction(event1 -> {
-                            deleteRule(nonterminal, symbolString.toString());
+                       deleteItem.setOnAction(event1 -> {
+                           deleteRule(nonterminal, symbolString.toString());
 
-                            writeTopLabels(grammar);
-                            writeRules(grammar, editPane);
-                        });
+                           writeTopLabels(grammar);
+                           writeRules(grammar, editPane);
+                       });
 
-                        editItem.setOnAction(event1 -> {
-                            TextField field = new TextField(symbolString.toString());
+                       editItem.setOnAction(event1 -> {
+                           TextField field = new TextField(symbolString.toString());
 
-                            field.setOnKeyPressed(event2 -> {
-                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                    editRule(grammar, nonterminal, symbols, field.getText());
+                           field.setOnKeyPressed(event2 -> {
+                               if (event2.getCode().equals(KeyCode.ENTER)) {
+                                   editRule(grammar, nonterminal, symbols, field.getText());
 
-                                    writeTopLabels(grammar);
-                                    writeRules(grammar, editPane);
-                                }
-                            });
+                                   writeTopLabels(grammar);
+                                   writeRules(grammar, editPane);
+                               }
+                           });
 
-                            symbolsPane.getChildren().remove(symbolsLabel);
-                            symbolsPane.getChildren().add(field);
-                        });
+                           symbolsPane.getChildren().remove(symbolsLabel);
+                           symbolsPane.getChildren().add(field);
+                       });
 
-                        mouseMenu.getItems().clear();
-                        mouseMenu.getItems().addAll(editItem, deleteItem);
-                        mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
+                       mouseMenu.getItems().clear();
+                       mouseMenu.getItems().addAll(editItem, deleteItem);
+                       mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
 
-                    } else if (event.getClickCount() == 2) {
-                        //If the user double-clicks the symbol list, replace the label with a textfield,
-                        //so that the user can edit it.
-                        TextField field = new TextField(symbolString.toString());
+                   } else if (event.getClickCount() == 2) {
+                       //If the user double-clicks the symbol list, replace the label with a textfield,
+                       //so that the user can edit it.
+                       TextField field = new TextField(symbolString.toString());
 
-                        field.setOnKeyPressed(event1 -> {
-                            if (event1.getCode().equals(KeyCode.ENTER)) {
-                                editRule(grammar, nonterminal, symbols, field.getText());
+                       field.setOnKeyPressed(event1 -> {
+                           if (event1.getCode().equals(KeyCode.ENTER)) {
+                               editRule(grammar, nonterminal, symbols, field.getText());
 
-                                writeTopLabels(grammar);
-                                writeRules(grammar, editPane);
-                            }
-                        });
+                               writeTopLabels(grammar);
+                               writeRules(grammar, editPane);
+                           }
+                       });
 
-                        symbolsPane.getChildren().remove(symbolsLabel);
-                        symbolsPane.getChildren().add(field);
-                    }
-                });
+                       symbolsPane.getChildren().remove(symbolsLabel);
+                       symbolsPane.getChildren().add(field);
+                   }
+               });
 
-                editPane.addRow(i++, nonterminalPane, arrowLabel, symbolsPane);
-            }
+               editPane.addRow(i[0]++, nonterminalPane, arrowLabel, symbolsPane);
+                    });
         }
     }
 
@@ -321,6 +323,7 @@ public class EditTab implements GrammarTab {
      * @param grammar The grammar.
      */
     private void addRule(Grammar grammar) {
+
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("STUPS-Toolbox");
@@ -357,17 +360,18 @@ public class EditTab implements GrammarTab {
 
             if (!nonterminalsMap.containsKey(name)) {
                 //If the entered nonterminal is not contained in the grammar's nonterminals, create a new one.
-                nonterminal = new Nonterminal(name, new HashSet<>());
+                nonterminal = new Nonterminal(name);
 
                 if (terminalsMap.containsKey(name)) {
                     //If the entered nonterminal is contained in the grammar's terminals,
                     //Replace every occurence of this terminal with the new nonterminal.
                     for (Nonterminal nt : grammar.getNonterminals()) {
-                        for (ArrayList<Symbol> sl : nt.getSymbolLists()) {
+                        grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
+                                .map(Rule::getRightSide).forEach(sl -> {
                             if (sl.contains(terminalsMap.get(name))) {
                                 Collections.replaceAll(sl, terminalsMap.get(name), nonterminal);
                             }
-                        }
+                        });
                     }
 
                     grammar.getTerminals().remove(terminalsMap.get(name));
@@ -405,6 +409,7 @@ public class EditTab implements GrammarTab {
             alert.setHeaderText("Please fill in all fields!");
             alert.showAndWait();
         }
+      
     }
 
     /**

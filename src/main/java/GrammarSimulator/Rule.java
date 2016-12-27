@@ -11,7 +11,24 @@ public class Rule {
 
     public Rule(Nonterminal comingFrom) {
         this.comingFrom = comingFrom;
-        rightSide = new ArrayList<>();
+        this.rightSide = new ArrayList<>();
+    }
+
+    public Rule(Nonterminal comingFrom, ArrayList<Symbol> rightSide) {
+        this.comingFrom = comingFrom;
+        this.rightSide = rightSide;
+    }
+
+    public Rule(Rule old) {
+        this.comingFrom = new Nonterminal(old.getComingFrom().getName());
+        this.rightSide = new ArrayList<>();
+        old.getRightSide().forEach(symbol -> {
+            if (symbol instanceof Nonterminal) {
+                this.rightSide.add(new Nonterminal(symbol.getName()));
+            } else {
+                this.rightSide.add(new Terminal(symbol.getName()));
+            }
+        });
     }
 
     public Nonterminal getComingFrom() {
@@ -28,5 +45,9 @@ public class Rule {
 
     public void setRightSide(ArrayList<Symbol> rightSide) {
         this.rightSide = rightSide;
+    }
+
+    public Rule copy() {
+        return new Rule(this);
     }
 }
