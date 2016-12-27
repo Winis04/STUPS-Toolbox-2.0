@@ -16,7 +16,9 @@ public class Rule {
 
     public Rule(Nonterminal comingFrom, ArrayList<Symbol> rightSide) {
         this.comingFrom = comingFrom;
+
         this.rightSide = rightSide;
+
     }
 
     public Rule(Rule old) {

@@ -80,6 +80,22 @@ public class Grammar implements Printable, Storable {
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
         this.startSymbol.markAsStart();
+        this.rules = new HashSet<>();
+    }
+
+    /**
+     * The constructor for a grammar with a given set of terminals and nonterminals.
+     *
+     * @param terminals The grammar's set of terminals.
+     * @param nonterminals The grammar's set of nonterminals.
+     * @param startSymbol The grammar's start symbol.
+     */
+    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol, HashSet<Rule> rules) {
+        this.terminals = terminals;
+        this.nonterminals = nonterminals;
+        this.startSymbol = startSymbol;
+        this.startSymbol.markAsStart();
+        this.rules = rules;
     }
 
     /**
@@ -92,15 +108,22 @@ public class Grammar implements Printable, Storable {
         for(Terminal t : old.getTerminals()) { //adds the Terminals
             this.terminals.add(new Terminal(t.getName()));
         }
+        for(Nonterminal nt : old.getNonterminals())  {
+            this.nonterminals.add(new Nonterminal(nt.getName()));
+        }
         this.name=old.getNameWithoutSuffix();
         this.suffix=old.getSuffix();
         if(newName) {
             this.modifyName();
         }
-        this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
+        this.startSymbol=new Nonterminal(old.getStartSymbol().getName());
         this.startSymbol.markAsStart();
-        GrammarUtil.replaceLambda(this);
+        this.rules = new HashSet<>();
+        for(Rule rule : old.getRules()) {
+            this.rules.add(rule.copy());
+        }
         this.previousVersion = (Grammar) old.getPreviousVersion();
+
     }
 
 

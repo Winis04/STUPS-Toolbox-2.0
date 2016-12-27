@@ -438,24 +438,9 @@ public class GrammarUtil {
      * @return A HashSet containing all nullable nonterminals,
      */
     public static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
-        PrintableSet result=new PrintableSet(1);
-        ArrayList<Boolean> wrapper = new ArrayList<>();
-        wrapper.add(new Boolean(true));
-
-        while(wrapper.get(0)) {
-            wrapper.set(0,new Boolean(true));
-            for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
-
-                    if(symbolList.stream().allMatch(symbol -> (symbol.getName().equals("epsilon") || result.contains(symbol))) && !result.contains(nonterminal)) {
-                        result.add(nonterminal);
-                        wrapper.set(0,new Boolean(true));
-                    }
-                });
-            }
-        }
-
+        HashSet<Nonterminal> res = calculateNullable(grammar);
+        PrintableSet result = new PrintableSet(res.size());
+        res.forEach(nt -> result.add(nt));
         return  result;
     }
     /**
@@ -738,30 +723,17 @@ public class GrammarUtil {
     }
 
     static void replaceLambda(Grammar g) {
-        Iterator<Terminal> it=g.getTerminals().iterator();
-        boolean hasNull=false;
-        Terminal toRemove=null;
-        while(it.hasNext()) {
-            Terminal t=it.next();
-            if(t.getName().equals("epsilon") || t.getName().equals("lambda")) {
-                toRemove=t;
-                hasNull=true;
-            }
-        }
-        if(hasNull) {
-            g.getTerminals().remove(toRemove);
-            g.getTerminals().add(Terminal.NULLSYMBOL);
-        }
-        for(Nonterminal nt : g.getNonterminals()) {
-            g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
-                    .map(rule -> rule.getRightSide()).forEach(list -> {
-                for(int i=0;i<list.size();i++) {
-                    if(list.get(i).equals(new Terminal("epsilon"))||list.get(i).equals(new Terminal("lambda"))) {
-                        list.set(i,Terminal.NULLSYMBOL);
-                    }
+        g.getRules().forEach(rule -> {
+            ArrayList<Symbol> right = new ArrayList<Symbol>();
+            rule.getRightSide().forEach(sym -> {
+                if(sym.getName().equals("epsilon")||sym.getName().equals("lambda")) {
+                    right.add(Terminal.NULLSYMBOL);
+                } else {
+                    right.add(sym);
                 }
-            }); //
-        }
+            });
+            rule.setRightSide(right);
+        });
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*

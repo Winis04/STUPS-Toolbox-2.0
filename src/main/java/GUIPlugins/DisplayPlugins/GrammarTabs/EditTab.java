@@ -323,7 +323,7 @@ public class EditTab implements GrammarTab {
      * @param grammar The grammar.
      */
     private void addRule(Grammar grammar) {
-
+        /**
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("STUPS-Toolbox");
@@ -409,7 +409,7 @@ public class EditTab implements GrammarTab {
             alert.setHeaderText("Please fill in all fields!");
             alert.showAndWait();
         }
-      
+      **/
     }
 
     /**
@@ -419,6 +419,7 @@ public class EditTab implements GrammarTab {
      * @param nonterminal The nonterminal.
      */
     private void deleteSymbol(Grammar grammar, Nonterminal nonterminal) {
+        /**
         grammar.getNonterminals().remove(nonterminal);
         nonterminalsMap.remove(nonterminal.getName());
         for (Nonterminal nonterminal2 : grammar.getNonterminals()) {
@@ -428,6 +429,7 @@ public class EditTab implements GrammarTab {
                 }
             }
         }
+         **/
     }
 
     /**
@@ -437,6 +439,7 @@ public class EditTab implements GrammarTab {
      * @param symbolString A string, containing the symbols, seperated by commas.
      */
     private void deleteRule(Nonterminal nonterminal, String symbolString) {
+        /**
         ArrayList<Symbol> symbolList = new ArrayList<>();
 
         StringTokenizer tok = new StringTokenizer(symbolString.replaceAll(" ", ""), ",");
@@ -449,7 +452,7 @@ public class EditTab implements GrammarTab {
             }
         }
         nonterminal.getSymbolLists().remove(symbolList);
-
+        **/
     }
 
     /**
@@ -460,6 +463,7 @@ public class EditTab implements GrammarTab {
      * @param newName The nonterminal's new name.
      */
     private void editSymbol(Grammar grammar, String oldName, String newName) {
+        /**
         Nonterminal editedSymbol = nonterminalsMap.get(oldName);
         nonterminalsMap.remove(oldName);
         editedSymbol.setName(newName);
@@ -493,6 +497,7 @@ public class EditTab implements GrammarTab {
         } else {
             nonterminalsMap.put(newName, editedSymbol);
         }
+         **/
     }
 
     /**
@@ -504,6 +509,7 @@ public class EditTab implements GrammarTab {
      * @param newSymbols A string, containing the new symbol list.
      */
     private void editRule(Grammar grammar, Nonterminal nonterminal, ArrayList<Symbol> oldSymbols, String newSymbols) {
+        /**
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
 
@@ -522,11 +528,12 @@ public class EditTab implements GrammarTab {
                 }
             }
         }
-
+        **/
         /*
          * The following code should not be needed...
          * For some weird reason 'nonterminal.getSymbolLists().remove(oldSymbols);' does not work.
          */
+        /**
         HashSet<ArrayList<Symbol>> symbolLists = new HashSet<>();
         for(ArrayList<Symbol> sl : nonterminal.getSymbolLists()) {
             if(!sl.equals(oldSymbols)) {
@@ -537,5 +544,6 @@ public class EditTab implements GrammarTab {
         nonterminal.getSymbolLists().addAll(symbolLists);
 
         nonterminal.getSymbolLists().add(newList);
+     **/
     }
 }

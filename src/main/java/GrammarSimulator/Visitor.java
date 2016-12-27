@@ -26,6 +26,7 @@ public class Visitor extends DepthFirstAdapter {
     public void inASymbols(ASymbols node) {
         terminals = new HashMap<>();
         nonterminals = new HashMap<>();
+        rules = new HashSet<>();
 
         for(TIdentifier nonterminal : node.getNonterminals()) {
             nonterminals.put(nonterminal.getText(), new Nonterminal(nonterminal.getText()));
@@ -76,7 +77,8 @@ public class Visitor extends DepthFirstAdapter {
     @Override
     public void outARoot(ARoot node) {
         startSymbol.markAsStart();
-        grammar = new Grammar(new HashSet<>(terminals.values()), new HashSet<>(nonterminals.values()), startSymbol);
+        grammar = new Grammar(new HashSet<>(terminals.values()), new HashSet<>(nonterminals.values()), startSymbol,rules);
+
     }
 
     public Grammar getGrammar() {
