@@ -1144,6 +1144,29 @@ public class GrammarUtil {
     private static void removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
 
+        //add every rule of the child as a rule of the parent
+        HashSet<Rule> copies = new HashSet<>();
+        for(int i=0;i<sorted.size();i++) {
+            Node current = sorted.get(i);
+            for(Node child : current.getChildren()) {
+                g.getRules().stream()
+                        .filter(rule -> rule.getComingFrom().equals(child.getValue()))
+                        .forEach(rule -> {
+                            Rule copy = new Rule(current.getValue(),rule.getRightSide());
+                            copies.add(copy);
+                        });
+            }
+        }
+        g.getRules().addAll(copies);
+
+        //remove unit rules
+        HashSet<Rule> freshRules = new HashSet<>();
+        g.getRules().forEach(rule -> {
+            if(rule.getRightSide().size()>1 || rule.getRightSide().get(0) instanceof Terminal) {
+                freshRules.add(rule);
+            }
+        });
+        g.setRules(freshRules);
     }
 
     /**
