@@ -65,7 +65,6 @@ public class Grammar implements Printable, Storable {
         this.terminals = new HashSet<>(Collections.singletonList(terminal));
         this.nonterminals = new HashSet<>(Collections.singletonList(startSymbol));
         this.rules = new HashSet<>();
-        this.startSymbol.markAsStart();
     }
 
     /**
@@ -79,7 +78,6 @@ public class Grammar implements Printable, Storable {
         this.terminals = terminals;
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
-        this.startSymbol.markAsStart();
         this.rules = new HashSet<>();
     }
 
@@ -94,7 +92,6 @@ public class Grammar implements Printable, Storable {
         this.terminals = terminals;
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
-        this.startSymbol.markAsStart();
         this.rules = rules;
     }
 
@@ -117,7 +114,6 @@ public class Grammar implements Printable, Storable {
             this.modifyName();
         }
         this.startSymbol=new Nonterminal(old.getStartSymbol().getName());
-        this.startSymbol.markAsStart();
         this.rules = new HashSet<>();
         for(Rule rule : old.getRules()) {
             this.rules.add(rule.copy());

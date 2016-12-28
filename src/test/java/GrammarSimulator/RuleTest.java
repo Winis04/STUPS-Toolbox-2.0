@@ -2,6 +2,8 @@ package GrammarSimulator;
 
 import org.junit.Test;
 
+import java.util.HashSet;
+
 import static org.junit.Assert.*;
 
 /**
@@ -34,6 +36,18 @@ public class RuleTest {
         rule2.setRightSide(right2);
 
         assertTrue(rule.equals(rule2));
+        HashSet<Rule> test = new HashSet<>();
+        test.add(rule);
+        test.add(rule2);
+        assertTrue(test.size()==1);
+        Rule rule3  = new Rule(new Nonterminal("A"));
+        RightSide<Symbol> right3 = new RightSide<>();
+        right3.add(new Nonterminal("A"));
+        right3.add(new Terminal("C"));
+        right3.add(new Nonterminal("dfklsj"));
+        rule3.setRightSide(right3);
+        test.add(rule3);
+        assertTrue(test.size()==2);
     }
 
 }

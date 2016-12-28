@@ -717,20 +717,26 @@ public class GrammarUtil {
     }
 
 
-    public static void removeUnneccesaryEpsilons(Grammar g) {
+    private static void removeUnneccesaryEpsilons(Grammar g) {
         g.getRules().forEach(rule -> {
             if (rule.getRightSide().size() != 1) {
-                List<Symbol> tmp = new RightSide<>();
-                tmp = rule.getRightSide().stream()
-                        .filter(symbol -> !symbol.equals(Terminal.NULLSYMBOL))
-                        .collect(Collectors.toList());
-                rule.setRightSide(tmp);
+                if(rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL))) {
+                    List<Symbol> tmp = new RightSide<>();
+                    tmp.add(Terminal.NULLSYMBOL);
+                    rule.setRightSide(tmp);
+                } else {
+                    List<Symbol> tmp = new RightSide<>();
+                    tmp = rule.getRightSide().stream()
+                            .filter(symbol -> !symbol.equals(Terminal.NULLSYMBOL))
+                            .collect(Collectors.toList());
+                    rule.setRightSide(tmp);
+                }
             }
         });
 
     }
 
-    static void replaceLambda(Grammar g) {
+    private static void replaceLambda(Grammar g) {
         g.getRules().forEach(rule -> {
             RightSide<Symbol> right = new RightSide<Symbol>();
             rule.getRightSide().forEach(sym -> {
@@ -794,7 +800,7 @@ public class GrammarUtil {
      * furthermore, nonterminals, which now do not appear on the rigth side of any rule, are removed
      * @param g the grammar g
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method
-     *              has to be called again, but this time with again set to false
+     *              has to be called again, but this time with "again" set to false
      */
     private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
         boolean startSymbolPointsOnLamda=GrammarUtil.startSymbolPointsOnLambda(g);
@@ -1341,7 +1347,7 @@ public class GrammarUtil {
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream()
-                .filter(rule -> !rule.getComingFrom().isStart())
+                .filter(rule -> !rule.getComingFrom().equals(grammar.getStartSymbol()))
                 .map(rule -> rule.getRightSide())
                 .allMatch(list -> (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof Nonterminal)));
     }

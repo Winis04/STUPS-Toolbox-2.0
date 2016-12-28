@@ -72,4 +72,9 @@ public class Rule {
             return false;
         }
     }
+
+    @Override
+    public int hashCode() {
+        return this.comingFrom.hashCode();
+    }
 }

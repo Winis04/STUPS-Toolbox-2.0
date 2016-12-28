@@ -76,7 +76,6 @@ public class Visitor extends DepthFirstAdapter {
 
     @Override
     public void outARoot(ARoot node) {
-        startSymbol.markAsStart();
         grammar = new Grammar(new HashSet<>(terminals.values()), new HashSet<>(nonterminals.values()), startSymbol,rules);
 
     }
