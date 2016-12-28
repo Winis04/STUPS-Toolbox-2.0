@@ -2,6 +2,8 @@ package GrammarSimulator;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /**
@@ -10,14 +12,10 @@ import static org.junit.Assert.*;
 public class RightSideTest {
     @Test
     public void equals() throws Exception {
-        RightSide<Symbol> a = new RightSide<>();
-        a.add(new Nonterminal("A"));
-        a.add(new Nonterminal("B"));
-        RightSide<Symbol> b = new RightSide<>();
-        b.add(new Nonterminal("A"));
-        b.add(new Nonterminal("B"));
-        RightSide<Symbol> c = new RightSide<>();
-        c.add(new Nonterminal("C"));
+
+        RightSide<Symbol> a = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        RightSide<Symbol> b = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        RightSide<Symbol> c = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("C"), new Nonterminal("D")}));
         assertTrue(a.equals(b));
         assertTrue(b.equals(a));
         assertTrue(a.equals(a));
@@ -29,9 +27,7 @@ public class RightSideTest {
 
     @Test
     public void contains() throws Exception {
-        RightSide<Symbol> a = new RightSide<>();
-        a.add(new Nonterminal("A"));
-        a.add(new Nonterminal("B"));
+        RightSide<Symbol> a = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
         assertTrue(a.contains(new Nonterminal("A")));
     }
 

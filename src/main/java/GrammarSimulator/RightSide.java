@@ -1,11 +1,17 @@
 package GrammarSimulator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Isabel on 27.12.2016.
  */
 public class RightSide<E> extends ArrayList<E> {
+    public RightSide(List<E> rightSide) {
+        this.addAll(rightSide);
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o instanceof RightSide) {

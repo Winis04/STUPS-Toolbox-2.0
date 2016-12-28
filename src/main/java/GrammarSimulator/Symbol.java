@@ -13,12 +13,5 @@ public interface Symbol {
      */
     String getName();
 
-    /**
-     * Sets the symbol's name.
-     *
-     * @param name The symbol's name.
-     */
-    void setName(String name);
-
     boolean equals(Object o);
 }

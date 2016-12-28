@@ -3,12 +3,12 @@ package GrammarSimulator;
 /**
  * Created by fabian on 06.08.16.
  */
-public class Terminal implements Symbol {
+public final class Terminal implements Symbol {
 
     /**
      * The terminal's name.
      */
-    private String name;
+    private final String name;
 
     public static final Terminal NULLSYMBOL=new Terminal("epsilon");
 
@@ -26,10 +26,6 @@ public class Terminal implements Symbol {
         return name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
     @Override
     public boolean equals(Object o) {
         return o instanceof Terminal && ((Terminal)o).getName().equals(name);

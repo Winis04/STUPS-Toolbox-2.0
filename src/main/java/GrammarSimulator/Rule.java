@@ -1,59 +1,47 @@
 package GrammarSimulator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by isabel on 22.12.16.
  */
-public class Rule {
-    private Nonterminal comingFrom;
-    private RightSide<Symbol> rightSide;
+public final class Rule {
+    private final Nonterminal comingFrom;
+    private final RightSide<Symbol> rightSide;
 
-    public Rule(Nonterminal comingFrom) {
-        this.comingFrom = comingFrom;
-        this.rightSide = new RightSide<>();
-    }
-
-    public Rule(Nonterminal comingFrom, ArrayList<Symbol> rightSide) {
+    public Rule(Nonterminal comingFrom, List<Symbol> rightSide) {
         this.comingFrom = comingFrom;
 
-        this.rightSide = new RightSide<>();
-        this.rightSide.addAll(rightSide);
+        this.rightSide = new RightSide<>(rightSide);
 
     }
 
     public Rule(Rule old) {
         this.comingFrom = new Nonterminal(old.getComingFrom().getName());
-        this.rightSide = new RightSide<>();
-        old.getRightSide().forEach(symbol -> {
+
+        List<Symbol> list =old.getRightSide().stream().map(symbol ->{
             if (symbol instanceof Nonterminal) {
-                this.rightSide.add(new Nonterminal(symbol.getName()));
+                return new Nonterminal(symbol.getName());
             } else {
-                this.rightSide.add(new Terminal(symbol.getName()));
+                return new Terminal(symbol.getName());
             }
-        });
+        }).collect(Collectors.toList());
+       this.rightSide = new RightSide<>(list);
     }
 
     public Nonterminal getComingFrom() {
         return comingFrom;
     }
 
-    public void setComingFrom(Nonterminal comingFrom) {
-        this.comingFrom = comingFrom;
-    }
 
     public RightSide<Symbol> getRightSide() {
         return rightSide;
     }
 
-    public void setRightSide(List<Symbol> rightSide) {
-        this.rightSide = new RightSide<>();
-        this.rightSide.addAll(rightSide);
-    }
-    public void setRightSide(RightSide<Symbol> rightSide) {
-        this.rightSide = rightSide;
-    }
+
 
     public Rule copy() {
         return new Rule(this);

@@ -13,13 +13,13 @@ import static Print.Printer.printmode;
 /**
  * Created by fabian on 06.08.16.
  */
-public class Nonterminal implements Symbol, Printable {
+public final class Nonterminal implements Symbol, Printable {
 
 
     /**
      * The nonterminal's name.
      */
-    private String name;
+    private final String name;
 
 
     /**
@@ -37,10 +37,6 @@ public class Nonterminal implements Symbol, Printable {
         return name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {

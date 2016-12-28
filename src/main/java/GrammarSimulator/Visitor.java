@@ -10,6 +10,7 @@ import GrammarSimulator.Terminal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by fabian on 06.08.16.
@@ -54,8 +55,8 @@ public class Visitor extends DepthFirstAdapter {
             System.exit(1);
         }
 
-        Rule rule = new Rule(new Nonterminal(node.getComingFrom().getText()));
-        RightSide<Symbol> rightSide = new RightSide<>();
+
+        List<Symbol> rightSide = new ArrayList<>();
 
         for(TSymbol symbol : node.getGoingTo()) {
             if(terminals.containsKey(symbol.getText().replaceAll("'", ""))) {
@@ -70,7 +71,7 @@ public class Visitor extends DepthFirstAdapter {
                 System.exit(1);
             }
         }
-        rule.setRightSide(rightSide);
+        Rule rule = new Rule(new Nonterminal(node.getComingFrom().getText()),rightSide);
         rules.add(rule);
     }
 
