@@ -1142,6 +1142,7 @@ public class GrammarUtil {
      * @param g the grammar g
      */
     private static void removeUnitRules(HashSet<Node> nodes, Grammar g) {
+        ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
 
     }
 
