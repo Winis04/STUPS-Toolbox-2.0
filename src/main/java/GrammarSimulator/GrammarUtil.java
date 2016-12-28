@@ -878,11 +878,6 @@ public class GrammarUtil {
         if(!queue.isEmpty()) {
             boolean changed= true;
             while(changed) {
-                System.out.println(": "+ queue.stream()
-                        .map(rule ->
-                                rule.getComingFrom().getName()+" --> "+rule.getRightSide().stream()
-                                        .map(s -> s.getName()).collect(joining(", ")))
-                        .collect(joining("||")));
                 changed=false;
                 Rule current = queue.poll();
                 Rule fresh = new Rule(current.getComingFrom());
@@ -986,10 +981,10 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
     public static ArrayList<Printable> eliminateUnitRules(Grammar grammar) {
-        grammar.savePreviousVersion();
-        ArrayList<Printable> res=new ArrayList<>(3);
+        grammar.savePreviousVersion(); //for undo
+        ArrayList<Printable> res=new ArrayList<>(3); //the results
 
-
+        Grammar grammar0=new Grammar(grammar,true);
         Grammar grammar1=new Grammar(grammar,true);
         GrammarUtil.removeCircleRulesAndGetUnitRules(grammar1);
 
@@ -998,7 +993,7 @@ public class GrammarUtil {
         HashSet<Node> unitRules=GrammarUtil.removeCircleRulesAndGetUnitRules(grammar2);
         GrammarUtil.removeUnitRules(unitRules,grammar2);
 
-        res.add(grammar);
+        res.add(grammar0);
         res.add(grammar1);
         res.add(grammar2);
         /** change original grammar **/
@@ -1139,27 +1134,8 @@ public class GrammarUtil {
      * @param g the grammar g
      * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
      */
-    private static ArrayList<Node> removeUnitRules(HashSet<Node> nodes, Grammar g) {
-        ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
-        for(int i=0;i<sorted.size();i++) {
-           Node current=sorted.get(i); //the current node
-            for(Node child : current.getChildren()) { //add all rules from the child to the current node
-                g.getRules().stream().filter(rule -> rule.getComingFrom().equals(child.getValue()))
-                        .forEach(rule -> {
-                            Rule tmp = rule.copy();
-                            tmp.setComingFrom(current.getValue());
-                            g.getRules().add(tmp);
-                        });
-            }
-        }
+    private static void removeUnitRules(HashSet<Node> nodes, Grammar g) {
 
-        // remove the unit rules
-        HashSet<Rule> withoutUnit = new HashSet<>();
-        g.getRules().stream()
-                .filter(rule -> rule.getRightSide().size()>1 || rule.getRightSide().get(0) instanceof Terminal)
-                .forEach(withoutUnit::add);
-        g.setRules(withoutUnit);
-        return sorted;
     }
 
     /**
