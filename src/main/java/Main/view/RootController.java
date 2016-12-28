@@ -135,14 +135,11 @@ public class RootController {
                     gui.getCli().objects.put(Grammar.class, grammar);
                     gui.switchDisplayGui(Grammar.class);
                     gui.refresh(grammar);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (LexerException e) {
-                    e.printStackTrace();
-                } catch (ParserException e) {
-                    e.printStackTrace();
+                    gui.errorDialog("I/O Error");
+
+                } catch (LexerException | ParserException e) {
+                    gui.errorDialog("this is not a grammar!");
                 }
             }
         }
@@ -164,14 +161,10 @@ public class RootController {
                 gui.getCli().objects.put(Automaton.class, automaton);
                 gui.switchDisplayGui(Automaton.class);
                 gui.refresh(automaton);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (AutomatonParser.lexer.LexerException e) {
-                e.printStackTrace();
-            } catch (AutomatonParser.parser.ParserException e) {
-                e.printStackTrace();
+                gui.errorDialog(e.getMessage());
+            } catch (AutomatonParser.lexer.LexerException | AutomatonParser.parser.ParserException e) {
+                gui.errorDialog("this is not an automaton!");
             }
         }
 
@@ -192,14 +185,10 @@ public class RootController {
                 gui.getCli().objects.put(PushDownAutomaton.class, automaton);
                 gui.switchDisplayGui(PushDownAutomaton.class);
                 gui.refresh(automaton);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (PushDownAutomatonParser.lexer.LexerException e) {
-                e.printStackTrace();
-            } catch (PushDownAutomatonParser.parser.ParserException e) {
-                e.printStackTrace();
+                gui.errorDialog(e.getMessage());
+            } catch (PushDownAutomatonParser.lexer.LexerException | PushDownAutomatonParser.parser.ParserException e) {
+                gui.errorDialog("this is not a push down automaton");
             }
         }
 

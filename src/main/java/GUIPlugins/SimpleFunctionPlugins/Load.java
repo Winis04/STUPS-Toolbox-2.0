@@ -18,6 +18,9 @@ public class Load extends SimpleFunctionPlugin {
 
             gui.getRootController().loadAutomaton();
         }
+        if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("PushDownAutomaton")) {
+            gui.getRootController().loadPushDownAutomaton();
+        }
         return null;
     }
 
