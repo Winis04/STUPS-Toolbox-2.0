@@ -1276,7 +1276,7 @@ public class GrammarUtil {
         grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(4);
 
-
+        Grammar grammar0 = (Grammar) grammar.deep_copy();
 
         Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar,true));
 
@@ -1285,7 +1285,7 @@ public class GrammarUtil {
         Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1,true));
 
 
-        res.add(grammar);
+        res.add(grammar0);
         res.add(new Dummy());
         res.add(grammar1);
         res.add(grammar2);
@@ -1295,44 +1295,29 @@ public class GrammarUtil {
     }
 
     private static Grammar chomskyNormalForm_StepOne(Grammar g) {
-        /**
-        HashSet<Nonterminal> newNonTerminals=new HashSet<>();
-        for(Nonterminal nt : g.getNonterminals()) {
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                if(list.size() > 1 && list.stream().anyMatch(symbol -> symbol instanceof Terminal)) {
-                    for(Symbol sym : list) {
-                        if(sym instanceof Terminal) {
-                            HashSet<ArrayList<Symbol>> tmpSet=new HashSet<>();
-                            ArrayList<Symbol> tmpList=new ArrayList<>();
-                            tmpList.add(sym);
-                            tmpSet.add(tmpList);
-                            if(newNonTerminals.stream().map(x -> x.getName()).allMatch(name -> !name.equals("X_"+sym.getName()))) {
-                                newNonTerminals.add(new Nonterminal("X_" + sym.getName(), tmpSet));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        g.getNonterminals().addAll(newNonTerminals);
-        for(Nonterminal nt : g.getNonterminals()) {
-            for(ArrayList<Symbol> list : nt.getSymbolLists()) {
-                if(list.size() > 1) {
-                    for(int i=0;i<list.size();i++) {
-                        if(list.get(i) instanceof Terminal) {
-                            String name=list.get(i).getName();
-                            for(Nonterminal z : newNonTerminals) {
-                                if(z.getName().equals("X_"+name)) {
-                                    list.set(i,z);
-                                }
-                            }
-                        }
-                    }
-                }
 
+        //replace every occurences of a Terminal through a new Nonterminal
+        HashSet<Rule> freshRules = new HashSet<>();
+        g.getRules().forEach(rule -> {
+            if(rule.getRightSide().size()>1 && rule.getRightSide().stream().anyMatch(symbol -> symbol instanceof Terminal)) {
+                List<Symbol> list = new ArrayList<>();
+                rule.getRightSide().stream().forEach(sym -> {
+                    if(sym instanceof Terminal) {
+                        list.add(new Nonterminal("X_"+sym.getName()));
+                        List<Symbol> tmp = new ArrayList<Symbol>();
+                        tmp.add(sym);
+                        freshRules.add(new Rule(new Nonterminal("X_"+sym.getName()),tmp));
+                    } else {
+                        list.add(sym);
+                    }
+                });
+                freshRules.add(new Rule(rule.getComingFrom(),list));
+
+            } else {
+                freshRules.add(rule);
             }
-        }
-         **/
+        });
+        g.setRules(freshRules);
         return g;
     }
 
@@ -1341,43 +1326,52 @@ public class GrammarUtil {
      * @param g
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g) {
-        /**
-        int counter=1;
-        boolean changed=true;
-        while(changed) {
-            changed=false;
-            HashSet<Nonterminal> newNonTerminals = new HashSet<>();
-            for (Nonterminal nt : g.getNonterminals()) {
-                for (ArrayList<Symbol> list : nt.getSymbolLists()) {
-                    if (list.size() > 2) {
-                        ArrayList<Symbol> listOld = new ArrayList<>();
-                        ArrayList<Symbol> listNew = new ArrayList<>();
-                        for (int i = 1; i < list.size(); i++) {
-                            listNew.add(list.get(i));
-                        }
-                        HashSet<ArrayList<Symbol>> tmp = new HashSet<>();
-                        tmp.add(listNew);
-                        Nonterminal generatedNonTerminal = new Nonterminal("P_" + counter++, tmp);
-                        list.set(1, generatedNonTerminal);
-                        newNonTerminals.add(generatedNonTerminal);
-                        int n = list.size();
-                        for (int i = 2; i < n; i++) {
-                            list.remove(2);
-                        }
-                        changed = true;
+        HashSet<Rule> tmp = new HashSet<>();
+        tmp.addAll(g.getRules());
+        HashSet<Rule> freshRules = new HashSet<>();
+        final boolean[] changed = {true};
+        final int[] counter = {0};
+        while(changed[0]) {
+            freshRules.clear();
+            changed[0] = false;
+            tmp.forEach(rule -> {
+                if(rule.getRightSide().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL))) {
+                    //do nothing
+                    freshRules.add(rule);
+                } else if(rule.getRightSide().size()<=1) {
+                    freshRules.add(rule);
+                } else if(rule.getRightSide().size()==2) {
+                    freshRules.add(rule);
+                } else {
+                    //right side >= 3
+                    Nonterminal mod = new Nonterminal("P_"+ counter[0]++);
+                    Symbol first = rule.getRightSide().get(0);
+                    List<Symbol> tmp1 = new ArrayList<Symbol>();
+                    for(int i=1;i<rule.getRightSide().size();i++) {
+                        tmp1.add(rule.getRightSide().get(i));
                     }
+
+                    List tmp2 = new ArrayList();
+                    tmp2.add(first);
+                    tmp2.add(mod);
+                    Rule rule1 = new Rule(mod,tmp1);
+                    Rule rule2 = new Rule(rule.getComingFrom(),tmp2);
+                    freshRules.add(rule1);
+                    freshRules.add(rule2);
+                    changed[0] =true;
                 }
-            }
-            g.getNonterminals().addAll(newNonTerminals);
+            });
+            tmp.clear();
+            tmp.addAll(freshRules);
         }
-         **/
+        g.setRules(freshRules);
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream()
-                .filter(rule -> !rule.getComingFrom().equals(grammar.getStartSymbol()))
                 .map(rule -> rule.getRightSide())
-                .allMatch(list -> (list.size()==1 && list.get(0) instanceof Terminal) || (list.size()==2 && list.stream().allMatch(symbol -> symbol instanceof Nonterminal)));
+                .allMatch(side ->
+                        (side.size()==1 && side.get(0) instanceof Terminal) || (side.size()==1 && side.stream().allMatch(sym -> sym instanceof Nonterminal)));
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
