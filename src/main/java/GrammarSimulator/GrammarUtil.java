@@ -1025,6 +1025,11 @@ public class GrammarUtil {
             GrammarUtil.dfs(unitRules);
             tmp=GrammarUtil.findBackwardsEdge(unitRules);
         }
+
+        //remove all unnecessary Nonterminals
+        HashSet<Nonterminal> freshNonterminals = new HashSet<>();
+        freshNonterminals.addAll(grammar.getRules().stream().map(Rule::getComingFrom).collect(toList()));
+        grammar.setNonterminals(freshNonterminals);
         return unitRules;
 
 
@@ -1135,7 +1140,6 @@ public class GrammarUtil {
      * TODO What does this do? why does it return a list? is nowhere used
      * @param nodes the nonterminals as nodes. to obtain them, use
      * @param g the grammar g
-     * @return a sorted List of Nodes, that has the right order for the third step of the remove Unit Rule algorithm
      */
     private static void removeUnitRules(HashSet<Node> nodes, Grammar g) {
 
@@ -1203,7 +1207,15 @@ public class GrammarUtil {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
             if(rule.getComingFrom().equals(toBeReplaced)) {
-                freshRules.add(new Rule(newNonterminal,rule.getRightSide()));
+                //if the rule is now A --> A remove it
+                if(rule.getRightSide().size()==1 && toBeReplaced.equals(rule.getRightSide().get(0))) {
+                    //do nothing
+                } else if(rule.getRightSide().isEmpty()) {
+
+                } else {
+                    freshRules.add(new Rule(newNonterminal, rule.getRightSide()));
+                }
+
             } else {
                 freshRules.add(rule);
             }
@@ -1218,7 +1230,14 @@ public class GrammarUtil {
                    list.add(symbol);
                 }
             });
-            freshRules2.add(new Rule(rule.getComingFrom(),list));
+            // if the rule now equals A --> A remove i
+            if(list.size()==1 && rule.getComingFrom().equals(list.get(0))) {
+                //do nothing
+            } else if(list.isEmpty()) {
+
+            } else {
+                freshRules2.add(new Rule(rule.getComingFrom(), list));
+            }
         });
         g.setRules(freshRules2);
     }

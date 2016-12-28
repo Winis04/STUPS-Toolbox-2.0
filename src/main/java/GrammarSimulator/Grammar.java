@@ -336,4 +336,8 @@ public class Grammar implements Printable, Storable {
     public void setRules(HashSet<Rule> rules) {
         this.rules = rules;
     }
+
+    public void setNonterminals(HashSet<Nonterminal> nonterminals) {
+        this.nonterminals = nonterminals;
+    }
 }
