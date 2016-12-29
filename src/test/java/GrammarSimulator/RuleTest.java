@@ -2,8 +2,11 @@ package GrammarSimulator;
 
 import org.junit.Test;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -50,6 +53,19 @@ public class RuleTest {
         Rule rule3  = new Rule(new Nonterminal("A"),right3);
         test.add(rule3);
         assertTrue(test.size()==2);
+    }
+
+    @Test
+    public void hashsetTest() {
+        HashSet<Integer> res = IntStream.range(0,10).mapToObj(i -> {
+            HashSet<Integer> set = new HashSet<>();
+            set.add(i);
+            return set;
+        }).reduce(new HashSet<Integer>(), (x,y) -> {
+            x.addAll(y);
+            return x;
+        });
+        System.out.println(res);
     }
 
 }

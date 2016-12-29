@@ -18,6 +18,7 @@ import java.sql.Wrapper;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -459,7 +460,6 @@ public class GrammarUtil {
         while(changed) {
             changed = false;
             HashSet<Nonterminal> newNullables = new HashSet<>();
-
             grammar.getRules().stream()
                     //all rules that point on lambda//nullables
                     .filter(rule -> rule.getRightSide().stream().allMatch(symbol -> nullable.stream().anyMatch(elem -> elem.equals(symbol)) || symbol.equals(Terminal.NULLSYMBOL)))
@@ -879,6 +879,10 @@ public class GrammarUtil {
         GrammarUtil.removeUnneccesaryEpsilons(grammar);
         Queue<Rule> queue = new LinkedList<>();
         HashSet<Rule> alreadySeen = new HashSet<>();
+
+        //every rule with nullables is added to a queue.
+        //every step a rule is popped and the modified and the original rule are added at the end of the queue
+        //stops, if there where no changes
         grammar.getRules().stream().filter(rule -> containsNullable(rule,nullable))
                 .forEach(queue::add);
         if(!queue.isEmpty()) {
@@ -887,6 +891,8 @@ public class GrammarUtil {
                 changed=false;
                 Rule current = queue.poll();
                 Rule fresh = new Rule(current.getComingFrom(),new RightSide<>(current.getRightSide()));
+                
+
                 for(int i=0;i<current.getRightSide().size();i++) {
                     // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
                     int finalI = i;
@@ -1331,22 +1337,16 @@ public class GrammarUtil {
         HashSet<Rule> freshRules = new HashSet<>();
         final boolean[] changed = {true};
         final int[] counter = {0};
-        while(changed[0]) {
-            freshRules.clear();
-            changed[0] = false;
-            tmp.forEach(rule -> {
-                if(rule.getRightSide().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL))) {
-                    //do nothing
-                    freshRules.add(rule);
-                } else if(rule.getRightSide().size()<=1) {
-                    freshRules.add(rule);
-                } else if(rule.getRightSide().size()==2) {
-                    freshRules.add(rule);
+        HashSet<Rule> old = g.getRules();
+        while(true) {
+            HashSet<Rule> res;
+            res=old.stream().reduce(new HashSet<Rule>(), (x, rule) -> {
+                if(rule.getRightSide().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL)) || rule.getRightSide().size()<=2) {
+                    x.add(rule);
                 } else {
-                    //right side >= 3
                     Nonterminal mod = new Nonterminal("P_"+ counter[0]++);
                     Symbol first = rule.getRightSide().get(0);
-                    List<Symbol> tmp1 = new ArrayList<Symbol>();
+                    List<Symbol> tmp1 = new ArrayList<>();
                     for(int i=1;i<rule.getRightSide().size();i++) {
                         tmp1.add(rule.getRightSide().get(i));
                     }
@@ -1356,15 +1356,25 @@ public class GrammarUtil {
                     tmp2.add(mod);
                     Rule rule1 = new Rule(mod,tmp1);
                     Rule rule2 = new Rule(rule.getComingFrom(),tmp2);
-                    freshRules.add(rule1);
-                    freshRules.add(rule2);
-                    changed[0] =true;
+                    x.add(rule1);
+                    x.add(rule2);
                 }
+                return x;
+            },(x, y) -> {
+                x.addAll(y);
+                return x;
             });
-            tmp.clear();
-            tmp.addAll(freshRules);
+
+            if(old.size()==res.size()) { //nothing changed
+                old.clear();
+                old.addAll(res);
+                break;
+            } else {
+                old.clear();
+                old.addAll(res);
+            }
         }
-        g.setRules(freshRules);
+        g.setRules(old);
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
