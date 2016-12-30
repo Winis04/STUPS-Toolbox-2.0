@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static Print.Printer.makeToGreek;
 
@@ -36,6 +37,11 @@ public class Grammar implements Printable, Storable {
      * The grammar's start symbol.
      */
     private Nonterminal startSymbol;
+
+    /**
+     * the grammars rule
+     */
+    private HashSet<Rule> rules;
     /**
      * the grammars name (optional)
      */
@@ -55,10 +61,10 @@ public class Grammar implements Printable, Storable {
         Terminal terminal = new Terminal("a");
         this.name="G";
         ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
-        this.startSymbol = new Nonterminal("S", new HashSet<>(Arrays.asList(symbolList)));
-        this.terminals = new HashSet<>(Arrays.asList(terminal));
-        this.nonterminals = new HashSet<>(Arrays.asList(startSymbol));
-        this.startSymbol.markAsStart();
+        this.startSymbol = new Nonterminal("S");
+        this.terminals = new HashSet<>(Collections.singletonList(terminal));
+        this.nonterminals = new HashSet<>(Collections.singletonList(startSymbol));
+        this.rules = new HashSet<>();
     }
 
     /**
@@ -72,7 +78,21 @@ public class Grammar implements Printable, Storable {
         this.terminals = terminals;
         this.nonterminals = nonterminals;
         this.startSymbol = startSymbol;
-        this.startSymbol.markAsStart();
+        this.rules = new HashSet<>();
+    }
+
+    /**
+     * The constructor for a grammar with a given set of terminals and nonterminals.
+     *
+     * @param terminals The grammar's set of terminals.
+     * @param nonterminals The grammar's set of nonterminals.
+     * @param startSymbol The grammar's start symbol.
+     */
+    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol, HashSet<Rule> rules) {
+        this.terminals = terminals;
+        this.nonterminals = nonterminals;
+        this.startSymbol = startSymbol;
+        this.rules = rules;
     }
 
     /**
@@ -85,32 +105,21 @@ public class Grammar implements Printable, Storable {
         for(Terminal t : old.getTerminals()) { //adds the Terminals
             this.terminals.add(new Terminal(t.getName()));
         }
-        for(Nonterminal nt : old.getNonterminals()) { //adds the Nonterminals, but without rules
-            this.nonterminals.add(new Nonterminal(nt.getName(),new HashSet<ArrayList<Symbol>>()));
-        }
-        for(Nonterminal oldNt : old.getNonterminals()) {
-            Nonterminal newNt=this.getNonterminal(oldNt.getName()); //the matching Nonterminal in the new grammar
-            for(ArrayList<Symbol> list : oldNt.getSymbolLists()) { // copy the lists
-                ArrayList<Symbol> tmp=new ArrayList<>();
-                for(Symbol symbol : list) {
-                    if(symbol instanceof Terminal) {
-                        tmp.add(this.getTerminal(symbol.getName()));
-                    } else {
-                        tmp.add(this.getNonterminal(symbol.getName()));
-                    }
-                }
-                newNt.getSymbolLists().add(tmp);
-            }
+        for(Nonterminal nt : old.getNonterminals())  {
+            this.nonterminals.add(new Nonterminal(nt.getName()));
         }
         this.name=old.getNameWithoutSuffix();
         this.suffix=old.getSuffix();
         if(newName) {
             this.modifyName();
         }
-        this.startSymbol=this.getNonterminal(old.getStartSymbol().getName());
-        this.startSymbol.markAsStart();
-        GrammarUtil.replaceLambda(this);
+        this.startSymbol=new Nonterminal(old.getStartSymbol().getName());
+        this.rules = new HashSet<>();
+        for(Rule rule : old.getRules()) {
+            this.rules.add(rule.copy());
+        }
         this.previousVersion = (Grammar) old.getPreviousVersion();
+
     }
 
 
@@ -139,13 +148,13 @@ public class Grammar implements Printable, Storable {
         Printer.print(GrammarUtil.getNonterminalsInOrder(this).stream().
                 map(nonterminal -> {
                     String start="\t"+nonterminal.getName() + " &\\rightarrow ";
-                    HashSet<ArrayList<Symbol>> tmp=nonterminal.getSymbolLists();
-                    start+=tmp.stream().
-                            map(list -> list.stream().
-                                    map(symbol -> symbol.getName()).
-                                    map(string -> makeToGreek(string)).
-                                    collect(joining(""))).
-                            collect(joining("\\;|\\;"));
+                    start += getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
+                            .map(Rule::getRightSide)
+                            .map(list -> list.stream()
+                                    .map(Symbol::getName)
+                                    .map(Printer::makeToGreek)
+                                    .collect(joining("")))
+                            .collect(joining("\\;|\\;"));
                     return start;
                 }).collect(joining(", \\\\ \n"+space)),writer);
 
@@ -176,10 +185,11 @@ public class Grammar implements Printable, Storable {
 
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
             Printer.print(nt.getName() + " --> ",writer);
-            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
-            Printer.print(tmp.stream()
-                    .map(list -> list.stream().map(symbol -> symbol.getName()).collect(joining("")))
+            Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
+                    .map(Rule::getRightSide)
+                    .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
                     .collect(joining(" | ")),writer);
+//            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
            // HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
             //Printer.print(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
             Printer.print("\n",writer);
@@ -317,5 +327,17 @@ public class Grammar implements Printable, Storable {
      */
     public void setStartSymbol(Nonterminal startSymbol) {
         this.startSymbol = startSymbol;
+    }
+
+    public HashSet<Rule> getRules() {
+        return rules;
+    }
+
+    public void setRules(HashSet<Rule> rules) {
+        this.rules = rules;
+    }
+
+    public void setNonterminals(HashSet<Nonterminal> nonterminals) {
+        this.nonterminals = nonterminals;
     }
 }

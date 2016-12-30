@@ -13,30 +13,22 @@ import static Print.Printer.printmode;
 /**
  * Created by fabian on 06.08.16.
  */
-public class Nonterminal implements Symbol, Printable {
+public final class Nonterminal implements Symbol, Printable {
 
-    private boolean isStart;
 
     /**
      * The nonterminal's name.
      */
-    private String name;
+    private final String name;
 
-    /**
-     * The set of all the lists of {@link Symbol}s to which this nonterminal points.
-     */
-    private HashSet<ArrayList<Symbol>> symbolLists;
 
     /**
      * The constructor.
      *
      * @param name The nonterminal's name.
-     * @param symbolLists The set of all the lists of {@link Symbol}s to which this nonterminal points.
      */
-    public Nonterminal(String name, HashSet<ArrayList<Symbol>> symbolLists) {
+    public Nonterminal(String name) {
         this.name = name;
-        this.symbolLists = symbolLists;
-        this.isStart = false;
     }
 
 
@@ -45,28 +37,6 @@ public class Nonterminal implements Symbol, Printable {
         return name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Getter-method for {@link #symbolLists}.
-     *
-     * @return {@link #symbolLists}
-     */
-    public HashSet<ArrayList<Symbol>> getSymbolLists() {
-        return symbolLists;
-    }
-
-    public void setSymbolLists(HashSet<ArrayList<Symbol>> symbolLists) {
-        this.symbolLists = symbolLists;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Nonterminal && ((Nonterminal)o).getName().equals(name);
-    }
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
@@ -78,10 +48,23 @@ public class Nonterminal implements Symbol, Printable {
         Printer.print(this.getName(),writer);
     }
 
-    public boolean isStart() {
-        return  isStart;
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Nonterminal) {
+            Nonterminal other = (Nonterminal) o;
+            if(other.name.equals(this.name)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
-    public void markAsStart() {
-        this.isStart = true;
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
     }
 }

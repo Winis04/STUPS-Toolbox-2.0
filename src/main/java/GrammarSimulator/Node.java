@@ -58,7 +58,7 @@ public class Node {
         this.dfe=0;
         this.children=new LinkedHashSet<>();
         this.name=name;
-        this.value=new Nonterminal(name,null);
+        this.value=new Nonterminal(name);
     }
     public Node(Nonterminal value, LinkedHashSet<Node> children) {
         this.visited=false;
