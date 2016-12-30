@@ -322,7 +322,7 @@ public class EditTab implements GrammarTab {
      * @param grammar The grammar.
      */
     private void addRule(Grammar grammar) {
-        /**
+
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("STUPS-Toolbox");
@@ -364,16 +364,20 @@ public class EditTab implements GrammarTab {
                 if (terminalsMap.containsKey(name)) {
                     //If the entered nonterminal is contained in the grammar's terminals,
                     //Replace every occurence of this terminal with the new nonterminal.
-                    for (Nonterminal nt : grammar.getNonterminals()) {
-                        grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
-                                .map(Rule::getRightSide).forEach(sl -> {
-                            if (sl.contains(terminalsMap.get(name))) {
-                                Collections.replaceAll(sl, terminalsMap.get(name), nonterminal);
+                    HashSet<Rule> freshRules = new HashSet<>();
+                    grammar.getRules().forEach(rule -> {
+                        List<Symbol> tmp = new ArrayList<>();
+                        rule.getComparableList().forEach(sym -> {
+                            if (sym.getName().equals(name)) {
+                                tmp.add(nonterminal);
+                            } else {
+                                tmp.add(sym);
                             }
                         });
-                    }
-
+                        freshRules.add(new Rule(rule.getComingFrom(),tmp));
+                    });
                     grammar.getTerminals().remove(terminalsMap.get(name));
+                    grammar.setRules(freshRules);
                     terminalsMap.remove(name);
                 }
 
@@ -400,15 +404,14 @@ public class EditTab implements GrammarTab {
                     terminalsMap.put(currentString, newSymbol);
                 }
             }
-
-            nonterminal.getSymbolLists().add(symbolList);
+            Rule newRule = new Rule(nonterminal,symbolList);
+            grammar.getRules().add(newRule);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("STUPS-Toolbox");
             alert.setHeaderText("Please fill in all fields!");
             alert.showAndWait();
         }
-      **/
     }
 
     /**
@@ -418,17 +421,21 @@ public class EditTab implements GrammarTab {
      * @param nonterminal The nonterminal.
      */
     private void deleteSymbol(Grammar grammar, Nonterminal nonterminal) {
-        /**
+
         grammar.getNonterminals().remove(nonterminal);
         nonterminalsMap.remove(nonterminal.getName());
-        for (Nonterminal nonterminal2 : grammar.getNonterminals()) {
-            for (ArrayList<Symbol> symbolList : nonterminal2.getSymbolLists()) {
-                if (symbolList.contains(nonterminal)) {
-                    symbolList.remove(nonterminal);
+        HashSet<Rule> freshRules = new HashSet<>();
+        grammar.getRules().forEach(rule -> {
+            List<Symbol> freshRightSide = new ArrayList<>();
+            rule.getComparableList().forEach(sym -> {
+                if(!sym.equals(nonterminal)) {
+                    freshRightSide.add(sym);
                 }
-            }
-        }
-         **/
+            });
+            freshRules.add(new Rule(rule.getComingFrom(),freshRightSide));
+
+        });
+        grammar.setRules(freshRules);
     }
 
     /**
