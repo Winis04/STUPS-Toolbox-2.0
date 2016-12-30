@@ -11,7 +11,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static Print.Printer.makeToGreek;
 
@@ -149,7 +148,7 @@ public class Grammar implements Printable, Storable {
                 map(nonterminal -> {
                     String start="\t"+nonterminal.getName() + " &\\rightarrow ";
                     start += getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                            .map(Rule::getRightSide)
+                            .map(Rule::getComparableList)
                             .map(list -> list.stream()
                                     .map(Symbol::getName)
                                     .map(Printer::makeToGreek)
@@ -186,7 +185,7 @@ public class Grammar implements Printable, Storable {
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
             Printer.print(nt.getName() + " --> ",writer);
             Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
-                    .map(Rule::getRightSide)
+                    .map(Rule::getComparableList)
                     .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
                     .collect(joining(" | ")),writer);
 //            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();

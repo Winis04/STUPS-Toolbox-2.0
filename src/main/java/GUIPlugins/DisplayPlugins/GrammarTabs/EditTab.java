@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by fabian on 15.08.16.
@@ -172,7 +171,7 @@ public class EditTab implements GrammarTab {
         final int[] i = {0};
         for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
            grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                    .map(Rule::getRightSide).forEach(symbols -> {
+                    .map(Rule::getComparableList).forEach(symbols -> {
                //Create the labels that display the current nonterminal and symbol list.
                Label nonterminalLabel = new Label(nonterminal.getName());
                Label symbolsLabel = new Label();

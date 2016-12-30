@@ -6,16 +6,16 @@ import java.util.List;
 /**
  * Created by Isabel on 27.12.2016.
  */
-public class RightSide<E> extends ArrayList<E> {
-    public RightSide(List<E> rightSide) {
+public class ComparableList<E> extends ArrayList<E> {
+    public ComparableList(List<E> rightSide) {
         this.addAll(rightSide);
 
     }
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof RightSide) {
-            RightSide other = (RightSide) o;
+        if(o instanceof ComparableList) {
+            ComparableList other = (ComparableList) o;
             if(this.size()==other.size()) {
                 boolean all = true;
                 for(int i=0;i<this.size();i++) {

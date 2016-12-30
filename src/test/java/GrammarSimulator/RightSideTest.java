@@ -13,9 +13,9 @@ public class RightSideTest {
     @Test
     public void equals() throws Exception {
 
-        RightSide<Symbol> a = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
-        RightSide<Symbol> b = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
-        RightSide<Symbol> c = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("C"), new Nonterminal("D")}));
+        ComparableList<Symbol> a = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ComparableList<Symbol> b = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ComparableList<Symbol> c = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("C"), new Nonterminal("D")}));
         assertTrue(a.equals(b));
         assertTrue(b.equals(a));
         assertTrue(a.equals(a));
@@ -27,7 +27,7 @@ public class RightSideTest {
 
     @Test
     public void contains() throws Exception {
-        RightSide<Symbol> a = new RightSide<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ComparableList<Symbol> a = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
         assertTrue(a.contains(new Nonterminal("A")));
     }
 
