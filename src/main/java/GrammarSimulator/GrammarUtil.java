@@ -488,19 +488,18 @@ public class GrammarUtil {
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFirst(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
+        boolean changed = true;
 
         //Initialize the result-map.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             result.put(nonterminal, new HashSet<>());
         }
-        ArrayList<Boolean> wrapper = new ArrayList<>();
-        wrapper.set(0,new Boolean(true));
-        while(wrapper.get(0)) {
-            wrapper.set(0,new Boolean(false));
-            for (Nonterminal nonterminal : grammar.getNonterminals()) {
 
-                grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
+        while(changed) {
+            changed = false;
+            for (Nonterminal nonterminal : grammar.getNonterminals()) {
+                List<ArrayList<Symbol>> rules = grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal)).map(rule -> rule.getRightSide()).collect(Collectors.toList());
+                for (ArrayList<Symbol> symbolList : rules) {
                     for (int i = 0; i < symbolList.size(); i++) {
                         if (symbolList.get(i) instanceof Terminal) {
                             if (!symbolList.get(i).getName().equals("epsilon") ) {
@@ -508,7 +507,7 @@ public class GrammarUtil {
                                     //If the current symbol is a terminal and not the empty word,
                                     //add it to the first-set of the current nonterminal.
                                     result.get(nonterminal).add((Terminal) symbolList.get(i));
-                                    wrapper.set(0,new Boolean(true));
+                                    changed = true;
                                 }
                                 break;
                             }
@@ -516,7 +515,7 @@ public class GrammarUtil {
                             if(!result.get(nonterminal).containsAll(result.get(symbolList.get(i)))) {
                                 //If the current symbol is a nonterminal, add its first-set to the first-set of the current nonterminal.
                                 result.get(nonterminal).addAll(result.get(symbolList.get(i)));
-                                wrapper.set(0,new Boolean(true));
+                                changed = true;
                             }
                             if (!nullable.contains(symbolList.get(i))) {
                                 break;
@@ -525,7 +524,7 @@ public class GrammarUtil {
                             break;
                         }
                     }
-                }); //
+                }
             }
         }
 
