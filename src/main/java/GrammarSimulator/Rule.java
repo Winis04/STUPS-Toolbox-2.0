@@ -1,5 +1,6 @@
 package GrammarSimulator;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +36,8 @@ public final class Rule {
     }
 
 
-    public ComparableList<Symbol> getComparableList() {
-        return comparableList;
+    public List<Symbol> getComparableList() {
+        return Collections.unmodifiableList(comparableList);
     }
 
 

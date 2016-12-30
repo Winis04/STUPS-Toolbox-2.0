@@ -501,13 +501,12 @@ public class EditTab implements GrammarTab {
 
     /**
      * Edits a nonterminal's symbol list.
-     *
-     * @param grammar The grammar.
+     *  @param grammar The grammar.
      * @param nonterminal The nonterminal.
      * @param oldSymbols An ArrayList, representing the old symbol list.
      * @param newSymbols A string, containing the new symbol list.
      */
-    private void editRule(Grammar grammar, Nonterminal nonterminal, ArrayList<Symbol> oldSymbols, String newSymbols) {
+    private void editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
         /**
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();

@@ -204,7 +204,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The first-set.
      */
-    private static HashSet<Terminal> calculateFirstOfList(ArrayList<Symbol> symbolList, HashSet<Nonterminal> nullable, HashMap<Nonterminal, HashSet<Terminal>> firsts, Grammar grammar) {
+    private static HashSet<Terminal> calculateFirstOfList(List<Symbol> symbolList, HashSet<Nonterminal> nullable, HashMap<Nonterminal, HashSet<Terminal>> firsts, Grammar grammar) {
         HashSet<Terminal> result = new HashSet<>();
 
         for(int i = 0; i < symbolList.size(); i++) {
@@ -494,8 +494,8 @@ public class GrammarUtil {
         while(changed) {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                List<ArrayList<Symbol>> rules = grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal)).map(Rule::getComparableList).collect(Collectors.toList());
-                for (ArrayList<Symbol> symbolList : rules) {
+                List<List<Symbol>> rules = grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal)).map(Rule::getComparableList).collect(Collectors.toList());
+                for (List<Symbol> symbolList : rules) {
                     for (Symbol aSymbolList : symbolList) {
                         if (aSymbolList instanceof Terminal) {
                             if (!aSymbolList.equals(Terminal.NULLSYMBOL)) {
@@ -673,7 +673,7 @@ public class GrammarUtil {
         //Iterate through every first-set of every rule.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
             grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                    .map(rule -> rule.getComparableList()).forEach(symbolList -> {
+                    .map(Rule::getComparableList).forEach(symbolList -> {
                 HashSet<Terminal> currentFirst = calculateFirstOfList(symbolList, nullable, firsts, grammar);
                 for(Terminal terminal : currentFirst) {
                     //Add the current rule to result.get(nonterminal).get(terminal).
@@ -886,18 +886,23 @@ public class GrammarUtil {
                 changed=false;
                 Rule current = queue.poll();
                 Rule fresh = new Rule(current.getComingFrom(),new ComparableList<>(current.getComparableList()));
-                
 
                 for(int i = 0; i<current.getComparableList().size(); i++) {
                     // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
+                    List<Symbol> tmpList = new ArrayList<>();
+                    tmpList.addAll(fresh.getComparableList());
                     int finalI = i;
                     if(nullable.stream().anyMatch(elem -> elem.equals(fresh.getComparableList().get(finalI)))) {
-                        fresh.getComparableList().set(i,Terminal.NULLSYMBOL);
-                        if(queue.stream().anyMatch(elem -> elem.equals(fresh)) || alreadySeen.contains(fresh)) {
-                            // if the queue already contains this new Rule, undo the changes and go on with the rule
-                            fresh.getComparableList().set(i,current.getComparableList().get(i));
+
+                        List<Symbol> firstTryList = new ArrayList<>(current.getComparableList());
+                        firstTryList.set(i,Terminal.NULLSYMBOL);
+                        Rule firstTry = new Rule(current.getComingFrom(),firstTryList);
+                        if(queue.stream().anyMatch(elem -> elem.equals(firstTry)) || alreadySeen.contains(firstTry)) {
+                            // if the queue already contains this new Rule, do nothing and go on
+
                         } else {
-                            queue.add(fresh);
+                            //add the new rule "first try" to the set
+                            queue.add(firstTry);
                             queue.add(current);
                             changed = true; //--> change
                             break;
@@ -1423,7 +1428,7 @@ public class GrammarUtil {
 
             ArrayList<Nonterminal> tmp=(ArrayList<Nonterminal>)  g.getRules().stream()
                     .filter(rule -> rule.getComparableList().size()==1 && GrammarUtil.pointsOnCurrentChar(word,j,rule.getComparableList()))
-                    .map(rule -> rule.getComingFrom())
+                    .map(Rule::getComingFrom)
                     .collect(Collectors.toList());
             for(Nonterminal nt : tmp) {
                 m.addToCell(i,0,nt);
@@ -1473,7 +1478,7 @@ public class GrammarUtil {
             return false;
         }
     }
-    private static boolean pointsOnCurrentChar(String word,int i,ArrayList<Symbol> list) {
+    private static boolean pointsOnCurrentChar(String word, int i, List<Symbol> list) {
         return list.get(0).getName().equals(word.substring(i-1,i));
     }
     /******************************************************************************************************************
@@ -1532,7 +1537,7 @@ public class GrammarUtil {
                     pda.getStartState().getRules().add(tmp);
                 });
     }
-    private static ArrayList<StackLetter> calculateNewTos(ArrayList<Symbol> list, PushDownAutomaton pda) {
+    private static ArrayList<StackLetter> calculateNewTos(List<Symbol> list, PushDownAutomaton pda) {
         ArrayList<StackLetter> res=new ArrayList<>();
         for(Symbol s : list) {
             res.add(pda.getStackAlphabet().get(s.getName()));
@@ -1572,12 +1577,12 @@ public class GrammarUtil {
      * @param g the Grammar g
      * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
      */
-    private static HashSet<ComparableList<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<ComparableList<Symbol>> tmp = new HashSet<>();
+    private static HashSet<List<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
+        HashSet<List<Symbol>> tmp = new HashSet<>();
         g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).map(Rule::getComparableList)
                 .forEach(tmp::add);
-        HashSet<ComparableList<Symbol>> res=new HashSet<>();
-        for(ComparableList<Symbol> list : tmp) {
+        HashSet<List<Symbol>> res=new HashSet<>();
+        for(List<Symbol> list : tmp) {
             boolean allNull;
             allNull=list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL));
             if(!allNull) {
