@@ -498,26 +498,26 @@ public class GrammarUtil {
         while(changed) {
             changed = false;
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
-                List<ArrayList<Symbol>> rules = grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal)).map(rule -> rule.getRightSide()).collect(Collectors.toList());
+                List<ArrayList<Symbol>> rules = grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal)).map(Rule::getRightSide).collect(Collectors.toList());
                 for (ArrayList<Symbol> symbolList : rules) {
-                    for (int i = 0; i < symbolList.size(); i++) {
-                        if (symbolList.get(i) instanceof Terminal) {
-                            if (!symbolList.get(i).getName().equals("epsilon") ) {
-                                if(!result.get(nonterminal).contains(symbolList.get(i))) {
+                    for (Symbol aSymbolList : symbolList) {
+                        if (aSymbolList instanceof Terminal) {
+                            if (!aSymbolList.equals(Terminal.NULLSYMBOL)) {
+                                if (!result.get(nonterminal).contains(aSymbolList)) {
                                     //If the current symbol is a terminal and not the empty word,
                                     //add it to the first-set of the current nonterminal.
-                                    result.get(nonterminal).add((Terminal) symbolList.get(i));
+                                    result.get(nonterminal).add((Terminal) aSymbolList);
                                     changed = true;
                                 }
                                 break;
                             }
-                        } else if (symbolList.get(i) instanceof Nonterminal) {
-                            if(!result.get(nonterminal).containsAll(result.get(symbolList.get(i)))) {
+                        } else if (aSymbolList instanceof Nonterminal) {
+                            if (!result.get(nonterminal).containsAll(result.get(aSymbolList))) {
                                 //If the current symbol is a nonterminal, add its first-set to the first-set of the current nonterminal.
-                                result.get(nonterminal).addAll(result.get(symbolList.get(i)));
+                                result.get(nonterminal).addAll(result.get(aSymbolList));
                                 changed = true;
                             }
-                            if (!nullable.contains(symbolList.get(i))) {
+                            if (!nullable.contains(aSymbolList)) {
                                 break;
                             }
                         } else {
@@ -543,7 +543,7 @@ public class GrammarUtil {
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
         HashMap<Nonterminal, HashSet<Terminal>> firsts = calculateFirst(grammar);
         ArrayList<Boolean> wrapper = new ArrayList<>();
-        wrapper.add(new Boolean(true));
+        wrapper.add(Boolean.TRUE);
 
         //Initialize the result-map.
         for(Nonterminal nonterminal : grammar.getNonterminals()) {
@@ -552,10 +552,10 @@ public class GrammarUtil {
         result.get(grammar.getStartSymbol()).add(new Terminal("$"));
 
         while(wrapper.get(0)) {
-            wrapper.set(0,new Boolean(false));
+            wrapper.set(0, Boolean.FALSE);
             for (Nonterminal nonterminal : grammar.getNonterminals()) {
                 grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                        .map(rule -> rule.getRightSide()).forEach(symbolList -> {
+                        .map(Rule::getRightSide).forEach(symbolList -> {
                     //Go through each list of symbols and calculate the follow-set of each nonterminal in these lists.
                     for (int i = 0; i < symbolList.size(); i++) {
                         if (symbolList.get(i) instanceof Nonterminal) {
@@ -565,7 +565,7 @@ public class GrammarUtil {
                                     //contains the follow-set of the current nonterminal.
                                     if (!result.get(symbolList.get(i)).containsAll(result.get(nonterminal))) {
                                         result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                        wrapper.set(0,new Boolean(true));
+                                        wrapper.set(0, Boolean.TRUE);
                                     }
                                 }
                             } else {
@@ -582,7 +582,7 @@ public class GrammarUtil {
                                         //If the current symbol is a nonterminal, we have to add its first-set
                                         //to the follow-set of symbolList.get(i).
                                         result.get(symbolList.get(i)).addAll(firsts.get(symbolList.get(j)));
-                                        wrapper.set(0,new Boolean(true));
+                                        wrapper.set(0, Boolean.TRUE);
                                     }
 
                                     if (nullable.contains(symbolList.get(j)) && j < symbolList.size() - 1) {
@@ -594,13 +594,13 @@ public class GrammarUtil {
                                                 if(!result.get(symbolList.get(i)).contains(symbolList.get(k))) {
                                                     //If the current symbol is a terminal, add it to the follow-set of symbolList.get(i).
                                                     result.get(symbolList.get(i)).add((Terminal) symbolList.get(k));
-                                                    wrapper.set(0,new Boolean(true));
+                                                    wrapper.set(0, Boolean.TRUE);
                                                 }
                                             } else if (symbolList.get(k) instanceof Nonterminal) {
                                                 if(!result.get(symbolList.get(i)).containsAll(firsts.get(symbolList.get(k)))) {
                                                     //If the current symbol is a nonterminal, add its first-set to the follow-set of symbolList.get(i).
                                                     result.get(symbolList.get(i)).addAll(firsts.get(symbolList.get(k)));
-                                                    wrapper.set(0,new Boolean(true));
+                                                    wrapper.set(0, Boolean.TRUE);
                                                 }
                                             }
                                             k++;
@@ -612,7 +612,7 @@ public class GrammarUtil {
                                                 //and this symbol is a nonterminal, we have to add the follow-set of this nonterminal
                                                 //to the follow-set of symbol-list.get(i);
                                                 result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                                wrapper.set(0,new Boolean(true));
+                                                wrapper.set(0, Boolean.TRUE);
                                             }
                                         }
                                     } else if (j == symbolList.size() - 1 && nullable.contains(symbolList.get(j))) {
@@ -621,7 +621,7 @@ public class GrammarUtil {
                                             //and this symbol is a nonterminal, we have to add the follow-set of this nonterminal
                                             //to the follow-set of symbol-list.get(i);
                                             result.get(symbolList.get(i)).addAll(result.get(nonterminal));
-                                            wrapper.set(0,new Boolean(true));
+                                            wrapper.set(0, Boolean.TRUE);
                                         }
                                     }
 
@@ -629,7 +629,7 @@ public class GrammarUtil {
                                     if(!result.get(symbolList.get(i)).contains(symbolList.get(j))) {
                                         //If symbolList.get(j) is a terminal, we can just add it to the follow-set of symbolList.get(i).
                                         result.get(symbolList.get(i)).add((Terminal) symbolList.get(j));
-                                        wrapper.set(0,new Boolean(true));
+                                        wrapper.set(0, Boolean.TRUE);
                                     }
                                 }
                             }
