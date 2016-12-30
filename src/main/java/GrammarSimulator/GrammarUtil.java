@@ -1377,10 +1377,18 @@ public class GrammarUtil {
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
-        return grammar.getRules().stream()
+        boolean checkStart;
+        boolean checkOtherStuff;
+        checkStart = grammar.getRules().stream()
+                .filter(rule -> rule.getComingFrom().equals(grammar.getStartSymbol()))
                 .map(Rule::getRightSide)
                 .allMatch(side ->
                         (side.size()==1 && side.get(0) instanceof Terminal) || (side.size()==1 && side.stream().allMatch(sym -> sym instanceof Nonterminal)));
+        checkOtherStuff = grammar.getRules().stream()
+                .map(Rule::getRightSide)
+                .allMatch(side ->
+                        (side.size()==1 && side.get(0) instanceof Terminal && !side.get(0).equals(Terminal.NULLSYMBOL)) || (side.size()==1 && side.stream().allMatch(sym -> sym instanceof Nonterminal)));
+        return checkOtherStuff && checkStart;
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
