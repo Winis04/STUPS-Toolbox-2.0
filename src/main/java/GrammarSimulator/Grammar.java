@@ -264,11 +264,7 @@ public class Grammar implements Printable, Storable {
     public Storable restoreFromFile(File file) {
         try {
             return GrammarUtil.parse(file);
-        } catch (ParserException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserException | IOException | LexerException e) {
             e.printStackTrace();
         }
         return null;
@@ -334,6 +330,7 @@ public class Grammar implements Printable, Storable {
 
     public void setRules(HashSet<Rule> rules) {
         this.rules = rules;
+        rules.stream().map(Rule::getComingFrom).forEach(comingFrom -> this.nonterminals.add(comingFrom));
     }
 
     public void setNonterminals(HashSet<Nonterminal> nonterminals) {
