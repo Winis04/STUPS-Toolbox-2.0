@@ -1,19 +1,15 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import CLIPlugins.GrammarRemoveLambdaPlugin;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import Print.Printable;
-import Print.Printer;
-
-import java.util.ArrayList;
+import Main.Storable;
 
 /**
  * Created by Isabel on 03.12.2016.
  */
 public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         if(object == null) {
             gui.errorDialog("Please load a grammar before using this command!");
             return null;

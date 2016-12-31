@@ -1,5 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
+import Main.Storable;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -14,7 +15,7 @@ public class Remove extends SimpleFunctionPlugin {
         return true;
     }
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         TreeItem<String> sibling=selectedItem.nextSibling();
         if(sibling!=null) {

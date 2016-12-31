@@ -2,13 +2,14 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.Storable;
 
 /**
  * Created by Isabel on 03.12.2016.
  */
 public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         if(object == null) {
             gui.errorDialog("Please load a grammar before using this command!");
             return null;

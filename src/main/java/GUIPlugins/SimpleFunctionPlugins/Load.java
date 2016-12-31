@@ -9,7 +9,7 @@ import java.io.*;
  */
 public class Load extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         if(gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getValue().equals("Grammar")) {
 
             gui.getRootController().loadGrammar();

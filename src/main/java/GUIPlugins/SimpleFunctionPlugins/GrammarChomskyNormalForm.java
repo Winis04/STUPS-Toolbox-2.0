@@ -2,15 +2,14 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import Main.Storable;
 
 /**
  * Created by Isabel on 03.12.2016.
  */
 public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         Grammar grammar = (Grammar) object;
         if(object == null) {
             gui.errorDialog("Please load a Grammar befor using this command");

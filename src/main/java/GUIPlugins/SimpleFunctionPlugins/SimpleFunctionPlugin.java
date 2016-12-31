@@ -2,6 +2,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 
 import Main.GUI;
+import Main.Storable;
 import javafx.scene.control.MenuItem;
 
 /**
@@ -26,7 +27,7 @@ public abstract class SimpleFunctionPlugin {
      * @param object The object.
      * @return The changed object.
      */
-    public abstract Object execute(Object object);
+    public abstract Storable execute(Object object);
 
     /**
      * Returns the plugin's name.
@@ -70,10 +71,12 @@ public abstract class SimpleFunctionPlugin {
         }
         item.setOnAction(t -> {
             Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
-
+            Storable storable = (Storable) ret;
             if(ret != null) {
+                Class clazz = ret.getClass();
                 gui.refresh(ret);
-
+                gui.getCli().objects.put(clazz,storable);
+                gui.getCli().store.get(clazz).put(storable.getName(),storable);
             }
 
         });

@@ -8,7 +8,7 @@ import Main.Storable;
 public class Undo extends SimpleFunctionPlugin {
 
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         if(object == null) {
             return null;
          }

@@ -913,6 +913,7 @@ public class GrammarUtil {
             HashSet<Rule> freshRules = new HashSet<>();
             freshRules.addAll(queue);
             freshRules.addAll(alreadySeen);
+            freshRules.addAll(grammar.getRules());
             if(pointsOnLambda) {
                 ArrayList<Symbol> tmp=new ArrayList<>();
                 tmp.add(Terminal.NULLSYMBOL);

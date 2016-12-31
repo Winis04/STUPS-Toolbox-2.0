@@ -2,6 +2,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Created by fabian on 18.06.16.
@@ -9,7 +10,7 @@ import AutomatonSimulator.AutomatonUtil;
 public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
         return AutomatonUtil.removeEpsilonTransitions(automaton);
     }

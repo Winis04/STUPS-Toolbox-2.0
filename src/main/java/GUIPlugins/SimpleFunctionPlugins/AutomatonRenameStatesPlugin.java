@@ -2,13 +2,14 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Created by fabian on 26.07.16.
  */
 public class AutomatonRenameStatesPlugin extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
         return AutomatonUtil.renameStates(automaton);
     }

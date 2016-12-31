@@ -2,13 +2,14 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Created by Isabel on 01.12.2016.
  */
 public class AutomatonMinimizePlugin extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
         return AutomatonUtil.minimizeDFA(automaton);
     }

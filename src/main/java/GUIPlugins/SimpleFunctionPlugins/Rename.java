@@ -14,7 +14,7 @@ import static javafx.scene.control.Alert.*;
  */
 public class Rename extends SimpleFunctionPlugin {
     @Override
-    public Object execute(Object object) {
+    public Storable execute(Object object) {
 
 
         chooseName();
