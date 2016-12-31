@@ -19,35 +19,35 @@ import static java.util.stream.Collectors.joining;
 /**
  * Created by fabian on 06.08.16.
  */
-public class Grammar implements Printable, Storable {
+public final class Grammar implements Printable, Storable {
 
 
     /**
      * The grammar's terminal symbols.
      */
-    private HashSet<Terminal> terminals;
+    private final HashSet<Terminal> terminals;
 
     /**
      * The grammar's nonterminal symbols.
      */
-    private HashSet<Nonterminal> nonterminals;
+    private final HashSet<Nonterminal> nonterminals;
 
     /**
      * The grammar's start symbol.
      */
-    private Nonterminal startSymbol;
+    private final Nonterminal startSymbol;
 
     /**
      * the grammars rule
      */
-    private HashSet<Rule> rules;
+    private final HashSet<Rule> rules;
     /**
      * the grammars name (optional)
      */
-    private String name;
+    private final String name;
 
 
-    private Grammar previousVersion;
+    private final Grammar previousVersion;
 
     public Grammar(Nonterminal startSymbol, HashSet<Rule> rules, String name, Grammar previousVersion) {
         this.startSymbol = startSymbol;
@@ -66,74 +66,16 @@ public class Grammar implements Printable, Storable {
         this.rules.stream().map(Rule::getComingFrom).forEach(nonterminals::add);
     }
 
-    /**
-     * The constructor for an empty grammar.
-     */
+
+    //DO NOT USE
     public Grammar() {
-        Terminal terminal = new Terminal("a");
         this.name="G";
-        ArrayList<Symbol> symbolList = new ArrayList(Arrays.asList(terminal));
+        this.previousVersion=null;
+        this.rules = new HashSet<>();
+        this.nonterminals = new HashSet<>();
+        this.terminals = new HashSet<>();
         this.startSymbol = new Nonterminal("S");
-        this.terminals = new HashSet<>(Collections.singletonList(terminal));
-        this.nonterminals = new HashSet<>(Collections.singletonList(startSymbol));
-        this.rules = new HashSet<>();
     }
-
-    /**
-     * The constructor for a grammar with a given set of terminals and nonterminals.
-     *
-     * @param terminals The grammar's set of terminals.
-     * @param nonterminals The grammar's set of nonterminals.
-     * @param startSymbol The grammar's start symbol.
-     */
-    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol) {
-        this.terminals = terminals;
-        this.nonterminals = nonterminals;
-        this.startSymbol = startSymbol;
-        this.rules = new HashSet<>();
-    }
-
-    /**
-     * The constructor for a grammar with a given set of terminals and nonterminals.
-     *
-     * @param terminals The grammar's set of terminals.
-     * @param nonterminals The grammar's set of nonterminals.
-     * @param startSymbol The grammar's start symbol.
-     */
-    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol, HashSet<Rule> rules) {
-        this.terminals = terminals;
-        this.nonterminals = nonterminals;
-        this.startSymbol = startSymbol;
-        this.rules = rules;
-    }
-
-    /**
-     * deep copy constructor
-     * @param old the grammar that should be copied
-     */
-    public Grammar(Grammar old) {
-        this.terminals=new HashSet<>();
-        this.nonterminals=new HashSet<>();
-        for(Terminal t : old.getTerminals()) { //adds the Terminals
-            this.terminals.add(new Terminal(t.getName()));
-        }
-        for(Nonterminal nt : old.getNonterminals())  {
-            this.nonterminals.add(new Nonterminal(nt.getName()));
-        }
-        this.name=old.getName();
-        this.startSymbol=new Nonterminal(old.getStartSymbol().getName());
-        this.rules = new HashSet<>();
-        for(Rule rule : old.getRules()) {
-            this.rules.add(rule.copy());
-        }
-        this.previousVersion = (Grammar) old.getPreviousVersion();
-
-    }
-
-
-
-
-
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
@@ -242,7 +184,8 @@ public class Grammar implements Printable, Storable {
 
     @Override
     public Storable deep_copy() {
-        return new Grammar(this);
+
+        return new Grammar(this.startSymbol,this.rules,this.name,this.previousVersion);
     }
 
     @Override
@@ -265,7 +208,7 @@ public class Grammar implements Printable, Storable {
 
     @Override
     public void savePreviousVersion() {
-        this.previousVersion = (Grammar) this.deep_copy();
+
     }
 
     @Override

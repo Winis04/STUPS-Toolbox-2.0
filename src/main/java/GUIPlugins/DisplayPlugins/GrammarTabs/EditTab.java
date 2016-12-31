@@ -86,7 +86,7 @@ public class EditTab implements GrammarTab {
                         dialog.setContentText("Enter the name of the grammar: ");
                         Optional<String> result = dialog.showAndWait();
                         result.ifPresent(name -> {
-                          //  gui.getCli().objects.put(Grammar.class,grammar);
+                            gui.getCli().objects.put(Grammar.class,grammar);
                             gui.addToStore(grammar,Grammar.class,name);
                         });
                     });
@@ -356,7 +356,7 @@ public class EditTab implements GrammarTab {
             String symbols = result.get()[1];
             Nonterminal nonterminal;
             ArrayList<Symbol> symbolList = new ArrayList<>();
-            Grammar grammar1 = grammar;
+            Grammar grammar1 = new Grammar(grammar.getStartSymbol(),grammar.getRules(),grammar.getName(), grammar);
             if (!grammar.getNonterminals().contains(new Nonterminal(name))) {
                 //If the entered nonterminal is not contained in the grammar's nonterminals, create a new one.
                 nonterminal = new Nonterminal(name);
@@ -377,11 +377,15 @@ public class EditTab implements GrammarTab {
                         freshRules.add(new Rule(rule.getComingFrom(),tmp));
                     });
 
-                   grammar1 = new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(), (Grammar) grammar.getPreviousVersion());
+                   grammar1 = new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(), grammar);
 
+                } else {
+                    grammar1 = new Grammar(grammar.getStartSymbol(),grammar.getRules(),grammar.getName(),grammar);
                 }
             } else {
+                //do nothing
                nonterminal = new Nonterminal(name);
+
             }
 
             //Parse the entered symbol list and get the fitting symbols, or create a new terminal
@@ -400,9 +404,11 @@ public class EditTab implements GrammarTab {
                 }
             }
             Rule newRule = new Rule(nonterminal,symbolList);
-            HashSet<Rule> freshRules = grammar1.getRules();
+            HashSet<Rule> freshRules = new HashSet<>();
+            freshRules.addAll(grammar1.getRules());
             freshRules.add(newRule);
-            return new Grammar(grammar1.getStartSymbol(),freshRules,grammar1.getName(),grammar1);
+            Grammar grammar2 = new Grammar(grammar1.getStartSymbol(),freshRules,grammar1.getName(), (Grammar) grammar1.getPreviousVersion());
+            return grammar2;
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("STUPS-Toolbox");

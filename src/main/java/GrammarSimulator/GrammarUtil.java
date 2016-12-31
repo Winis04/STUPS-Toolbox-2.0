@@ -756,7 +756,7 @@ public class GrammarUtil {
     public static ArrayList<Printable> removeLambdaRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
-        Grammar grammar0=new Grammar(grammar);
+        Grammar grammar0= (Grammar) grammar.deep_copy();
 
         //0.5 special Rule
         Grammar grammar05=specialRuleForEmptyWord(grammar0);
@@ -765,9 +765,9 @@ public class GrammarUtil {
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
 
         //2. step two && unneccesaryepsilons
-        Grammar grammar2=new Grammar(grammar05);
-        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar2);
-        grammar2 = removeLambdaRules_StepTwo(grammar2,nullable,grammar);
+        Grammar grammar2;
+        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar05);
+        grammar2 = removeLambdaRules_StepTwo(grammar05,nullable,grammar);
         grammar2 = removeUnneccesaryEpsilons(grammar2,grammar);
         //3. step three
 
@@ -930,10 +930,9 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
     public static ArrayList<Printable> eliminateUnitRulesAsPrintables(Grammar grammar) {
-        grammar.savePreviousVersion(); //for undo
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
-        Grammar grammar0=new Grammar(grammar);
+        Grammar grammar0= (Grammar) grammar.deep_copy();
         Grammar grammar1=GrammarUtil.removeCircles(grammar0);
 
 
