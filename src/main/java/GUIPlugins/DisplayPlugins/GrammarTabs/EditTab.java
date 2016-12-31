@@ -482,41 +482,32 @@ public class EditTab implements GrammarTab {
      * @param newName The nonterminal's new name.
      */
     private void editSymbol(Grammar grammar, String oldName, String newName) {
-        /**
-        Nonterminal editedSymbol = nonterminalsMap.get(oldName);
-        nonterminalsMap.remove(oldName);
-        editedSymbol.setName(newName);
-        if(nonterminalsMap.containsKey(newName)) {
-            nonterminalsMap.get(newName).getSymbolLists().addAll(editedSymbol.getSymbolLists());
+        if(!terminalsMap.containsKey(newName)) {
+            Nonterminal oldSymbol = nonterminalsMap.get(oldName);
+            Nonterminal newSymbol = new Nonterminal(newName);
+            nonterminalsMap.remove(oldName);
 
-            for(ArrayList<Symbol> symbolList : nonterminalsMap.get(newName).getSymbolLists()) {
-                if(symbolList.contains(editedSymbol)) {
-                    Collections.replaceAll(symbolList, editedSymbol, nonterminalsMap.get(newName));
+            HashSet<Rule> freshRules1 = new HashSet<>();
+            grammar.getRules().forEach(rule -> {
+                List<Symbol> freshRightSide = new ArrayList<>();
+                rule.getComparableList().forEach(symbol -> {
+                    if (symbol.equals(oldSymbol)) {
+                        freshRightSide.add(newSymbol);
+                    } else {
+                        freshRightSide.add(symbol);
+                    }
+                });
+                if (rule.getComingFrom().equals(oldSymbol)) {
+                    freshRules1.add(new Rule(newSymbol, freshRightSide));
+                } else {
+                    freshRules1.add(new Rule(rule.getComingFrom(), freshRightSide));
                 }
-            }
-
-            if(grammar.getStartSymbol().equals(editedSymbol)) {
+            });
+            grammar.setRules(freshRules1);
+            if (grammar.getStartSymbol().equals(oldSymbol)) {
                 grammar.setStartSymbol(nonterminalsMap.get(newName));
             }
-            grammar.getNonterminals().remove(editedSymbol);
-        } else if(terminalsMap.containsKey(newName)) {
-            nonterminalsMap.put(newName, editedSymbol);
-            grammar.getNonterminals().add(nonterminalsMap.get(newName));
-
-            for(Nonterminal nonterminal : grammar.getNonterminals()) {
-                for(ArrayList<Symbol> currentSymbols : nonterminal.getSymbolLists()) {
-                    if(currentSymbols.contains(terminalsMap.get(newName))) {
-                        Collections.replaceAll(currentSymbols, terminalsMap.get(newName), nonterminalsMap.get(newName));
-                    }
-                }
-            }
-
-            grammar.getTerminals().remove(terminalsMap.get(newName));
-            terminalsMap.remove(newName);
-        } else {
-            nonterminalsMap.put(newName, editedSymbol);
         }
-         **/
     }
 
     /**
@@ -527,9 +518,11 @@ public class EditTab implements GrammarTab {
      * @param newSymbols A string, containing the new symbol list.
      */
     private void editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
-        /**
+
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
+
+
 
         while (symbolsTokenizer.hasMoreElements()) {
             String currentString = symbolsTokenizer.nextToken().trim();
@@ -546,22 +539,15 @@ public class EditTab implements GrammarTab {
                 }
             }
         }
-        **/
-        /*
-         * The following code should not be needed...
-         * For some weird reason 'nonterminal.getSymbolLists().remove(oldSymbols);' does not work.
-         */
-        /**
-        HashSet<ArrayList<Symbol>> symbolLists = new HashSet<>();
-        for(ArrayList<Symbol> sl : nonterminal.getSymbolLists()) {
-            if(!sl.equals(oldSymbols)) {
-                symbolLists.add(sl);
+        HashSet<Rule> freshRules = new HashSet<>();
+        grammar.getRules().forEach(rule -> {
+            if(rule.getComingFrom().equals(nonterminal) && rule.getComparableList().equals(oldSymbols)) {
+                freshRules.add(new Rule(rule.getComingFrom(),newList));
+            } else {
+                freshRules.add(rule);
             }
-        }
-        nonterminal.getSymbolLists().clear();
-        nonterminal.getSymbolLists().addAll(symbolLists);
+        });
+        grammar.setRules(freshRules);
 
-        nonterminal.getSymbolLists().add(newList);
-     **/
     }
 }
