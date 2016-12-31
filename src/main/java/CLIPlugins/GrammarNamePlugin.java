@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
 
 /**
  * Created by Isabel on 19.11.2016.
@@ -31,8 +32,7 @@ public class GrammarNamePlugin implements CLIPlugin {
             return null;
         }
         Grammar grammar=(Grammar) object;
-        grammar.setName(parameters[0]);
-        return null;
+        return new Grammar(grammar.getStartSymbol(),grammar.getRules(),parameters[0], (Grammar) grammar.getPreviousVersion());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GrammarNamePlugin implements CLIPlugin {
 
     @Override
     public Class outputType() {
-        return null;
+        return Grammar.class;
     }
 
     @Override

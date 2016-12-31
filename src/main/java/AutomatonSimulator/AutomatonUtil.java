@@ -455,9 +455,8 @@ public class AutomatonUtil {
             string = string + line + "\n";
         }
         automaton = AutomatonUtil.parse(string);
-        automaton.setName(name);
         automatonReader.close();
-        return automaton;
+        return (Automaton) automaton.otherName(name);
     }
 
     private static Automaton setIsLoop(Automaton automaton) {

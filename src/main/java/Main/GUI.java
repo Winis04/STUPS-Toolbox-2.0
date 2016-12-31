@@ -113,9 +113,9 @@ public class GUI extends Application{
     }
 
     public void addToStore(Storable storable, Class clazz, String name) {
+        Storable storable1 = storable.otherName(name);
         cli.store.putIfAbsent(clazz, new HashMap<>());
-        cli.store.get(clazz).put(name, storable);
-        storable.setName(name);
+        cli.store.get(clazz).put(name, storable1);
         refresh();
     }
 

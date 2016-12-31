@@ -332,8 +332,10 @@ public class Automaton implements Printable, Storable {
     }
 
     @Override
-    public void setName(String name) {
-        this.name=name;
+    public Storable otherName(String name) {
+        Automaton copy = (Automaton) this.deep_copy();
+        copy.name = name;
+        return copy;
     }
 
 
@@ -346,11 +348,7 @@ public class Automaton implements Printable, Storable {
     public Storable restoreFromFile(File file) {
         try {
             return AutomatonUtil.parse(file);
-        } catch (ParserException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserException | IOException | LexerException e) {
             e.printStackTrace();
         }
         return null;

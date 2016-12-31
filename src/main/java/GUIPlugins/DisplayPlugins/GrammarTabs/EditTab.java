@@ -215,7 +215,7 @@ public class EditTab implements GrammarTab {
                        });
 
                        setAsStartSymbolItem.setOnAction(event1 -> {
-                            Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), (Grammar) grammar.getPreviousVersion());
+                            Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), (Grammar) grammar);
                            gui.refresh(grammar1);
                            gui.getCli().objects.put(Grammar.class,grammar1);
                            gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
@@ -436,8 +436,7 @@ public class EditTab implements GrammarTab {
                     }
 
         });
-        grammar.setRules(freshRules);
-        return grammar;
+        return new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(),grammar);
     }
 
     /**
@@ -468,8 +467,7 @@ public class EditTab implements GrammarTab {
                 freshRules.add(rule);
             }
         });
-        grammar.setRules(freshRules);
-        return grammar;
+        return new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(),grammar);
 
     }
 
@@ -501,9 +499,10 @@ public class EditTab implements GrammarTab {
                     freshRules1.add(new Rule(rule.getComingFrom(), freshRightSide));
                 }
             });
-            grammar.setRules(freshRules1);
             if (grammar.getStartSymbol().equals(oldSymbol)) {
-                grammar.setStartSymbol(new Nonterminal(newName));
+                return new Grammar(new Nonterminal(newName),freshRules1,grammar.getName(),grammar);
+            } else {
+                return new Grammar(grammar.getStartSymbol(),freshRules1,grammar.getName(),grammar);
             }
         }
         return grammar;
@@ -545,8 +544,7 @@ public class EditTab implements GrammarTab {
                 freshRules.add(rule);
             }
         });
-        grammar.setRules(freshRules);
-        return grammar;
+        return new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(),grammar);
 
     }
 }

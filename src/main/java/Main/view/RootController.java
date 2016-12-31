@@ -131,7 +131,7 @@ public class RootController {
                     while ((line = reader.readLine()) != null) {
                         string = string + line + "\n";
                     }
-                    Grammar grammar = GrammarUtil.parse(string);
+                    Grammar grammar = GrammarUtil.parse(string,file.getName());
                     gui.getCli().objects.put(Grammar.class, grammar);
                     gui.switchDisplayGui(Grammar.class);
                     gui.refresh(grammar);

@@ -77,12 +77,12 @@ public class Visitor extends DepthFirstAdapter {
 
     @Override
     public void outARoot(ARoot node) {
-        grammar = new Grammar(new HashSet<>(terminals.values()), new HashSet<>(nonterminals.values()), startSymbol,rules);
+        grammar = new Grammar(startSymbol,rules,"G",null);
 
     }
 
-    public Grammar getGrammar() {
+    public Grammar getGrammar(String name) {
 
-        return  grammar;
+        return  new Grammar(grammar.getStartSymbol(),grammar.getRules(),name,null);
     }
 }

@@ -42,9 +42,9 @@ public class PushDownAutomatonUtil {
             string = string + line + "\n";
         }
         pda = PushDownAutomatonUtil.parse(string);
-        pda.setName(name);
+        PushDownAutomaton pda2 = (PushDownAutomaton) pda.otherName(name);
         grammarReader.close();
-        return pda;
+        return pda2;
 
     }
     public static void save(PushDownAutomaton pda, String fileName) {

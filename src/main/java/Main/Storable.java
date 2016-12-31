@@ -8,7 +8,7 @@ import java.io.File;
 public interface Storable {
     Storable deep_copy();
     String getName();
-    void setName(String name);
+    Storable otherName(String name);
     void printToSave(String path);
     Storable restoreFromFile(File file);
     void savePreviousVersion();

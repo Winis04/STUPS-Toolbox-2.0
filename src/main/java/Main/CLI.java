@@ -151,18 +151,17 @@ public class CLI {
 
                                 Storable toBeStored;
                                 if (command.equals("copy")) {
-                                    toBeStored = ((Storable) object).deep_copy();
+                                    toBeStored = ((Storable) object).otherName(i);
                                 } else {
-                                    toBeStored = (Storable) object;
+                                    toBeStored = ((Storable) object).otherName(i);
                                 }
                                 if (correctMap == null) {
                                     HashMap<String, Storable> tmp = new HashMap<>();
                                     tmp.put(i, toBeStored);
-                                    toBeStored.setName(i);
+
                                     store.put(clazz, tmp);
                                 } else {
                                     correctMap.put(i, toBeStored);
-                                    toBeStored.setName(i);
                                     //    store.get(clazz).put(i, toBeStored);
                                 }
                             }

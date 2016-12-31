@@ -231,8 +231,9 @@ public class Grammar implements Printable, Storable {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public Storable otherName(String name) {
+        return new Grammar(this.getStartSymbol(),this.getRules(),name,this);
     }
 
     public String getRuleSetName() {
@@ -276,7 +277,7 @@ public class Grammar implements Printable, Storable {
         }
     }
 
-    /** GETTER AND SETTER **/
+    /** GETTER **/
     /**
      * Getter-method for {@link #terminals}.
      *
@@ -304,32 +305,10 @@ public class Grammar implements Printable, Storable {
         return startSymbol;
     }
 
-    /**
-     * Setter-method for {@link #startSymbol}.
-     *
-     * @param startSymbol The new value for {@link #startSymbol}.
-     */
-    public void setStartSymbol(Nonterminal startSymbol) {
-        this.startSymbol = startSymbol;
-    }
 
     public HashSet<Rule> getRules() {
         return rules;
     }
 
-    public void setRules(HashSet<Rule> rules) {
-        this.rules = rules;
-        this.nonterminals.clear();
-        this.terminals.clear();
-        rules.stream().map(Rule::getComingFrom).forEach(comingFrom -> this.nonterminals.add(comingFrom));
-        rules.stream().map(Rule::getComparableList).forEach(list -> list.forEach(sym -> {
-            if(sym instanceof Terminal) {
-                terminals.add((Terminal) sym);
-            }
-        }));
-    }
 
-    public void setNonterminals(HashSet<Nonterminal> nonterminals) {
-        this.nonterminals = nonterminals;
-    }
 }

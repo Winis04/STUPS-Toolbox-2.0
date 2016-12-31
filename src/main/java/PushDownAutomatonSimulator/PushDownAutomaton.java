@@ -141,9 +141,12 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
     @Override
-    public void setName(String name) {
-        this.name=name;
+    public Storable otherName(String name) {
+        PushDownAutomaton pda = (PushDownAutomaton) this.deep_copy();
+        pda.name=name;
+        return pda;
     }
+
 
 
     @Override

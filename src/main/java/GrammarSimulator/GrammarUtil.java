@@ -250,7 +250,7 @@ public class GrammarUtil {
      * @throws LexerException {@link LexerException}.
      * @throws IOException {@link IOException}.
      */
-    public static Grammar parse(String fileInput) throws ParserException, LexerException, IOException {
+    public static Grammar parse(String fileInput, String name) throws ParserException, LexerException, IOException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
         Lexer l = new Lexer(r);
@@ -258,9 +258,8 @@ public class GrammarUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        Grammar g = visitor.getGrammar();
-        GrammarUtil.replaceLambda(g);
-        return g;
+        Grammar g = visitor.getGrammar(name);
+        return GrammarUtil.replaceLambda(g);
     }
 
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
@@ -272,8 +271,7 @@ public class GrammarUtil {
         while ((line = grammarReader.readLine()) != null) {
             string = string + line + "\n";
         }
-        grammar = GrammarUtil.parse(string);
-        grammar.setName(name);
+        grammar = GrammarUtil.parse(string,name);
         grammarReader.close();
         return grammar;
 
@@ -735,7 +733,7 @@ public class GrammarUtil {
 
     }
 
-    private static void replaceLambda(Grammar g) {
+    private static Grammar replaceLambda(Grammar g) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
             List<Symbol> list = new ArrayList<Symbol>();
@@ -748,6 +746,7 @@ public class GrammarUtil {
             });
             freshRules.add(new Rule(rule.getComingFrom(),list));
         });
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
