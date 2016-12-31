@@ -43,7 +43,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
             System.out.println("This grammar is already lambda-free");
             return null;
         }
-       ArrayList<Printable> printables=GrammarUtil.removeLambdaRules(grammar);
+       ArrayList<Printable> printables=GrammarUtil.removeLambdaRulesAsPrintables(grammar);
         String texts[];
         String point_descriptions[];
         if(printables.size()==4) {
@@ -60,7 +60,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
         Printer.printEnumeration(printables,point_descriptions,texts,"Remove Lambda-Rules");
 
 
-        return null;
+        return GrammarUtil.removeLambdaRules(grammar);
     }
 
 

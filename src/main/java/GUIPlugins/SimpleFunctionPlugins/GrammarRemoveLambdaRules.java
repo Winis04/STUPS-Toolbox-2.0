@@ -23,9 +23,8 @@ public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
             gui.infoDialog("this grammar is already lambda-free");
             return null;
         }
-        GrammarRemoveLambdaPlugin cliPlugin = new GrammarRemoveLambdaPlugin();
-        cliPlugin.execute(object,new String[]{});
-        return grammar;
+
+        return GrammarUtil.removeLambdaRules(grammar);
     }
 
     @Override
