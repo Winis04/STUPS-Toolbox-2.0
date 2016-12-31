@@ -204,7 +204,7 @@ public class EditTab implements GrammarTab {
                        MenuItem setAsStartSymbolItem = new MenuItem("Set as start symbol");
 
                        deleteItem.setOnAction(event1 -> {
-                           deleteSymbol(grammar, nonterminal);
+                           deleteNonTerminal(grammar, nonterminal);
 
                            writeTopLabels(grammar);
                            writeRules(grammar, editPane);
@@ -420,19 +420,23 @@ public class EditTab implements GrammarTab {
      * @param grammar The grammar.
      * @param nonterminal The nonterminal.
      */
-    private void deleteSymbol(Grammar grammar, Nonterminal nonterminal) {
+    private void deleteNonTerminal(Grammar grammar, Nonterminal nonterminal) {
 
         grammar.getNonterminals().remove(nonterminal);
         nonterminalsMap.remove(nonterminal.getName());
         HashSet<Rule> freshRules = new HashSet<>();
-        grammar.getRules().forEach(rule -> {
-            List<Symbol> freshRightSide = new ArrayList<>();
-            rule.getComparableList().forEach(sym -> {
-                if(!sym.equals(nonterminal)) {
-                    freshRightSide.add(sym);
-                }
-            });
-            freshRules.add(new Rule(rule.getComingFrom(),freshRightSide));
+        grammar.getRules().stream()
+                .filter(rule -> !rule.getComingFrom().equals(nonterminal))
+                .forEach(rule -> {
+                    List<Symbol> freshRightSide = new ArrayList<>();
+                    rule.getComparableList().forEach(sym -> {
+                    if(!sym.equals(nonterminal)) {
+                        freshRightSide.add(sym);
+                    }
+                    });
+                    if(!freshRightSide.isEmpty()) {
+                        freshRules.add(new Rule(rule.getComingFrom(), freshRightSide));
+                    }
 
         });
         grammar.setRules(freshRules);
