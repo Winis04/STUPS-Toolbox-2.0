@@ -73,7 +73,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     @Override
     public Class outputType() {
-        return null;
+        return Grammar.class;
     }
 
     @Override

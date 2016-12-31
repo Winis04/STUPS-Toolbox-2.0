@@ -768,11 +768,11 @@ public class GrammarUtil {
         //2. step two && unneccesaryepsilons
         Grammar grammar2=new Grammar(grammar05);
         HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar2);
-        removeLambdaRules_StepTwo(grammar2,nullable,grammar);
-        removeUnneccesaryEpsilons(grammar2,grammar);
+        grammar2 = removeLambdaRules_StepTwo(grammar2,nullable,grammar);
+        grammar2 = removeUnneccesaryEpsilons(grammar2,grammar);
         //3. step three
-        Grammar grammar3=new Grammar(grammar2);
-        removeLambdaRules_StepThree(grammar3,true,grammar);
+
+        Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
         res.add(grammar0);
 
         res.add(grammar05);
@@ -930,27 +930,88 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
-    public static ArrayList<Printable> eliminateUnitRules(Grammar grammar) {
+    public static ArrayList<Printable> eliminateUnitRulesAsPrintables(Grammar grammar) {
         grammar.savePreviousVersion(); //for undo
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
         Grammar grammar0=new Grammar(grammar);
-        Grammar grammar1=new Grammar(grammar);
-        GrammarUtil.removeCircleRulesAndGetUnitRules(grammar1);
+        Grammar grammar1=GrammarUtil.removeCircles(grammar0);
 
 
-        Grammar grammar2=new Grammar(grammar1);
-        HashSet<Node> unitRules=GrammarUtil.removeCircleRulesAndGetUnitRules(grammar2);
-        GrammarUtil.removeUnitRules(unitRules,grammar2);
+
+        HashSet<Node> unitRules=findUnitRules(grammar1);
+        Grammar grammar2=GrammarUtil.removeUnitRules(unitRules,grammar1);
 
         res.add(grammar0);
         res.add(grammar1);
         res.add(grammar2);
-        /** change original grammar **/
-        HashSet<Node> unitRules2= removeCircleRulesAndGetUnitRules(grammar);
-        removeUnitRules(unitRules2,grammar);
+
         return res;
 
+    }
+
+    public static Grammar eliminateUnitRules(Grammar grammar) {
+        Grammar grammar1 =  GrammarUtil.removeCircles(grammar);
+        return GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1),grammar1);
+    }
+
+    private static Grammar removeCircles(Grammar grammar) {
+        Grammar res = grammar;
+        Grammar loop = grammar;
+        while(loop!=null) {
+            loop = removeOneCircle(res);
+            if(loop!=null) {
+                res=loop;
+            }
+        }
+        HashSet<Rule> freshRules = new HashSet<>();
+        res.getRules().forEach(rule -> {
+            if (rule.getComparableList().size() > 1) {
+                freshRules.add(rule);
+            } else if(rule.getComparableList().size()==1) {
+                if (!rule.getComingFrom().equals(rule.getComparableList().get(0))) {
+                    freshRules.add(rule);
+                }
+            }
+        });
+        return new Grammar(res.getStartSymbol(),freshRules,res.getName(), (Grammar) res.getPreviousVersion());
+    }
+    /**
+     * removes circles in the grammar rules
+     * @author Isabel Wingen
+     * @param grammar
+     * @return
+     */
+    private static Grammar removeOneCircle(Grammar grammar) {
+        ArrayList<Node> tmp;
+
+        HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar); //ok no changes
+        GrammarUtil.dfs(unitRules);
+        tmp=GrammarUtil.findBackwardsEdge(unitRules);
+        if(tmp!=null) {
+            //do the replace
+            Nonterminal toBeReplaced=tmp.get(0).getValue();
+            Nonterminal newNonTerminal=tmp.get(1).getValue();
+            HashSet<Rule> freshRules = new HashSet<>();
+            grammar.getRules().forEach(rule -> {
+                List<Symbol> tmpList = new ArrayList<Symbol>();
+                rule.getComparableList().forEach(sym -> {
+                    if(sym.equals(toBeReplaced)) {
+                        tmpList.add(newNonTerminal);
+                    } else {
+                        tmpList.add(sym);
+                    }
+                });
+                if(rule.getComingFrom().equals(toBeReplaced)) {
+                    freshRules.add(new Rule(newNonTerminal,tmpList));
+                } else {
+                    freshRules.add(new Rule(rule.getComingFrom(),tmpList));
+                }
+            });
+            return new Grammar(grammar.getStartSymbol(),freshRules, grammar.getName(), (Grammar) grammar.getPreviousVersion());
+        } else {
+            return null;
+        }
     }
 
 
@@ -960,7 +1021,7 @@ public class GrammarUtil {
      * @param grammar
      * @return
      */
-    private static HashSet<Node> removeCircleRulesAndGetUnitRules(Grammar grammar) {
+    private static HashSet<Node> GetUnitRules(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
@@ -973,10 +1034,6 @@ public class GrammarUtil {
             tmp=GrammarUtil.findBackwardsEdge(unitRules);
         }
 
-        //remove all unnecessary Nonterminals
-        HashSet<Nonterminal> freshNonterminals = new HashSet<>();
-        freshNonterminals.addAll(grammar.getRules().stream().map(Rule::getComingFrom).collect(toList()));
-        grammar.setNonterminals(freshNonterminals);
         return unitRules;
 
 
@@ -998,10 +1055,10 @@ public class GrammarUtil {
 
         for(Node node : result) {
             g.getRules().stream().filter(rule -> rule.getComingFrom().equals(node.getValue()))
-                    .map(rule -> rule.getComparableList()).forEach(list -> {
+                    .map(Rule::getComparableList).forEach(list -> {
                 if(list.size()==1 && list.get(0) instanceof Nonterminal) {
                     Nonterminal nt = (Nonterminal) list.get(0);
-                    result.stream().forEach(child -> {
+                    result.forEach(child -> {
                         if (child.getName().equals(nt.getName())) {
                             node.getChildren().add(child);
                         }
@@ -1088,7 +1145,7 @@ public class GrammarUtil {
      * @param nodes the nonterminals as nodes. to obtain them, use
      * @param g the grammar g
      */
-    private static void removeUnitRules(HashSet<Node> nodes, Grammar g) {
+    private static Grammar removeUnitRules(HashSet<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
 
         //add every rule of the child as a rule of the parent
@@ -1114,6 +1171,7 @@ public class GrammarUtil {
             }
         });
         g.setRules(freshRules);
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
     }
 
     /**
@@ -1174,7 +1232,7 @@ public class GrammarUtil {
      * @param newNonterminal the new nonterminal that replaces the old
      * @param g the grammar g
      */
-    private static void replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
+    private static Grammar replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
             if(rule.getComingFrom().equals(toBeReplaced)) {
@@ -1210,7 +1268,7 @@ public class GrammarUtil {
                 freshRules2.add(new Rule(rule.getComingFrom(), list));
             }
         });
-        g.setRules(freshRules2);
+        return new Grammar(g.getStartSymbol(),freshRules2,g.getName(), (Grammar) g.getPreviousVersion());
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
@@ -1407,7 +1465,7 @@ public class GrammarUtil {
     public static boolean languageContainsWord(Grammar grammarOld, String word) {
         Grammar grammar = (Grammar) grammarOld.deep_copy();
         removeLambdaRulesAsPrintables(grammar);
-        eliminateUnitRules(grammar);
+        eliminateUnitRulesAsPrintables(grammar);
         chomskyNormalFormAsPrintables(grammar);
         return checkMatrix(cyk(grammar,word),grammar);
     }

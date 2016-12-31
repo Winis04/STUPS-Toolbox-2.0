@@ -70,7 +70,7 @@ public class GrammarChomskyNormalForm implements CLIPlugin {
 
     @Override
     public Class outputType() {
-        return null;
+        return Grammar.class;
     }
 
     @Override

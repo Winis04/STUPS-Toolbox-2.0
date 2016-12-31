@@ -18,8 +18,7 @@ public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
         if(!GrammarUtil.hasUnitRules(grammar)) {
             gui.infoDialog("this grammar has no unit rules!");
         } else {
-            CLIPlugins.GrammarEliminateUnitRules cliPlugin = new CLIPlugins.GrammarEliminateUnitRules();
-            cliPlugin.execute(object,new String[]{});
+            return GrammarUtil.eliminateUnitRules(grammar);
         }
         return grammar;
     }

@@ -44,9 +44,9 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
                 "remove circles",
                 "number the nonterminals and remove unit rules beginning by the highest number."};
         String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
-        Printer.printEnumeration(GrammarUtil.eliminateUnitRules(grammar),point_descriptions,texts,"Eliminate Unit Rules");
+        Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar),point_descriptions,texts,"Eliminate Unit Rules");
 
-        return null;
+        return GrammarUtil.eliminateUnitRules(grammar);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class GrammarEliminateUnitRules implements CLIPlugin {
 
     @Override
     public Class outputType() {
-        return null;
+        return Grammar.class;
     }
 
     @Override
