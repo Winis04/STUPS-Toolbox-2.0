@@ -49,13 +49,21 @@ public class Grammar implements Printable, Storable {
 
     private Grammar previousVersion;
 
-    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol, HashSet<Rule> rules, String name, Grammar previousVersion) {
-        this.terminals = terminals;
-        this.nonterminals = nonterminals;
+    public Grammar(Nonterminal startSymbol, HashSet<Rule> rules, String name, Grammar previousVersion) {
         this.startSymbol = startSymbol;
         this.rules = rules;
         this.name = name;
         this.previousVersion = previousVersion;
+        this.terminals = new HashSet<>();
+        this.nonterminals = new HashSet<>();
+        this.rules.stream().map(Rule::getComparableList).forEach(list -> list.forEach(sym -> {
+            if (sym instanceof Terminal) {
+                terminals.add((Terminal) sym);
+            } else {
+                nonterminals.add((Nonterminal) sym);
+            }
+        }));
+        this.rules.stream().map(Rule::getComingFrom).forEach(nonterminals::add);
     }
 
     /**
@@ -121,6 +129,8 @@ public class Grammar implements Printable, Storable {
         this.previousVersion = (Grammar) old.getPreviousVersion();
 
     }
+
+
 
 
 

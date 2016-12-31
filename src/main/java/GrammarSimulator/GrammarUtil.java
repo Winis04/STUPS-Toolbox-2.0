@@ -1286,7 +1286,6 @@ public class GrammarUtil {
 
 
     public static ArrayList<Printable> chomskyNormalForm(Grammar grammar) {
-        grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(4);
 
         Grammar grammar0 = (Grammar) grammar.deep_copy();
@@ -1329,8 +1328,7 @@ public class GrammarUtil {
                 freshRules.add(rule);
             }
         });
-        g.setRules(freshRules);
-        return g;
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(),g);
     }
 
     /**
@@ -1384,8 +1382,6 @@ public class GrammarUtil {
         return g;
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
-        boolean checkStart;
-        boolean checkOtherStuff;
         return grammar.getRules().stream().allMatch(rule -> {
             if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
                 return (rule.getComparableList().size()==1 && rule.getComparableList().get(0).equals(Terminal.NULLSYMBOL))
