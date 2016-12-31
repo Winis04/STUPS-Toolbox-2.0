@@ -330,7 +330,14 @@ public class Grammar implements Printable, Storable {
 
     public void setRules(HashSet<Rule> rules) {
         this.rules = rules;
+        this.nonterminals.clear();
+        this.terminals.clear();
         rules.stream().map(Rule::getComingFrom).forEach(comingFrom -> this.nonterminals.add(comingFrom));
+        rules.stream().map(Rule::getComparableList).forEach(list -> list.forEach(sym -> {
+            if(sym instanceof Terminal) {
+                terminals.add((Terminal) sym);
+            }
+        }));
     }
 
     public void setNonterminals(HashSet<Nonterminal> nonterminals) {

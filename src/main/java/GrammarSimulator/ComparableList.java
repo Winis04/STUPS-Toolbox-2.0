@@ -12,10 +12,14 @@ public class ComparableList<E> extends ArrayList<E> {
 
     }
 
+    public ComparableList() {
+
+    }
+
     @Override
     public boolean equals(Object o) {
-        if(o instanceof ComparableList) {
-            ComparableList other = (ComparableList) o;
+        if(o instanceof List) {
+            List other = (List) o;
             if(this.size()==other.size()) {
                 boolean all = true;
                 for(int i=0;i<this.size();i++) {

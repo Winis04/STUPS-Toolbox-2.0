@@ -266,7 +266,7 @@ public class EditTab implements GrammarTab {
                        MenuItem editItem = new MenuItem("Edit List");
 
                        deleteItem.setOnAction(event1 -> {
-                           deleteRule(nonterminal, symbolString.toString());
+                           deleteRule(nonterminal, symbolString.toString(),grammar);
 
                            writeTopLabels(grammar);
                            writeRules(grammar, editPane);
@@ -448,9 +448,8 @@ public class EditTab implements GrammarTab {
      * @param nonterminal The nonterminal.
      * @param symbolString A string, containing the symbols, seperated by commas.
      */
-    private void deleteRule(Nonterminal nonterminal, String symbolString) {
-        /**
-        ArrayList<Symbol> symbolList = new ArrayList<>();
+    private void deleteRule(Nonterminal nonterminal, String symbolString, Grammar grammar) {
+        ComparableList<Symbol> symbolList = new ComparableList<>();
 
         StringTokenizer tok = new StringTokenizer(symbolString.replaceAll(" ", ""), ",");
         while (tok.hasMoreElements()) {
@@ -461,8 +460,18 @@ public class EditTab implements GrammarTab {
                 symbolList.add(nonterminalsMap.get(currentSymbol));
             }
         }
-        nonterminal.getSymbolLists().remove(symbolList);
-        **/
+        HashSet<Rule> freshRules = new HashSet<>();
+        grammar.getRules().forEach(rule -> {
+            if (rule.getComingFrom().equals(nonterminal)) {
+                if (!symbolList.equals(rule.getComparableList())) {
+                    freshRules.add(rule);
+                }
+            } else {
+                freshRules.add(rule);
+            }
+        });
+        grammar.setRules(freshRules);
+
     }
 
     /**
