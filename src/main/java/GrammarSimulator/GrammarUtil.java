@@ -1170,7 +1170,6 @@ public class GrammarUtil {
                 freshRules.add(rule);
             }
         });
-        g.setRules(freshRules);
         return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
     }
 

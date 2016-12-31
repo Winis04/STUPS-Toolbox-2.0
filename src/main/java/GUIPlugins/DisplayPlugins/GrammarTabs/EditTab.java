@@ -90,10 +90,12 @@ public class EditTab implements GrammarTab {
                     MenuItem addItem = new MenuItem("Add Rule");
 
                     addItem.setOnAction(event1 -> {
-                        addRule(grammar);
-
-                        writeTopLabels(grammar);
-                        writeRules(grammar, editPane);
+                        Grammar grammar1 = addRule(grammar);
+                        gui.refresh(grammar1);
+                        gui.getCli().objects.put(Grammar.class,grammar1);
+                        gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                        writeTopLabels(grammar1);
+                        writeRules(grammar1, editPane);
                     });
                     MenuItem store = new MenuItem("Store");
                     store.setOnAction(event1 -> {
@@ -204,10 +206,12 @@ public class EditTab implements GrammarTab {
                        MenuItem setAsStartSymbolItem = new MenuItem("Set as start symbol");
 
                        deleteItem.setOnAction(event1 -> {
-                           deleteNonTerminal(grammar, nonterminal);
-
-                           writeTopLabels(grammar);
-                           writeRules(grammar, editPane);
+                           Grammar grammar1 = deleteNonTerminal(grammar, nonterminal);
+                           gui.refresh(grammar1);
+                           gui.getCli().objects.put(Grammar.class,grammar1);
+                           gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                           writeTopLabels(grammar1);
+                           writeRules(grammar1, editPane);
                        });
 
                        editItem.setOnAction(event1 -> {
@@ -215,10 +219,12 @@ public class EditTab implements GrammarTab {
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                   editSymbol(grammar, nonterminal.getName(), field.getText());
-
-                                   writeTopLabels(grammar);
-                                   writeRules(grammar, editPane);
+                                   Grammar grammar1= editSymbol(grammar, nonterminal.getName(), field.getText());
+                                   gui.refresh(grammar1);
+                                   gui.getCli().objects.put(Grammar.class,grammar1);
+                                   gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                                   writeTopLabels(grammar1);
+                                   writeRules(grammar1, editPane);
                                }
                            });
 
@@ -227,10 +233,12 @@ public class EditTab implements GrammarTab {
                        });
 
                        setAsStartSymbolItem.setOnAction(event1 -> {
-                           grammar.setStartSymbol(nonterminal);
-
-                           writeTopLabels(grammar);
-                           writeRules(grammar, editPane);
+                            Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), (Grammar) grammar.getPreviousVersion());
+                           gui.refresh(grammar1);
+                           gui.getCli().objects.put(Grammar.class,grammar1);
+                           gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                           writeTopLabels(grammar1);
+                           writeRules(grammar1, editPane);
                        });
 
                        mouseMenu.getItems().clear();
@@ -245,11 +253,15 @@ public class EditTab implements GrammarTab {
 
                        field.setOnKeyPressed(event1 -> {
                            if(event1.getCode().equals(KeyCode.ENTER)) {
+                               Grammar grammar1=grammar;
                                if(!field.getText().isEmpty()) {
-                                   editSymbol(grammar, oldName, field.getText());
+                                  grammar1=editSymbol(grammar, oldName, field.getText());
+                                   gui.refresh(grammar1);
+                                   gui.getCli().objects.put(Grammar.class,grammar1);
+                                   gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
                                }
-                               writeTopLabels(grammar);
-                               writeRules(grammar, editPane);
+                               writeTopLabels(grammar1);
+                               writeRules(grammar1, editPane);
                            }
                        });
 
@@ -266,10 +278,12 @@ public class EditTab implements GrammarTab {
                        MenuItem editItem = new MenuItem("Edit List");
 
                        deleteItem.setOnAction(event1 -> {
-                           deleteRule(nonterminal, symbolString.toString(),grammar);
-
-                           writeTopLabels(grammar);
-                           writeRules(grammar, editPane);
+                           Grammar grammar1 = deleteRule(nonterminal, symbolString.toString(),grammar);
+                           gui.refresh(grammar1);
+                           gui.getCli().objects.put(Grammar.class,grammar1);
+                           gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                           writeTopLabels(grammar1);
+                           writeRules(grammar1, editPane);
                        });
 
                        editItem.setOnAction(event1 -> {
@@ -277,10 +291,12 @@ public class EditTab implements GrammarTab {
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                   editRule(grammar, nonterminal, symbols, field.getText());
-
-                                   writeTopLabels(grammar);
-                                   writeRules(grammar, editPane);
+                                   Grammar grammar1=editRule(grammar, nonterminal, symbols, field.getText());
+                                   gui.refresh(grammar1);
+                                   gui.getCli().objects.put(Grammar.class,grammar1);
+                                   gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                                   writeTopLabels(grammar1);
+                                   writeRules(grammar1, editPane);
                                }
                            });
 
@@ -299,10 +315,12 @@ public class EditTab implements GrammarTab {
 
                        field.setOnKeyPressed(event1 -> {
                            if (event1.getCode().equals(KeyCode.ENTER)) {
-                               editRule(grammar, nonterminal, symbols, field.getText());
-
-                               writeTopLabels(grammar);
-                               writeRules(grammar, editPane);
+                               Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
+                               gui.refresh(grammar1);
+                               gui.getCli().objects.put(Grammar.class,grammar1);
+                               gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
+                               writeTopLabels(grammar1);
+                               writeRules(grammar1, editPane);
                            }
                        });
 
@@ -321,7 +339,7 @@ public class EditTab implements GrammarTab {
      *
      * @param grammar The grammar.
      */
-    private void addRule(Grammar grammar) {
+    private Grammar addRule(Grammar grammar) {
 
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
@@ -412,6 +430,7 @@ public class EditTab implements GrammarTab {
             alert.setHeaderText("Please fill in all fields!");
             alert.showAndWait();
         }
+        return grammar;
     }
 
     /**
@@ -420,7 +439,7 @@ public class EditTab implements GrammarTab {
      * @param grammar The grammar.
      * @param nonterminal The nonterminal.
      */
-    private void deleteNonTerminal(Grammar grammar, Nonterminal nonterminal) {
+    private Grammar deleteNonTerminal(Grammar grammar, Nonterminal nonterminal) {
 
         grammar.getNonterminals().remove(nonterminal);
         nonterminalsMap.remove(nonterminal.getName());
@@ -440,6 +459,7 @@ public class EditTab implements GrammarTab {
 
         });
         grammar.setRules(freshRules);
+        return grammar;
     }
 
     /**
@@ -448,7 +468,7 @@ public class EditTab implements GrammarTab {
      * @param nonterminal The nonterminal.
      * @param symbolString A string, containing the symbols, seperated by commas.
      */
-    private void deleteRule(Nonterminal nonterminal, String symbolString, Grammar grammar) {
+    private Grammar deleteRule(Nonterminal nonterminal, String symbolString, Grammar grammar) {
         ComparableList<Symbol> symbolList = new ComparableList<>();
 
         StringTokenizer tok = new StringTokenizer(symbolString.replaceAll(" ", ""), ",");
@@ -471,6 +491,7 @@ public class EditTab implements GrammarTab {
             }
         });
         grammar.setRules(freshRules);
+        return grammar;
 
     }
 
@@ -481,7 +502,7 @@ public class EditTab implements GrammarTab {
      * @param oldName The nonterminal's old name.
      * @param newName The nonterminal's new name.
      */
-    private void editSymbol(Grammar grammar, String oldName, String newName) {
+    private Grammar editSymbol(Grammar grammar, String oldName, String newName) {
         if(!terminalsMap.containsKey(newName)) {
             Nonterminal oldSymbol = nonterminalsMap.get(oldName);
             Nonterminal newSymbol = new Nonterminal(newName);
@@ -508,6 +529,7 @@ public class EditTab implements GrammarTab {
                 grammar.setStartSymbol(nonterminalsMap.get(newName));
             }
         }
+        return grammar;
     }
 
     /**
@@ -517,7 +539,7 @@ public class EditTab implements GrammarTab {
      * @param oldSymbols An ArrayList, representing the old symbol list.
      * @param newSymbols A string, containing the new symbol list.
      */
-    private void editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
+    private Grammar editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
 
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
@@ -548,6 +570,7 @@ public class EditTab implements GrammarTab {
             }
         });
         grammar.setRules(freshRules);
+        return grammar;
 
     }
 }
