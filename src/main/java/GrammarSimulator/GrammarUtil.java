@@ -1386,16 +1386,16 @@ public class GrammarUtil {
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         boolean checkStart;
         boolean checkOtherStuff;
-        checkStart = grammar.getRules().stream()
-                .filter(rule -> rule.getComingFrom().equals(grammar.getStartSymbol()))
-                .map(Rule::getComparableList)
-                .allMatch(side ->
-                        (side.size()==1 && side.get(0) instanceof Terminal) || (side.size()==1 && side.stream().allMatch(sym -> sym instanceof Nonterminal)));
-        checkOtherStuff = grammar.getRules().stream()
-                .map(Rule::getComparableList)
-                .allMatch(side ->
-                        (side.size()==1 && side.get(0) instanceof Terminal && !side.get(0).equals(Terminal.NULLSYMBOL)) || (side.size()==1 && side.stream().allMatch(sym -> sym instanceof Nonterminal)));
-        return checkOtherStuff && checkStart;
+        return grammar.getRules().stream().allMatch(rule -> {
+            if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
+                return (rule.getComparableList().size()==1 && rule.getComparableList().get(0).equals(Terminal.NULLSYMBOL))
+                        || (rule.getComparableList().size()==1 && rule.getComparableList().get(0) instanceof Terminal)
+                        || (rule.getComparableList().size()==2 && rule.getComparableList().stream().allMatch(sym -> sym instanceof Nonterminal));
+            } else {
+                return (rule.getComparableList().size()==1 && rule.getComparableList().get(0) instanceof Terminal && !rule.getComparableList().get(0).equals(Terminal.NULLSYMBOL))
+                        || (rule.getComparableList().size()==2 && rule.getComparableList().stream().allMatch(sym -> sym instanceof Nonterminal));
+            }
+        });
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*

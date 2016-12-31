@@ -42,72 +42,52 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
 
 
         start.setOnAction(event -> {
-            if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Can't do this");
-                alert.setHeaderText("This Grammar is not in chomsky normal form");
-                alert.setContentText("should it now be modified?");
-                ButtonType buttonYes = new ButtonType("yes", ButtonBar.ButtonData.YES);
-                ButtonType buttonNo = new ButtonType("no", ButtonBar.ButtonData.NO);
-                alert.getButtonTypes().setAll(buttonYes,buttonNo);
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == buttonYes){
-                    GrammarUtil.removeLambdaRules(grammar);
-                    GrammarUtil.eliminateUnitRules(grammar);
-                    GrammarUtil.chomskyNormalForm(grammar);
-                    GUI.getGUI().refresh(grammar);
-                } else if (result.get() == buttonNo) {
-                    return;
-                } else {
-                    return;
+            if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+                String input = field.getText();
+                Matrix matrix = GrammarUtil.cyk(grammar, input);
+                CLIPlugin cykConsole = new GrammarCYK();
+                cykConsole.execute(grammar, new String[]{input});
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                for (int c = 1; c < matrix.getNumberOfColumns(); c++) {
+                    grid.add(new Label("" + c), c, 0);
                 }
-            }
-            String input = field.getText();
-            Matrix matrix = GrammarUtil.cyk(grammar,input);
-            CLIPlugin cykConsole = new GrammarCYK();
-            cykConsole.execute(grammar,new String[]{input});
-            GridPane grid = new GridPane();
-            grid.setAlignment(Pos.CENTER);
-            for(int c=1;c<matrix.getNumberOfColumns();c++) {
-                grid.add(new Label(""+c),c,0);
-            }
-            for(int r=matrix.getNumberOfRows()-1;r>=0;r--) {
-                grid.add(new Label(""+r),0,matrix.getNumberOfRows()-r);
-            }
-            for(int c=0;c<matrix.getNumberOfColumns();c++) {
-                //grid.addColumn(c,new Label(""));
-                for(int r=0;r<matrix.getNumberOfRows();r++) {
-                    //grid.addRow(r,new Label(""));
-                    grid.add(new Label(matrix.getCell(c,r).stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.joining(", "))),c,matrix.getNumberOfRows()-r);
+                for (int r = matrix.getNumberOfRows() - 1; r >= 0; r--) {
+                    grid.add(new Label("" + r), 0, matrix.getNumberOfRows() - r);
                 }
-            }
-            grid.setGridLinesVisible(true);
-            grid.getChildren().stream().forEach(node ->{
-                grid.setMargin(node, new Insets(5, 10, 5, 10));
-            });
-
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setContent(grid);
-            scrollPane.setFitToHeight(true);
-            scrollPane.setFitToWidth(true);
-
-            String name ="CYK - "+input;
-            Tab tab = new Tab(name);
-            tab.setContent(scrollPane);
-            tab.setClosable(true);
-            GrammarGUI grammarGUI = (GrammarGUI) GUI;
-            if(grammarGUI.getRootPane().getTabs().stream().anyMatch(t -> t.getText().equals(name))) {
-                grammarGUI.getRootPane().getTabs().stream().forEach(t -> {
-                    if(t.getText().equals(name)) {
-                        grammarGUI.getRootPane().getSelectionModel().select(t);
+                for (int c = 0; c < matrix.getNumberOfColumns(); c++) {
+                    //grid.addColumn(c,new Label(""));
+                    for (int r = 0; r < matrix.getNumberOfRows(); r++) {
+                        //grid.addRow(r,new Label(""));
+                        grid.add(new Label(matrix.getCell(c, r).stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
                     }
+                }
+                grid.setGridLinesVisible(true);
+                grid.getChildren().stream().forEach(node -> {
+                    grid.setMargin(node, new Insets(5, 10, 5, 10));
                 });
-            } else{
-                grammarGUI.getRootPane().getTabs().add(tab);
-                grammarGUI.getRootPane().getSelectionModel().select(tab);
-            }
 
+                ScrollPane scrollPane = new ScrollPane();
+                scrollPane.setContent(grid);
+                scrollPane.setFitToHeight(true);
+                scrollPane.setFitToWidth(true);
+
+                String name = "CYK - " + input;
+                Tab tab = new Tab(name);
+                tab.setContent(scrollPane);
+                tab.setClosable(true);
+                GrammarGUI grammarGUI = (GrammarGUI) GUI;
+                if (grammarGUI.getRootPane().getTabs().stream().anyMatch(t -> t.getText().equals(name))) {
+                    grammarGUI.getRootPane().getTabs().stream().forEach(t -> {
+                        if (t.getText().equals(name)) {
+                            grammarGUI.getRootPane().getSelectionModel().select(t);
+                        }
+                    });
+                } else {
+                    grammarGUI.getRootPane().getTabs().add(tab);
+                    grammarGUI.getRootPane().getSelectionModel().select(tab);
+                }
+            }
 
 
         });
