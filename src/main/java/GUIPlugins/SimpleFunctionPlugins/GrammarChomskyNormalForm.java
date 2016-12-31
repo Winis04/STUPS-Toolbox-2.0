@@ -23,8 +23,7 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
         } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
             gui.infoDialog("Can't do this! The grammar is already in chomsky normal-form");
         } else {
-            CLIPlugins.GrammarChomskyNormalForm plugin = new CLIPlugins.GrammarChomskyNormalForm();
-            plugin.execute(object,new String[]{});
+            return GrammarUtil.chomskyNormalForm(grammar);
         }
         return grammar;
     }

@@ -1285,25 +1285,30 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
 
-    public static ArrayList<Printable> chomskyNormalForm(Grammar grammar) {
+    public static ArrayList<Printable> chomskyNormalFormAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
 
         Grammar grammar0 = (Grammar) grammar.deep_copy();
 
-        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar));
+        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(grammar);
 
         //step 2: remove more than two Nonterminals
-        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1));
+        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(grammar1);
 
 
         res.add(grammar0);
         res.add(new Dummy());
         res.add(grammar1);
         res.add(grammar2);
-        chomskyNormalForm_StepOne(grammar);
-        chomskyNormalForm_StepTwo(grammar);
         return res;
     }
+
+    public static Grammar chomskyNormalForm(Grammar grammar) {
+        Grammar res1 = chomskyNormalForm_StepOne(grammar);
+        Grammar res2 = chomskyNormalForm_StepTwo(res1);
+        return res2;
+    }
+
 
     private static Grammar chomskyNormalForm_StepOne(Grammar g) {
 
@@ -1378,8 +1383,7 @@ public class GrammarUtil {
                 old.addAll(res);
             }
         }
-        g.setRules(old);
-        return g;
+        return new Grammar(g.getStartSymbol(),old,g.getName(),g);
     }
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream().allMatch(rule -> {
@@ -1405,7 +1409,7 @@ public class GrammarUtil {
     }
 
     public static boolean containsWord(Grammar g, String word) {
-        GrammarUtil.chomskyNormalForm(g);
+        GrammarUtil.chomskyNormalFormAsPrintables(g);
         Matrix matrix=GrammarUtil.cyk(g,word);
         if(matrix != null) {
             return matrix.getCell(1,word.length()-1).contains(g.getStartSymbol());
@@ -1470,7 +1474,7 @@ public class GrammarUtil {
         Grammar grammar = (Grammar) grammarOld.deep_copy();
         removeLambdaRules(grammar);
         eliminateUnitRules(grammar);
-        chomskyNormalForm(grammar);
+        chomskyNormalFormAsPrintables(grammar);
         return checkMatrix(cyk(grammar,word),grammar);
     }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
