@@ -44,14 +44,19 @@ public class Grammar implements Printable, Storable {
     /**
      * the grammars name (optional)
      */
-    private String name=null;
-    /**
-     * a suffix for the name;
-     */
-    private String suffix="";
+    private String name;
 
-    private Grammar previousVersion=null;
 
+    private Grammar previousVersion;
+
+    public Grammar(HashSet<Terminal> terminals, HashSet<Nonterminal> nonterminals, Nonterminal startSymbol, HashSet<Rule> rules, String name, Grammar previousVersion) {
+        this.terminals = terminals;
+        this.nonterminals = nonterminals;
+        this.startSymbol = startSymbol;
+        this.rules = rules;
+        this.name = name;
+        this.previousVersion = previousVersion;
+    }
 
     /**
      * The constructor for an empty grammar.
@@ -98,7 +103,7 @@ public class Grammar implements Printable, Storable {
      * deep copy constructor
      * @param old the grammar that should be copied
      */
-    public Grammar(Grammar old, boolean newName) {
+    public Grammar(Grammar old) {
         this.terminals=new HashSet<>();
         this.nonterminals=new HashSet<>();
         for(Terminal t : old.getTerminals()) { //adds the Terminals
@@ -107,11 +112,7 @@ public class Grammar implements Printable, Storable {
         for(Nonterminal nt : old.getNonterminals())  {
             this.nonterminals.add(new Nonterminal(nt.getName()));
         }
-        this.name=old.getNameWithoutSuffix();
-        this.suffix=old.getSuffix();
-        if(newName) {
-            this.modifyName();
-        }
+        this.name=old.getName();
         this.startSymbol=new Nonterminal(old.getStartSymbol().getName());
         this.rules = new HashSet<>();
         for(Rule rule : old.getRules()) {
@@ -127,7 +128,7 @@ public class Grammar implements Printable, Storable {
     @Override
     public void printLatex(BufferedWriter writer, String space) {
         ArrayList<String>[] header= GrammarUtil.getHeader(this);
-        Printer.print(space+"$"+this.getNameWithSuffix()+"=\\left(\\{",writer);
+        Printer.print(space+"$"+this.getName()+"=\\left(\\{",writer);
         Printer.print(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")),writer);
 
         Printer.print("\\},\\;\\{ ",writer);
@@ -165,7 +166,7 @@ public class Grammar implements Printable, Storable {
     @Override
     public void printConsole(BufferedWriter writer) {
 
-        Printer.print(this.getNameWithSuffix()+"\n",writer);
+        Printer.print(this.getName()+"\n",writer);
 
         ArrayList<String>[] header=GrammarUtil.getHeader(this);
 
@@ -215,44 +216,22 @@ public class Grammar implements Printable, Storable {
         return null;
     }
 
-    public String getNameWithSuffix() {
-        if(name==null) {
-            return "G"+suffix;
-        } else {
-            return name+suffix;
-        }
-    }
-    public String getNameWithoutSuffix() {
-        if(name==null) {
-            return "G";
-        } else {
-            return name;
-        }
-    }
+
     public String getName() {
-        return getNameWithoutSuffix();
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-    public void modifyName() {
-        this.suffix+="'";
-    }
-    public void clearName() {
-        this.suffix="";
-    }
 
     public String getRuleSetName() {
-        return "R" + suffix;
-    }
-    public String getSuffix() {
-        return suffix;
+        return "R";
     }
 
     @Override
     public Storable deep_copy() {
-        return new Grammar(this, false);
+        return new Grammar(this);
     }
 
     @Override

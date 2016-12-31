@@ -758,24 +758,22 @@ public class GrammarUtil {
         grammar.savePreviousVersion();
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
-        Grammar grammar0=new Grammar(grammar,false);
+        Grammar grammar0=new Grammar(grammar);
 
         //0.5 special Rule
-        Grammar grammar05=new Grammar(grammar0,false);
+        Grammar grammar05=new Grammar(grammar0);
         boolean additional=specialRuleForEmptyWord(grammar05);
-        if(additional) {
-            grammar05.modifyName();
-        }
+
         //1. Nullable Set
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
 
         //2. step two && unneccesaryepsilons
-        Grammar grammar2=new Grammar(grammar05,true);
+        Grammar grammar2=new Grammar(grammar05);
         HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar2);
         removeLambdaRules_StepTwo(grammar2,nullable);
         removeUnneccesaryEpsilons(grammar2);
         //3. step three
-        Grammar grammar3=new Grammar(grammar2,true);
+        Grammar grammar3=new Grammar(grammar2);
         removeLambdaRules_StepThree(grammar3,true);
         res.add(grammar0);
         if(additional) {
@@ -805,18 +803,27 @@ public class GrammarUtil {
     private static void removeLambdaRules_StepThree(Grammar g, boolean again) {
         boolean startSymbolPointsOnLamda=GrammarUtil.startSymbolPointsOnLambda(g);
         // delete lambda-rules
+        HashSet<Rule> oldRules = new HashSet<>();
+        oldRules.addAll(g.getRules());
         HashSet<Rule> tmp2 = new HashSet<>();
         g.getRules().stream()
                 .filter(rule -> !rule.getComparableList().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)))
-                .forEach(rule -> tmp2.add(rule));
+                .forEach(tmp2::add);
         g.setRules(tmp2);
-        //these nonterminals can be removed. Store them in toRemove
+        //nonterminals that point only on lambda, can be removed
         List<Symbol> toRemove = new ArrayList<>();
         for(Nonterminal nt : g.getNonterminals()) {
-            if(g.getRules().stream().allMatch(rule -> !rule.getComingFrom().equals(nt))) {
+            if(g.getRules().stream()
+                    .filter(rule -> rule.getComingFrom().equals(nt))
+                    .allMatch(rule -> rule.getComparableList().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL)))) {
                 toRemove.add(nt);
             }
         }
+        oldRules.stream().map(Rule::getComingFrom).forEach(sym -> {
+            if(!g.getNonterminals().contains(sym)) {
+                toRemove.add(sym);
+            }
+        });
         // the symbols that can be removed are replaced by the nullsymbol
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -993,12 +1000,12 @@ public class GrammarUtil {
         grammar.savePreviousVersion(); //for undo
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
-        Grammar grammar0=new Grammar(grammar,true);
-        Grammar grammar1=new Grammar(grammar,true);
+        Grammar grammar0=new Grammar(grammar);
+        Grammar grammar1=new Grammar(grammar);
         GrammarUtil.removeCircleRulesAndGetUnitRules(grammar1);
 
 
-        Grammar grammar2=new Grammar(grammar1,true);
+        Grammar grammar2=new Grammar(grammar1);
         HashSet<Node> unitRules=GrammarUtil.removeCircleRulesAndGetUnitRules(grammar2);
         GrammarUtil.removeUnitRules(unitRules,grammar2);
 
@@ -1284,11 +1291,10 @@ public class GrammarUtil {
 
         Grammar grammar0 = (Grammar) grammar.deep_copy();
 
-        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar,true));
-
+        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(new Grammar(grammar));
 
         //step 2: remove more than two Nonterminals
-        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1,true));
+        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(new Grammar(grammar1));
 
 
         res.add(grammar0);
