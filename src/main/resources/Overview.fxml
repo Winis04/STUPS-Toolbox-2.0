@@ -10,9 +10,9 @@
    <children>
       <SplitPane dividerPositions="0.23684210526315788" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane SplitPane.resizableWithParent="false">
+          <AnchorPane stylesheets="@TreeView.css" SplitPane.resizableWithParent="false">
                <children>
-                  <TreeView fx:id="treeView" layoutX="-55.0" layoutY="-23.0" prefHeight="298.0" prefWidth="175.0" style="-fx-blend-mode: darken;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TreeView fx:id="treeView" layoutX="-55.0" layoutY="-23.0" prefHeight="298.0" prefWidth="175.0" stylesheets="@TreeView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
           <AnchorPane>
                <children>

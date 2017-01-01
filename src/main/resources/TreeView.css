@@ -1,0 +1,11 @@
+.tree-view .tree-cell {
+    -fx-background-color: #f6ffff ;
+    -fx-text-fill: #000033 ;
+}
+
+.tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
+        -fx-background-color: #6699ff;
+}
+
+
+
