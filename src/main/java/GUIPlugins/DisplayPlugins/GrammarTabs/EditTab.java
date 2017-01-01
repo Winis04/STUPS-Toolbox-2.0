@@ -155,7 +155,7 @@ public class EditTab implements GrammarTab {
         final int[] i = {0};
         for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
            grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                    .map(Rule::getComparableList).forEach(symbols -> {
+                    .map(Rule::getRightSide).forEach(symbols -> {
                //Create the labels that display the current nonterminal and symbol list.
                Label nonterminalLabel = new Label(nonterminal.getName());
                Label symbolsLabel = new Label();
@@ -367,7 +367,7 @@ public class EditTab implements GrammarTab {
                     HashSet<Rule> freshRules = new HashSet<>();
                     grammar.getRules().forEach(rule -> {
                         List<Symbol> tmp = new ArrayList<>();
-                        rule.getComparableList().forEach(sym -> {
+                        rule.getRightSide().forEach(sym -> {
                             if (sym.getName().equals(name)) {
                                 tmp.add(nonterminal);
                             } else {
@@ -426,13 +426,12 @@ public class EditTab implements GrammarTab {
      */
     private Grammar deleteNonTerminal(Grammar grammar, Nonterminal nonterminal) {
 
-        grammar.getNonterminals().remove(nonterminal);
         HashSet<Rule> freshRules = new HashSet<>();
         grammar.getRules().stream()
                 .filter(rule -> !rule.getComingFrom().equals(nonterminal))
                 .forEach(rule -> {
                     List<Symbol> freshRightSide = new ArrayList<>();
-                    rule.getComparableList().forEach(sym -> {
+                    rule.getRightSide().forEach(sym -> {
                     if(!sym.equals(nonterminal)) {
                         freshRightSide.add(sym);
                     }
@@ -452,7 +451,7 @@ public class EditTab implements GrammarTab {
      * @param symbolString A string, containing the symbols, seperated by commas.
      */
     private Grammar deleteRule(Nonterminal nonterminal, String symbolString, Grammar grammar) {
-        ComparableList<Symbol> symbolList = new ComparableList<>();
+        List<Symbol> symbolList = new ArrayList<>();
 
         StringTokenizer tok = new StringTokenizer(symbolString.replaceAll(" ", ""), ",");
         while (tok.hasMoreElements()) {
@@ -466,7 +465,7 @@ public class EditTab implements GrammarTab {
         HashSet<Rule> freshRules = new HashSet<>();
         grammar.getRules().forEach(rule -> {
             if (rule.getComingFrom().equals(nonterminal)) {
-                if (!symbolList.equals(rule.getComparableList())) {
+                if (!symbolList.equals(rule.getRightSide())) {
                     freshRules.add(rule);
                 }
             } else {
@@ -492,7 +491,7 @@ public class EditTab implements GrammarTab {
             HashSet<Rule> freshRules1 = new HashSet<>();
             grammar.getRules().forEach(rule -> {
                 List<Symbol> freshRightSide = new ArrayList<>();
-                rule.getComparableList().forEach(symbol -> {
+                rule.getRightSide().forEach(symbol -> {
                     if (symbol.equals(oldSymbol)) {
                         freshRightSide.add(newSymbol);
                     } else {
@@ -537,14 +536,13 @@ public class EditTab implements GrammarTab {
                     newList.add(new Nonterminal(currentString));
                 } else {
                     Terminal newTerminal = new Terminal(currentString);
-                    grammar.getTerminals().add(newTerminal);
                     newList.add(newTerminal);
                 }
             }
         }
         HashSet<Rule> freshRules = new HashSet<>();
         grammar.getRules().forEach(rule -> {
-            if(rule.getComingFrom().equals(nonterminal) && rule.getComparableList().equals(oldSymbols)) {
+            if(rule.getComingFrom().equals(nonterminal) && rule.getRightSide().equals(oldSymbols)) {
                 freshRules.add(new Rule(rule.getComingFrom(),newList));
             } else {
                 freshRules.add(rule);

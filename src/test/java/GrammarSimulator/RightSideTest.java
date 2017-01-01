@@ -2,6 +2,7 @@ package GrammarSimulator;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -13,9 +14,9 @@ public class RightSideTest {
     @Test
     public void equals() throws Exception {
 
-        ComparableList<Symbol> a = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
-        ComparableList<Symbol> b = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
-        ComparableList<Symbol> c = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("C"), new Nonterminal("D")}));
+        ArrayList<Symbol> a = new ArrayList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ArrayList<Symbol> b = new ArrayList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ArrayList<Symbol> c = new ArrayList<>(Arrays.asList(new Symbol[]{new Nonterminal("C"), new Nonterminal("D")}));
         assertTrue(a.equals(b));
         assertTrue(b.equals(a));
         assertTrue(a.equals(a));
@@ -27,7 +28,7 @@ public class RightSideTest {
 
     @Test
     public void contains() throws Exception {
-        ComparableList<Symbol> a = new ComparableList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
+        ArrayList<Symbol> a = new ArrayList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
         assertTrue(a.contains(new Nonterminal("A")));
     }
 

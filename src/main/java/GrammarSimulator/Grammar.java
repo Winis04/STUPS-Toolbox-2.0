@@ -56,7 +56,24 @@ public final class Grammar implements Printable, Storable {
         this.previousVersion = previousVersion;
         this.terminals = new HashSet<>();
         this.nonterminals = new HashSet<>();
-        this.rules.stream().map(Rule::getComparableList).forEach(list -> list.forEach(sym -> {
+        this.rules.stream().map(Rule::getRightSide).forEach(list -> list.forEach(sym -> {
+            if (sym instanceof Terminal) {
+                terminals.add((Terminal) sym);
+            } else {
+                nonterminals.add((Nonterminal) sym);
+            }
+        }));
+        this.rules.stream().map(Rule::getComingFrom).forEach(nonterminals::add);
+    }
+
+    public Grammar(Nonterminal startSymbol, Set<Rule> rules, String name, Grammar previousVersion) {
+        this.startSymbol = startSymbol;
+        this.rules = new HashSet<>(rules);
+        this.name = name;
+        this.previousVersion = previousVersion;
+        this.terminals = new HashSet<>();
+        this.nonterminals = new HashSet<>();
+        this.rules.stream().map(Rule::getRightSide).forEach(list -> list.forEach(sym -> {
             if (sym instanceof Terminal) {
                 terminals.add((Terminal) sym);
             } else {
@@ -101,7 +118,7 @@ public final class Grammar implements Printable, Storable {
                 map(nonterminal -> {
                     String start="\t"+nonterminal.getName() + " &\\rightarrow ";
                     start += getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
-                            .map(Rule::getComparableList)
+                            .map(Rule::getRightSide)
                             .map(list -> list.stream()
                                     .map(Symbol::getName)
                                     .map(Printer::makeToGreek)
@@ -138,7 +155,7 @@ public final class Grammar implements Printable, Storable {
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
             Printer.print(nt.getName() + " --> ",writer);
             Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
-                    .map(Rule::getComparableList)
+                    .map(Rule::getRightSide)
                     .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
                     .collect(joining(" | ")),writer);
 //            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
@@ -226,8 +243,8 @@ public final class Grammar implements Printable, Storable {
      *
      * @return {@link #terminals}
      */
-    public HashSet<Terminal> getTerminals() {
-        return terminals;
+    public Set<Terminal> getTerminals() {
+        return Collections.unmodifiableSet(new HashSet<>(terminals));
     }
 
     /**
@@ -235,8 +252,8 @@ public final class Grammar implements Printable, Storable {
      *
      * @return {@link #nonterminals}
      */
-    public HashSet<Nonterminal> getNonterminals() {
-        return nonterminals;
+    public Set<Nonterminal> getNonterminals() {
+        return Collections.unmodifiableSet(new HashSet<>(nonterminals));
     }
 
     /**
@@ -249,8 +266,8 @@ public final class Grammar implements Printable, Storable {
     }
 
 
-    public HashSet<Rule> getRules() {
-        return rules;
+    public Set<Rule> getRules() {
+        return Collections.unmodifiableSet(new HashSet<>(rules));
     }
 
 
