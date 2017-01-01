@@ -484,6 +484,9 @@ public class EditTab implements GrammarTab {
      * @param newName The nonterminal's new name.
      */
     private Grammar editSymbol(Grammar grammar, String oldName, String newName) {
+        if(newName.isEmpty()) {
+            return grammar;
+        }
         if(!grammar.getTerminals().contains(new Terminal(newName))) {
             Nonterminal oldSymbol = new Nonterminal(oldName);
             Nonterminal newSymbol = new Nonterminal(newName);
@@ -521,34 +524,35 @@ public class EditTab implements GrammarTab {
      * @param newSymbols A string, containing the new symbol list.
      */
     private Grammar editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
-
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
-
-
-
-        while (symbolsTokenizer.hasMoreElements()) {
-            String currentString = symbolsTokenizer.nextToken().trim();
-            if(!currentString.isEmpty()) {
-                if (grammar.getTerminals().contains(new Terminal(currentString))) {
-                    newList.add(new Terminal(currentString));
-                } else if (grammar.getNonterminals().contains(new Nonterminal(currentString))) {
-                    newList.add(new Nonterminal(currentString));
-                } else {
-                    Terminal newTerminal = new Terminal(currentString);
-                    newList.add(newTerminal);
+        HashSet<Rule> freshRules = new HashSet<>();
+        if(newSymbols.isEmpty()) {
+            newList.add(Terminal.NULLSYMBOL);
+        } else {
+            while (symbolsTokenizer.hasMoreElements()) {
+                String currentString = symbolsTokenizer.nextToken().trim();
+                if (!currentString.isEmpty()) {
+                    if (grammar.getTerminals().contains(new Terminal(currentString))) {
+                        newList.add(new Terminal(currentString));
+                    } else if (grammar.getNonterminals().contains(new Nonterminal(currentString))) {
+                        newList.add(new Nonterminal(currentString));
+                    } else {
+                        Terminal newTerminal = new Terminal(currentString);
+                        newList.add(newTerminal);
+                    }
                 }
             }
+
+
         }
-        HashSet<Rule> freshRules = new HashSet<>();
         grammar.getRules().forEach(rule -> {
-            if(rule.getComingFrom().equals(nonterminal) && rule.getRightSide().equals(oldSymbols)) {
-                freshRules.add(new Rule(rule.getComingFrom(),newList));
+            if (rule.getComingFrom().equals(nonterminal) && rule.getRightSide().equals(oldSymbols)) {
+                freshRules.add(new Rule(rule.getComingFrom(), newList));
             } else {
                 freshRules.add(rule);
             }
         });
-        return new Grammar(grammar.getStartSymbol(),freshRules,grammar.getName(),grammar);
-
+        return new Grammar(grammar.getStartSymbol(), freshRules, grammar.getName(), grammar);
     }
 }
