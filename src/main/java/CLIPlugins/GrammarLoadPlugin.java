@@ -48,7 +48,7 @@ public class GrammarLoadPlugin implements CLIPlugin {
             while ((line = grammarReader.readLine()) != null) {
                 file = file + line + "\n";
             }
-            grammar = GrammarUtil.parse(file);
+            grammar = GrammarUtil.parse(file,filename);
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");

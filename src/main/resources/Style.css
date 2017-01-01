@@ -1,0 +1,43 @@
+.tab-pane:top{
+    -fx-close-tab-animation: none;
+       -fx-open-tab-animation: none;
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+ /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
+    -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+}
+.tab:top{
+   -fx-padding: 0 30 0 30;
+   -fx-focus-color: transparent;
+   -fx-faint-focus-color: transparent;
+   -fx-background-color: #ececec;
+   -fx-border-color: gray;
+   -fx-border-widht: 0.5px;
+
+}
+
+.tab:top:selected{
+    -fx-background-color: #d9d9d9;
+}
+
+.split-pane:horizontal .split-pane-divider{
+    -fx-padding: 0 0 0 0;
+}
+
+.split-pane:vertical .split-pane-divider{
+    -fx-padding: 0 0 0 0;
+}
+
+.tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-color: #ececec;
+
+}
+
+.button{
+    -fx-border-radius: 20px;
+}
+
+
+
