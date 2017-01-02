@@ -1,5 +1,8 @@
 package GrammarSimulator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,21 +51,30 @@ public final class Rule {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if(o instanceof Rule) {
-            Rule other = (Rule) o;
-            if(this.comingFrom.equals(other.comingFrom) && this.rightSide.equals(other.rightSide)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
             return false;
         }
+       Rule rhs = (Rule) obj;
+        if(rhs.rightSide.size() != this.rightSide.size()) {
+            return false;
+        }
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(rhs.comingFrom,this.comingFrom);
+        for(int i=0;i<this.rightSide.size();i++) {
+            builder.append(rhs.rightSide.get(i),this.rightSide.get(i));
+        }
+        return builder.isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.comingFrom.hashCode();
+        HashCodeBuilder builder = new HashCodeBuilder(17,31);
+        builder.append(this.comingFrom);
+        this.rightSide.forEach(sym -> builder.append(sym));
+        return builder.toHashCode();
     }
 }

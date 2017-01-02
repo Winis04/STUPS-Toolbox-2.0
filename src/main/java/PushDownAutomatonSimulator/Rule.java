@@ -15,40 +15,38 @@ public class Rule implements Printable{
      * the state that rule comes from
      */
 
-    private State comingFrom;
+    private final State comingFrom;
     /**
      * the current Letter to be read in
      */
-    private InputLetter readIn;
+    private final InputLetter readIn;
     /**
      * the old top of stack
      */
-    private StackLetter oldToS;
+    private final StackLetter oldToS;
     /**
      * the start this rule points to
      */
-    private State goingTo;
+    private final State goingTo;
    /**
     * the new ToS. newTos[0] is the topmost element
     */
-    private ArrayList<StackLetter> newToS;
+    private final ArrayList<StackLetter> newToS;
 
-    public Rule(State goingTo, InputLetter readIn, StackLetter oldToS, ArrayList<StackLetter> newToS) {
-        this.goingTo = goingTo;
-        this.readIn = readIn;
-        this.oldToS = oldToS;
-        this.newToS = newToS;
-    }
-
-    public Rule(State comingFrom, InputLetter readIn, StackLetter oldToS, State goingTo, ArrayList<StackLetter> newToS) {
+    public Rule(State comingFrom, State goingTo, InputLetter readIn, StackLetter oldToS, ArrayList<StackLetter> newToS) {
         this.comingFrom = comingFrom;
+        this.goingTo = goingTo;
         this.readIn = readIn;
         this.oldToS = oldToS;
-        this.goingTo = goingTo;
         this.newToS = newToS;
     }
 
     public Rule() {
+        this.comingFrom = new State(true,"z0");
+        this.goingTo = new State(true,"z0");
+        this.readIn = new InputLetter("a");
+        this.oldToS = new StackLetter("a");
+        this.newToS = new ArrayList<>();
     }
 
     public State getGoingTo() {
@@ -69,26 +67,6 @@ public class Rule implements Printable{
 
     public State getComingFrom() {
         return comingFrom;
-    }
-
-    public void setComingFrom(State comingFrom) {
-        this.comingFrom = comingFrom;
-    }
-
-    public void setReadIn(InputLetter readIn) {
-        this.readIn = readIn;
-    }
-
-    public void setOldToS(StackLetter oldToS) {
-        this.oldToS=oldToS;
-    }
-
-    public void setGoingTo(State goingTo) {
-        this.goingTo = goingTo;
-    }
-
-    public void setNewToS(ArrayList<StackLetter> newToS) {
-        this.newToS = newToS;
     }
 
     @Override
@@ -119,5 +97,24 @@ public class Rule implements Printable{
         s+=this.getGoingTo().getName();
         s+=this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""));
         return s;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof InputRule) {
+
+            if(other.name.equals(this.name)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
     }
 }

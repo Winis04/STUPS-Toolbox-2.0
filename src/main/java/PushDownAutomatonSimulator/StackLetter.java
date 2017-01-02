@@ -9,7 +9,6 @@ public class StackLetter {
     private String name;
 
     public static final StackLetter NULLSYMBOL = new StackLetter("epsilon");
-    public static final String NULLSYMBOL_NAME = NULLSYMBOL.getName();
 
     public StackLetter(String name) {
         this.name = name;
@@ -17,6 +16,25 @@ public class StackLetter {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof StackLetter) {
+            StackLetter other = (StackLetter) o;
+            if(other.name.equals(this.name)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
     }
 
 }

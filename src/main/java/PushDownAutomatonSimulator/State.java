@@ -9,11 +9,11 @@ public class State {
     /**
      * true, if the state is a start state
      */
-    private boolean isStart;
+    private final boolean isStart;
     /**
      * the state's name
      */
-    private String name;
+    private final String name;
     /**
      * the rules going away from this state
      */
@@ -41,16 +41,8 @@ public class State {
         return isStart;
     }
 
-    public void setStart(boolean start) {
-        isStart = start;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public HashSet<Rule> getRules() {

@@ -19,6 +19,8 @@ dependencies{
 	compile 'junit:junit:4.12'
 	compile 'org.reflections:reflections:0.9.10'
 	compile 'de.hhu.stups:sablecc:3.2.10'
+	// https://mvnrepository.com/artifact/commons-lang/commons-lang
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 }
 buildscript {
     repositories {

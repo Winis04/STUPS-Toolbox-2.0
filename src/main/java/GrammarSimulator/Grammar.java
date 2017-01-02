@@ -219,14 +219,7 @@ public final class Grammar implements Printable, Storable {
         }
         return null;
     }
-
-
-
-
-    @Override
-    public void savePreviousVersion() {
-
-    }
+    
 
     @Override
     public Storable getPreviousVersion() {

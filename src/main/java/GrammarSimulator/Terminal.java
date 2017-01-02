@@ -1,5 +1,8 @@
 package GrammarSimulator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Created by fabian on 06.08.16.
  */
@@ -27,12 +30,25 @@ public final class Terminal implements Symbol {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Terminal && ((Terminal)o).getName().equals(name);
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Terminal rhs = (Terminal) obj;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(name, rhs.name)
+                .isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode();
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                // if deriving: appendSuper(super.hashCode()).
+                        append(name).
+                        toHashCode();
     }
 }

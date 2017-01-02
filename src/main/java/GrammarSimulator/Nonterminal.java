@@ -2,6 +2,8 @@ package GrammarSimulator;
 
 import Print.Printable;
 import Print.Printer;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
 import java.util.ArrayList;
@@ -50,21 +52,26 @@ public final class Nonterminal implements Symbol, Printable {
 
 
     @Override
-    public boolean equals(Object o) {
-        if(o instanceof Nonterminal) {
-            Nonterminal other = (Nonterminal) o;
-            if(other.name.equals(this.name)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
             return false;
         }
+        Nonterminal rhs = (Nonterminal) obj;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(obj))
+                .append(name, rhs.name)
+                .isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode();
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                // if deriving: appendSuper(super.hashCode()).
+                        append(name).
+                        toHashCode();
     }
+
 }

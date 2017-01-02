@@ -20,23 +20,33 @@ public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
      */
-    private HashMap<String, State> states;
+    private final HashSet<State> states;
     /**
      * the input alphabet
      */
-    private HashMap<String, InputLetter> inputAlphabet;
+    private final HashSet<InputLetter> inputAlphabet;
     /**
      * the stack alphabet;
      */
-    private HashMap<String, StackLetter> stackAlphabet;
+    private final HashSet<StackLetter> stackAlphabet;
     /**
      * the PDA's start state
      */
-    private State startState;
+    private final State startState;
     /**
      * the initial stack letter
      */
-    private StackLetter initalStackLetter;
+    private final StackLetter initalStackLetter;
+
+    /**
+     * the name of the pda
+     */
+    private final String name;
+    private final PushDownAutomaton previousPDA;
+    private final List<Rule> rules;
+
+
+    /** the following field are mutable, but they also play no rule regarding equal and hashCode
     /**
      * the stack;
      */
@@ -50,89 +60,43 @@ public class PushDownAutomaton implements Printable, Storable{
      */
     private ArrayList<InputLetter> currentInput;
 
-    /**
-     * the name of the pda
-     */
-    private String name="P";
-    private PushDownAutomaton previousPDA;
-    private ArrayList<Rule> rules = new ArrayList<>();
-    public PushDownAutomaton(HashMap<String, State> states, HashMap<String, InputLetter> inputAlphabet, HashMap<String, StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter) {
+
+    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, List<Rule> rules, String name, PushDownAutomaton previousPDA) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
         this.startState = startState;
         this.initalStackLetter = initalStackLetter;
+
+        this.rules = rules;
+        this.name = name;
+        this.previousPDA = previousPDA;
+        // mutable:
         this.stack=new Stack<>();
         this.stack.add(initalStackLetter);
         this.currentInput=new ArrayList<>();
         this.currentState=startState;
-        this.states.values().stream().forEach(state -> state.getRules().stream().forEach(rule -> rules.add(rule)));
 
     }
 
-
-    public PushDownAutomaton(PushDownAutomaton pda) {
-        /** copy the states **/
-        HashMap<String, State> stateNEW = new HashMap<>();
-        pda.getStates().keySet().stream().forEach(key -> {
-            //create new state
-            stateNEW.put(key, new State(pda.getStates().get(key).isStart(),key));
-        });
-        this.states=stateNEW;
-        /** copy the input alphabet **/
-        HashMap<String, InputLetter> inputAlphabetNEW = new HashMap<>();
-        pda.getInputAlphabet().keySet().stream().forEach(key -> {
-            inputAlphabetNEW.put(key,new InputLetter(key));
-        });
-        this.inputAlphabet = inputAlphabetNEW;
-        /** copy the stack alphabet **/
-        HashMap<String, StackLetter> stackAlphabetNEW = new HashMap<>();
-        pda.getStackAlphabet().keySet().stream().forEach(key ->{
-            stackAlphabetNEW.put(key,new StackLetter(key));
-        });
-        this.stackAlphabet = stackAlphabetNEW;
-        /** copy the start state **/
-        this.startState = this.states.get(pda.getStartState().getName());
-        /** copy the initial stack letter **/
-        this.initalStackLetter = this.stackAlphabet.get(pda.getInitalStackLetter().getName());
-        /** stack and current state **/
-        this.stack = new Stack<>();
-        this.currentInput = new ArrayList<>();
-        this.currentState = startState;
-        /** copy the rules **/
-        pda.getStates().keySet().stream().forEach(key -> {
-            State old = pda.getStates().get(key);
-            State current = this.states.get(key);
-            old.getRules().stream().forEach(rule -> {
-                Rule tmp = new Rule();
-                tmp.setComingFrom(current);
-                tmp.setGoingTo(this.states.get(rule.getGoingTo().getName()));
-                tmp.setOldToS(this.stackAlphabet.get(rule.getOldToS().getName()));
-                tmp.setReadIn(this.inputAlphabet.get(rule.getReadIn().getName()));
-                ArrayList<StackLetter> list = new ArrayList<StackLetter>();
-                rule.getNewToS().stream().forEach(stackLetter -> {
-                    list.add(this.stackAlphabet.get(stackLetter.getName()));
-                });
-                tmp.setNewToS(list);
-                current.getRules().add(tmp);
-            });
-        });
-        this.states.values().stream().forEach(state -> state.getRules().stream().forEach(rule -> rules.add(rule)));
-        this.previousPDA = (PushDownAutomaton) pda.getPreviousVersion();
-    }
     public PushDownAutomaton() {
-
-        this.states=new HashMap<>();
-        this.inputAlphabet=new HashMap<>();
-        this.stackAlphabet=new HashMap<>();
+        this.states=new HashSet<>();
+        this.inputAlphabet=new HashSet<>();
+        this.stackAlphabet=new HashSet<>();
+        this.startState = new State("a");
+        this.initalStackLetter = new StackLetter("p");
         this.stack=new Stack<>();
         this.currentInput=new ArrayList<>();
-        this.currentState=startState;
+        this.currentState = startState;
+        this.rules = new ArrayList<>();
+        this.name="G";
+        this.previousPDA = null;
+
     }
 
     @Override
     public Storable deep_copy() {
-        return new PushDownAutomaton(this);
+        return new PushDownAutomaton(this.states,this.inputAlphabet, this.stackAlphabet, this.startState, this.initalStackLetter, this.rules, this.name, this.previousPDA);
     }
 
     @Override
@@ -142,9 +106,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public Storable otherName(String name) {
-        PushDownAutomaton pda = (PushDownAutomaton) this.deep_copy();
-        pda.name=name;
-        return pda;
+        return new PushDownAutomaton(this.states,this.inputAlphabet,this.stackAlphabet,this.startState,this.initalStackLetter,this.rules,name,this.previousPDA);
     }
 
 
@@ -158,20 +120,12 @@ public class PushDownAutomaton implements Printable, Storable{
     public Storable restoreFromFile(File file) {
         try {
             return PushDownAutomatonUtil.parse(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (ParserException e) {
+        } catch (IOException | LexerException | ParserException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @Override
-    public void savePreviousVersion() {
-        this.previousPDA = (PushDownAutomaton) this.deep_copy();
-    }
 
     @Override
     public Storable getPreviousVersion() {
@@ -230,24 +184,24 @@ public class PushDownAutomaton implements Printable, Storable{
     public void printConsole(BufferedWriter writer) {
         Printer.print(this.name+"\n",writer);
         Printer.print("States: \n",writer);
-        Printer.print(this.getStates().values().stream().map(state -> state.getName()).collect(joining(", "))+"\n",writer);
+        Printer.print(this.states.stream().map(State::getName).collect(joining(", "))+"\n",writer);
         Printer.print("Start State"+"\n",writer);
         Printer.print(this.getStartState().getName()+"\n",writer);
         Printer.print("Input Alphabet: "+"\n",writer);
-        Printer.print(this.getInputAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", "))+"\n",writer);
+        Printer.print(this.inputAlphabet.stream().map(InputLetter::getName).collect(joining(", "))+"\n",writer);
         Printer.print("Stack Alphabet: "+"\n",writer);
-        Printer.print(this.getStackAlphabet().values().stream().map(letter -> letter.getName()).collect(joining(", "))+"\n",writer);
+        Printer.print(this.stackAlphabet.stream().map(StackLetter::getName).collect(joining(", "))+"\n",writer);
         Printer.print("initial stack symbol:"+"\n",writer);
-        Printer.print(this.getInitalStackLetter().getName()+"\n",writer);
+        Printer.print(this.initalStackLetter.getName()+"\n",writer);
         Printer.print("rules:"+"\n",writer);
-        this.getStates().values().stream().forEach(state -> {
-            if(state.getRules()!=null && !state.getRules().isEmpty()) {
-                state.getRules().stream().forEach(rule -> {
-                    Printer.print(rule.getComingFrom().getName()+", ",writer);
-                    Printer.print(rule.getReadIn().getName()+", ",writer);
-                    Printer.print(rule.getOldToS().getName()+" --> ",writer);
-                    Printer.print(rule.getGoingTo().getName()+", ",writer);
-                    Printer.print(rule.getNewToS().stream().map(sym -> sym.getName()).collect(joining(", "))+"\n",writer);
+        this.states.forEach(state -> {
+            if (state.getRules() != null && !state.getRules().isEmpty()) {
+                state.getRules().forEach(rule -> {
+                    Printer.print(rule.getComingFrom().getName() + ", ", writer);
+                    Printer.print(rule.getReadIn().getName() + ", ", writer);
+                    Printer.print(rule.getOldToS().getName() + " --> ", writer);
+                    Printer.print(rule.getGoingTo().getName() + ", ", writer);
+                    Printer.print(rule.getNewToS().stream().map(StackLetter::getName).collect(joining(", ")) + "\n", writer);
                 });
             }
         });
@@ -255,16 +209,16 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
     /** GETTER AND SETTER **/
-    public HashMap<String, State> getStates() {
-        return states;
+    public Set<State> getStates() {
+        return Collections.unmodifiableSet(new HashSet<>(states));
     }
 
-    public HashMap<String, InputLetter> getInputAlphabet() {
-        return inputAlphabet;
+    public Set<InputLetter> getInputAlphabet() {
+        return Collections.unmodifiableSet(new HashSet<>(inputAlphabet));
     }
 
-    public HashMap<String, StackLetter> getStackAlphabet() {
-        return stackAlphabet;
+    public Set<StackLetter> getStackAlphabet() {
+        return Collections.unmodifiableSet(new HashSet<>(stackAlphabet));
     }
 
     public State getStartState() {
@@ -276,28 +230,10 @@ public class PushDownAutomaton implements Printable, Storable{
         return initalStackLetter;
     }
 
-    public void setStates(HashMap<String, State> states) {
-        this.states = states;
+    public List<Rule> getRules() {
+        return Collections.unmodifiableList(new ArrayList<>(rules));
     }
 
-    public void setInputAlphabet(HashMap<String, InputLetter> inputAlphabet) {
-        this.inputAlphabet = inputAlphabet;
-    }
-
-    public void setStackAlphabet(HashMap<String, StackLetter> stackAlphabet) {
-        this.stackAlphabet = stackAlphabet;
-    }
-
-    public void setStartState(State startState) {
-        this.startState = startState;
-    }
-
-    public void setInitalStackLetter(StackLetter initalStackLetter) {
-        if(stack.isEmpty()) {
-            stack.add(initalStackLetter);
-        }
-        this.initalStackLetter = initalStackLetter;
-    }
 
     public Stack<StackLetter> getStack() {
         return stack;
@@ -319,7 +255,5 @@ public class PushDownAutomaton implements Printable, Storable{
         this.currentInput = currentInput;
     }
 
-    public ArrayList<Rule> getRules() {
-        return rules;
-    }
+
 }
