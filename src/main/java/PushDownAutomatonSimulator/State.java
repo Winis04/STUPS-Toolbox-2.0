@@ -14,27 +14,18 @@ public class State {
      * the state's name
      */
     private final String name;
-    /**
-     * the rules going away from this state
-     */
-    private HashSet<PDARule> rules;
 
-    public State(boolean isStart, String name, HashSet<PDARule> rules) {
-        this.isStart = isStart;
-        this.name = name;
-        this.rules = rules;
-    }
+
+
 
     public State(boolean isStart, String name) {
         this.isStart = isStart;
         this.name = name;
-        this.rules=new HashSet<>();
     }
 
     public State(String name) {
         this.isStart= false;
         this.name = name;
-        this.rules=new HashSet<>();
     }
 
     public boolean isStart() {
@@ -45,11 +36,4 @@ public class State {
         return name;
     }
 
-    public HashSet<PDARule> getRules() {
-        return rules;
-    }
-
-    public void setRules(HashSet<PDARule> rules) {
-        this.rules = rules;
-    }
 }

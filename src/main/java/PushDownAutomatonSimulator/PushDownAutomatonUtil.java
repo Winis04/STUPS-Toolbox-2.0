@@ -60,20 +60,17 @@ public class PushDownAutomatonUtil {
             writer.write(pda.getInitalStackLetter().getName());
             writer.write("'}\n\n");
 
-            pda.getStates().stream().filter(state -> state.getRules()!=null && !state.getRules().isEmpty())
-                    .forEach(state -> {
-                        state.getRules().forEach(rule -> {
-                            try {
-                                writer.write("'" + rule.getComingFrom().getName() + "', '");
-                                writer.write(rule.getReadIn().getName() + "', '");
-                                writer.write(rule.getOldToS().getName() + "' --> '");
-                                writer.write(rule.getGoingTo().getName() + "', '");
-                                writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '")) + "'\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    });
+            pda.getRules().forEach(rule -> {
+                try {
+                    writer.write("'" + rule.getComingFrom().getName() + "', '");
+                    writer.write(rule.getReadIn().getName() + "', '");
+                    writer.write(rule.getOldToS().getName() + "' --> '");
+                    writer.write(rule.getGoingTo().getName() + "', '");
+                    writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '")) + "'\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             writer.flush();
             writer.close();
 

@@ -90,13 +90,13 @@ class Visitor extends DepthFirstAdapter {
     @Override
     public void outARoot(ARoot node) {
 
-        pushDownAutomaton = new PushDownAutomaton(states,inputAlphabet,stackAlphabet,start_state,initialStackLetter,rules,"G",null);
+        pushDownAutomaton = new PushDownAutomaton(states,inputAlphabet,stackAlphabet,start_state,initialStackLetter,rules,start_state,"G",null);
 
     }
 
     PushDownAutomaton getPushDownAutomaton(String name) {
         PushDownAutomaton p = pushDownAutomaton;
-        return new PushDownAutomaton(p.getStates(),p.getInputAlphabet(),p.getStackAlphabet(),p.getStartState(),p.getInitalStackLetter(),p.getRules(),name,null);
+        return new PushDownAutomaton(p.getStates(),p.getInputAlphabet(),p.getStackAlphabet(),p.getStartState(),p.getInitalStackLetter(),p.getRules(),start_state,name,null);
 
     }
 
