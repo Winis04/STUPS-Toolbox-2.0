@@ -3,6 +3,8 @@ package PushDownAutomatonSimulator;
 
 import GrammarSimulator.Nonterminal;
 import jdk.internal.util.xml.impl.Input;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Created by Isabel on 29.10.2016.
@@ -21,22 +23,24 @@ public final class InputLetter {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if(o instanceof InputLetter) {
-            InputLetter other = (InputLetter) o;
-            if(other.name.equals(this.name)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
             return false;
         }
+        InputLetter rhs = (InputLetter) obj;
+        return new EqualsBuilder()
+                .append(name, rhs.name)
+                .isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode();
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                        append(name).
+                        toHashCode();
     }
 
 }

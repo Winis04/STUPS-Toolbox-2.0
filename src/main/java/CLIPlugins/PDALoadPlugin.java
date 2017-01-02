@@ -50,7 +50,7 @@ public class PDALoadPlugin implements CLIPlugin {
             while ((line = grammarReader.readLine()) != null) {
                 file = file + line + "\n";
             }
-            pda = PushDownAutomatonUtil.parse(file);
+            pda = PushDownAutomatonUtil.parse(file,filename);
 
 
         } catch (FileNotFoundException e) {

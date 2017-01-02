@@ -60,7 +60,6 @@ public final class Nonterminal implements Symbol, Printable {
         }
         Nonterminal rhs = (Nonterminal) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
                 .append(name, rhs.name)
                 .isEquals();
     }

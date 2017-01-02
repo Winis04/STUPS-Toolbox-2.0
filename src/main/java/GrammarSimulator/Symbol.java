@@ -13,5 +13,4 @@ public interface Symbol {
      */
     String getName();
 
-    boolean equals(Object o);
 }

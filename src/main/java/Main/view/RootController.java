@@ -181,7 +181,7 @@ public class RootController {
                 while ((line = reader.readLine()) != null) {
                     string = string + line + "\n";
                 }
-                PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string);
+                PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string,file.getName());
                 gui.getCli().objects.put(PushDownAutomaton.class, automaton);
                 gui.switchDisplayGui(PushDownAutomaton.class);
                 gui.refresh(automaton);

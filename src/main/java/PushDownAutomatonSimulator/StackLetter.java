@@ -1,5 +1,8 @@
 package PushDownAutomatonSimulator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.Stack;
 
 /**
@@ -19,22 +22,24 @@ public class StackLetter {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if(o instanceof StackLetter) {
-            StackLetter other = (StackLetter) o;
-            if(other.name.equals(this.name)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
             return false;
         }
+        StackLetter rhs = (StackLetter) obj;
+        return new EqualsBuilder()
+                .append(name, rhs.name)
+                .isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode();
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                append(name).
+                toHashCode();
     }
 
 }

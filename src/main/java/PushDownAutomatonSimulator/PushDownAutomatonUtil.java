@@ -2,8 +2,6 @@ package PushDownAutomatonSimulator;
 
 
 
-import GrammarSimulator.Symbol;
-import GrammarSimulator.Terminal;
 import PushDownAutomatonParser.lexer.Lexer;
 import PushDownAutomatonParser.lexer.LexerException;
 import PushDownAutomatonParser.node.Start;
@@ -20,7 +18,7 @@ import static java.util.stream.Collectors.*;
 public class PushDownAutomatonUtil {
 
 
-    public static PushDownAutomaton parse(String fileInput) throws ParserException, IOException, LexerException {
+    public static PushDownAutomaton parse(String fileInput, String name) throws ParserException, IOException, LexerException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
         Lexer l = new Lexer(r);
@@ -28,7 +26,7 @@ public class PushDownAutomatonUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        PushDownAutomaton pda = visitor.getPushDownAutomaton();
+        PushDownAutomaton pda = visitor.getPushDownAutomaton(name);
         return pda;
     }
 
@@ -41,10 +39,9 @@ public class PushDownAutomatonUtil {
         while ((line = grammarReader.readLine()) != null) {
             string = string + line + "\n";
         }
-        pda = PushDownAutomatonUtil.parse(string);
-        PushDownAutomaton pda2 = (PushDownAutomaton) pda.otherName(name);
+        pda = PushDownAutomatonUtil.parse(string,name);
         grammarReader.close();
-        return pda2;
+        return pda;
 
     }
     public static void save(PushDownAutomaton pda, String fileName) {
@@ -52,26 +49,26 @@ public class PushDownAutomatonUtil {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
             writer.write("{'");
-            writer.write(pda.getInputAlphabet().keySet().stream().collect(joining("', '")));
+            writer.write(pda.getInputAlphabet().stream().map(InputLetter::getName).collect(joining("', '")));
             writer.write("';'");
-            writer.write(pda.getStackAlphabet().keySet().stream().collect(joining("', '")));
+            writer.write(pda.getStackAlphabet().stream().map(StackLetter::getName).collect(joining("', '")));
             writer.write("';");
-            writer.write(pda.getStates().keySet().stream().collect(joining(", ")));
+            writer.write(pda.getStates().stream().map(State::getName).collect(joining(", ")));
             writer.write("; ");
             writer.write(pda.getStartState().getName());
             writer.write("; '");
             writer.write(pda.getInitalStackLetter().getName());
             writer.write("'}\n\n");
 
-            pda.getStates().values().stream().filter(state -> state.getRules()!=null && !state.getRules().isEmpty())
+            pda.getStates().stream().filter(state -> state.getRules()!=null && !state.getRules().isEmpty())
                     .forEach(state -> {
-                        state.getRules().stream().forEach(rule -> {
+                        state.getRules().forEach(rule -> {
                             try {
-                                writer.write("'"+rule.getComingFrom().getName()+"', '");
-                                writer.write(rule.getReadIn().getName()+"', '");
-                                writer.write(rule.getOldToS().getName()+"' --> '");
-                                writer.write(rule.getGoingTo().getName()+"', '");
-                                writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '"))+"'\n");
+                                writer.write("'" + rule.getComingFrom().getName() + "', '");
+                                writer.write(rule.getReadIn().getName() + "', '");
+                                writer.write(rule.getOldToS().getName() + "' --> '");
+                                writer.write(rule.getGoingTo().getName() + "', '");
+                                writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '")) + "'\n");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -87,7 +84,7 @@ public class PushDownAutomatonUtil {
     }
 
 
-    public static boolean doRule(Rule rule, PushDownAutomaton pda) {
+    public static boolean doRule(PDARule rule, PushDownAutomaton pda) {
         return true;
     }
 

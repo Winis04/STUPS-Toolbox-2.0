@@ -43,7 +43,7 @@ public class PushDownAutomaton implements Printable, Storable{
      */
     private final String name;
     private final PushDownAutomaton previousPDA;
-    private final List<Rule> rules;
+    private final List<PDARule> rules;
 
 
     /** the following field are mutable, but they also play no rule regarding equal and hashCode
@@ -61,10 +61,10 @@ public class PushDownAutomaton implements Printable, Storable{
     private ArrayList<InputLetter> currentInput;
 
 
-    public PushDownAutomaton(HashSet<State> states, HashSet<InputLetter> inputAlphabet, HashSet<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, List<Rule> rules, String name, PushDownAutomaton previousPDA) {
-        this.states = states;
-        this.inputAlphabet = inputAlphabet;
-        this.stackAlphabet = stackAlphabet;
+    public PushDownAutomaton(Set<State> states, Set<InputLetter> inputAlphabet, Set<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
+        this.states = new HashSet<>(states);
+        this.inputAlphabet = new HashSet<>(inputAlphabet);
+        this.stackAlphabet = new HashSet<>(stackAlphabet);
         this.startState = startState;
         this.initalStackLetter = initalStackLetter;
 
@@ -133,6 +133,11 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
     @Override
+    public void savePreviousVersion() {
+
+    }
+
+    @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(space+"\\begin{table}[h!]\n",writer);
         Printer.print(space+"\t\\centering\n",writer);
@@ -146,7 +151,7 @@ public class PushDownAutomaton implements Printable, Storable{
         if(2*half < ruleNumber) {
             half++;
         }
-        Rule current;
+        PDARule current;
         for(int i=0;i<ruleNumber;i+=2) {
             Printer.print(space+"\t\t\\hline\n",writer);
             current = this.rules.get(i);
@@ -230,7 +235,7 @@ public class PushDownAutomaton implements Printable, Storable{
         return initalStackLetter;
     }
 
-    public List<Rule> getRules() {
+    public List<PDARule> getRules() {
         return Collections.unmodifiableList(new ArrayList<>(rules));
     }
 

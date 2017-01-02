@@ -17,9 +17,9 @@ public class State {
     /**
      * the rules going away from this state
      */
-    private HashSet<Rule> rules;
+    private HashSet<PDARule> rules;
 
-    public State(boolean isStart, String name, HashSet<Rule> rules) {
+    public State(boolean isStart, String name, HashSet<PDARule> rules) {
         this.isStart = isStart;
         this.name = name;
         this.rules = rules;
@@ -45,11 +45,11 @@ public class State {
         return name;
     }
 
-    public HashSet<Rule> getRules() {
+    public HashSet<PDARule> getRules() {
         return rules;
     }
 
-    public void setRules(HashSet<Rule> rules) {
+    public void setRules(HashSet<PDARule> rules) {
         this.rules = rules;
     }
 }

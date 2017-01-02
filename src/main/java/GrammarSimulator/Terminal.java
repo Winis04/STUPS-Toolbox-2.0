@@ -38,7 +38,6 @@ public final class Terminal implements Symbol {
         }
         Terminal rhs = (Terminal) obj;
         return new EqualsBuilder()
-                .appendSuper(super.equals(obj))
                 .append(name, rhs.name)
                 .isEquals();
     }

@@ -2,15 +2,19 @@ package PushDownAutomatonSimulator;
 
 import Print.Printable;
 import Print.Printer;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by Isabel on 29.10.2016.
  */
-public class Rule implements Printable{
+public class PDARule implements Printable{
     /**
      * the state that rule comes from
      */
@@ -31,9 +35,9 @@ public class Rule implements Printable{
    /**
     * the new ToS. newTos[0] is the topmost element
     */
-    private final ArrayList<StackLetter> newToS;
+    private final List<StackLetter> newToS;
 
-    public Rule(State comingFrom, State goingTo, InputLetter readIn, StackLetter oldToS, ArrayList<StackLetter> newToS) {
+    public PDARule(State comingFrom, State goingTo, InputLetter readIn, StackLetter oldToS, List<StackLetter> newToS) {
         this.comingFrom = comingFrom;
         this.goingTo = goingTo;
         this.readIn = readIn;
@@ -41,7 +45,7 @@ public class Rule implements Printable{
         this.newToS = newToS;
     }
 
-    public Rule() {
+    public PDARule() {
         this.comingFrom = new State(true,"z0");
         this.goingTo = new State(true,"z0");
         this.readIn = new InputLetter("a");
@@ -61,8 +65,8 @@ public class Rule implements Printable{
         return oldToS;
     }
 
-    public ArrayList<StackLetter> getNewToS() {
-        return newToS;
+    public List<StackLetter> getNewToS() {
+        return Collections.unmodifiableList(new ArrayList<>(newToS));
     }
 
     public State getComingFrom() {
@@ -100,21 +104,36 @@ public class Rule implements Printable{
     }
 
     @Override
-    public boolean equals(Object o) {
-        if(o instanceof InputRule) {
-
-            if(other.name.equals(this.name)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
             return false;
         }
+        PDARule rhs = (PDARule) obj;
+        if(this.newToS.size() != rhs.newToS.size()) {
+            return false;
+        }
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(comingFrom, rhs.comingFrom)
+                .append(readIn,rhs.readIn)
+                .append(oldToS,rhs.oldToS)
+                .append(goingTo,rhs.goingTo);
+        for(int i=0;i<newToS.size();i++) {
+            builder.append(this.newToS.get(i),rhs.newToS.get(i));
+        }
+        return builder.isEquals();
     }
+
 
     @Override
     public int hashCode() {
-        return this.getName().hashCode();
+        HashCodeBuilder builder = new HashCodeBuilder(17,31);
+        builder.append(comingFrom)
+                .append(readIn)
+                .append(oldToS)
+                .append(goingTo);
+        newToS.forEach(sym -> builder.append(sym));
+        return builder.toHashCode();
     }
 }

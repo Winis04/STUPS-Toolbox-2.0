@@ -6,6 +6,8 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import Print.Printable;
 import Print.Printer;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -219,7 +221,7 @@ public final class Grammar implements Printable, Storable {
         }
         return null;
     }
-    
+
 
     @Override
     public Storable getPreviousVersion() {
@@ -228,6 +230,11 @@ public final class Grammar implements Printable, Storable {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void savePreviousVersion() {
+
     }
 
     /** GETTER **/
@@ -262,6 +269,8 @@ public final class Grammar implements Printable, Storable {
     public Set<Rule> getRules() {
         return Collections.unmodifiableSet(new HashSet<>(rules));
     }
+
+
 
 
 }
