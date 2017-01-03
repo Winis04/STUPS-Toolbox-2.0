@@ -1,8 +1,7 @@
 package PushDownAutomatonSimulator;
 
 
-import GrammarSimulator.Nonterminal;
-import jdk.internal.util.xml.impl.Input;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
