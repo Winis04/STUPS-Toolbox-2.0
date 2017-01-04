@@ -1,15 +1,14 @@
 package PushDownAutomatonSimulator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.HashSet;
 
 /**
  * Created by Isabel on 29.10.2016.
  */
 public class State {
-    /**
-     * true, if the state is a start state
-     */
-    private final boolean isStart;
     /**
      * the state's name
      */
@@ -18,22 +17,34 @@ public class State {
 
 
 
-    public State(boolean isStart, String name) {
-        this.isStart = isStart;
-        this.name = name;
-    }
 
     public State(String name) {
-        this.isStart= false;
         this.name = name;
     }
 
-    public boolean isStart() {
-        return isStart;
-    }
 
     public String getName() {
         return name;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+       State rhs = (State) obj;
+        return new EqualsBuilder()
+                .append(name, rhs.name)
+                .isEquals();
+    }
+
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+                append(name).
+                toHashCode();
+    }
 }

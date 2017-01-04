@@ -1,8 +1,10 @@
 package GUIPlugins.DisplayPlugins;
 
 import Main.GUI;
+import PushDownAutomatonSimulator.PDARule;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
+import PushDownAutomatonSimulator.RunThroughInfo;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -17,7 +19,9 @@ import java.util.stream.Collectors;
  */
 public class PushDownAutomatonGUI implements DisplayPlugin {
     private GUI gui;
+    private Label flow;
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
+    private RunThroughInfo runThroughInfo = null;
     @Override
     public Node display(Object object) {
 
@@ -42,7 +46,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         root.setGridLinesVisible(true);
 
 
-        Label flow = new Label();
+        flow = new Label();
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().addAll(flow);
         anchorPane.setTopAnchor(flow,50.0);
@@ -54,16 +58,20 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         for(int c=0;c<=1;c++) {
             for(int r=0;r<half;r++) {
                 if(c*half+r<ruleNumber) {
-                    Button cellLabel = new Button(pda.getRules().get(c * half + r).asString());
+                    PDARule rule = pda.getRules().get(c * half + r);
+                    Button cellLabel = new Button(rule.asString());
                     cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                     cellLabel.setDisable(true);
                     int finalR = r;
                     int finalHalf = half;
                     int finalC = c;
+                    cellLabel.setStyle("-fx-background-color: gray");
                     cellLabel.setOnAction(event -> {
-                        PushDownAutomatonUtil.doRule(pda.getRules().get(finalC * finalHalf + finalR),pda);
-                        String text = pda.getStack().stream().map(letter -> letter.getName()).collect(Collectors.joining(""));
-                        flow.setText(text);
+                        if(runThroughInfo!=null) {
+                           runThroughInfo = PushDownAutomatonUtil.doRule(rule,runThroughInfo);
+                            flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
+                        }
+
                     });
                     rulesAsButtons.add(cellLabel);
 
@@ -79,6 +87,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
 
     }
+
 
     @Override
     public Node refresh(Object object) {
@@ -112,5 +121,17 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     public ArrayList<Button> getRulesAsButtons() {
         return rulesAsButtons;
+    }
+
+    public Label getFlow() {
+        return flow;
+    }
+
+    public RunThroughInfo getRunThroughInfo() {
+        return runThroughInfo;
+    }
+
+    public void setRunThroughInfo(RunThroughInfo runThroughInfo) {
+        this.runThroughInfo = runThroughInfo;
     }
 }

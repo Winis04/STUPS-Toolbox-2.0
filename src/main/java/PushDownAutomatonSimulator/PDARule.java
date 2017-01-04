@@ -33,7 +33,7 @@ public class PDARule implements Printable{
      */
     private final State goingTo;
    /**
-    * the new ToS. newTos[0] is the topmost element
+    * the new ToS. newTos[last-1] is the topmost element CHANGED!
     */
     private final List<StackLetter> newToS;
 
@@ -46,8 +46,8 @@ public class PDARule implements Printable{
     }
 
     public PDARule() {
-        this.comingFrom = new State(true,"z0");
-        this.goingTo = new State(true,"z0");
+        this.comingFrom = new State("z0");
+        this.goingTo = new State("z0");
         this.readIn = new InputLetter("a");
         this.oldToS = new StackLetter("a");
         this.newToS = new ArrayList<>();

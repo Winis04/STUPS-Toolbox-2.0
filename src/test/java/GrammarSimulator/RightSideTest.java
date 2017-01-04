@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -30,6 +31,11 @@ public class RightSideTest {
     public void contains() throws Exception {
         ArrayList<Symbol> a = new ArrayList<>(Arrays.asList(new Symbol[]{new Nonterminal("A"), new Nonterminal("B")}));
         assertTrue(a.contains(new Nonterminal("A")));
+    }
+
+    @Test
+    public void test() throws Exception {
+        IntStream.range(0,10).skip(1).forEach(System.out::println);
     }
 
 }

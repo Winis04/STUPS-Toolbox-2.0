@@ -9,6 +9,10 @@ import PushDownAutomatonParser.parser.Parser;
 import PushDownAutomatonParser.parser.ParserException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -81,9 +85,61 @@ public class PushDownAutomatonUtil {
     }
 
 
-    public static boolean doRule(PDARule rule, PushDownAutomaton pda) {
-        return true;
+    public static RunThroughInfo doRule(PDARule rule, RunThroughInfo run) {
+        PushDownAutomaton pda = run.getMyPDA();
+        if(run.getStack().isEmpty()) {
+            return run;
+        }
+        if(!run.getCurrentState().equals(rule.getComingFrom())) {//rule cannot be applied, because the states don't match
+            return run;
+        }
+        if(!run.getStack().peek().equals(rule.getOldToS())) { //rule cannto be applied because the ToS doens't match
+            return run;
+        }
+        if(run.getInput().isEmpty()) {
+            if (!rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                return run;
+            } else {
+                State currentState = rule.getGoingTo();
+                Stack<StackLetter> stack = new Stack<>();
+                stack.addAll(run.getStack());
+                stack.pop();
+                rule.getNewToS().stream().filter(stackLetter -> !stackLetter.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+                return new RunThroughInfo(stack,run.getInput(),currentState,run,pda);
+            }
+        }
+        if(!run.getInput().get(0).equals(rule.getReadIn())) { // the first letter and the letter of the rule are not the same
+            if(!rule.getReadIn().equals(InputLetter.NULLSYMBOL)) { // the rule cannot be applied, because the input is not right
+                return run;
+            } else {
+                State currentState = rule.getGoingTo();
+                Stack<StackLetter> stack = new Stack<>();
+                stack.addAll(run.getStack());
+                stack.pop();
+                rule.getNewToS().stream().filter(stackLetter -> !stackLetter.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+                return new RunThroughInfo(stack,run.getInput(),currentState,run,pda);
+            }
+        }
+
+        //the rule is not a lambda-rule and can be applied
+
+        State currentState = rule.getGoingTo();
+        Stack<StackLetter> stack = new Stack<>();
+        stack = (Stack<StackLetter>) run.getStack().clone();
+        stack.pop();
+        rule.getNewToS().stream().filter(sym -> !sym.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+        ArrayList<InputLetter> input = new ArrayList<>();
+        System.out.println(stack.peek().getName());
+        input.addAll(run.getInput().stream().skip(1).collect(Collectors.toList()));
+        return new RunThroughInfo(stack,input,currentState,run,pda);
     }
 
+    public static RunThroughInfo startRunThrough(PushDownAutomaton pda, List<String> strings) {
+        State currentState = pda.getStartState();
+        Stack<StackLetter> stack = new Stack<>();
+        stack.add(pda.getInitalStackLetter());
+        ArrayList<InputLetter> input = (ArrayList<InputLetter>) strings.stream().map(InputLetter::new).collect(toList());
+        return new RunThroughInfo(stack,input,currentState,null,pda);
+    }
 
 }

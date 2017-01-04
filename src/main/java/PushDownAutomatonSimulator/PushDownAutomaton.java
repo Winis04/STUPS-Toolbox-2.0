@@ -42,19 +42,19 @@ public class PushDownAutomaton implements Printable, Storable{
      * the name of the pda
      */
     private final String name;
+
+    /** the previous PDA **/
     private final PushDownAutomaton previousPDA;
+
+    /** the rules **/
     private final List<PDARule> rules;
 
-
-
-    /**
-     * the stack;
-     */
-    private final Stack<StackLetter> stack;
     /**
      * the current state of this automaton
      */
     private final State currentState;
+
+
 
     public PushDownAutomaton(Set<State> states, Set<InputLetter> inputAlphabet, Set<StackLetter> stackAlphabet, State startState, StackLetter initalStackLetter, List<PDARule> rules, State currentState, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(states);
@@ -67,9 +67,8 @@ public class PushDownAutomaton implements Printable, Storable{
         this.name = name;
         this.previousPDA = previousPDA;
         // mutable:
-        this.stack=new Stack<>();
-        this.stack.add(initalStackLetter);
         this.currentState=currentState;
+
 
     }
 
@@ -79,9 +78,10 @@ public class PushDownAutomaton implements Printable, Storable{
         this.stackAlphabet=new HashSet<>();
         this.startState = new State("a");
         this.initalStackLetter = new StackLetter("p");
-        this.stack=new Stack<>();
+
 
         this.currentState = startState;
+
         this.rules = new ArrayList<>();
         this.name="G";
         this.previousPDA = null;
@@ -229,14 +229,6 @@ public class PushDownAutomaton implements Printable, Storable{
         return Collections.unmodifiableList(new ArrayList<>(rules));
     }
 
-
-    public StackLetter getToS() {
-        return stack.peek();
-    }
-
-    public List<StackLetter> getStack() {
-        return Collections.unmodifiableList(new ArrayList<>(stack));
-    }
 
     public State getCurrentState() {
         return currentState;

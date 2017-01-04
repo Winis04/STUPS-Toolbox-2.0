@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.reverse;
 import static java.util.stream.Collectors.joining;
 
 /**
@@ -1488,7 +1489,7 @@ public class GrammarUtil {
         HashSet<StackLetter> stackAlphabet = new HashSet<>();
         ArrayList<PDARule> rules = new ArrayList<>();
 
-        State onlyState=new State(true,"z");
+        State onlyState=new State("z");
         states.add(onlyState);
         /** fill the input- and stackalphabet **/
         for(Symbol s : g.getTerminals()) {
@@ -1537,11 +1538,12 @@ public class GrammarUtil {
         });
         return rules;
     }
-    private static ArrayList<StackLetter> calculateNewTos(List<Symbol> list, PushDownAutomaton pda) {
+    private static List<StackLetter> calculateNewTos(List<Symbol> list, PushDownAutomaton pda) {
         ArrayList<StackLetter> res=new ArrayList<>();
         for(Symbol s : list) {
             res.add(new StackLetter(s.getName()));
         }
+        reverse(res);
         return res;
     }
 
