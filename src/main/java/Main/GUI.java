@@ -182,8 +182,25 @@ public class GUI extends Application{
         s.stream().forEach(r -> {
             try {
                 DisplayPlugin displayPlugin = (DisplayPlugin) r.newInstance();
-                displayPlugins.put(displayPlugin.displayType(),displayPlugin);
-                displayPlugin.setGUI(this);
+                if(displayPlugin instanceof PushDownAutomatonGUI) {
+                    try {
+                        // Load root layout from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/PDA.fxml"));
+                        SplitPane split = (SplitPane) loader.load();
+
+                        // Give the controller access to the main app.
+                        PushDownAutomatonGUI pdaGUI = loader.getController();
+                        pdaGUI.setGUI(this);
+                        displayPlugins.put(pdaGUI.displayType(),pdaGUI);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    displayPlugins.put(displayPlugin.displayType(), displayPlugin);
+                    displayPlugin.setGUI(this);
+                }
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

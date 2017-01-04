@@ -5,12 +5,18 @@ import PushDownAutomatonSimulator.PDARule;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import PushDownAutomatonSimulator.RunThroughInfo;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+
+
 import javafx.scene.layout.AnchorPane;
+
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -24,10 +30,29 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
     private HashMap<PDARule, Button> rulesAndButtons = new HashMap<PDARule, Button>();
+    @FXML
+    SplitPane splitPane;
+    @FXML
+    GridPane root;
+    @FXML
+    AnchorPane anchor;
+    @FXML
+    ScrollPane scrollPane;
+
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the fxml file has been loaded.
+     */
+    @FXML
+    private void initialize() {
+
+    }
+
+    public PushDownAutomatonGUI() {
+
+    }
     @Override
     public Node display(Object object) {
-
-
         rulesAsButtons = new ArrayList<>();
         PushDownAutomaton pda = (PushDownAutomaton) object;
         int ruleNumber = pda.getRules().size();
@@ -35,28 +60,27 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         if(2*half < ruleNumber) {
             half++;
         }
-        GridPane root = new GridPane();
+      //  root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
         root.setGridLinesVisible(false);
         //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
-        SplitPane splitPane = new SplitPane();
+    //    SplitPane splitPane = new SplitPane();
 
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(root);
+    //    ScrollPane scrollPane = new ScrollPane();
+      //  scrollPane.setContent(root);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
 
 
         flow = new Label();
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(flow);
-        anchorPane.setTopAnchor(flow,50.0);
-        anchorPane.setLeftAnchor(flow,50.0);
-        anchorPane.setRightAnchor(flow,50.0);
-        anchorPane.setBottomAnchor(flow,50.0);
-        splitPane.getItems().addAll(scrollPane,anchorPane);
+        anchor.getChildren().addAll(flow);
+        anchor.setTopAnchor(flow,50.0);
+        anchor.setLeftAnchor(flow,50.0);
+        anchor.setRightAnchor(flow,50.0);
+        anchor.setBottomAnchor(flow,50.0);
+      //  splitPane.getItems().addAll(scrollPane,anchor);
 
         /** fill with content **/
         for(int c=0;c<=1;c++) {
@@ -140,7 +164,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         this.runThroughInfo = runThroughInfo;
         this.rulesAndButtons.keySet().stream().forEach(rule -> {
             if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
-                rulesAndButtons.get(rule).setStyle("-fx-background-color: #3973ac; -fx-text-fill: #f2f2f2;");
+                rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
             } else {
                 rulesAndButtons.get(rule).setStyle("-fx-background-color: #336699; -fx-text-fill: #e6e6e6;");
             }
