@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +23,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     private Label flow;
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
+    private HashMap<PDARule, Button> rulesAndButtons = new HashMap<PDARule, Button>();
     @Override
     public Node display(Object object) {
 
@@ -35,6 +37,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         }
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
+        root.setGridLinesVisible(false);
         //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
         SplitPane splitPane = new SplitPane();
@@ -43,7 +47,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         scrollPane.setContent(root);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        root.setGridLinesVisible(true);
 
 
         flow = new Label();
@@ -54,6 +57,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         anchorPane.setRightAnchor(flow,50.0);
         anchorPane.setBottomAnchor(flow,50.0);
         splitPane.getItems().addAll(scrollPane,anchorPane);
+
         /** fill with content **/
         for(int c=0;c<=1;c++) {
             for(int r=0;r<half;r++) {
@@ -68,12 +72,13 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setStyle("-fx-background-color: gray");
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
-                           runThroughInfo = PushDownAutomatonUtil.doRule(rule,runThroughInfo);
+                            this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
                             flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
                         }
 
                     });
                     rulesAsButtons.add(cellLabel);
+                    rulesAndButtons.put(rule,cellLabel);
 
                     root.add(cellLabel, c, r);
                     GridPane.setFillWidth(cellLabel, true);
@@ -133,5 +138,14 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     public void setRunThroughInfo(RunThroughInfo runThroughInfo) {
         this.runThroughInfo = runThroughInfo;
+        this.rulesAndButtons.keySet().stream().forEach(rule -> {
+            if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                rulesAndButtons.get(rule).setStyle("-fx-background-color: #3973ac; -fx-text-fill: #f2f2f2;");
+            } else {
+                rulesAndButtons.get(rule).setStyle("-fx-background-color: #336699; -fx-text-fill: #e6e6e6;");
+            }
+        });
+
+
     }
 }
