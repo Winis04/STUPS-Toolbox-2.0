@@ -10,7 +10,7 @@ public interface Storable {
     String getName();
     Storable otherName(String name);
     void printToSave(String path);
-    Storable restoreFromFile(File file);
+    Storable restoreFromFile(File file) throws Exception;
     Storable getPreviousVersion();
     void savePreviousVersion();
 

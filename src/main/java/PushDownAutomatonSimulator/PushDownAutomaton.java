@@ -112,13 +112,10 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
     @Override
-    public Storable restoreFromFile(File file) {
-        try {
-            return PushDownAutomatonUtil.parse(file);
-        } catch (IOException | LexerException | ParserException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Storable restoreFromFile(File file) throws Exception {
+
+        return PushDownAutomatonUtil.parse(file);
+
     }
 
 

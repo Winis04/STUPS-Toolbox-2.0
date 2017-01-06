@@ -345,13 +345,9 @@ public class Automaton implements Printable, Storable {
     }
 
     @Override
-    public Storable restoreFromFile(File file) {
-        try {
-            return AutomatonUtil.parse(file);
-        } catch (ParserException | IOException | LexerException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Storable restoreFromFile(File file) throws Exception {
+        return AutomatonUtil.parse(file);
+
     }
 
     @Override
