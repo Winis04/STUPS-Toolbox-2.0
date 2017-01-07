@@ -14,6 +14,7 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -233,6 +234,19 @@ public class RootController {
                 AutomatonUtil.toGraphViz(automaton, file);
             }
         }
+    }
+
+    @FXML
+    public void switchWorkspace() {
+        DirectoryChooser fileChooser = new DirectoryChooser();
+        fileChooser.setTitle("choose workspace");
+        File file = fileChooser.showDialog(gui.getPrimaryStage());
+        if(file!=null) {
+            gui.getCli().switchWorkspace(file.getAbsolutePath());
+        }
+        gui.refresh();
+
+
     }
 
 

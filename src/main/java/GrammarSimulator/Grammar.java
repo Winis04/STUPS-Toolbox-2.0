@@ -209,7 +209,8 @@ public final class Grammar implements Printable, Storable {
 
     @Override
     public void printToSave(String path) {
-      GrammarUtil.save(this,path);
+
+        GrammarUtil.save(this,path);
     }
 
     @Override

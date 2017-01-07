@@ -17,6 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,7 +47,8 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
         start.setOnAction(event -> {
             if(GrammarUtil.isInChomskyNormalForm(grammar)) {
                 String input = field.getText();
-                Matrix matrix = GrammarUtil.cyk(grammar, input);
+                List<String> word = Arrays.asList(input.split(" "));
+                Matrix matrix = GrammarUtil.cyk(grammar, word);
                 CLIPlugin cykConsole = new GrammarCYK();
                 cykConsole.execute(grammar, new String[]{input});
                 GridPane grid = new GridPane();
@@ -61,6 +65,10 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                         //grid.addRow(r,new Label(""));
                         grid.add(new Label(matrix.getCell(c, r).stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
                     }
+                }
+
+                for(int i=0;i<word.size();i++) {
+                    grid.add(new Label(word.get(i)),i+1,matrix.getNumberOfRows()+1);
                 }
                 grid.setGridLinesVisible(true);
                 grid.getChildren().stream().forEach(node -> {

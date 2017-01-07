@@ -1,5 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
+import GrammarSimulator.Grammar;
 import Main.Storable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
@@ -15,13 +16,11 @@ import static javafx.scene.control.Alert.*;
 public class Rename extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
+        Storable storable = (Storable) object;
+        return chooseName(storable);
 
-
-        chooseName();
-
-        return null;
     }
-    public void chooseName() {
+    public Storable chooseName(Storable storable) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         TextInputDialog dialog = new TextInputDialog(selectedItem.getValue());
         dialog.setTitle("Rename "+selectedItem.getParent().getValue());
@@ -29,8 +28,9 @@ public class Rename extends SimpleFunctionPlugin {
 
 
         Optional<String> result = dialog.showAndWait();
-        result.ifPresent(string -> {
-
+        Storable copy;
+        if(result.isPresent()) {
+            String string = result.get();
             String oldName = selectedItem.getValue();
             String parent = selectedItem.getParent().getValue().toLowerCase();
             Class parentClass = gui.getCli().lookUpTable.get(parent);
@@ -38,12 +38,7 @@ public class Rename extends SimpleFunctionPlugin {
                 /** change tree view entry **/
                 selectedItem.setValue(string);
                 /** change object **/
-
-                Storable storable = (Storable) gui.getCli().objects.get(parentClass);
-                gui.getCli().objects.put(parentClass, storable);
-                gui.getCli().store.get(parentClass).remove(oldName);
-                gui.getCli().store.get(parentClass).put(string, storable);
-                gui.refresh();
+                return storable.otherName(string);
 
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -52,9 +47,11 @@ public class Rename extends SimpleFunctionPlugin {
                 alert.setContentText("Please choose another name!");
 
                 alert.showAndWait();
-                chooseName();
+                return chooseName(storable);
             }
-        });
+        }
+        return storable;
+
     }
 
     @Override
@@ -64,12 +61,14 @@ public class Rename extends SimpleFunctionPlugin {
 
     @Override
     public Class inputType() {
-        return null;
+        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
     }
 
     @Override
     Class outputType() {
-        return null;
+        String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
+        return gui.getCli().lookUpTable.get(parent);
     }
 
     @Override

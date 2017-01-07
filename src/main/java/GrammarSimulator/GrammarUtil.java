@@ -168,8 +168,8 @@ public class GrammarUtil {
         try {
             for (Nonterminal nonterminal : nonterminals) {
                 grammar.getRules().stream()
-                        .filter(rule -> rule.getRightSide().equals(nonterminal))
-                        .map(rule -> rule.getRightSide())
+                        .filter(rule -> rule.getComingFrom().equals(nonterminal))
+                        .map(Rule::getRightSide)
                         .forEach(symbolList -> {
                             try {
                                 writer.write(nonterminal.getName() + " --> ");
@@ -1294,8 +1294,7 @@ public class GrammarUtil {
 
     public static Grammar chomskyNormalForm(Grammar grammar) {
         Grammar res1 = chomskyNormalForm_StepOne(grammar,grammar);
-        Grammar res2 = chomskyNormalForm_StepTwo(res1,grammar);
-        return res2;
+        return chomskyNormalForm_StepTwo(res1,grammar);
     }
 
 
@@ -1377,12 +1376,16 @@ public class GrammarUtil {
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream().allMatch(rule -> {
             if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
-                return (rule.getRightSide().size()==1 && rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL))
-                        || (rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal)
-                        || (rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal));
+                boolean a = rule.getRightSide().size()==1 && rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL);
+                boolean b = rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal;
+                boolean c = rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal);
+                boolean d = a || b || c;
+                return d;
             } else {
-                return (rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal && !rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL))
-                        || (rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal));
+                boolean a = rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal && !rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL);
+                boolean b = rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal);
+                boolean c = a || b;
+                return c;
             }
         });
     }
@@ -1392,16 +1395,16 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
-    private static Matrix createMatrix(String word) {
-        Matrix m=new Matrix(word.length(),word.length()+1, word);
+    private static Matrix createMatrix(List<String> word) {
+        Matrix m=new Matrix(word.size(),word.size()+1, word);
         return m;
     }
 
-    public static boolean containsWord(Grammar g, String word) {
+    public static boolean containsWord(Grammar g, List<String> word) {
         GrammarUtil.chomskyNormalFormAsPrintables(g);
         Matrix matrix=GrammarUtil.cyk(g,word);
         if(matrix != null) {
-            return matrix.getCell(1,word.length()-1).contains(g.getStartSymbol());
+            return matrix.getCell(1,word.size()-1).contains(g.getStartSymbol());
         }
         return false;
     }
@@ -1412,14 +1415,13 @@ public class GrammarUtil {
         return false;
     }
 
-    public static Matrix cyk(Grammar g, String word) {
-        List<String> words = new ArrayList<>();
+    public static Matrix cyk(Grammar g, List<String> word) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
            return null;
        }
         Matrix m=GrammarUtil.createMatrix(word);
-        for(int i=1;i<=word.length();i++) {
+        for(int i=1;i<=word.size();i++) {
             final int j=i;
 
             ArrayList<Nonterminal> tmp=(ArrayList<Nonterminal>)  g.getRules().stream()
@@ -1431,8 +1433,8 @@ public class GrammarUtil {
             }
         }
 
-        for(int j=1;j<word.length();j++) {
-            for(int i=1;i<=word.length()-j;i++) {
+        for(int j=1;j<word.size();j++) {
+            for(int i=1;i<=word.size()-j;i++) {
                // m.clearCell(i,j);
                 for(int k=0;k<j;k++) {
 
@@ -1460,7 +1462,7 @@ public class GrammarUtil {
 
     }
 
-    public static boolean languageContainsWord(Grammar grammarOld, String word) {
+    public static boolean languageContainsWord(Grammar grammarOld, List<String> word) {
         Grammar grammar = (Grammar) grammarOld.deep_copy();
         removeLambdaRulesAsPrintables(grammar);
         eliminateUnitRulesAsPrintables(grammar);
@@ -1469,13 +1471,13 @@ public class GrammarUtil {
     }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
         if(matrix != null) {
-           return matrix.getCell(1, matrix.getWord().length() - 1).contains(grammar.getStartSymbol());
+           return matrix.getCell(1, matrix.getWord().size() - 1).contains(grammar.getStartSymbol());
         } else {
             return false;
         }
     }
-    private static boolean pointsOnCurrentChar(String word, int i, List<Symbol> list) {
-        return list.get(0).getName().equals(word.substring(i-1,i));
+    private static boolean pointsOnCurrentChar(List<String> word, int i, List<Symbol> list) {
+        return list.get(0).getName().equals(word.get(i-1));
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*

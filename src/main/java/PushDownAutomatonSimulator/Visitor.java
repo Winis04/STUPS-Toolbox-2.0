@@ -82,7 +82,7 @@ class Visitor extends DepthFirstAdapter {
                 newStack.add(new StackLetter(symbol.getText().replaceAll("'", "")));
             }
         }
-        Collections.reverse(newStack);
+   //     Collections.reverse(newStack);
         PDARule rule = new PDARule(comingFrom,goingTo,input,tos,newStack);
         rules.add(rule);
 

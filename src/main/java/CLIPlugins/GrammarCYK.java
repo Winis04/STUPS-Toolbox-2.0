@@ -3,7 +3,9 @@ package CLIPlugins;
 import GrammarSimulator.*;
 import Print.Printer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
@@ -45,7 +47,7 @@ public class GrammarCYK implements CLIPlugin {
             System.out.println("Is not in chomsky normal form");
             return null;
         }
-        Matrix matrix=GrammarUtil.cyk(grammar,parameters[0]);
+        Matrix matrix=GrammarUtil.cyk(grammar, Arrays.asList(parameters[0].split(",")));
         if(matrix != null) {
             Printer.print(matrix);
         }

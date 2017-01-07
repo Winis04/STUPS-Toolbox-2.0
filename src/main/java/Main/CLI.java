@@ -292,8 +292,8 @@ public class CLI {
             deleteDirectory(workspace);
         }
         workspace.mkdir();
-        store.keySet().stream().forEach(key -> {
-            if(!store.get(key).isEmpty()) {
+        store.keySet().forEach(key -> {
+            if (!store.get(key).isEmpty()) {
                 File subDir = new File(path + key.getSimpleName());
                 if (!subDir.exists()) {
                     subDir.mkdir();

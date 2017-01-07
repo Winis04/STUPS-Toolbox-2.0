@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,10 +21,10 @@ import static java.util.stream.Collectors.*;
 public class Matrix implements Printable{
     private int rows;
     private int columns;
-    private String word;
+    private List<String> word;
     private HashSet<Nonterminal>[][] matrix;
     int spacing;
-    public Matrix(int rows, int columns, String word) {
+    public Matrix(int rows, int columns, List<String> word) {
         this.word=word;
         matrix=new HashSet[rows][columns];
         this.rows=rows;
@@ -90,8 +91,8 @@ public class Matrix implements Printable{
             horizontalLine(writer);
         }
         Printer.print("| j | ",writer);
-        for(int i=0;i<word.length();i++) {
-            Printer.print(word.charAt(i),writer);
+        for(int i=0;i<word.size();i++) {
+            Printer.print(word.get(i),writer);
             for(int j=0;j<spacing-2;j++) {
                 Printer.print(" ",writer);
             }
@@ -141,9 +142,9 @@ public class Matrix implements Printable{
         }
         Printer.print(space+"\t\t\\hline\n",writer);
         Printer.print(space+"\t\t",writer);
-        for(int i=0;i<word.length();i++) {
-            Printer.print(word.substring(i,i+1),writer);
-            if(i<word.length()-1) {
+        for(int i=0;i<word.size();i++) {
+            Printer.print(word.get(i), writer);
+            if(i<word.size()-1) {
                 Printer.print(" & ",writer);
             }
         }
@@ -161,7 +162,7 @@ public class Matrix implements Printable{
         matrix[r][c]=new HashSet<>();
     }
 
-    public String getWord() {
+    public List<String> getWord() {
         return word;
     }
 

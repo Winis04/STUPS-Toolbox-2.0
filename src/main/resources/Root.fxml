@@ -11,6 +11,7 @@
          <menus>
             <Menu mnemonicParsing="false" text="Import">
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#switchWorkspace" text="switch workspace" />
                   <Menu mnemonicParsing="false" text="Load">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar" />

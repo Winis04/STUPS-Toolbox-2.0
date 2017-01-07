@@ -4,6 +4,8 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Print.Printer;
 
+import java.util.Arrays;
+
 /**
  * Created by Isabel on 12.12.2016.
  */
@@ -32,7 +34,7 @@ public class GrammarCheckWord implements CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        boolean contains= GrammarUtil.languageContainsWord(grammar,parameters[0]);
+        boolean contains= GrammarUtil.languageContainsWord(grammar, Arrays.asList(parameters[0].split(",")));
         if(contains) {
             Printer.print("the grammar "+grammar.getName()+ " contains the word "+parameters[0] + ".");
         } else {

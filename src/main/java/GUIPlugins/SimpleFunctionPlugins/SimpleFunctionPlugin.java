@@ -77,6 +77,7 @@ public abstract class SimpleFunctionPlugin {
                 gui.refresh(ret);
                 gui.getCli().objects.put(clazz,storable);
                 gui.getCli().store.get(clazz).put(storable.getName(),storable);
+
             }
 
         });

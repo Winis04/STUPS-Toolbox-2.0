@@ -18,13 +18,13 @@ public class Copy extends SimpleFunctionPlugin {
     public Storable execute(Object object) {
 
         Storable storable = (Storable) object;
-        Storable copy = storable.deep_copy();
+        Storable copy = storable.otherName(storable.getName()+"_Copy");
         TreeItem<String> selected = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         String parent = selected.getParent().getValue().toLowerCase();
         Class parentClass = gui.getCli().lookUpTable.get(parent);
         String name = copy.getName();
-        gui.addToStore(copy,parentClass,name+"_Copy");
-
+        gui.addToStore(copy,parentClass,copy.getName() );
+        gui.refresh();
         return copy;
     }
 
