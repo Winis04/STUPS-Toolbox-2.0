@@ -1413,6 +1413,7 @@ public class GrammarUtil {
     }
 
     public static Matrix cyk(Grammar g, String word) {
+        List<String> words = new ArrayList<>();
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
            return null;

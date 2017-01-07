@@ -78,7 +78,7 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 tab.setClosable(true);
                 GrammarGUI grammarGUI = (GrammarGUI) GUI;
                 if (grammarGUI.getRootPane().getTabs().stream().anyMatch(t -> t.getText().equals(name))) {
-                    grammarGUI.getRootPane().getTabs().stream().forEach(t -> {
+                    grammarGUI.getRootPane().getTabs().forEach(t -> {
                         if (t.getText().equals(name)) {
                             grammarGUI.getRootPane().getSelectionModel().select(t);
                         }
