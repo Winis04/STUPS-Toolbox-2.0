@@ -1,0 +1,107 @@
+/** tab pane **/
+/** design of the tabs **/
+.tab:top{
+    -fx-padding: 0 30 0 30;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #457b9d;
+    -fx-border-color: #1d3557;
+    -fx-border-widht: 0.5px;
+ }
+
+ .tab:top:selected{
+     -fx-background-color: #a82a33;
+ }
+
+/** textcolor tabs **/
+.tab-pane:top .tab-header-area .headers-region .tab:top:selected .tab-container .tab-label{
+    -fx-text-fill: #1d3557;
+}
+.tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label{
+    -fx-text-fill: #1d3557;
+}
+
+/** tab area **/
+.tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-color: #457b9d;
+
+}
+
+.tab-pane:top .tab-content-area{
+    -fx-padding: 30 30 30 30;
+     -fx-background-color: #f1faee;
+    -fx-border-color: #1d3557;
+    -fx-border-width: 0.5px;
+}
+
+
+/** design tabs **/
+.tab-pane:top{
+    -fx-close-tab-animation: none;
+       -fx-open-tab-animation: none;
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+ /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
+    -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+}
+
+
+
+
+
+
+
+/** split pane **/
+.split-pane:horizontal .split-pane-divider{
+    -fx-padding: 0 0 0 0;
+}
+
+.split-pane:vertical .split-pane-divider{
+    -fx-padding: 0 0 0 0;
+}
+
+.scroll-pane{
+    -fx-padding: 5 5 5 5;
+}
+
+
+/** scroll pane **/
+
+.scroll-pane{
+     -fx-background-color: #f1faee;
+}
+
+.scroll-pane .scroll-bar:vertical{
+    -fx-background-color: #f1faee;
+}
+.scroll-pane .scroll-bar:vertical .track-background{
+    -fx-background-color: #f1faee;
+}
+.anchor-pane{
+     -fx-background-color: #f1faee;
+}
+
+#contentPane{
+      -fx-background-color: #f1faee;
+}
+
+GridPane{
+    -fx-background-color: #f1faee;
+}
+
+.tree-view{
+ -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tree-view .tree-cell {
+    -fx-background-color: #a8dadc ;
+    -fx-text-fill: #1d3557 ;
+}
+
+.tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
+        -fx-background-color: #a82a33;
+}
