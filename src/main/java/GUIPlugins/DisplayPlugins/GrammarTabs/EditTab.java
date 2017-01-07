@@ -55,6 +55,7 @@ public class EditTab implements GrammarTab {
         topPane.addRow(1, nonterminalsLabel);
 
         GridPane editPane = new GridPane();
+
         editPane.setAlignment(Pos.CENTER);
         editPane.setHgap(5);
         editPane.setVgap(10);

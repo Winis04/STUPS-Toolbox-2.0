@@ -1,4 +1,40 @@
 /** tab pane **/
+/** design of the tabs **/
+.tab:top{
+    -fx-padding: 0 30 0 30;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-color: #336699;
+    -fx-border-color: gray;
+    -fx-border-widht: 0.5px;
+ }
+
+ .tab:top:selected{
+     -fx-background-color: #538cc6;
+ }
+
+/** textcolor tabs **/
+.tab-pane:top .tab-header-area .headers-region .tab:top:selected .tab-container .tab-label{
+    -fx-text-fill: #f2f2f2;
+}
+.tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label{
+    -fx-text-fill: #e6e6e6;
+}
+
+/** tab area **/
+.tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-color: #336699;
+
+}
+
+.tab-pane:top .tab-content-area{
+    -fx-padding: 30 30 30 30;
+     -fx-background-color: #eaffff;
+    -fx-border-color: gray;
+    -fx-border-width: 0.5px;
+}
+
 
 /** design tabs **/
 .tab-pane:top{
@@ -12,23 +48,9 @@
     -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
 }
 
-.tab-pane:top .tab-header-area .tab-header-background{
-    -fx-background-color: #ececec;
 
-}
 
-.tab:top{
-   -fx-padding: 0 30 0 30;
-   -fx-focus-color: transparent;
-   -fx-faint-focus-color: transparent;
-    -fx-background-color: #f6ffff ;
-        -fx-text-fill: #000033 ;
 
-}
-
- .tab:top:selected{
-      -fx-background-color: #6699ff;
- }
 
 
 
@@ -45,10 +67,28 @@
     -fx-padding: 5 5 5 5;
 }
 
-.tab-pane:top .tab-content-area{
-    -fx-padding: 5 0 0 0;
-     -fx-background-color: #6699ff;
+
+/** scroll pane **/
+
+.scroll-pane{
+     -fx-background-color: #eaffff;
 }
 
+.scroll-pane .scroll-bar:vertical{
+    -fx-background-color: #eaffff;
+}
+.scroll-pane .scroll-bar:vertical .track-background{
+    -fx-background-color: #eaffff;
+}
+.anchor-pane{
+     -fx-background-color: #eaffff;
+}
 
+#contentPane{
+      -fx-background-color: #eaffff;
+}
+
+GridPane{
+    -fx-background-color: #eaffff;
+}
 

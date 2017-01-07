@@ -49,10 +49,11 @@ public class FirstFollowTab implements GrammarTab {
             sb.append("}");
 
             Label nullableLabel = new Label(sb.toString());
-            nullableLabel.setStyle("-fx-border-color: black");
+            nullableLabel.setStyle("-fx-border-color: black;  -fx-background-color: #eaffff;");
 
             rootPane.setTop(nullableLabel);
-            rootPane.setAlignment(nullableLabel, Pos.CENTER);
+            rootPane.setStyle(" -fx-background-color: #eaffff;");
+            BorderPane.setAlignment(nullableLabel, Pos.CENTER);
             rootPane.setPadding(new Insets(50, 0, 0, 0));
 
             //Iterate over all nonterminals and write their first- and follow-sets.

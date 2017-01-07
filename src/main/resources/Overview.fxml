@@ -19,7 +19,7 @@
                   <SplitPane dividerPositions="0.7773109243697479" layoutX="270.0" layoutY="94.0" orientation="VERTICAL" prefHeight="478.0" prefWidth="606.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                         <BorderPane fx:id="contentPane" prefHeight="200.0" prefWidth="200.0" />
-                        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@ComplexPlugin.css" tabClosingPolicy="UNAVAILABLE" />
+                        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
                     </items>
                   </SplitPane>
                </children></AnchorPane>

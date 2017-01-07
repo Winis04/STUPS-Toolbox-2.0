@@ -365,6 +365,7 @@ public class CLI {
                     for(File file : files) {
                         // the parsed object
                         Storable restored = storable.restoreFromFile(file);
+
                         // store it in the store
                         HashMap<String, Storable> correctMap = store.get(clazz);
                         String i=restored.getName();
@@ -383,6 +384,11 @@ public class CLI {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                } catch (Exception e) {
+                    System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
+                    e.printStackTrace();
+                    File ptw = new File("path_to_workspace");
+                    ptw.delete();
                 }
             }
         } else {
