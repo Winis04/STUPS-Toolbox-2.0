@@ -33,7 +33,7 @@ public class PDARule implements Printable{
      */
     private final State goingTo;
    /**
-    * the new ToS. newTos[last-1] is the topmost element CHANGED!
+    * the new ToS. newTos[0] is the topmost element!
     */
     private final List<StackLetter> newToS;
 

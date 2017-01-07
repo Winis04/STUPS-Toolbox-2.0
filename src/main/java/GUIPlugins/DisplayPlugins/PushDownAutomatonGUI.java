@@ -96,7 +96,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setStyle("-fx-background-color: gray");
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
-                            System.out.println(runThroughInfo.getStack().peek().getName());
                             this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
 
                             flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));

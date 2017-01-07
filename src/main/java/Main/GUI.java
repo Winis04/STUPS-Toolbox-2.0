@@ -354,6 +354,7 @@ public class GUI extends Application{
     }
 
     public void refresh(Object object) {
+        switchDisplayGui(object.getClass());
         functionsPane.setCenter(currentDisplayPlugin.refresh(object));
         refreshComplexPlugins();
     }

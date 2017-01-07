@@ -10,6 +10,7 @@ import PushDownAutomatonParser.parser.ParserException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -47,6 +48,9 @@ public class PushDownAutomatonUtil {
         grammarReader.close();
         return pda;
 
+    }
+    public static void save(PushDownAutomaton pda, File file) {
+        save(pda,file.getAbsolutePath());
     }
     public static void save(PushDownAutomaton pda, String fileName) {
         try {
@@ -104,7 +108,16 @@ public class PushDownAutomatonUtil {
                 Stack<StackLetter> stack = new Stack<>();
                 stack.addAll(run.getStack());
                 stack.pop();
-                rule.getNewToS().stream().filter(stackLetter -> !stackLetter.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+                ArrayList<StackLetter> list = new ArrayList<>();
+                list.addAll(rule.getNewToS());
+
+                for(int i=list.size()-1;i>=0;i--) {
+                    StackLetter stackLetter = list.get(i);
+                    if(stackLetter != StackLetter.NULLSYMBOL) {
+                        System.out.println(stackLetter.getName());
+                        stack.push(stackLetter);
+                    }
+                }
                 return new RunThroughInfo(stack,run.getInput(),currentState,run,pda);
             }
         }
@@ -116,7 +129,16 @@ public class PushDownAutomatonUtil {
                 Stack<StackLetter> stack = new Stack<>();
                 stack.addAll(run.getStack());
                 stack.pop();
-                rule.getNewToS().stream().filter(stackLetter -> !stackLetter.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+                ArrayList<StackLetter> list = new ArrayList<>();
+                list.addAll(rule.getNewToS());
+
+                for(int i=list.size()-1;i>=0;i--) {
+                    StackLetter stackLetter = list.get(i);
+                    if(stackLetter != StackLetter.NULLSYMBOL) {
+                        System.out.println(stackLetter.getName());
+                        stack.push(stackLetter);
+                    }
+                }
                 return new RunThroughInfo(stack,run.getInput(),currentState,run,pda);
             }
         }
@@ -127,7 +149,16 @@ public class PushDownAutomatonUtil {
         Stack<StackLetter> stack = new Stack<>();
         stack = (Stack<StackLetter>) run.getStack().clone();
         stack.pop();
-        rule.getNewToS().stream().filter(sym -> !sym.equals(StackLetter.NULLSYMBOL)).forEach(stack::add);
+        ArrayList<StackLetter> list = new ArrayList<>();
+        list.addAll(rule.getNewToS());
+
+        for(int i=list.size()-1;i>=0;i--) {
+            StackLetter stackLetter = list.get(i);
+            if(stackLetter != StackLetter.NULLSYMBOL) {
+                System.out.println(stackLetter.getName());
+                stack.push(stackLetter);
+            }
+        }
         ArrayList<InputLetter> input = new ArrayList<>();
         System.out.println(stack.peek().getName());
         input.addAll(run.getInput().stream().skip(1).collect(Collectors.toList()));

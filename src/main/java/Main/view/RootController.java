@@ -221,7 +221,14 @@ public class RootController {
 
     @FXML
     public void saveCurrentPushDownAutomaton() {
-        
+        Object object = gui.getCli().objects.get(PushDownAutomaton.class);
+        if(object != null) {
+            PushDownAutomaton pda= (PushDownAutomaton) object;
+            File file = gui.openFile("PDA");
+            if(file!=null) {
+                PushDownAutomatonUtil.save(pda, file);
+            }
+        }
     }
 
     @FXML

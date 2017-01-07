@@ -1517,8 +1517,11 @@ public class GrammarUtil {
     }
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
         ArrayList<PDARule> rules = new ArrayList<>();
+
+        // for every Rule A --> q add (z0,lambda,A) -> (z0,q). The first element of q is the new ToS
         grammar.getRules().forEach(rule -> {
-            List<Symbol> list = rule.getRightSide();
+            List<Symbol> list = new ArrayList<Symbol>();
+            list.addAll(rule.getRightSide());
             State comingFrom = help.getStartState();
             State goingTo = help.getStartState();
             InputLetter readIn = InputLetter.NULLSYMBOL;
@@ -1546,7 +1549,6 @@ public class GrammarUtil {
         for(Symbol s : list) {
             res.add(new StackLetter(s.getName()));
         }
-        reverse(res);
         return res;
     }
 
