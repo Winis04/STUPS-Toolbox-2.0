@@ -3,6 +3,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
+import Print.Printer;
 
 /**
  * Created by Isabel on 03.12.2016.
@@ -22,6 +23,13 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
         } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
             gui.infoDialog("Can't do this! The grammar is already in chomsky normal-form");
         } else {
+            String[] texts=new String[]{"","rules, that point only on one Nonterminal are already in chomsky normal form and we keep them",
+                    "in all other rules replace every appearance of Terminal a through a new Nonterminal",
+                    "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule."};
+
+            String[] point_descriptions=new String[]{"Before","Step 1", "Step 2", "Step 3"};
+
+            Printer.printEnumeration(GrammarUtil.chomskyNormalFormAsPrintables(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
             return GrammarUtil.chomskyNormalForm(grammar);
         }
         return grammar;

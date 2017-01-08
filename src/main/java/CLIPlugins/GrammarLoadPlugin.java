@@ -42,6 +42,7 @@ public class GrammarLoadPlugin implements CLIPlugin {
         Grammar grammar = null;
         try {
             String filename = parameters[0];
+            System.out.println(filename);
             BufferedReader grammarReader = new BufferedReader(new FileReader(filename));
             String file = "";
             String line;

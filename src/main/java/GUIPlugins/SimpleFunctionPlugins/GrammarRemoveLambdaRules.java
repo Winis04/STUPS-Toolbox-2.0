@@ -3,6 +3,10 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
+import Print.Printable;
+import Print.Printer;
+
+import java.util.ArrayList;
 
 /**
  * Created by Isabel on 03.12.2016.
@@ -19,7 +23,21 @@ public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
             gui.infoDialog("this grammar is already lambda-free");
             return null;
         }
-
+        ArrayList<Printable> printables=GrammarUtil.removeLambdaRulesAsPrintables(grammar);
+        String texts[];
+        String point_descriptions[];
+        if(printables.size()==4) {
+            point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3"};
+            texts=new String[]{"","nullables","",
+                    "All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+        } else if(printables.size()==5) {
+            point_descriptions=new String[]{"Before","Special Rule for Empty Word","Step 1","Step 2","Step 3"};
+            texts=new String[]{"","add new Symbol","nullables","","All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+        } else {
+            point_descriptions=new String[]{""};
+            texts=new String[]{""};
+        }
+        Printer.printEnumeration(printables,point_descriptions,texts,"Remove Lambda-Rules");
         return GrammarUtil.removeLambdaRules(grammar);
     }
 

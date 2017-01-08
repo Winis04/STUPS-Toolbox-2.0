@@ -85,7 +85,9 @@ public class RootController {
 
             PrintModePlugin printModePlugin = new PrintModePlugin();
             printModePlugin.execute(null, new String[]{"latex", path, "--force"});
-            gui.refreshPlugins();
+            if(gui.getCurrentDisplayPlugin() != null) {
+                gui.refreshPlugins();
+            }
         }
     }
     @FXML
@@ -97,7 +99,9 @@ public class RootController {
 
         PrintModePlugin printModePlugin = new PrintModePlugin();
         printModePlugin.execute(null,new String[]{"no"});
-        gui.refreshPlugins();
+        if(gui.getCurrentDisplayPlugin() != null) {
+            gui.refreshPlugins();
+        }
     }
 
 

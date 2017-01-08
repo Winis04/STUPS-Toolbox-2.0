@@ -36,6 +36,6 @@ public class GrammarToPDA extends SimpleFunctionPlugin {
 
     @Override
     public boolean createsOutput() {
-        return true;
+        return false;
     }
 }
