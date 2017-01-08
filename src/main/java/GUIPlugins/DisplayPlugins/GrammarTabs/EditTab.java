@@ -42,6 +42,8 @@ public class EditTab implements GrammarTab {
      */
     ContextMenu mouseMenu = new ContextMenu();
 
+
+
     public EditTab(GUI gui) {
         this.gui=gui;
     }
@@ -80,25 +82,9 @@ public class EditTab implements GrammarTab {
                         writeTopLabels(grammar1);
                         writeRules(grammar1, editPane);
                     });
-                    MenuItem store = new MenuItem("Store");
-                    store.setOnAction(event1 -> {
-                        TextInputDialog dialog = new TextInputDialog("G");
-                        dialog.setTitle("Store this grammar");
-                        dialog.setContentText("Enter the name of the grammar: ");
-                        Optional<String> result = dialog.showAndWait();
-                        result.ifPresent(name -> {
-                            gui.getCli().objects.put(Grammar.class,grammar);
-                            gui.addToStore(grammar,Grammar.class,name);
-                        });
-                    });
+
                     mouseMenu.getItems().clear();
                     mouseMenu.getItems().add(addItem);
-                    mouseMenu.getItems().add(store);
-                    if(gui.getCli().storeContains(grammar,Grammar.class)) {
-                        store.setDisable(true);
-                    } else {
-                        store.setDisable(false);
-                    }
                     mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
                 }
             } else if(event.getButton().equals(MouseButton.PRIMARY)) {

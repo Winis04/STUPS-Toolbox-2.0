@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class PushDownAutomatonGUI implements DisplayPlugin {
     private GUI gui;
-    private Label flow;
+    private Label flow = new Label();
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
     private HashMap<PDARule, Button> rulesAndButtons = new HashMap<PDARule, Button>();
@@ -45,7 +45,17 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
      */
     @FXML
     private void initialize() {
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
+        root.setGridLinesVisible(false);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
 
+        anchor.getChildren().addAll(flow);
+        anchor.setTopAnchor(flow,50.0);
+        anchor.setLeftAnchor(flow,50.0);
+        anchor.setRightAnchor(flow,50.0);
+        anchor.setBottomAnchor(flow,50.0);
     }
 
     public PushDownAutomatonGUI() {
@@ -61,26 +71,16 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             half++;
         }
         root.getChildren().clear();
+        flow.setText("");
       //  root = new GridPane();
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
-        root.setGridLinesVisible(false);
+
         //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
     //    SplitPane splitPane = new SplitPane();
 
     //    ScrollPane scrollPane = new ScrollPane();
       //  scrollPane.setContent(root);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
 
-
-        flow = new Label();
-        anchor.getChildren().addAll(flow);
-        anchor.setTopAnchor(flow,50.0);
-        anchor.setLeftAnchor(flow,50.0);
-        anchor.setRightAnchor(flow,50.0);
-        anchor.setBottomAnchor(flow,50.0);
       //  splitPane.getItems().addAll(scrollPane,anchor);
 
         /** fill with content **/

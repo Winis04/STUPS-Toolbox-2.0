@@ -105,3 +105,7 @@ GridPane{
 .tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
         -fx-background-color: #a82a33;
 }
+
+.button:disabled{
+    -fx-opacity: 1.0 ;
+}
