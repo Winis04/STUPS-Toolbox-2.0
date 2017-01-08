@@ -51,9 +51,9 @@ public class GrammarGUI implements DisplayPlugin {
         edit.setContent(new EditTab(gui).getFxNode(grammar));
         edit.setClosable(false);
         rootPane.getTabs().add(edit);
-
         return rootPane;
     }
+
 
     public void firstfollow(Grammar grammar) {
         String name="First Follow";

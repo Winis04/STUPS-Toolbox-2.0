@@ -5,6 +5,7 @@ import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
+import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
@@ -21,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
@@ -29,6 +31,8 @@ import sun.reflect.generics.tree.Tree;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 
 /**
@@ -373,6 +377,18 @@ public class GUI extends Application{
             if(overviewController.getTreeView().getRoot() == null) {
                 overviewController.makeTree(simpleFunctionPlugins.values());
             }
+            overview.setOnKeyTyped(event -> {
+                if(event.getCharacter().equals("u")) {
+                    double x = EditTab.nonterminalsLabel.getFont().getSize();
+                    overview.setStyle("-fx-font-size: "+(x+1));
+
+                }
+                if(event.getCharacter().equals("d")) {
+                    double x = EditTab.nonterminalsLabel.getFont().getSize();
+                    overview.setStyle("-fx-font-size: "+(x-1));
+
+                }
+            });
             this.functionsPane=overviewController.getContentPane();
 
             this.complexFunctionsPane=overviewController.getTabPane();

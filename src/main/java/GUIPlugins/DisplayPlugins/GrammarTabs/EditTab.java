@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -25,12 +26,12 @@ public class EditTab implements GrammarTab {
     /**
      * Displays all of the grammar's terminals.
      */
-    Label terminalsLabel = new Label();
+    public static Label terminalsLabel = new Label();
 
     /**
      * Displays all of the grammar's nonterminals.
      */
-    Label nonterminalsLabel = new Label();
+    public static Label nonterminalsLabel = new Label();
 
     /**
      * This Tab's root pane.
@@ -43,6 +44,11 @@ public class EditTab implements GrammarTab {
     ContextMenu mouseMenu = new ContextMenu();
 
 
+    Button up = new Button("+");
+
+    Button down = new Button("-");
+
+    int size = 12;
 
     public EditTab(GUI gui) {
         this.gui=gui;
@@ -51,10 +57,22 @@ public class EditTab implements GrammarTab {
     public Node getFxNode(Grammar grammar) {
 
 
+
+
         GridPane topPane = new GridPane();
 
         topPane.addRow(0, terminalsLabel);
         topPane.addRow(1, nonterminalsLabel);
+
+
+
+
+
+
+
+
+        topPane.setHgap(5);
+        topPane.setVgap(5);
 
         GridPane editPane = new GridPane();
 
@@ -65,6 +83,9 @@ public class EditTab implements GrammarTab {
         //Write the grammar's terminals, nonterminals and rules.
         writeTopLabels(grammar);
         writeRules(grammar, editPane);
+
+
+
 
         editPane.setOnMouseClicked(event -> {
             if(event.getTarget().equals(editPane)) {
@@ -93,13 +114,13 @@ public class EditTab implements GrammarTab {
         });
 
         rootPane.setTop(topPane);
+
         rootPane.setCenter(editPane);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(rootPane);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
-
         return scrollPane;
     }
 

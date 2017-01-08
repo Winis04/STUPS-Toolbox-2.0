@@ -29,7 +29,7 @@
 }
 
 .tab-pane:top .tab-content-area{
-    -fx-padding: 30 30 30 30;
+    -fx-padding: 0 0 0 30;
      -fx-background-color: #f1faee;
     -fx-border-color: #1d3557;
     -fx-border-width: 0.5px;
@@ -64,7 +64,7 @@
 }
 
 .scroll-pane{
-    -fx-padding: 5 5 5 5;
+    -fx-padding: 0 0 0 0;
 }
 
 
@@ -108,4 +108,11 @@ GridPane{
 
 .button:disabled{
     -fx-opacity: 1.0 ;
+}
+
+.button{
+    -fx-background-color: #a82a33;
+    -fx-padding: 5 5 5 5;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
 }

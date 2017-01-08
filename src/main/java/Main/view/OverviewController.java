@@ -2,6 +2,7 @@ package Main.view;
 
 
 
+import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import Main.GUI;
 
@@ -27,6 +28,8 @@ public class OverviewController {
     TabPane tabPane;
     @FXML
     BorderPane contentPane;
+    @FXML
+    AnchorPane rightSide;
 
 
     ContextMenu dynamicContextMenu=new ContextMenu();
