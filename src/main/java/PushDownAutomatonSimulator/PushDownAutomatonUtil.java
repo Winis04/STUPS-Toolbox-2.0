@@ -114,10 +114,10 @@ public class PushDownAutomatonUtil {
                 for(int i=list.size()-1;i>=0;i--) {
                     StackLetter stackLetter = list.get(i);
                     if(stackLetter != StackLetter.NULLSYMBOL) {
-                        System.out.println(stackLetter.getName());
                         stack.push(stackLetter);
                     }
                 }
+
                 return new RunThroughInfo(stack,run.getInput(),currentState,run,pda);
             }
         }
@@ -135,7 +135,7 @@ public class PushDownAutomatonUtil {
                 for(int i=list.size()-1;i>=0;i--) {
                     StackLetter stackLetter = list.get(i);
                     if(stackLetter != StackLetter.NULLSYMBOL) {
-                        System.out.println(stackLetter.getName());
+
                         stack.push(stackLetter);
                     }
                 }
@@ -155,12 +155,12 @@ public class PushDownAutomatonUtil {
         for(int i=list.size()-1;i>=0;i--) {
             StackLetter stackLetter = list.get(i);
             if(stackLetter != StackLetter.NULLSYMBOL) {
-                System.out.println(stackLetter.getName());
+
                 stack.push(stackLetter);
             }
         }
         ArrayList<InputLetter> input = new ArrayList<>();
-        System.out.println(stack.peek().getName());
+
         input.addAll(run.getInput().stream().skip(1).collect(Collectors.toList()));
         return new RunThroughInfo(stack,input,currentState,run,pda);
     }

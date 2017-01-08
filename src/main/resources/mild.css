@@ -102,3 +102,6 @@ GridPane{
     -fx-background-color: #c2d3cd;
 }
 
+.button:disabled{
+    -fx-opacity: 1.0 ;
+}

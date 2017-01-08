@@ -108,7 +108,6 @@ public class GUI extends Application{
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
-            System.out.println(currentDisplayPlugin.displayType().getSimpleName());
         }
         /** selected the right treeViewObject **/
         Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()

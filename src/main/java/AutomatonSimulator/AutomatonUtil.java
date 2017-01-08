@@ -332,13 +332,13 @@ public class AutomatonUtil {
             return false;
         }
 
-        //Go through all possible next states and call this method recursively with them as a parameter.
+        //Go through all possible start states and call this method recursively with them as a parameter.
         for(State currentState : currentStates) {
             if(accepted) {
                 break;
             }
 
-            //If we can reach the next state with a lambda-transition, and this transition does not point to the current state itself,
+            //If we can reach the start state with a lambda-transition, and this transition does not point to the current state itself,
             //we can put the removed input back to the front of our input-list and call this method recursively.
             if(emptyWordStates.contains(currentState) && !currentState.equals(startState) && !currentInput.equals("lambda") && !currentInput.equals("epsilon")) {
                 ArrayList<String> newLocalInput = new ArrayList<>(Arrays.asList(currentInput));

@@ -82,16 +82,6 @@ public class RootController {
             String path = file.getAbsolutePath();
 
 
-            if (showLatexDialog) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "display this information again?", ButtonType.YES, ButtonType.NO);
-                alert.setHeaderText("You are now in Latex-mode. Every blue-squared command writes in the file you just choose until you end the latex-mode!");
-
-                alert.showAndWait();
-                if (alert.getResult() == ButtonType.NO) {
-                    showLatexDialog = false;
-                }
-            }
-
 
             PrintModePlugin printModePlugin = new PrintModePlugin();
             printModePlugin.execute(null, new String[]{"latex", path, "--force"});

@@ -1,5 +1,6 @@
 package GUIPlugins.DisplayPlugins;
 
+import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
 import Main.GUI;
 import PushDownAutomatonSimulator.PDARule;
 import PushDownAutomatonSimulator.PushDownAutomaton;
@@ -12,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 
 
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.GridPane;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+
+import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
  * Created by Isabel on 10.12.2016.
@@ -56,6 +60,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         anchor.setLeftAnchor(flow,50.0);
         anchor.setRightAnchor(flow,50.0);
         anchor.setBottomAnchor(flow,50.0);
+        CheckStringPDAPlugin.start.setVisible(true);
     }
 
     public PushDownAutomatonGUI() {
@@ -63,6 +68,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     }
     @Override
     public Node display(Object object) {
+        CheckStringPDAPlugin.start.setVisible(true);
         rulesAsButtons = new ArrayList<>();
         PushDownAutomaton pda = (PushDownAutomaton) object;
         int ruleNumber = pda.getRules().size();
@@ -72,6 +78,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         }
         root.getChildren().clear();
         flow.setText("");
+
       //  root = new GridPane();
 
         //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
@@ -98,8 +105,24 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
                             this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
-
+                            if(this.getRunThroughInfo().getPrevious() == null) {
+                                undo.setDisable(true);
+                                undo.setStyle("-fx-background-color: lightgray;");
+                            } else {
+                                undo.setDisable(false);
+                                undo.setStyle("");
+                            }
+                          //  CheckStringPDAPlugin.undo.setDisable(false);
+                            CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(il -> il.getName()).collect(Collectors.joining(" ")));
                             flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
+                            if(CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle("Success");
+                                alert.setHeaderText(null);
+                                alert.setContentText("you found a path that accepts the input");
+
+                                alert.showAndWait();
+                            }
                         }
 
                     });
