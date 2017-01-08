@@ -434,7 +434,7 @@ public class AutomatonUtil {
      * @throws LexerException {@link LexerException}.
      * @throws IOException {@link IOException}.
      */
-    public static Automaton parse(String fileInput) throws ParserException, LexerException, IOException {
+    public static Automaton parse(String fileInput, String name) throws ParserException, LexerException, IOException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
         Lexer l = new Lexer(r);
@@ -442,21 +442,20 @@ public class AutomatonUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        return setIsLoop(visitor.getAutomaton());
+        return setIsLoop(visitor.getAutomaton(name));
     }
 
     public static Automaton parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
-        Automaton automaton;
+
         BufferedReader automatonReader = new BufferedReader(new FileReader(file));
         String string = "";
         String line;
         while ((line = automatonReader.readLine()) != null) {
             string = string + line + "\n";
         }
-        automaton = AutomatonUtil.parse(string);
-        automatonReader.close();
-        return (Automaton) automaton.otherName(name);
+        return AutomatonUtil.parse(string,name);
+
     }
 
     private static Automaton setIsLoop(Automaton automaton) {

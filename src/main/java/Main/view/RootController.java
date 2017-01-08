@@ -9,6 +9,7 @@ import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
+import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import javafx.stage.FileChooser;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 /**
@@ -119,12 +121,16 @@ public class RootController {
 
     }
 
-    @FXML
-    public void loadGrammar() {
-        File file = gui.loadFile("Grammar");
-        if(file!=null) {
-            if (file != null) {
-                BufferedReader reader = null;
+    private void loadStorable(Class clazz) {
+        File file = gui.loadFile(clazz.getSimpleName());
+        if(file != null) {
+            BufferedReader reader = null;
+            TextInputDialog dialog = new TextInputDialog(file.getName());
+            dialog.setTitle("Choose a name");
+            dialog.setContentText("Please enter Name:");
+            Optional<String> result = dialog.showAndWait();
+            if(result.isPresent() && !result.get().isEmpty()) {
+                String name = result.get();
                 try {
                     reader = new BufferedReader(new FileReader(file));
                     String string = "";
@@ -132,67 +138,48 @@ public class RootController {
                     while ((line = reader.readLine()) != null) {
                         string = string + line + "\n";
                     }
-                    Grammar grammar = GrammarUtil.parse(string,file.getName());
-                    gui.getCli().objects.put(Grammar.class, grammar);
-                    gui.switchDisplayGui(Grammar.class);
-                    gui.refresh(grammar);
+                    Storable storable;
+                    if (clazz.equals(Grammar.class)) {
+                        storable = GrammarUtil.parse(string, name);
+                    } else if (clazz.equals(Automaton.class)) {
+                        storable = AutomatonUtil.parse(string, name);
+                    } else if (clazz.equals(PushDownAutomaton.class)) {
+                        storable = PushDownAutomatonUtil.parse(string, name);
+                    } else {
+                        storable = null;
+                        //TODO: add other types here
+                    }
+                    if (storable != null) {
+                        gui.getCli().objects.put(clazz, storable);
+                        gui.getCli().store.get(clazz).put(name,storable);
+                        gui.refresh(storable);
+                        gui.refresh();
+                    }
+
                 } catch (IOException e) {
                     gui.errorDialog("I/O Error");
 
-                } catch (LexerException | ParserException e) {
-                    gui.errorDialog("this is not a grammar!");
+                } catch (Exception e) {
+                    gui.errorDialog("this is not a valid file");
                 }
             }
+
         }
+    }
+
+    @FXML
+    public void loadGrammar() {
+       loadStorable(Grammar.class);
 
     }
     @FXML
     public void loadAutomaton() {
-        File file = gui.loadFile("Automaton");
-        BufferedReader reader = null;
-        if(file!=null) {
-            try {
-                reader = new BufferedReader(new FileReader(file));
-                String string = "";
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    string = string + line + "\n";
-                }
-                Automaton automaton = AutomatonUtil.parse(string);
-                gui.getCli().objects.put(Automaton.class, automaton);
-                gui.switchDisplayGui(Automaton.class);
-                gui.refresh(automaton);
-            } catch (IOException e) {
-                gui.errorDialog(e.getMessage());
-            } catch (AutomatonParser.lexer.LexerException | AutomatonParser.parser.ParserException e) {
-                gui.errorDialog("this is not an automaton!");
-            }
-        }
+       loadStorable(Automaton.class);
 
     }
     @FXML
     public void loadPushDownAutomaton() {
-        File file = gui.loadFile("Pushdown-Automaton");
-        BufferedReader reader = null;
-        if(file!=null) {
-            try {
-                reader = new BufferedReader(new FileReader(file));
-                String string = "";
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    string = string + line + "\n";
-                }
-                PushDownAutomaton automaton = PushDownAutomatonUtil.parse(string,file.getName());
-                gui.getCli().objects.put(PushDownAutomaton.class, automaton);
-                gui.switchDisplayGui(PushDownAutomaton.class);
-                gui.refresh(automaton);
-            } catch (IOException e) {
-                gui.errorDialog(e.getMessage());
-            } catch (PushDownAutomatonParser.lexer.LexerException | PushDownAutomatonParser.parser.ParserException e) {
-                gui.errorDialog("this is not a push down automaton");
-            }
-        }
-
+        loadStorable(PushDownAutomaton.class);
     }
 
     @FXML

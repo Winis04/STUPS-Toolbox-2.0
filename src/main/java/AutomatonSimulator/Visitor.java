@@ -53,7 +53,7 @@ public class Visitor extends DepthFirstAdapter {
         automaton = new Automaton(stateList, startState, allInputs);
     }
 
-    public Automaton getAutomaton() {
-        return automaton;
+    public Automaton getAutomaton(String name) {
+        return (Automaton) automaton.otherName(name);
     }
 }
