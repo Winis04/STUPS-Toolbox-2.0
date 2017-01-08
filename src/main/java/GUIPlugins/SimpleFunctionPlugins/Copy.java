@@ -23,8 +23,8 @@ public class Copy extends SimpleFunctionPlugin {
         String parent = selected.getParent().getValue().toLowerCase();
         Class parentClass = gui.getCli().lookUpTable.get(parent);
         String name = copy.getName();
-        gui.addToStore(copy,parentClass,copy.getName() );
-        gui.refresh();
+       // gui.addToStore(copy,parentClass,copy.getName() );
+        //gui.refresh();
         return copy;
     }
 

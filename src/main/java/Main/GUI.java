@@ -27,10 +27,7 @@ import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -106,11 +103,22 @@ public class GUI extends Application{
     }
 
     public void refresh() {
-        overviewController.makeTree(simpleFunctionPlugins.values());
+        overviewController.makeTree(simpleFunctionPlugins.values()); //makes the tree
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
-            refreshComplexPlugins();
+            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
+            refreshComplexPlugins(); //refreshes the complex plugins
         }
+        /** selected the right treeViewObject **/
+        Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren().stream()
+                .reduce((x,y) -> {
+                    if(x.getValue().equals(currentDisplayPlugin.displayType().getName())) {
+                        return x;
+                    } else {
+                        return y;
+                    }
+                });
+        s.ifPresent(System.out::println);
+
     }
 
     public void addToStore(Storable storable, Class clazz, String name) {

@@ -70,13 +70,15 @@ public abstract class SimpleFunctionPlugin {
             item.setDisable(true);
         }
         item.setOnAction(t -> {
-            Object ret= plugin.execute(gui.getCli().objects.get(plugin.inputType()));
+            Object ret= plugin. execute(gui.getCli().objects.get(plugin.inputType()));
             Storable storable = (Storable) ret;
             if(ret != null) {
                 Class clazz = ret.getClass();
-                gui.refresh(ret);
-                gui.getCli().objects.put(clazz,storable);
-                gui.getCli().store.get(clazz).put(storable.getName(),storable);
+
+                gui.getCli().objects.put(clazz,storable); //add new object as the current object
+                gui.getCli().store.get(clazz).put(storable.getName(),storable); //add object to the store
+                gui.refresh(ret); //switch to new object
+                gui.refresh(); //refresh the treeView
 
             }
 

@@ -60,6 +60,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         if(2*half < ruleNumber) {
             half++;
         }
+        root.getChildren().clear();
       //  root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
