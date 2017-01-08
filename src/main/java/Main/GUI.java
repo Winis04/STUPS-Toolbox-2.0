@@ -24,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,17 +108,37 @@ public class GUI extends Application{
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
+            System.out.println(currentDisplayPlugin.displayType().getSimpleName());
         }
         /** selected the right treeViewObject **/
-        Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren().stream()
+        Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
+                .stream()
                 .reduce((x,y) -> {
-                    if(x.getValue().equals(currentDisplayPlugin.displayType().getName())) {
+                    if(x != null && x.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                         return x;
-                    } else {
+                    } else if (y != null && y.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                         return y;
+                    } else {
+                        return null;
                     }
                 });
-        s.ifPresent(System.out::println);
+
+        if(s.isPresent()) {
+            TreeItem<String> root = s.get();
+            Optional<TreeItem<String>> selected = root.getChildren().stream()
+                    .reduce((x,y) -> {
+                        if(x != null && x.getValue().equals(((Storable)cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                            return x;
+                        } else if(y != null && y.getValue().equals(((Storable)cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                            return y;
+                        } else {
+                            return null;
+                        }
+                    });
+            if(selected.isPresent()) {
+                overviewController.getTreeView().getSelectionModel().select(selected.get());
+            }
+        }
 
     }
 
