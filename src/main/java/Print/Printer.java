@@ -60,7 +60,7 @@ public class Printer {
     }
     public static void print(int i, BufferedWriter writer) {
         try {
-            writer.write(i);
+            writer.write(i+"");
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

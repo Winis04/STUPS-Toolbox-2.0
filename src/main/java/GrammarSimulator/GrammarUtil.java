@@ -759,7 +759,7 @@ public class GrammarUtil {
         Grammar grammar0= (Grammar) grammar.deep_copy();
 
         //0.5 special Rule
-        Grammar grammar05=specialRuleForEmptyWord(grammar0);
+        Grammar grammar05=specialRuleForEmptyWord(grammar0); //TODO: not always
 
         //1. Nullable Set
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar05);
