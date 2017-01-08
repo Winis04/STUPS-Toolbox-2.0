@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
@@ -79,7 +80,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         }
         root.getChildren().clear();
         flow.setText("");
-
+        path.setText("");
       //  root = new GridPane();
 
         //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
@@ -106,6 +107,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
                             this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
+                            CheckStringPDAPlugin.path.setText(path(runThroughInfo," "));
                             if(this.getRunThroughInfo().getPrevious() == null) {
                                 undo.setDisable(true);
                                 undo.setStyle("-fx-background-color: lightgray;");
@@ -121,13 +123,13 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 Alert alert = new Alert(AlertType.CONFIRMATION);
                                 alert.setTitle("Success");
                                 alert.setHeaderText("you found a path that accepts the input");
-                                alert.setContentText(path(runThroughInfo)+"\n\ncopy the result?");
+                                alert.setContentText(path(runThroughInfo,"\n")+"\n\ncopy the result?");
                                 alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
                                 Optional<ButtonType> result = alert.showAndWait();
                                 if (result.get() == ButtonType.YES){
                                     Clipboard clipboard = Clipboard.getSystemClipboard();
                                     ClipboardContent content = new ClipboardContent();
-                                    content.putString(path(runThroughInfo));
+                                    content.putString(path(runThroughInfo,"\n"));
                                     clipboard.setContent(content);
                                 } else {
                                     Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -176,7 +178,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
-    private String path(RunThroughInfo runThroughInfo) {
+    public String path(RunThroughInfo runThroughInfo, String divider) {
         ArrayList<RunThroughInfo> runs = new ArrayList<>();
         RunThroughInfo current = runThroughInfo;
         while(current != null) {
@@ -200,8 +202,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
             return "("+state+", "+input+", "+st+")";
         })
-                .collect(Collectors.joining("\n|- "));
+                .collect(Collectors.joining(divider+"|- "));
        return "   "+res;
+    }
+
+    private String runThroughInfoAsString(RunThroughInfo runThroughInfo) {
+        return runThroughInfo.asString();
     }
 
 

@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.joining;
 public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     RunThroughInfo runThroughInfo;
     public static final TextField field = new TextField();
+    public static final Label path = new Label();
     public static final Button start = new Button("start");
     public static final Button undo = new Button("undo");
 
@@ -55,6 +56,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             pdaGUI.getFlow().setText(stack.stream().map(StackLetter::getName).collect(joining(", ")));
             pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
             pdaGUI.setRunThroughInfo(runThroughInfo);
+            CheckStringPDAPlugin.path.setText(pdaGUI.path(runThroughInfo," "));
             start.setVisible(false);
             if(!pdaGUI.validRules(runThroughInfo)) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -73,6 +75,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
 
             pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
             pdaGUI.setRunThroughInfo(old);
+            CheckStringPDAPlugin.path.setText(pdaGUI.path(old," "));
             field.setText(old.getInput().stream().map(il -> il.getName()).collect(joining(" ")));
             if(old.getPrevious() == null) {
                 undo.setDisable(true);
@@ -86,6 +89,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         pane.getChildren().add(field);
         pane.getChildren().add(start);
         pane.getChildren().add(undo);
+        pane.getChildren().add(path);
         pane.setVgap(10);
 
         rootPane.setVgap(5);
@@ -99,6 +103,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         field.setDisable(false);
         start.setDisable(false);
         start.setVisible(true);
+        path.setText("");
         pdaGUI.getFlow().setText("");
         undo.setDisable(true);
 
