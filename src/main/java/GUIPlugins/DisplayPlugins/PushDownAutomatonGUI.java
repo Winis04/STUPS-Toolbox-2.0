@@ -2,10 +2,7 @@ package GUIPlugins.DisplayPlugins;
 
 import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
 import Main.GUI;
-import PushDownAutomatonSimulator.PDARule;
-import PushDownAutomatonSimulator.PushDownAutomaton;
-import PushDownAutomatonSimulator.PushDownAutomatonUtil;
-import PushDownAutomatonSimulator.RunThroughInfo;
+import PushDownAutomatonSimulator.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +17,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -122,6 +120,24 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 alert.setContentText("you found a path that accepts the input");
 
                                 alert.showAndWait();
+                                path(runThroughInfo);
+                            } else if(!validRules(runThroughInfo)) {
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle("Failure");
+                                alert.setHeaderText(null);
+                                alert.setContentText("no more valid rules, but input and/or stack not empty");
+
+                                alert.showAndWait();
+                                path(runThroughInfo);
+                            } else if(!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle("Failure");
+                                alert.setHeaderText(null);
+                                alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
+
+                                alert.showAndWait();
+                            } else {
+                                
                             }
                         }
 
@@ -140,6 +156,34 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         return splitPane;
 
 
+    }
+
+    private void path(RunThroughInfo runThroughInfo) {
+        ArrayList<RunThroughInfo> runs = new ArrayList<>();
+        RunThroughInfo current = runThroughInfo;
+        while(current != null) {
+            runs.add(current);
+            current = current.getPrevious();
+        }
+        Collections.reverse(runs);
+        String res = runs.stream().map(run -> {
+            String state = run.getCurrentState().getName();
+            String input="epsilon";
+            if(!run.getInput().isEmpty()) {
+                input = run.getInput().stream().map(s -> s.getName()).collect(Collectors.joining(""));
+            }
+           String st="epsilon";
+            if(!run.getStack().isEmpty()) {
+                ArrayList<StackLetter> stack = new ArrayList<StackLetter>();
+                stack.addAll(run.getStack());
+                Collections.reverse(stack);
+                st = stack.stream().map(l -> l.getName()).collect(Collectors.joining(""));
+            }
+
+            return "("+state+", "+input+", "+st+")";
+        })
+                .collect(Collectors.joining(" |- "));
+        System.out.println(res);
     }
 
 
@@ -187,14 +231,61 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     public void setRunThroughInfo(RunThroughInfo runThroughInfo) {
         this.runThroughInfo = runThroughInfo;
+        this.rulesAndButtons.values().forEach(rule -> {
+            rule.setStyle("-fx-background-color: #336699; -fx-text-fill: #e6e6e6;");
+        });
         this.rulesAndButtons.keySet().stream().forEach(rule -> {
-            if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
-                rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+            State currentState = runThroughInfo.getCurrentState();
+            if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                }
+            } else if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                }
+
+            } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                }
+
             } else {
-                rulesAndButtons.get(rule).setStyle("-fx-background-color: #336699; -fx-text-fill: #e6e6e6;");
+                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState()) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                }
             }
+
+
+
         });
 
 
+    }
+
+    public boolean validRules(RunThroughInfo runThroughInfo) {
+        return this.rulesAndButtons.keySet().stream().anyMatch(rule -> {
+            State currentState = runThroughInfo.getCurrentState();
+            if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    return true;
+                }
+            } else if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    return true;
+                }
+
+            } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                   return true;
+                }
+
+            } else {
+                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState()) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                   return true;
+                }
+            }
+            return false;
+        });
     }
 }
