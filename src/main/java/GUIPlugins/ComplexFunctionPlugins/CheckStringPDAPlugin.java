@@ -8,6 +8,7 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import PushDownAutomatonSimulator.RunThroughInfo;
 import PushDownAutomatonSimulator.StackLetter;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -55,6 +56,15 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
             pdaGUI.setRunThroughInfo(runThroughInfo);
             start.setVisible(false);
+            if(!pdaGUI.validRules(runThroughInfo)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Failure");
+                alert.setHeaderText(null);
+                alert.setContentText("no more valid rules, but input and/or stack not empty");
+
+                alert.showAndWait();
+                startnew(pdaGUI);
+            }
         });
         undo.setOnAction(event -> {
             RunThroughInfo old = pdaGUI.getRunThroughInfo().getPrevious();
@@ -84,6 +94,15 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
        return rootPane;
     }
 
+    public static void startnew(PushDownAutomatonGUI pdaGUI) {
+        field.setText("");
+        field.setDisable(false);
+        start.setDisable(false);
+        start.setVisible(true);
+        pdaGUI.getFlow().setText("");
+        undo.setDisable(true);
+
+    }
     @Override
     public String getName() {
         return "Check String";

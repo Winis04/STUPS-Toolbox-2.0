@@ -11,6 +11,8 @@ import javafx.scene.Node;
 
 
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.GridPane;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
@@ -114,13 +117,27 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                             CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(il -> il.getName()).collect(Collectors.joining(" ")));
                             flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
                             if(CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                                Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setTitle("Success");
-                                alert.setHeaderText(null);
-                                alert.setContentText("you found a path that accepts the input");
 
-                                alert.showAndWait();
-                                path(runThroughInfo);
+                                Alert alert = new Alert(AlertType.CONFIRMATION);
+                                alert.setTitle("Success");
+                                alert.setHeaderText("you found a path that accepts the input");
+                                alert.setContentText(path(runThroughInfo)+"\n\ncopy the result?");
+                                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                                Optional<ButtonType> result = alert.showAndWait();
+                                if (result.get() == ButtonType.YES){
+                                    Clipboard clipboard = Clipboard.getSystemClipboard();
+                                    ClipboardContent content = new ClipboardContent();
+                                    content.putString(path(runThroughInfo));
+                                    clipboard.setContent(content);
+                                } else {
+                                    Clipboard clipboard = Clipboard.getSystemClipboard();
+                                    ClipboardContent content = new ClipboardContent();
+                                    content.putString("");
+                                    clipboard.setContent(content);
+                                }
+
+                                CheckStringPDAPlugin.startnew(this);
+
                             } else if(!validRules(runThroughInfo)) {
                                 Alert alert = new Alert(AlertType.INFORMATION);
                                 alert.setTitle("Failure");
@@ -128,7 +145,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 alert.setContentText("no more valid rules, but input and/or stack not empty");
 
                                 alert.showAndWait();
-                                path(runThroughInfo);
+                                CheckStringPDAPlugin.startnew(this);
                             } else if(!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
                                 Alert alert = new Alert(AlertType.INFORMATION);
                                 alert.setTitle("Failure");
@@ -136,8 +153,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
 
                                 alert.showAndWait();
+                                CheckStringPDAPlugin.startnew(this);
                             } else {
-                                
+
                             }
                         }
 
@@ -158,7 +176,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
-    private void path(RunThroughInfo runThroughInfo) {
+    private String path(RunThroughInfo runThroughInfo) {
         ArrayList<RunThroughInfo> runs = new ArrayList<>();
         RunThroughInfo current = runThroughInfo;
         while(current != null) {
@@ -182,8 +200,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
             return "("+state+", "+input+", "+st+")";
         })
-                .collect(Collectors.joining(" |- "));
-        System.out.println(res);
+                .collect(Collectors.joining("\n|- "));
+       return "   "+res;
     }
 
 
