@@ -4,6 +4,7 @@ import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
 import Main.GUI;
 import PushDownAutomatonSimulator.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -15,6 +16,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -36,34 +38,15 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
     private HashMap<PDARule, Button> rulesAndButtons = new HashMap<PDARule, Button>();
-    @FXML
-    SplitPane splitPane;
-    @FXML
-    GridPane root;
-    @FXML
-    AnchorPane anchor;
-    @FXML
-    ScrollPane scrollPane;
 
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
-     */
-    @FXML
-    private void initialize() {
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-hgap: 10px; -fx-vgap: 10px;");
-        root.setGridLinesVisible(false);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
+    BorderPane splitPane = new BorderPane();
 
-        anchor.getChildren().addAll(flow);
-        anchor.setTopAnchor(flow,50.0);
-        anchor.setLeftAnchor(flow,50.0);
-        anchor.setRightAnchor(flow,50.0);
-        anchor.setBottomAnchor(flow,50.0);
-        CheckStringPDAPlugin.start.setVisible(true);
-    }
+    GridPane root = new GridPane();
+
+    AnchorPane anchorPane = new AnchorPane();
+
+    ScrollPane scrollPane = new ScrollPane();
+
 
     public PushDownAutomatonGUI() {
 
@@ -79,18 +62,22 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             half++;
         }
         root.getChildren().clear();
+
         flow.setText("");
         path.setText("");
-      //  root = new GridPane();
+        anchorPane.getChildren().clear();
 
-        //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
-    //    SplitPane splitPane = new SplitPane();
+       //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
 
-    //    ScrollPane scrollPane = new ScrollPane();
-      //  scrollPane.setContent(root);
 
-      //  splitPane.getItems().addAll(scrollPane,anchor);
+        scrollPane.setContent(root);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        anchorPane.getChildren().add(flow);
+        splitPane.setCenter(scrollPane);
+        splitPane.setBottom(anchorPane);
+     //   splitPane.getItems().addAll(scrollPane,anchorPane);
 
         /** fill with content **/
         for(int c=0;c<=1;c++) {
@@ -166,12 +153,15 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     rulesAndButtons.put(rule,cellLabel);
 
                     root.add(cellLabel, c, r);
-                    GridPane.setFillWidth(cellLabel, true);
-                    GridPane.setFillHeight(cellLabel, true);
+                //    GridPane.setFillWidth(cellLabel, true);
+                  //  GridPane.setFillHeight(cellLabel, true);
 
                 }
             }
         }
+        root.setAlignment(Pos.CENTER);
+        root.setHgap(5);
+        root.setVgap(10);
 
         return splitPane;
 

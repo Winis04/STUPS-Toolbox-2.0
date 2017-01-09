@@ -65,12 +65,6 @@ public class EditTab implements GrammarTab {
         topPane.addRow(1, nonterminalsLabel);
 
 
-
-
-
-
-
-
         topPane.setHgap(5);
         topPane.setVgap(5);
 
