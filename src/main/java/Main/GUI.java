@@ -364,12 +364,14 @@ public class GUI extends Application{
             }
             overview.setOnKeyTyped(event -> {
                 if(event.getCharacter().equals("u")) {
-                    double x = EditTab.nonterminalsLabel.getFont().getSize();
+                    double x = overviewController.getTreeView().getMaxWidth();
+                    overviewController.getTreeView().setMaxWidth(x+1);
                     overview.setStyle("-fx-font-size: "+(x+1));
 
                 }
                 if(event.getCharacter().equals("d")) {
-                    double x = EditTab.nonterminalsLabel.getFont().getSize();
+                    double x = overviewController.getTreeView().getMaxWidth();
+                    overviewController.getTreeView().setMaxWidth(x-1);
                     overview.setStyle("-fx-font-size: "+(x-1));
 
                 }

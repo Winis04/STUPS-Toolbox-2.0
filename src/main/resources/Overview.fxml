@@ -13,7 +13,7 @@
         <items>
           <AnchorPane SplitPane.resizableWithParent="false">
                <children>
-                  <TreeView fx:id="treeView" layoutX="-55.0" layoutY="-23.0" prefHeight="298.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <TreeView fx:id="treeView" maxWidth="12.0" prefHeight="298.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
           <AnchorPane fx:id="rightSide">
                <children>

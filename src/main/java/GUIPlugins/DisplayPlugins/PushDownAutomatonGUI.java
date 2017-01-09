@@ -43,7 +43,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     GridPane root = new GridPane();
 
-    AnchorPane anchorPane = new AnchorPane();
+    BorderPane anchorPane = new BorderPane();
 
     ScrollPane scrollPane = new ScrollPane();
 
@@ -68,15 +68,17 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         anchorPane.getChildren().clear();
 
 
-       //  root.getChildren().stream().forEach(node -> root.setMargin(node, new Insets(5, 10, 5, 10)));
+         root.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
 
 
         scrollPane.setContent(root);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        anchorPane.getChildren().add(flow);
+        anchorPane.setCenter(flow);
+        anchorPane.setStyle("-fx-padding: 30 30 30 30;");
         splitPane.setCenter(scrollPane);
         splitPane.setBottom(anchorPane);
+        BorderPane.setAlignment(anchorPane,Pos.CENTER);
      //   splitPane.getItems().addAll(scrollPane,anchorPane);
 
         /** fill with content **/
