@@ -56,6 +56,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             pdaGUI.getFlow().setText(stack.stream().map(StackLetter::getName).collect(joining(", ")));
             pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
             pdaGUI.setRunThroughInfo(runThroughInfo);
+            path.setText("");
             CheckStringPDAPlugin.path.setText(pdaGUI.path(runThroughInfo," "));
             start.setVisible(false);
             if(!pdaGUI.validRules(runThroughInfo)) {
@@ -103,7 +104,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         field.setDisable(false);
         start.setDisable(false);
         start.setVisible(true);
-        path.setText("");
+      //  path.setText("");
         pdaGUI.getFlow().setText("");
         undo.setDisable(true);
 

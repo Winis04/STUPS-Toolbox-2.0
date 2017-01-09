@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class RootController {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose latex file");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("latex","*.tex");
+        ExtensionFilter extFilter = new ExtensionFilter("latex","*.tex");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(gui.getPrimaryStage());
 
@@ -113,6 +114,79 @@ public class RootController {
     @FXML
     public void save() {
 
+    }
+
+    @FXML
+    public void changeNullSymbol() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("choose Nullsymbol");
+        alert.setHeaderText(null);
+        alert.setContentText("choose, which presentation of the nullsymbol you want");
+
+        ButtonType epsilon = new ButtonType("\u03B5");
+        ButtonType lambda = new ButtonType("\u03BB");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(epsilon, lambda, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == epsilon){
+            GUI.nameOfNullSymbol = "\u03B5";
+        } else if (result.get() == lambda) {
+            GUI.nameOfNullSymbol = "\u03BB";
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+
+        TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
+
+        String parent = selectedItem.getParent().getValue().toLowerCase();
+        // we get the parents (and the childs class) by looking in the lookup table
+        Class parentClass = gui.getCli().lookUpTable.get(parent);
+
+
+        // now we can get the matching storable object
+        Storable selectedStorable = gui.getCli().store.get(parentClass).get(selectedItem.getValue());
+        // put it as the current grammar/automaton/..
+
+        gui.getCli().objects.put(parentClass, selectedStorable);
+        gui.switchDisplayGui(parentClass);
+        gui.refresh(selectedStorable);
+
+    }
+
+    @FXML
+    private void changeStyle() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("change css-style");
+        alert.setHeaderText(null);
+        alert.setContentText("choose a premade style or your own .css");
+
+        ButtonType royal = new ButtonType("royal");
+        ButtonType autumn = new ButtonType("autumn");
+        ButtonType own = new ButtonType("own...");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(royal, autumn, own, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == royal){
+            gui.setStyleSheet("/royal.css");
+        } else if (result.get() == autumn) {
+            gui.setStyleSheet("/mild.css");
+        } else if (result.get() == own){
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("open .css");
+            fileChooser.getExtensionFilters().addAll(
+                    new ExtensionFilter("style-sheets", "*.css"));
+
+            File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
+            if (selectedFile != null) {
+               gui.setStyleSheetExterne(selectedFile);
+            }
+        } else {
+
+        }
     }
 
     private void loadStorable(Class clazz) {

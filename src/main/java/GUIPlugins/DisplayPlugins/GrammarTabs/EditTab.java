@@ -161,7 +161,7 @@ public class EditTab implements GrammarTab {
                //Create the labels that display the current nonterminal and symbol list.
                Label nonterminalLabel = new Label(nonterminal.getName());
                Label symbolsLabel = new Label();
-               Label arrowLabel = new Label("-->");
+               Label arrowLabel = new Label("\u2192"); //arrow
 
                if (nonterminal.equals(grammar.getStartSymbol())) {
                    nonterminalLabel.setStyle("-fx-font-weight: bold");

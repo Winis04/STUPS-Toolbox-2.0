@@ -14,6 +14,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,8 @@ public class OverviewController {
     BorderPane contentPane;
     @FXML
     AnchorPane rightSide;
+    @FXML
+    AnchorPane overview;
 
 
     ContextMenu dynamicContextMenu=new ContextMenu();
@@ -179,6 +182,7 @@ public class OverviewController {
     public TreeView<String> getTreeView() {
         return treeView;
     }
+
 
 
 }

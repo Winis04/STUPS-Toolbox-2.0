@@ -49,6 +49,7 @@ public class GUI extends Application{
      */
     private Stage primaryStage;
 
+
     /**
      * The currenty displayed display-plugin.
      */
@@ -78,7 +79,12 @@ public class GUI extends Application{
 
     private  HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
-   // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
+    private int textsize = 12;
+
+    public static String nameOfNullSymbol = "\u03B5";
+
+    public String defaultStyle = "/royal.css";
+    // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.
      *
@@ -288,6 +294,8 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
+        setStyleSheet(defaultStyle);
+
         //Now, that everything is loaded, we can start the Main.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
         //and the GUI will be made visible, when the user gives the appropriate command.
@@ -364,15 +372,13 @@ public class GUI extends Application{
             }
             overview.setOnKeyTyped(event -> {
                 if(event.getCharacter().equals("u")) {
-                    double x = overviewController.getTreeView().getMaxWidth();
-                    overviewController.getTreeView().setMaxWidth(x+1);
-                    overview.setStyle("-fx-font-size: "+(x+1));
+                    textsize+=1;
+                    overview.setStyle("-fx-font-size: "+(textsize));
 
                 }
                 if(event.getCharacter().equals("d")) {
-                    double x = overviewController.getTreeView().getMaxWidth();
-                    overviewController.getTreeView().setMaxWidth(x-1);
-                    overview.setStyle("-fx-font-size: "+(x-1));
+                    textsize-=1;
+                    overview.setStyle("-fx-font-size: "+(textsize));
 
                 }
             });
@@ -442,6 +448,7 @@ public class GUI extends Application{
         alert.setHeaderText(string);
 
         alert.showAndWait();
+
     }
 
     public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {
@@ -454,5 +461,18 @@ public class GUI extends Application{
 
     public RootController getRootController() {
         return rootController;
+    }
+
+    public void setStyleSheet(String path) {
+        primaryStage.getScene().getStylesheets().clear();
+        String css = this.getClass().getResource(path).toExternalForm();
+        defaultStyle = css;
+        primaryStage.getScene().getStylesheets().add(css);
+    }
+
+    public void setStyleSheetExterne(File file) {
+        primaryStage.getScene().getStylesheets().clear();
+
+        primaryStage.getScene().getStylesheets().add(file.getAbsolutePath());
     }
 }

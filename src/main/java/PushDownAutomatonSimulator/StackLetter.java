@@ -1,5 +1,6 @@
 package PushDownAutomatonSimulator;
 
+import Main.GUI;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -17,6 +18,9 @@ public class StackLetter {
     }
 
     public String getName() {
+        if(name.equals("epsilon")) {
+            return GUI.nameOfNullSymbol;
+        }
         return name;
     }
 

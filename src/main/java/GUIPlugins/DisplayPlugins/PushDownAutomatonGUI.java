@@ -92,17 +92,17 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     int finalR = r;
                     int finalHalf = half;
                     int finalC = c;
-                    cellLabel.setStyle("-fx-background-color: gray");
+                  //  cellLabel.setStyle("-fx-background-color: gray");
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
                             this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
                             CheckStringPDAPlugin.path.setText(path(runThroughInfo," "));
                             if(this.getRunThroughInfo().getPrevious() == null) {
                                 undo.setDisable(true);
-                                undo.setStyle("-fx-background-color: lightgray;");
+                           //     undo.setStyle("-fx-background-color: lightgray;");
                             } else {
                                 undo.setDisable(false);
-                                undo.setStyle("");
+                            //    undo.setStyle("");
                             }
                           //  CheckStringPDAPlugin.undo.setDisable(false);
                             CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(il -> il.getName()).collect(Collectors.joining(" ")));
@@ -180,11 +180,11 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         Collections.reverse(runs);
         String res = runs.stream().map(run -> {
             String state = run.getCurrentState().getName();
-            String input="epsilon";
+            String input="\u03B5";
             if(!run.getInput().isEmpty()) {
                 input = run.getInput().stream().map(s -> s.getName()).collect(Collectors.joining(""));
             }
-           String st="epsilon";
+           String st="\u03B5";
             if(!run.getStack().isEmpty()) {
                 ArrayList<StackLetter> stack = new ArrayList<StackLetter>();
                 stack.addAll(run.getStack());
@@ -194,7 +194,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
             return "("+state+", "+input+", "+st+")";
         })
-                .collect(Collectors.joining(divider+"|- "));
+                .collect(Collectors.joining(divider+"\u22A2"));
        return "   "+res;
     }
 
@@ -248,27 +248,27 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     public void setRunThroughInfo(RunThroughInfo runThroughInfo) {
         this.runThroughInfo = runThroughInfo;
         this.rulesAndButtons.values().forEach(rule -> {
-            rule.setStyle("-fx-background-color: #336699; -fx-text-fill: #e6e6e6;");
+          rule.setDisable(true);
         });
         this.rulesAndButtons.keySet().stream().forEach(rule -> {
             State currentState = runThroughInfo.getCurrentState();
             if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
                 if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
-                }
+                    rulesAndButtons.get(rule).setDisable(false);
+            }
             } else if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
                 if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                    rulesAndButtons.get(rule).setDisable(false);
                 }
 
             } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
                 if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                    rulesAndButtons.get(rule).setDisable(false);
                 }
 
             } else {
                 if(rule.getComingFrom().equals(runThroughInfo.getCurrentState()) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                    rulesAndButtons.get(rule).setStyle("-fx-background-color: #538cc6; -fx-text-fill: #f2f2f2;");
+                    rulesAndButtons.get(rule).setDisable(false);
                 }
             }
 

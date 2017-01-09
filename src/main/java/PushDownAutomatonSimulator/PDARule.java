@@ -95,11 +95,11 @@ public class PDARule implements Printable{
 
     public String asString() {
         String s=this.getComingFrom().getName();
-        s+=this.getReadIn().getName();
-        s+=this.getOldToS().getName();
-        s+=" --> ";
-        s+=this.getGoingTo().getName();
-        s+=this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""));
+        s+=" "+this.getReadIn().getName();
+        s+=" "+this.getOldToS().getName();
+        s+=" \u2192";
+        s+=" "+this.getGoingTo().getName();
+        s+=" "+this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""));
         return s;
     }
 

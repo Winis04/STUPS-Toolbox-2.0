@@ -104,4 +104,12 @@ GridPane{
 
 .button:disabled{
     -fx-opacity: 1.0 ;
+    -fx-background-color: #afbfc0;
+}
+
+.button{
+    -fx-background-color: #9fa4a9;
+    -fx-padding: 5 5 5 5;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
 }

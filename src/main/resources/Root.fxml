@@ -43,6 +43,12 @@
                   </Menu>
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="View">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#changeNullSymbol" text="change Nullsymbol" />
+                  <MenuItem mnemonicParsing="false" onAction="#changeStyle" text="change style" />
+              </items>
+            </Menu>
             <Menu fx:id="Help" mnemonicParsing="false" text="Help">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#about" text="About" />

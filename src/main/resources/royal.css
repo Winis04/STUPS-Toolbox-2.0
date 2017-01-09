@@ -1,37 +1,47 @@
 /** tab pane **/
 /** design of the tabs **/
+
+.root { 
+    r: #a82a33;
+    b1: #a8dadc;
+    b2: #457b9d;
+    b3: #1d3557;
+    b4: #f1faee;
+
+}
+
 .tab:top{
     -fx-padding: 0 30 0 30;
 
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
-    -fx-background-color: #457b9d;
-    -fx-border-color: #1d3557;
+    -fx-background-color: b2;
+    -fx-border-color: b3;
     -fx-border-widht: 0.5px;
  }
 
  .tab:top:selected{
-     -fx-background-color: #a82a33;
+     -fx-background-color: r;
  }
 
 /** textcolor tabs **/
 .tab-pane:top .tab-header-area .headers-region .tab:top:selected .tab-container .tab-label{
-    -fx-text-fill: #1d3557;
+    -fx-text-fill: b3;
 }
 .tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label{
-    -fx-text-fill: #1d3557;
+    -fx-text-fill: b3;
 }
 
 /** tab area **/
 .tab-pane:top .tab-header-area .tab-header-background{
-    -fx-background-color: #457b9d;
+    -fx-background-color: b2;
 
 }
 
 .tab-pane:top .tab-content-area{
     -fx-padding: 0 0 0 30;
-     -fx-background-color: #f1faee;
-    -fx-border-color: #1d3557;
+     -fx-background-color: b4;
+    -fx-border-color: b3;
     -fx-border-width: 0.5px;
 }
 
@@ -71,25 +81,25 @@
 /** scroll pane **/
 
 .scroll-pane{
-     -fx-background-color: #f1faee;
+     -fx-background-color: b4;
 }
 
 .scroll-pane .scroll-bar:vertical{
-    -fx-background-color: #f1faee;
+    -fx-background-color: b4;
 }
 .scroll-pane .scroll-bar:vertical .track-background{
-    -fx-background-color: #f1faee;
+    -fx-background-color: b4;
 }
 .anchor-pane{
-     -fx-background-color: #f1faee;
+     -fx-background-color: b4;
 }
 
 #contentPane{
-      -fx-background-color: #f1faee;
+      -fx-background-color: b4;
 }
 
 GridPane{
-    -fx-background-color: #f1faee;
+    -fx-background-color: b4;
 }
 
 .tree-view{
@@ -98,20 +108,21 @@ GridPane{
 }
 
 .tree-view .tree-cell {
-    -fx-background-color: #a8dadc ;
-    -fx-text-fill: #1d3557 ;
+    -fx-background-color: b1 ;
+    -fx-text-fill: b3 ;
 }
 
 .tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
-        -fx-background-color: #a82a33;
+        -fx-background-color: r;
 }
 
 .button:disabled{
     -fx-opacity: 1.0 ;
+    -fx-background-color: b1;
 }
 
 .button{
-    -fx-background-color: #a82a33;
+    -fx-background-color: r;
     -fx-padding: 5 5 5 5;
     -fx-min-width: 30;
     -fx-min-height: 30;
