@@ -267,8 +267,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 }
 
             } else {
-                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState()) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                    rulesAndButtons.get(rule).setDisable(false);
+                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                    if(rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                        if(rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                            rulesAndButtons.get(rule).setDisable(false);
+                        }
+                    }
                 }
             }
 
@@ -297,8 +301,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 }
 
             } else {
-                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState()) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                   return true;
+                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                    if(rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                        if(rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;

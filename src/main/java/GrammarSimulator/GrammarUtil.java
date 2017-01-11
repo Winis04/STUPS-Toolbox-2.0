@@ -1490,7 +1490,7 @@ public class GrammarUtil {
         HashSet<State> states = new HashSet<>();
         HashSet<InputLetter> inputAlphabet = new HashSet<>();
         HashSet<StackLetter> stackAlphabet = new HashSet<>();
-        ArrayList<PDARule> rules = new ArrayList<>();
+        ArrayList<PDARule> rules;
 
         State onlyState=new State("z");
         states.add(onlyState);
@@ -1508,11 +1508,11 @@ public class GrammarUtil {
         }
         start_state = onlyState;
         initialStackLetter = new StackLetter(g.getStartSymbol().getName());
-        PushDownAutomaton tmp = new PushDownAutomaton(states,inputAlphabet,stackAlphabet,start_state,initialStackLetter,new ArrayList<>(),start_state,"",null);
+        PushDownAutomaton tmp = new PushDownAutomaton(states,start_state,initialStackLetter,new ArrayList<>(),start_state,"",null);
         /** create the rules **/
         rules = createRules(g,tmp);
 
-        PushDownAutomaton pda = new PushDownAutomaton(states,inputAlphabet,stackAlphabet,start_state,initialStackLetter,rules,start_state,"PDA_"+g.getName(),null);
+        PushDownAutomaton pda = new PushDownAutomaton(states,start_state,initialStackLetter,rules,start_state,"PDA_"+g.getName(),null);
         return pda;
     }
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
