@@ -2,6 +2,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.GUI;
 import Main.Storable;
 import Print.Printable;
 import Print.Printer;
@@ -43,7 +44,7 @@ public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
 
     @Override
     String getName() {
-        return "remove Lambda-Rules";
+        return "remove "+ GUI.nameOfNullSymbol + "-Rules";
     }
 
     @Override
