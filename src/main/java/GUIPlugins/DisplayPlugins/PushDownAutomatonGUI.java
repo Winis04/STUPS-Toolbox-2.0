@@ -1,6 +1,7 @@
 package GUIPlugins.DisplayPlugins;
 
 import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
+import GrammarSimulator.Rule;
 import Main.GUI;
 import PushDownAutomatonSimulator.*;
 import javafx.fxml.FXML;
@@ -14,16 +15,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
@@ -88,10 +90,22 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     PDARule rule = pda.getRules().get(c * half + r);
                     Button cellLabel = new Button(rule.asString());
                     cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                    cellLabel.setDisable(true);
+                 //   cellLabel.setDisable(true);
                     int finalR = r;
                     int finalHalf = half;
                     int finalC = c;
+                    cellLabel.setOnMouseClicked(event -> {
+                        if (event.getButton().equals(MouseButton.SECONDARY)) {
+                            PushDownAutomaton freshPDA = editRule(pda,rule);
+                            gui.getCli().objects.put(PushDownAutomaton.class,freshPDA); //add new object as the current object
+                            gui.getCli().store.get(PushDownAutomaton.class).put(freshPDA.getName(),freshPDA); //add object to the store
+                            gui.refresh(freshPDA); //switch to new object
+                            gui.refresh(); //refresh the treeView
+
+                        } else if(event.getButton().equals(MouseButton.PRIMARY)) {
+
+                        }
+                    });
                   //  cellLabel.setStyle("-fx-background-color: gray");
                     cellLabel.setOnAction(event -> {
                         if(runThroughInfo!=null) {
@@ -99,12 +113,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                             CheckStringPDAPlugin.path.setText(path(runThroughInfo," "));
                             if(this.getRunThroughInfo().getPrevious() == null) {
                                 undo.setDisable(true);
-                           //     undo.setStyle("-fx-background-color: lightgray;");
+                                //     undo.setStyle("-fx-background-color: lightgray;");
                             } else {
                                 undo.setDisable(false);
-                            //    undo.setStyle("");
+                                //    undo.setStyle("");
                             }
-                          //  CheckStringPDAPlugin.undo.setDisable(false);
+                            //  CheckStringPDAPlugin.undo.setDisable(false);
                             CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(il -> il.getName()).collect(Collectors.joining(" ")));
                             flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
                             if(CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
@@ -170,6 +184,47 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
+    public PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
+        Dialog<PDARule> dialog = new Dialog<>();
+        dialog.setTitle("edit rule "+ oldRule.asString());
+        dialog.setHeaderText("enter the information for the new rule");
+        dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
+        FlowPane flowPane = new FlowPane();
+        TextField state = new TextField(oldRule.getComingFrom().getName());
+        TextField input = new TextField(oldRule.getReadIn().getName());
+        TextField oldTos = new TextField(oldRule.getOldToS().getName());
+
+        TextField goingTo = new TextField(oldRule.getGoingTo().getName());
+        TextField newTos = new TextField(oldRule.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining("")));
+
+
+        flowPane.getChildren().addAll(newTos,goingTo,oldTos,input,state);
+        dialog.getDialogPane().setContent(flowPane);
+        dialog.setResultConverter(param -> {
+            if (param == ButtonType.OK) {
+                List<StackLetter> list = Arrays.stream(newTos.getText().split(", ")).map(StackLetter::new).collect(Collectors.toList());
+                PDARule rule = new PDARule(new State(state.getText()),new State(goingTo.getText()),new InputLetter(input.getText()),new StackLetter(oldTos.getText()),list);
+                return rule;
+            }
+            return null;
+        });
+
+
+        Optional<PDARule> result = dialog.showAndWait();
+        if(result.isPresent()) {
+            List<PDARule> list = new ArrayList<>();
+            pda.getRules().forEach(rule -> {
+                if(rule.equals(oldRule)) {
+                    list.add(result.get());
+                } else {
+                    list.add(rule);
+                }
+            });
+            return new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitalStackLetter(),list,pda.getCurrentState(),pda.getName(),pda);
+        } else {
+            return null;
+        }
+    }
     public String path(RunThroughInfo runThroughInfo, String divider) {
         ArrayList<RunThroughInfo> runs = new ArrayList<>();
         RunThroughInfo current = runThroughInfo;
