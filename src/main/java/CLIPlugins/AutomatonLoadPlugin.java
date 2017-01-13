@@ -45,7 +45,7 @@ public class AutomatonLoadPlugin implements CLIPlugin{
             while ((line = automatonReader.readLine()) != null) {
                 file = file + line + "\n";
             }
-            automaton = AutomatonUtil.parse(file);
+            automaton = AutomatonUtil.parse(file,filename);
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
             errorFlag = true;

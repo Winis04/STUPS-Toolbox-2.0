@@ -5,7 +5,7 @@ import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
-import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
+
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
@@ -22,11 +22,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
+
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
-import sun.reflect.generics.tree.Tree;
+
 
 import java.io.File;
 import java.io.IOException;
