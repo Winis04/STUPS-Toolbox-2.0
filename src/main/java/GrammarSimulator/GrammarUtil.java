@@ -1692,10 +1692,7 @@ public class GrammarUtil {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
-    public static boolean isCircleFree(Grammar g) {
-        //TODO
-        return true;
-    }
+
     public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
        return a.stream().allMatch(object -> b.contains(object)) && b.stream().allMatch(object -> a.contains(object));
     }
