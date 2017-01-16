@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,28 +27,89 @@ public class GrammarUtilTest {
     @Before
     public void initialize() {
 
-        files = IntStream.rangeClosed(1,4).mapToObj(i -> getResourceAsFile("/Grammar/test"+i+".gr")).collect(Collectors.toList());
+        files = IntStream.rangeClosed(1,13).mapToObj(i -> getResourceAsFile("/Grammar/test"+i+".gr")).collect(Collectors.toList());
 
     }
     @Test
     public void parse() throws Exception {
+        files.forEach(file -> {
+            try {
+                assertTrue(GrammarUtil.parse(file) != null);
+            } catch (IOException | LexerException | ParserException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 
     @Test
-    public void calculateNullable() throws Exception {
+    public void calculateNullable() {
+        Grammar tmp;
+        try {
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test1.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test2.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test3.gr"));
+            HashSet<Nonterminal> set = new HashSet<>();
+            set.add(new Nonterminal("A"));
+            set.add(new Nonterminal("B"));
+            set.add(new Nonterminal("C"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),set);
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test4.gr"));
+            set = new HashSet<>();
+            set.add(new Nonterminal("S"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),set);
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test5.gr"));
+            set.add(new Nonterminal("B"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),set);
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test6.gr"));
+          set = new HashSet<>();
+            set.add(new Nonterminal("A"));
+            set.add(new Nonterminal("B"));
+            set.add(new Nonterminal("C"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),set);
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test7.gr"));
+            set = new HashSet<>();
+            set.add(new Nonterminal("S"));
+            set.add(new Nonterminal("A"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),set);
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test8.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test9.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test10.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test11.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test12.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+            tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test13.gr"));
+            assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LexerException e) {
+            e.printStackTrace();
+        } catch (ParserException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    @Test
-    public void calculateFirst() throws Exception {
-
-    }
-
-    @Test
-    public void calculateFollow() throws Exception {
-
-    }
 
     @Test
     public void removeLambdaRules() throws Exception {
@@ -82,30 +144,26 @@ public class GrammarUtilTest {
         });
     }
 
-    @Ignore
+    @Test
     public void chomskyNormalForm() throws Exception {
-//        files.forEach(file -> {
-//            try {
-//                Grammar grammar = GrammarUtil.parse(file);
-//                Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
-//                Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
-//                Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
-//                assertFalse(GrammarUtil.hasUnitRules(grammar2));
-//                assertTrue(GrammarUtil.isInChomskyNormalForm(grammar3));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (LexerException e) {
-//                e.printStackTrace();
-//            } catch (ParserException e) {
-//                e.printStackTrace();
-//            }
-//        });
+        files.forEach(file -> {
+            try {
+                Grammar grammar = GrammarUtil.parse(file);
+                Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
+                Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
+                Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
+                assertFalse(GrammarUtil.hasUnitRules(grammar2));
+                assertTrue(GrammarUtil.isInChomskyNormalForm(grammar3));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LexerException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+        });
 
-        Grammar grammar = GrammarUtil.parse(getResourceAsFile("/Grammar/test5.gr"));
-        grammar = GrammarUtil.removeLambdaRules(grammar);
-        assertTrue(GrammarUtil.isLambdaFree(grammar));
-        grammar = GrammarUtil.eliminateUnitRules(grammar);
-        //  assertFalse(GrammarUtil.hasUnitRules(grammar));
+
     }
 
     @Test

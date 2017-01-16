@@ -785,12 +785,16 @@ public class GrammarUtil {
     }
 
     public static Grammar removeLambdaRules(Grammar g) {
-        /** change original grammar **/
-        Grammar grammar = specialRuleForEmptyWord(g);
-        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar);
-        Grammar grammar1 = removeLambdaRules_StepTwo(grammar,nullable,g);
-        Grammar grammar2 = removeUnneccesaryEpsilons(grammar1,g);
-        return removeLambdaRules_StepThree(grammar2,true,g);
+        if(GrammarUtil.isLambdaFree(g)) {
+            return g;
+        } else {
+            /** change original grammar **/
+            Grammar grammar = specialRuleForEmptyWord(g);
+            HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(grammar);
+            Grammar grammar1 = removeLambdaRules_StepTwo(grammar, nullable, g);
+            Grammar grammar2 = removeUnneccesaryEpsilons(grammar1, g);
+            return removeLambdaRules_StepThree(grammar2, true, g);
+        }
     }
 
     /**
@@ -949,8 +953,12 @@ public class GrammarUtil {
     }
 
     public static Grammar eliminateUnitRules(Grammar grammar) {
-        Grammar grammar1 =  GrammarUtil.removeCircles(grammar);
-        return GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1),grammar1);
+        if(!GrammarUtil.hasUnitRules(grammar)) {
+            return grammar;
+        } else {
+            Grammar grammar1 = GrammarUtil.removeCircles(grammar);
+            return GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1), grammar1);
+        }
     }
 
     private static Grammar removeCircles(Grammar grammar) {
@@ -1293,8 +1301,16 @@ public class GrammarUtil {
     }
 
     public static Grammar chomskyNormalForm(Grammar grammar) {
-        Grammar res1 = chomskyNormalForm_StepOne(grammar,grammar);
-        return chomskyNormalForm_StepTwo(res1,grammar);
+        if(!GrammarUtil.isLambdaFree(grammar)) {
+            return grammar;
+        } else if(GrammarUtil.hasUnitRules(grammar)) {
+            return grammar;
+        } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            return grammar;
+        } else {
+            Grammar res1 = chomskyNormalForm_StepOne(grammar, grammar);
+            return chomskyNormalForm_StepTwo(res1, grammar);
+        }
     }
 
 

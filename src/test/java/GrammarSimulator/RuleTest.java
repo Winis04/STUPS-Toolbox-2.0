@@ -65,7 +65,6 @@ public class RuleTest {
             x.addAll(y);
             return x;
         });
-        System.out.println(res);
     }
 
 }
