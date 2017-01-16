@@ -182,7 +182,7 @@ public class RootController {
 
             File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
             if (selectedFile != null) {
-               gui.setStyleSheetExterne(selectedFile);
+                gui.setStyleSheetExterne(selectedFile);
             }
         } else {
 
@@ -300,13 +300,7 @@ public class RootController {
 
     @FXML
     public void switchWorkspace() {
-        DirectoryChooser fileChooser = new DirectoryChooser();
-        fileChooser.setTitle("choose workspace");
-        File file = fileChooser.showDialog(gui.getPrimaryStage());
-        if(file!=null) {
-            gui.getCli().switchWorkspace(file.getAbsolutePath());
-        }
-        gui.refresh();
+
 
 
     }

@@ -123,6 +123,8 @@ public class OverviewController {
          //   ContextMenu contextMenu = new ContextMenu();
          //   contextMenu.getItems().addAll(gui.getSimpleFunctionPlugins().values().stream().map(x -> x.getMenuItem(gui)).collect(Collectors.toList()));
          //   treeView.setContextMenu(contextMenu);
+        } else { //store is empty! fill store!
+
         }
     }
 

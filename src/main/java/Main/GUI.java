@@ -120,34 +120,37 @@ public class GUI extends Application{
             refreshComplexPlugins(); //refreshes the complex plugins
         }
         /** selected the right treeViewObject **/
-        Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
-                .stream()
-                .reduce((x,y) -> {
-                    if(x != null && x.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
-                        return x;
-                    } else if (y != null && y.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
-                        return y;
-                    } else {
-                        return null;
-                    }
-                });
-
-        if(s.isPresent()) {
-            TreeItem<String> root = s.get();
-            Optional<TreeItem<String>> selected = root.getChildren().stream()
-                    .reduce((x,y) -> {
-                        if(x != null && x.getValue().equals(((Storable)cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+        if(overviewController.getTreeView().getRoot() != null && !overviewController.getTreeView().getRoot().getChildren().isEmpty()) {
+            Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
+                    .stream()
+                    .reduce((x, y) -> {
+                        if (x != null && x.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                             return x;
-                        } else if(y != null && y.getValue().equals(((Storable)cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                        } else if (y != null && y.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                             return y;
                         } else {
                             return null;
                         }
                     });
-            if(selected.isPresent()) {
-                overviewController.getTreeView().getSelectionModel().select(selected.get());
+
+            if (s.isPresent()) {
+                TreeItem<String> root = s.get();
+                Optional<TreeItem<String>> selected = root.getChildren().stream()
+                        .reduce((x, y) -> {
+                            if (x != null && x.getValue().equals(((Storable) cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                                return x;
+                            } else if (y != null && y.getValue().equals(((Storable) cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                                return y;
+                            } else {
+                                return null;
+                            }
+                        });
+                if (selected.isPresent()) {
+                    overviewController.getTreeView().getSelectionModel().select(selected.get());
+                }
             }
         }
+
 
     }
 
@@ -471,8 +474,10 @@ public class GUI extends Application{
     }
 
     public void setStyleSheetExterne(File file) {
+    //    File f = new File("filecss.css");
         primaryStage.getScene().getStylesheets().clear();
-
-        primaryStage.getScene().getStylesheets().add(file.getAbsolutePath());
+        String css =  "file:///" + file.getAbsolutePath().replace("\\", "/");
+        defaultStyle = css;
+        primaryStage.getScene().getStylesheets().add(css);
     }
 }

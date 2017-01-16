@@ -25,7 +25,7 @@ public class CLI {
     /**
      * the workspace: contains the objects of the last session
      **/
-    private File workspace = new File("workspace");
+    private File workspace = null;
 
     private GUI gui;
     /**
@@ -81,10 +81,7 @@ public class CLI {
         } else if(command.equals("clear_store")) {
             store.clear();
         } else if(command.equals("switch_workspace")) {
-            if(parameters.length==1) {
-                switchWorkspace(parameters[0]);
 
-            }
         } else if(command.equals("h") || command.equals("help")) {
 
             for(CLIPlugin plugin : plugins) {
@@ -197,6 +194,12 @@ public class CLI {
         return false;
     }
 
+    public void restore_workspace() {
+        File path = new File("config");
+        if(path.exists()) {
+            //restore_workspace
+        }
+    }
     /**
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
@@ -286,32 +289,34 @@ public class CLI {
      */
 
     private void save_workspace() {
-        File workspace = this.workspace;
-        String path = this.workspace.getPath()+"/";
-        if(workspace.exists()) {
-            deleteDirectory(workspace);
-        }
-        workspace.mkdir();
-        store.keySet().forEach(key -> {
-            if (!store.get(key).isEmpty()) {
-                File subDir = new File(path + key.getSimpleName());
-                if (!subDir.exists()) {
-                    subDir.mkdir();
-                }
-                store.get(key).values().stream().forEach(storable -> {
-                    String name = storable.getName();
-                    storable.printToSave(path + key.getSimpleName() + "/" + name);
-                });
+        if(this.workspace != null) {
+            File workspace = this.workspace;
+            String path = this.workspace.getPath() + "/";
+            if (workspace.exists()) {
+                deleteDirectory(workspace);
             }
-        });
+            workspace.mkdir();
+            store.keySet().forEach(key -> {
+                if (!store.get(key).isEmpty()) {
+                    File subDir = new File(path + key.getSimpleName());
+                    if (!subDir.exists()) {
+                        subDir.mkdir();
+                    }
+                    store.get(key).values().stream().forEach(storable -> {
+                        String name = storable.getName();
+                        storable.printToSave(path + key.getSimpleName() + "/" + name);
+                    });
+                }
+            });
 
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
-            bufferedWriter.write(this.workspace.getAbsolutePath()+"\n");
-            bufferedWriter.flush();
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("config"));
+                bufferedWriter.write(this.workspace.getAbsolutePath() + "\n");
+                bufferedWriter.flush();
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -330,112 +335,6 @@ public class CLI {
         file.delete();
     }
 
-    /**
-     * restores the workspace, that means, it fills the store with the objects that are saved in the current workspace-folder
-     * @return true, if it went well
-     */
-    private boolean restore_workspace() {
-        String path = "workspace";
-        if(new File("path_to_workspace").exists()) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader("path_to_workspace"));
-                path=reader.readLine();
-                reader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        File ret = new File(path);
 
-        this.workspace = ret;
-        File dir = ret;
-        store.clear();
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                // get the class belonging to that directory
-                Class clazz = lookUpTable.get(child.getName().toLowerCase());
-                try {
-                    // a instance of this class to parse the saved storable
-                    Storable storable = (Storable) clazz.newInstance();
-                    // go through every file in the directory
-                    File[] files = child.listFiles();
-                    for(File file : files) {
-                        // the parsed object
-                        Storable restored = storable.restoreFromFile(file);
-
-                        // store it in the store
-                        HashMap<String, Storable> correctMap = store.get(clazz);
-                        String i=restored.getName();
-                        if (correctMap == null) {
-                            HashMap<String, Storable> tmp = new HashMap<>();
-                            tmp.put(i, restored);
-                            store.put(clazz, tmp);
-                            objects.putIfAbsent(clazz, restored);
-                        } else {
-                            correctMap.put(i, restored);
-                            objects.putIfAbsent(clazz, restored);
-                            //    store.get(clazz).put(i, toBeStored);
-                        }
-                    }
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
-                    e.printStackTrace();
-                    File ptw = new File("path_to_workspace");
-                    ptw.delete();
-                }
-            }
-        } else {
-            // Handle the case where dir is not really a directory.
-            // Checking dir.isDirectory() above would not be sufficient
-            // to avoid race conditions with another process that deletes
-            // directories.
-        }
-        return true;
-    }
-
-    /**
-     * switches the workspace
-     * @param filename
-     */
-    public void switchWorkspace(String filename) {
-        //save old workspace
-        save_workspace();
-        //update store
-        store.clear();
-
-        File file = new File(filename);
-        if(file.exists()) {
-            if(file.isDirectory()) {
-                try {
-                    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
-                    bufferedWriter.write(filename+"\n");
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                this.workspace = file;
-                restore_workspace();
-            }
-        } else {
-            file.mkdir();
-            try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("path_to_workspace"));
-                bufferedWriter.write(filename+"\n");
-                bufferedWriter.flush();
-                bufferedWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            this.workspace = file;
-        }
-    }
 
 }
