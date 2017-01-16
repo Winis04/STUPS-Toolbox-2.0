@@ -194,11 +194,61 @@ public class CLI {
         return false;
     }
 
+
     public void restore_workspace() {
-        File path = new File("config");
-        if(path.exists()) {
-            //restore_workspace
+        if(new File("config").exists()) {
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("config"));
+                String path=reader.readLine();
+                reader.close();
+                File ret = new File(path);
+
+                this.workspace = ret;
+                File dir = ret;
+                store.clear();
+                File[] directoryListing = dir.listFiles();
+                if (directoryListing != null) {
+                    for (File child : directoryListing) {
+                        // get the class belonging to that directory
+                        Class clazz = lookUpTable.get(child.getName().toLowerCase());
+                        try {
+                            // a instance of this class to parse the saved storable
+                            Storable storable = (Storable) clazz.newInstance();
+                            // go through every file in the directory
+                            File[] files = child.listFiles();
+                            for(File file : files) {
+                                // the parsed object
+                                Storable restored = storable.restoreFromFile(file);
+
+                                // store it in the store
+                                HashMap<String, Storable> correctMap = store.get(clazz);
+                                String i=restored.getName();
+                                if (correctMap == null) {
+                                    HashMap<String, Storable> tmp = new HashMap<>();
+                                    tmp.put(i, restored);
+                                    store.put(clazz, tmp);
+                                    objects.putIfAbsent(clazz, restored);
+                                } else {
+                                    correctMap.put(i, restored);
+                                    objects.putIfAbsent(clazz, restored);
+                                    //    store.get(clazz).put(i, toBeStored);
+                                }
+                            }
+                        } catch (InstantiationException | IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
+                            e.printStackTrace();
+                            File ptw = new File("path_to_workspace");
+                            ptw.delete();
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
     }
     /**
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
