@@ -16,6 +16,8 @@ import org.reflections.Reflections;
 import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -195,7 +197,7 @@ public class CLI {
     }
 
 
-    public void restore_workspace() {
+    private void restore_workspace() {
         if(new File("config").exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader("config"));
@@ -247,6 +249,13 @@ public class CLI {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    public void switch_workspace(File file) {
+        if(new File("config").exists()) {
+            save_workspace();
         }
 
     }
@@ -339,36 +348,37 @@ public class CLI {
      */
 
     private void save_workspace() {
-        if(this.workspace != null) {
-            File workspace = this.workspace;
-            String path = this.workspace.getPath() + "/";
-            if (workspace.exists()) {
-                deleteDirectory(workspace);
-            }
-            workspace.mkdir();
-            store.keySet().forEach(key -> {
-                if (!store.get(key).isEmpty()) {
-                    File subDir = new File(path + key.getSimpleName());
-                    if (!subDir.exists()) {
-                        subDir.mkdir();
-                    }
-                    store.get(key).values().stream().forEach(storable -> {
-                        String name = storable.getName();
-                        storable.printToSave(path + key.getSimpleName() + "/" + name);
-                    });
-                }
-            });
-
+        if(new File("config").exists()) {
             try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("config"));
-                bufferedWriter.write(this.workspace.getAbsolutePath() + "\n");
-                bufferedWriter.flush();
-                bufferedWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+                BufferedReader reader = new BufferedReader(new FileReader("config"));
+                String ground = reader.readLine();
+                String path = ground+"/";
+               // String path_tmp =  ground+ "_tmp/";
+                deleteDirectory(new File(path));
+                reader.close();
+                File workspace= new File(path);
+                workspace.mkdir();
+                store.keySet().forEach(key -> {
+                    if (!store.get(key).isEmpty()) {
+                        File subDir = new File(path + key.getSimpleName());
+                        if (!subDir.exists()) {
+                            subDir.mkdir();
+                        }
+                        store.get(key).values().forEach(storable -> {
+                            String name = storable.getName();
+                            storable.printToSave(path + key.getSimpleName() + "/" + name);
+                        });
+                    }
+                });
 
+
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+
+
+
+        }
     }
 
     /**
