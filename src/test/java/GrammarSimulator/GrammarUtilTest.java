@@ -2,6 +2,7 @@ package GrammarSimulator;
 
 import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -9,6 +10,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +21,93 @@ import static org.junit.Assert.*;
  * Created by Isabel on 14.01.2017.
  */
 public class GrammarUtilTest {
+
+    List<File> files;
+    @Before
+    public void initialize() {
+
+        files = IntStream.rangeClosed(1,4).mapToObj(i -> getResourceAsFile("/Grammar/test"+i+".gr")).collect(Collectors.toList());
+
+    }
+    @Test
+    public void parse() throws Exception {
+
+    }
+
+    @Test
+    public void calculateNullable() throws Exception {
+
+    }
+
+    @Test
+    public void calculateFirst() throws Exception {
+
+    }
+
+    @Test
+    public void calculateFollow() throws Exception {
+
+    }
+
+    @Test
+    public void removeLambdaRules() throws Exception {
+        files.forEach(file -> {
+            try {
+                Grammar grammar = GrammarUtil.parse(file);
+                assertTrue(GrammarUtil.isLambdaFree(GrammarUtil.removeLambdaRules(grammar)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LexerException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    @Test
+    public void eliminateUnitRules() throws Exception {
+        files.forEach(file -> {
+            try {
+                Grammar grammar = GrammarUtil.parse(file);
+                assertFalse(GrammarUtil.hasUnitRules(GrammarUtil.eliminateUnitRules(grammar)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LexerException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Ignore
+    public void chomskyNormalForm() throws Exception {
+//        files.forEach(file -> {
+//            try {
+//                Grammar grammar = GrammarUtil.parse(file);
+//                Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
+//                Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
+//                Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
+//                assertFalse(GrammarUtil.hasUnitRules(grammar2));
+//                assertTrue(GrammarUtil.isInChomskyNormalForm(grammar3));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (LexerException e) {
+//                e.printStackTrace();
+//            } catch (ParserException e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+        Grammar grammar = GrammarUtil.parse(getResourceAsFile("/Grammar/test5.gr"));
+        grammar = GrammarUtil.removeLambdaRules(grammar);
+        assertTrue(GrammarUtil.isLambdaFree(grammar));
+        grammar = GrammarUtil.eliminateUnitRules(grammar);
+        //  assertFalse(GrammarUtil.hasUnitRules(grammar));
+    }
+
     @Test
     public void isChomskyNormalForm() {
         Grammar tmp = null;
@@ -128,6 +220,8 @@ public class GrammarUtilTest {
             e.printStackTrace();
         }
     }
+
+
 
     @Ignore
     private File getResourceAsFile(String path) {
