@@ -957,7 +957,8 @@ public class GrammarUtil {
             return grammar;
         } else {
             Grammar grammar1 = GrammarUtil.removeCircles(grammar);
-            return GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1), grammar1);
+            Grammar grammar2 = GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1),grammar1);
+            return new Grammar(grammar2.getStartSymbol(),grammar2.getRules(),grammar2.getName(),grammar);
         }
     }
 
@@ -965,8 +966,8 @@ public class GrammarUtil {
         Grammar res = grammar;
         Grammar loop = grammar;
         while(loop!=null) {
-            loop = removeOneCircle(res);
-            if(loop!=null) {
+            loop = removeOneCircle(res); //removes one circle
+            if(loop!=null) { //if there is no circle anymore, loop equals null and we are ready
                 res=loop;
             }
         }
@@ -986,7 +987,7 @@ public class GrammarUtil {
      * removes circles in the grammar rules
      * @author Isabel Wingen
      * @param grammar
-     * @return
+     * @return the grammar, if there are circles. Null, if there are no circles anymore
      */
     private static Grammar removeOneCircle(Grammar grammar) {
         ArrayList<Node> tmp;
@@ -1014,7 +1015,11 @@ public class GrammarUtil {
                     freshRules.add(new Rule(rule.getComingFrom(),tmpList));
                 }
             });
-            return new Grammar(grammar.getStartSymbol(),freshRules, grammar.getName(), (Grammar) grammar.getPreviousVersion());
+            if(grammar.getStartSymbol().equals(toBeReplaced)) {
+                return new Grammar(newNonTerminal, freshRules, grammar.getName(), (Grammar) grammar.getPreviousVersion());
+            } else {
+                return new Grammar(grammar.getStartSymbol(), freshRules, grammar.getName(), (Grammar) grammar.getPreviousVersion());
+            }
         } else {
             return null;
         }
@@ -1485,9 +1490,10 @@ public class GrammarUtil {
         Grammar grammar1 = removeLambdaRules(grammar);
         Grammar grammar2 = eliminateUnitRules(grammar1);
         Grammar grammar3 = chomskyNormalForm(grammar2);
-        return checkMatrix(cyk(grammar3,word),grammar);
+        return checkMatrix(cyk(grammar3,word),grammar3);
     }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
+
         if(matrix != null) {
            return matrix.getCell(1, matrix.getWord().size() - 1).contains(grammar.getStartSymbol());
         } else {
