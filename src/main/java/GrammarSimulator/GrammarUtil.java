@@ -1759,8 +1759,11 @@ public class GrammarUtil {
      * @return true, if the grammar is lambda-free
      */
     public static boolean isLambdaFree(Grammar g) {
-        return g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
+        boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
                 .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
+        boolean check2 = GrammarUtil.languageContainsLambda(g) && GrammarUtil.startSymbolPointsOnLambda(g) && !GrammarUtil.startSymbolOnRightSide(g);
+        boolean check3 = !GrammarUtil.languageContainsLambda(g);
+        return check1 && (check2 || check3);
     }
 
     /**
@@ -1779,7 +1782,7 @@ public class GrammarUtil {
      */
     public static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()
-                .anyMatch(rule -> rule.getRightSide().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
+                .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
 
     public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
