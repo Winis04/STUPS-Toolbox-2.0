@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
  */
 public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     public static final TextField field = new TextField();
+    public static final TextField bound = new TextField("500000");
+    public static final Label label = new Label("upper bound");
 
     public static final Button start = new Button("start");
 
@@ -45,18 +47,24 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
 
         start.setOnAction(event -> {
             List<String> list = Arrays.asList(field.getText().split(" "));
+            int b;
+            try {
+                b = Integer.parseInt(bound.getText());
+            } catch (NumberFormatException e){
+                b = 500000;
+            }
             List<Symbol> symList = list.stream().map(Terminal::new).collect(Collectors.toList());
             boolean res = GrammarUtil.languageContainsWord(grammar,list);
             if(res) {
-                List<Configuration> configs = GrammarUtil.getPath(grammar,symList);
+                List<Configuration> configs = GrammarUtil.getPath(grammar,symList,b);
                 if(configs==null || configs.isEmpty()) {
-                    grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","undecided","Can't find result for "+list.stream().collect(Collectors.joining(" ")));
+                    grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","takes too long","Can't find result for "+list.stream().collect(Collectors.joining(" ")));
 
                 } else {
                     String s = configs.stream().map(config -> config.getConfig().stream()
                             .map(Symbol::getName)
                             .collect(Collectors.joining(" ")))
-                            .collect(Collectors.joining("\n"));
+                            .collect(Collectors.joining("\n\u22A2 "));
                     grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION, "", s, "");
                 }
             } else {
@@ -66,7 +74,12 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
 
         pane.setHgap(10);
         pane.getChildren().add(field);
+
+
         pane.getChildren().add(start);
+        pane.getChildren().add(label);
+        pane.getChildren().add(bound);
+        bound.setPrefWidth(70);
         pane.setVgap(10);
 
         rootPane.setVgap(5);

@@ -1504,8 +1504,8 @@ public class GrammarUtil {
         return new Configuration(list,null,g);
     }
 
-    public static List<Configuration> getPath(Grammar g, List<Symbol> word) {
-        Configuration end = getEndConfig(g,word);
+    public static List<Configuration> getPath(Grammar g, List<Symbol> word, long bound) {
+        Configuration end = getEndConfig(g,word,bound);
         if(end == null) {
             return null;
         }
@@ -1518,7 +1518,7 @@ public class GrammarUtil {
         result.add(0,result.get(0).getPrevious());
         return result;
     }
-    public static Configuration getEndConfig(Grammar g, List<Symbol> word) {
+    public static Configuration getEndConfig(Grammar g, List<Symbol> word, long bound) {
         if(!languageContainsWordAsSymbolList(g,word)) {
             return null;
         }
@@ -1531,9 +1531,8 @@ public class GrammarUtil {
         int counter=0;
         boolean goOn= true;
 
-        while(!queue.isEmpty() && counter < 500000) {
+        while(!queue.isEmpty() && counter < bound) {
             counter++;
-            System.out.println(counter);
             Configuration current = queue.poll();
             if(current.getConfig().equals(word)) {
                 result=current;
