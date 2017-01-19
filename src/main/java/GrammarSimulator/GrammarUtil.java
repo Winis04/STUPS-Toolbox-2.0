@@ -1493,7 +1493,7 @@ public class GrammarUtil {
         return checkMatrix(cyk(grammar3,word),grammar3);
     }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
-
+    //    matrix.printConsole(new BufferedWriter(new OutputStreamWriter(System.out)));
         if(matrix != null) {
            return matrix.getCell(1, matrix.getWord().size() - 1).contains(grammar.getStartSymbol());
         } else {
@@ -1534,7 +1534,7 @@ public class GrammarUtil {
         queue.add(startConfig);
         HashSet<Configuration> alreadySeen = new HashSet<>();
         alreadySeen.add(startConfig);
-        int counter=0;
+        long counter=0;
         boolean goOn= true;
 
         while(!queue.isEmpty() && counter < bound) {

@@ -47,9 +47,9 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
 
         start.setOnAction(event -> {
             List<String> list = Arrays.asList(field.getText().split(" "));
-            int b;
+            long b;
             try {
-                b = Integer.parseInt(bound.getText());
+                b = Long.parseLong(bound.getText());
             } catch (NumberFormatException e){
                 b = 500000;
             }

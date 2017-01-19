@@ -59,19 +59,49 @@ public class Matrix implements Printable{
     @Override
     public void printConsole(BufferedWriter writer) {
         horizontalLine(writer);
-        Printer.print("| i | ",writer);
+        if(columns > 10) {
+            Printer.print("|  i | ",writer);
+        } else {
+            Printer.print("| i | ", writer);
+        }
+        //print headline
         IntStream.range(1,columns).
                 forEach(s ->  {
-                    Printer.print(s,writer);
-                    for(int k=0;k< spacing-3;k++) {
-                        Printer.print(" ",writer);
+                    if(columns >= 10) {
+                        if(s < 10) {
+                            Printer.print(s, writer);
+                            for (int k = 0; k < spacing - 3; k++) {
+                                Printer.print(" ", writer);
+                            }
+                            Printer.print(" | ", writer);
+                        } else {
+                            Printer.print(s, writer);
+                            for (int k = 0; k < spacing - 3; k++) {
+                                Printer.print(" ", writer);
+                            }
+                            Printer.print("| ", writer);
+                        }
+                    } else {
+                        Printer.print(s, writer);
+                        for (int k = 0; k < spacing - 3; k++) {
+                            Printer.print(" ", writer);
+                        }
+                        Printer.print(" | ", writer);
                     }
-                    Printer.print(" | ",writer);
                 });
         Printer.println("",writer);
         horizontalLine(writer);
         for(int j=rows-1;j>-1;j--) {
-            Printer.print("| "+j+" | ",writer);
+            if(columns > 10) {
+                if(j >= 10) {
+                    Printer.print("| "+j+" | ",writer);
+                } else {
+                    Printer.print("|  "+j+" | ",writer);
+                }
+            } else {
+                Printer.print("| "+j+" | ",writer);
+            }
+
             for(int i=1;i<columns;i++) {
                 HashSet<Nonterminal> tmp=matrix[j][i];
                 String cellContent=tmp.stream().map(nonterminal -> nonterminal.getName()).collect(joining(", "));
@@ -104,7 +134,11 @@ public class Matrix implements Printable{
 
 
     private void horizontalLine(BufferedWriter writer) {
-        Printer.print("+---",writer);
+        if(columns >= 10) {
+            Printer.print("+----", writer);
+        } else {
+            Printer.print("+---", writer);
+        }
         for(int i=1;i<columns;i++) {
             Printer.print("+",writer);
             for(int j=0;j<this.spacing;j++) {
