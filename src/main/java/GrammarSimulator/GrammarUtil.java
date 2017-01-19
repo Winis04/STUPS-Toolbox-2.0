@@ -1478,12 +1478,11 @@ public class GrammarUtil {
 
     }
 
-    public static boolean languageContainsWord(Grammar grammarOld, List<String> word) {
-        Grammar grammar = (Grammar) grammarOld.deep_copy();
-        removeLambdaRulesAsPrintables(grammar);
-        eliminateUnitRulesAsPrintables(grammar);
-        chomskyNormalFormAsPrintables(grammar);
-        return checkMatrix(cyk(grammar,word),grammar);
+    public static boolean languageContainsWord(Grammar grammar, List<String> word) {
+        Grammar grammar1 = removeLambdaRules(grammar);
+        Grammar grammar2 = eliminateUnitRules(grammar1);
+        Grammar grammar3 = chomskyNormalForm(grammar2);
+        return checkMatrix(cyk(grammar3,word),grammar);
     }
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
         if(matrix != null) {
@@ -1494,6 +1493,20 @@ public class GrammarUtil {
     }
     private static boolean pointsOnCurrentChar(List<String> word, int i, List<Symbol> list) {
         return list.get(0).getName().equals(word.get(i-1));
+    }
+
+    public static Configuration getStartConfiguration(Grammar g) {
+        List<Symbol> list = new ArrayList<>();
+        list.add(g.getStartSymbol());
+        return new Configuration(list,null,g);
+    }
+
+    public static List<Configuration> getPath(Grammar g) {
+        Configuration startConfig = GrammarUtil.getStartConfiguration(g);
+        Queue<Configuration> queue = new LinkedList<>();
+        queue.add(startConfig);
+        HashSet<Configuration> alreadySeen = new HashSet<>();
+        return null;
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*

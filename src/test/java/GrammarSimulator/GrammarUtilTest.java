@@ -282,7 +282,7 @@ public class GrammarUtilTest {
 
 
     @Ignore
-    private File getResourceAsFile(String path) {
+    public File getResourceAsFile(String path) {
 
         try {
             InputStream input = getClass().getResourceAsStream(path);
