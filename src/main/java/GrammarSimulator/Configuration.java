@@ -65,6 +65,9 @@ public class Configuration {
     public HashSet<Configuration> getChildren() {
         HashSet<Configuration> result = new HashSet<>();
         int j=0;
+        if(config.stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL))) {
+            return result;
+        }
         for(int i=0;i<config.size();i++) {
             if(config.get(i) instanceof Nonterminal) {
                 j=i;
