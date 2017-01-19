@@ -1,5 +1,8 @@
 package GrammarSimulator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,6 +20,8 @@ public class Configuration {
         this.previous = previous;
         this.config = config;
         this.grammar = grammar;
+
+
     }
 
     public List<Symbol> getConfig() {
@@ -25,6 +30,36 @@ public class Configuration {
 
     public Configuration getPrevious() {
         return previous;
+    }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Configuration rhs = (Configuration) obj;
+        EqualsBuilder equalsBuilder = new EqualsBuilder();
+        if(rhs.getConfig().size() != this.getConfig().size()) {
+            return false;
+        }
+        for(int i=0;i<rhs.config.size();i++) {
+            equalsBuilder.append(rhs.config.get(i),this.config.get(i));
+        }
+        return equalsBuilder.isEquals();
+    }
+
+
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17,31);
+        for(int i=0;i<this.config.size();i++) {
+            hashCodeBuilder.append(this.config.get(i));
+        }
+        return hashCodeBuilder.hashCode();
     }
 
     public HashSet<Configuration> getChildren() {
@@ -36,24 +71,18 @@ public class Configuration {
                 break;
             }
         }
-        Nonterminal first = (Nonterminal) config.get(j); //this is the first Nonterminal in the configuration
-        List<List<Symbol>> childrenRules = grammar.getRules()
-                .stream()
+        int k=j;
+        Symbol first = config.get(j);
+        grammar.getRules().stream()
                 .filter(rule -> rule.getComingFrom().equals(first))
                 .map(Rule::getRightSide)
-                .collect(Collectors.toList()); //contains every Rule that is an ancestor of the first Nonterminal
-        for(List<Symbol> list : childrenRules) { //replace the first Nonterminal through its ancestors and add the new config to the result
-            List<Symbol> tmp = new ArrayList<>();
-            config.forEach(sym -> {
-                if (sym.equals(first)) {
-                    tmp.addAll(list);
-                } else {
-                    tmp.add(sym);
-                }
-            });
-            result.add(new Configuration(tmp,this,grammar));
-        }
+                .forEach(list -> {
+                    ArrayList<Symbol> tmp = new ArrayList<Symbol>();
+                    tmp.addAll(config);
+                    tmp.remove(k);
+                    tmp.addAll(k,list);
+                    result.add(new Configuration(tmp,this,grammar));
+                });
         return result;
-
     }
 }

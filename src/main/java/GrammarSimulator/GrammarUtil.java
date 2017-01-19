@@ -1477,7 +1477,10 @@ public class GrammarUtil {
         return m;
 
     }
-
+    public static boolean languageContainsWordAsSymbolList(Grammar grammar, List<Symbol> word) {
+        List<String> w = word.stream().map(s -> s.getName()).collect(Collectors.toList());
+        return languageContainsWord(grammar, w);
+    }
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
         Grammar grammar1 = removeLambdaRules(grammar);
         Grammar grammar2 = eliminateUnitRules(grammar1);
@@ -1501,12 +1504,61 @@ public class GrammarUtil {
         return new Configuration(list,null,g);
     }
 
-    public static List<Configuration> getPath(Grammar g) {
+    public static List<Configuration> getPath(Grammar g, List<Symbol> word) {
+        Configuration end = getEndConfig(g,word);
+        if(end == null) {
+            return null;
+        }
+        Configuration current = end;
+        List<Configuration> result = new ArrayList<>();
+        while(current.getPrevious() != null) {
+            result.add(0,current);
+            current = current.getPrevious();
+        }
+        result.add(0,result.get(0).getPrevious());
+        return result;
+    }
+    public static Configuration getEndConfig(Grammar g, List<Symbol> word) {
+        if(!languageContainsWordAsSymbolList(g,word)) {
+            return null;
+        }
+        Configuration result=null;
         Configuration startConfig = GrammarUtil.getStartConfiguration(g);
         Queue<Configuration> queue = new LinkedList<>();
         queue.add(startConfig);
         HashSet<Configuration> alreadySeen = new HashSet<>();
-        return null;
+        alreadySeen.add(startConfig);
+        int counter=0;
+        boolean goOn= true;
+
+        while(!queue.isEmpty() && counter < 500000) {
+            counter++;
+            System.out.println(counter);
+            Configuration current = queue.poll();
+            if(current.getConfig().equals(word)) {
+                result=current;
+              //  goOn = false;
+                   //  goOn = false;
+           break;
+            }
+            queue.addAll(current.getChildren().stream().filter(x -> !alreadySeen.contains(x)).collect(Collectors.toList()));
+            alreadySeen.addAll(current.getChildren());
+
+
+        }
+        return result;
+    }
+
+    public static boolean listEqual(List<Symbol> list1, List<Symbol> list2) {
+        if(list1.size() != list2.size()) {
+            return false;
+        } else {
+            boolean res = true;
+            for(int i=0;i<list1.size();i++) {
+                res&=list1.get(i).equals(list2.get(i));
+            }
+            return res;
+        }
     }
     /******************************************************************************************************************
      * ---------------------------------------------------------------------------------------------------------------*
