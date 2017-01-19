@@ -77,10 +77,13 @@ public class Configuration {
                 .filter(rule -> rule.getComingFrom().equals(first))
                 .map(Rule::getRightSide)
                 .forEach(list -> {
-                    ArrayList<Symbol> tmp = new ArrayList<Symbol>();
+                    List<Symbol> tmp = new ArrayList<Symbol>();
                     tmp.addAll(config);
                     tmp.remove(k);
-                    tmp.addAll(k,list);
+                    if (!list.stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL))) {
+                        list = list.stream().filter(x -> !x.equals(Terminal.NULLSYMBOL)).collect(Collectors.toList());
+                        tmp.addAll(k,list);
+                    }
                     result.add(new Configuration(tmp,this,grammar));
                 });
         return result;
