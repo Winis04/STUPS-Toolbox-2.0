@@ -2,6 +2,8 @@ package Print;
 
 
 
+import Main.GUI;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -174,6 +176,10 @@ public class Printer {
     public static String makeToGreek(String string) {
         if(string.equals("epsilon")||string.equals("lambda")) {
             return "\\"+string;
+
+        } else if(string.equals(GUI.nameOfNullSymbol)) {
+            return "\\"+"epsilon";
+
         } else {
             return string;
         }
