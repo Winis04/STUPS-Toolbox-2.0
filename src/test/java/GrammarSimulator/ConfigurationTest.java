@@ -1,9 +1,9 @@
 package GrammarSimulator;
 
-import com.sun.deploy.config.WebStartConfig;
+
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sablecc.sablecc.*;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import static org.junit.Assert.*;
 

@@ -207,7 +207,7 @@ public class PushDownAutomaton implements Printable, Storable{
         });
     }
 
-    /** GETTER AND SETTER **/
+
     public Set<State> getStates() {
         return Collections.unmodifiableSet(new HashSet<>(states));
     }

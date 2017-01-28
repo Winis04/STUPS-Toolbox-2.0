@@ -25,6 +25,7 @@ public interface DisplayPlugin {
      * so the plugin gets the opportunity to update the view.
      *
      * @param object The object, that is being displayed.
+     * @return Node the Node that contains the object
      */
     Node refresh(Object object);
 

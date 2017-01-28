@@ -52,15 +52,17 @@ public abstract class SimpleFunctionPlugin {
      */
     abstract Class outputType();
 
+
     /**
      * must be called, if the plugin should have access to the gui. this is necessary, if the plugin does more than manipulation of one object
+     * @param gui the GUI
      */
-
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
     /**
      * return a MenuItem for the SimpleFunctionPlugin, that is shown in the context-menu of the treeView
+     * @param gui the GUI
      * @return the MenuItem
      */
     public MenuItem getMenuItem(GUI gui) {
@@ -91,7 +93,7 @@ public abstract class SimpleFunctionPlugin {
         return false;
     }
     /**
-     * should be overwritten, if the plugin should be able to operate on more than one type of storables, e.g. {@LINK Copy}
+     * should be overwritten, if the plugin should be able to operate on more than one type of storables, e.g. {@link Copy}
      * @return default: false
      */
     public boolean operatesOnAllStorables() {
@@ -99,7 +101,7 @@ public abstract class SimpleFunctionPlugin {
     }
 
     /**
-     * should be overwritten, if the plugin should only operates on the "superclasses", e.g. {@LINK Load} TODO: better Word for superclass
+     * should be overwritten, if the plugin should only operates on the "superclasses", e.g. {@link Load} TODO: better Word for superclass
      * @return default: false
      */
     public boolean operatesOnSuperClass() {
@@ -107,8 +109,8 @@ public abstract class SimpleFunctionPlugin {
     }
 
     /**
-     * states, if the plugin creates output. plugins with output are blue borded when in latex mode
-     * @return
+     * states, if the plugin creates output. plugins with output are blue framed when in latex mode
+     * @return default: false
      */
     public boolean createsOutput() {
         return false;
