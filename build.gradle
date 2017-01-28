@@ -16,11 +16,16 @@ dependencies{
 	compile 'net.sf.jung:jung-algorithms:2.1.1'
 	compile 'net.sf.jung:jung-graph-impl:2.1.1'
 	compile 'net.sf.jung:jung-api:2.1.1'
-	compile 'junit:junit:4.12'
+	testCompile "junit:junit:4.12"
+	testCompile "org.testfx:testfx-core:4.0.+"
+	testCompile "org.testfx:testfx-legacy:4.0.+", {
+		exclude group: "junit", module: "junit"
+	}
 	compile 'org.reflections:reflections:0.9.10'
 	compile 'de.hhu.stups:sablecc:3.2.10'
 	// https://mvnrepository.com/artifact/commons-lang/commons-lang
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+
 }
 buildscript {
     repositories {
@@ -60,7 +65,7 @@ task runSableCC() {
 	}
 }
 
-task doNecessaryAdjustments() {
+task doAdjustments() {
 	doLast{
 		new File("src/main/sablecc") . eachFile ( ) { file -> 
 			 String name = file.getName().split("\\.")[0]
@@ -89,11 +94,11 @@ task sableCC() {
 	}
 }
 
-sableCC.dependsOn doNecessaryAdjustments
+sableCC.dependsOn doAdjustments
 runSableCC.mustRunAfter copyDepJars
 runSableCC.dependsOn copyDepJars
-doNecessaryAdjustments.mustRunAfter runSableCC
-doNecessaryAdjustments.dependsOn runSableCC
+doAdjustments.mustRunAfter runSableCC
+doAdjustments.dependsOn runSableCC
 
 
 

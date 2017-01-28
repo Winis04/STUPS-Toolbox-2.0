@@ -87,6 +87,9 @@ public class PushDownAutomaton implements Printable, Storable{
         this.currentState = startState;
 
         this.rules = new ArrayList<>();
+        List<StackLetter> tmp = new ArrayList<>();
+        tmp.add(new StackLetter("epsilon"));
+        this.rules.add(new PDARule(startState,startState,new InputLetter("b"),initalStackLetter,tmp));
         this.name="G";
         this.previousPDA = null;
 

@@ -9,36 +9,42 @@
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Import">
+            <Menu mnemonicParsing="false" text="File">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#switchWorkspace" text="switch workspace" />
-                  <Menu mnemonicParsing="false" text="Load">
+                  <Menu fx:id="Export" mnemonicParsing="false" text="Export">
+                     <items>
+                        <Menu mnemonicParsing="false" text="Save">
+                          <items>
+                              <Menu mnemonicParsing="false" text="Automaton">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#toGraphViz" text="as .dot" />
+                                    <MenuItem mnemonicParsing="false" onAction="#saveCurrentAutomaton" text="in file" />
+                                </items>
+                              </Menu>
+                            <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar" />
+                              <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton" text="PushDownAutomaton" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Latex">
+                          <items>
+                              <MenuItem fx:id="latexModeOn" mnemonicParsing="false" onAction="#latexModeOn" text="Start Latex Export" />
+                            <MenuItem fx:id="latexModeOff" disable="true" mnemonicParsing="false" onAction="#latexModeOff" text="End Latex" />
+                          </items>
+                        </Menu>
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="New">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newGrammar" text="Grammar" />
+                        <MenuItem mnemonicParsing="false" onAction="#newAutomaton" text="Automaton" />
+                        <MenuItem mnemonicParsing="false" onAction="#newPDA" text="PushDownAutomaton" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Open">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar" />
                         <MenuItem mnemonicParsing="false" onAction="#loadAutomaton" text="Automaton" />
                         <MenuItem mnemonicParsing="false" onAction="#loadPushDownAutomaton" text="PushDownAutomaton" />
-                    </items>
-                  </Menu>
-               </items>
-            </Menu>
-            <Menu fx:id="Export" mnemonicParsing="false" text="Export">
-               <items>
-                  <Menu mnemonicParsing="false" text="Save">
-                    <items>
-                        <Menu mnemonicParsing="false" text="Automaton">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#toGraphViz" text="as .dot" />
-                              <MenuItem mnemonicParsing="false" onAction="#saveCurrentAutomaton" text="in file" />
-                          </items>
-                        </Menu>
-                      <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar" />
-                        <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton" text="PushDownAutomaton" />
-                    </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Latex">
-                    <items>
-                        <MenuItem fx:id="latexModeOn" mnemonicParsing="false" onAction="#latexModeOn" text="Start Latex Export" />
-                      <MenuItem fx:id="latexModeOff" disable="true" mnemonicParsing="false" onAction="#latexModeOff" text="End Latex" />
                     </items>
                   </Menu>
                </items>

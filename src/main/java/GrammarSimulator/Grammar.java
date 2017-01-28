@@ -93,6 +93,11 @@ public final class Grammar implements Printable, Storable {
         this.rules = new HashSet<>();
         this.nonterminals = new HashSet<>();
         this.terminals = new HashSet<>();
+        nonterminals.add(new Nonterminal("S"));
+        terminals.add(new Terminal("a"));
+        List<Symbol> tmp = new ArrayList<>();
+        tmp.add(new Terminal("a"));
+        rules.add(new Rule(new Nonterminal("S"),tmp));
         this.startSymbol = new Nonterminal("S");
     }
 

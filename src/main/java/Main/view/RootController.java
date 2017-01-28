@@ -305,6 +305,47 @@ public class RootController {
 
     }
 
+    @FXML
+    public void newGrammar() {
+        Grammar grammar = new Grammar();
+        Storable storable = new Grammar(grammar.getStartSymbol(),grammar.getRules(),"newGrammar", (Grammar) grammar.getPreviousVersion());
+        Class clazz = Grammar.class;
+        String name = storable.getName();
+        if (storable != null) {
+            gui.getCli().objects.put(clazz, storable);
+            gui.getCli().store.get(clazz).put(name,storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
+    }
+
+    @FXML
+    public void newPDA() {
+        PushDownAutomaton pda = new PushDownAutomaton();
+        Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitalStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
+        Class clazz = PushDownAutomaton.class;
+        String name = storable.getName();
+        if (storable != null) {
+            gui.getCli().objects.put(clazz, storable);
+            gui.getCli().store.get(clazz).put(name,storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
+    }
+
+    @FXML
+    public void newAutomaton() {
+        Storable storable = new Automaton();
+        Class clazz = Automaton.class;
+        String name = storable.getName();
+        if (storable != null) {
+            gui.getCli().objects.put(clazz, storable);
+            gui.getCli().store.get(clazz).put(name,storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
+    }
+
 
 
 

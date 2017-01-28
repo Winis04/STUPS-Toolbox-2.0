@@ -55,6 +55,7 @@ public class Automaton implements Printable, Storable {
         if(epsilonCycle) {
             System.out.println("Epsilon-cycles in this automaton have been removed automatically!");
         }
+
     }
 
     /**
@@ -66,6 +67,8 @@ public class Automaton implements Printable, Storable {
         this.states = new HashSet<>();
         this.states.add(this.startState);
         this.allInputs = new HashSet<>();
+        this.name="A";
+
     }
 
     public Automaton(Automaton oldAutomaton) {
@@ -90,6 +93,7 @@ public class Automaton implements Printable, Storable {
                 });
         this.allInputs=oldAutomaton.allInputs;
         this.previousAutomaton = (Automaton) oldAutomaton.getPreviousVersion();
+        this.name="A";
     }
 
     /**
