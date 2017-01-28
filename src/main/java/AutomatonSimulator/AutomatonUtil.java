@@ -429,7 +429,7 @@ public class AutomatonUtil {
      * that has been loaded completely into that string.
      *
      * @param fileInput The input-string.
-     * @param name
+     * @param name the name of the automaton
      * @return The automaton.
      * @throws ParserException {@link ParserException}.
      * @throws LexerException {@link LexerException}.

@@ -1796,8 +1796,8 @@ public class GrammarUtil {
 
     /**
      * Is there any rule in the format S to lambda?
-     * @param g
-     * @return
+     * @param g the grammar that is checked
+     * @return true, if the startsymbol points on lambda
      */
     public static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()

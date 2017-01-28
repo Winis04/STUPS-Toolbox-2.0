@@ -46,7 +46,7 @@ public class Visitor extends DepthFirstAdapter {
      * An exception is epsilon, which is added to the terminal alphabet by this method.
      *
      * @author Fabian Ruhland, Isabel Wingen
-     * @param node
+     * @param node the node
      */
     @Override
     public void inARule(ARule node) {

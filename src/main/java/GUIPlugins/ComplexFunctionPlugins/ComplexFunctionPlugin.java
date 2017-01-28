@@ -44,8 +44,8 @@ public abstract class ComplexFunctionPlugin {
     public abstract Class displayPluginType();
 
     /**
-     * states, if the plugin creates output. plugins with output are blue borded when in latex mode
-     * @return
+     * states, if the plugin creates output. plugins with output are blue framed when in latex mode
+     * @return default: false. if true, this methods creates output
      */
     public boolean createsOutput() {
         return false;

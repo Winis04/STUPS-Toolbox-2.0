@@ -36,6 +36,8 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 
 /**
+ * One of the two main classes of the application. Allows the user to interact with the application
+ * via a graphical user interface.
  * Created by fabian on 17.06.16.
  */
 public class GUI extends Application{
@@ -67,9 +69,12 @@ public class GUI extends Application{
     private TabPane complexFunctionsPane;
 
     /**
-     *
+     * the Controller for the root gui (the menu bar)
      */
     private RootController rootController;
+    /**
+     * the controller for the content
+     */
     private OverviewController overviewController;
 
     private BorderPane root;
@@ -83,7 +88,7 @@ public class GUI extends Application{
 
     public static String nameOfNullSymbol = "\u03B5";
 
-    public String defaultStyle = "/royal.css";
+    private String defaultStyle = "/royal.css";
     // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.
@@ -99,7 +104,7 @@ public class GUI extends Application{
     /**
      * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
-    public void show() {
+    void show() {
         Printer.printmode = PrintMode.NO;
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
@@ -113,13 +118,19 @@ public class GUI extends Application{
         primaryStage.show();
     }
 
+
+    /**
+     * refreshes the view. Depending on the current display plugin type, the right current object is chosen,
+     * selected in the treeView and displayed in the middle.
+     * Is called after a plugin's execution
+     */
     public void refresh() {
         overviewController.makeTree(simpleFunctionPlugins.values()); //makes the tree
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
         }
-        /** selected the right treeViewObject **/
+        /* selected the right treeViewObject **/
         if(overviewController.getTreeView().getRoot() != null && !overviewController.getTreeView().getRoot().getChildren().isEmpty()) {
             Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
                     .stream()
@@ -154,6 +165,12 @@ public class GUI extends Application{
 
     }
 
+    /**
+     * saves a object of type {@link Storable} in a hashmap, so the user can switch between objects
+     * @param storable the object that should be stored
+     * @param clazz the {@link Class}
+     * @param name name of the storable object. Functions as the key.
+     */
     public void addToStore(Storable storable, Class clazz, String name) {
         Storable storable1 = storable.otherName(name);
         cli.store.putIfAbsent(clazz, new HashMap<>());
@@ -161,6 +178,10 @@ public class GUI extends Application{
         refresh();
     }
 
+    /**
+     * cahnges the object currently displayed depending on the selection of the user
+     * @param selectedItem the currently selected TreeView cell
+     */
     public void switchStorable(TreeItem<String> selectedItem) {
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the childs class) by looking in the lookup table
@@ -175,6 +196,11 @@ public class GUI extends Application{
         switchDisplayGui(parentClass);
         refresh(selectedStorable);
     }
+
+    /**
+     * refreshes the complex plugins in the bottom. Is necessary when the type of the object changes.
+     * There are different complex plugins for different types
+     */
     public void refreshPlugins() {
         refreshComplexPlugins();
     }
