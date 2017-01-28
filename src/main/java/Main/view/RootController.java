@@ -4,8 +4,6 @@ package Main.view;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import CLIPlugins.PrintModePlugin;
-import GrammarParser.lexer.LexerException;
-import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
@@ -15,7 +13,6 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -255,7 +252,7 @@ public class RootController {
         Object object = gui.getCli().objects.get(Grammar.class);
         if(object != null) {
             Grammar grammar = (Grammar) object;
-            File file = gui.openFile("Grammar");
+            File file = gui.openFileToSave("Grammar");
             if(file!=null) {
                 GrammarUtil.save(grammar, file);
             }
@@ -267,7 +264,7 @@ public class RootController {
         Object object = gui.getCli().objects.get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
-            File file = gui.openFile("Automaton");
+            File file = gui.openFileToSave("Automaton");
             if(file!=null) {
                 AutomatonUtil.save(automaton, file);
             }
@@ -279,7 +276,7 @@ public class RootController {
         Object object = gui.getCli().objects.get(PushDownAutomaton.class);
         if(object != null) {
             PushDownAutomaton pda= (PushDownAutomaton) object;
-            File file = gui.openFile("PDA");
+            File file = gui.openFileToSave("PDA");
             if(file!=null) {
                 PushDownAutomatonUtil.save(pda, file);
             }
@@ -291,7 +288,7 @@ public class RootController {
         Object object = gui.getCli().objects.get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
-            File file = gui.openFile("Automaton");
+            File file = gui.openFileToSave("Automaton");
             if(file!=null) {
                 AutomatonUtil.toGraphViz(automaton, file);
             }

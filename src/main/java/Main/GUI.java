@@ -355,7 +355,11 @@ public class GUI extends Application{
     }
 
 
-
+    /**
+     * opens a {@link FileChooser} with title "load "+string, that lets the user open a file
+     * @param string the name of the dialog
+     * @return a {@link File}
+     */
     public File loadFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load "+string);
@@ -363,19 +367,20 @@ public class GUI extends Application{
         return file;
     }
 
+    /**
+     * returns the primary {@link Stage} of the {@link GUI}
+     * @return the primary {@link Stage}
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-    public File fileChooser(String titel,String description, ArrayList<String> ext) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(titel);
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(description,ext);
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showOpenDialog(primaryStage);
-        return file;
-    }
 
-    public File openFile(String string) {
+    /**
+     * returns a {@link File} in that the user has chosen for saving in a {@link FileChooser}
+     * @param string the name of the dialog
+     * @return a {@link File}
+     */
+    public File openFileToSave(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save "+string);
         File file = fileChooser.showSaveDialog(primaryStage);
@@ -419,22 +424,38 @@ public class GUI extends Application{
         }
     }
 
+    /**
+     * refreshes the {@link GUI} so that it shows the passed object and the matching {@link ComplexFunctionPlugin}s
+     * @param object the object that is displayed
+     */
     public void refresh(Object object) {
         switchDisplayGui(object.getClass());
         functionsPane.setCenter(currentDisplayPlugin.refresh(object));
         refreshComplexPlugins();
     }
+
+    /**
+     * getter for {@link CLI}
+     * @return the {@link CLI}
+     */
     public CLI getCli() {
         return cli;
     }
 
 
-
+    /**
+     * getter for the current display plugin
+     * @return the current display plugin
+     */
     public DisplayPlugin getCurrentDisplayPlugin() {
         return currentDisplayPlugin;
     }
 
 
+    /**
+     * if the type of the current selected storable changes, the {@link DisplayPlugin} has to be changed
+     * @param clazz the {@link Class} of the current selected object
+     */
     public void switchDisplayGui(Class clazz) {
             if(clazz.equals(Grammar.class)) {
                 currentDisplayPlugin = displayPlugins.get(Grammar.class);
@@ -457,6 +478,13 @@ public class GUI extends Application{
             refreshComplexPlugins();
     }
 
+    /**
+     * opens a {@link Dialog} with the forwarded strings
+     * @param type the {@link javafx.scene.control.Alert.AlertType} of the dialog
+     * @param titel the title of the dialog
+     * @param header the header text
+     * @param content the content text
+     */
     public void dialog(Alert.AlertType type, String titel, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(titel);
@@ -464,13 +492,20 @@ public class GUI extends Application{
         alert.setContentText(content);
         alert.showAndWait();
     }
+    /**
+     * opens a error {@link Dialog}  with the forwarded string
+     * @param string the title of the dialog
+     */
     public void errorDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
         alert.setHeaderText(string);
         alert.showAndWait();
     }
-
+    /**
+     * opens a info {@link Dialog}  with the forwarded string
+     * @param string the title of the dialog
+     */
     public void infoDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -480,9 +515,6 @@ public class GUI extends Application{
 
     }
 
-    public HashMap<Class, SimpleFunctionPlugin> getSimpleFunctionPlugins() {
-        return simpleFunctionPlugins;
-    }
 
     public OverviewController getOverviewController() {
         return overviewController;

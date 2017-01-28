@@ -995,7 +995,7 @@ public class GrammarUtil {
     /**
      * removes circles in the grammar rules
      * @author Isabel Wingen
-     * @param grammar
+     * @param grammar the grammar that should be modified
      * @return the grammar, if there are circles. Null, if there are no circles anymore
      */
     private static Grammar removeOneCircle(Grammar grammar) {
@@ -1035,35 +1035,12 @@ public class GrammarUtil {
     }
 
 
-    /**
-     * removes circles in the grammar rules
-     * @author Isabel Wingen
-     * @param grammar
-     * @return
-     */
-    private static HashSet<Node> GetUnitRules(Grammar grammar) {
-        ArrayList<Node> tmp;
 
-        HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar);
-        GrammarUtil.dfs(unitRules);
-        tmp=GrammarUtil.findBackwardsEdge(unitRules);
-        while(tmp!=null) {
-            GrammarUtil.replaceNonterminal(tmp.get(0).getValue(), tmp.get(1).getValue(), grammar);
-            unitRules= GrammarUtil.findUnitRules(grammar);
-            GrammarUtil.dfs(unitRules);
-            tmp=GrammarUtil.findBackwardsEdge(unitRules);
-        }
-
-        return unitRules;
-
-
-
-    }
 
     /**
      * makes the nonterminals to nodes. the children are the nonterminals on which this nonterminal points
-     * @autor Isabel Wingen
-     * @param g
+     * @author Isabel Wingen
+     * @param g the grammar, that is searched for unit rules
      * @return a HashSet with the Nonterminals as Nodes connected in a graph
      */
     private static HashSet<Node> findUnitRules(Grammar g) {
@@ -1099,8 +1076,8 @@ public class GrammarUtil {
 
     /**
      * find backward edges after a dept-first-search
-     * @param unitRules
-     * @return
+     * @param unitRules a hashSet of nodes that represent the unit rules
+     * @return an ArrayList with two objects that represent backwards edge in a dept-first-search //TODO
      */
     private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) {
         if(unitRules.stream().allMatch(rule -> rule.getDfe()!=0)) {
@@ -1121,7 +1098,7 @@ public class GrammarUtil {
 
     /**
      * start of the dept-first search
-     * @param unitRules
+     * @param unitRules a hashset of node that represent the unit Rules
      */
     private static void dfs(HashSet<Node> unitRules) {
         ArrayList<Integer> df=new ArrayList<>();
@@ -1195,9 +1172,9 @@ public class GrammarUtil {
 
     /**
      * @author Isabel Wingen
-     * @param nodes
-     * @param g
-     * @return
+     * @param nodes a hashset of notes that represent the nonterminals in unit rules
+     * @param g the grammar
+     * @return an arrayList of nodes in the right order
      */
     private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
         //find start node
@@ -1234,7 +1211,7 @@ public class GrammarUtil {
     /**
      * numbers the parent node and all children nodes with a higher number
      * @author Isabel Wingen
-     * @param node
+     * @param node the parent node
      */
     private static void number(Node node) {
         if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
@@ -1360,7 +1337,7 @@ public class GrammarUtil {
 
     /**
      * step 2: modify rules with more than two nonterminals so that they only have two
-     * @param g
+     * @param g the grammar
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
         HashSet<Rule> tmp = new HashSet<>();
