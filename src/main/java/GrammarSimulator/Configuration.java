@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by isabel on 19.01.17.
+ * @author isabel
+ * @since 19.01.17
  */
 public class Configuration {
     private final List<Symbol> config;

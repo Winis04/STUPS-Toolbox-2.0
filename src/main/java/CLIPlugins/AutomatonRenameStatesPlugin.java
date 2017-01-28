@@ -4,7 +4,8 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Created by fabian on 24.07.16.
+ * @author fabian
+ * @since 24.07.16
  */
 public class AutomatonRenameStatesPlugin implements CLIPlugin {
 

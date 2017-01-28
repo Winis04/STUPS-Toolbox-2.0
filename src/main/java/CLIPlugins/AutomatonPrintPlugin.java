@@ -5,7 +5,8 @@ import AutomatonSimulator.AutomatonUtil;
 import Print.Printer;
 
 /**
- * Created by fabian on 20.06.16.
+ * @author fabian
+ * @since 20.06.16
  */
 public class AutomatonPrintPlugin implements CLIPlugin {
 

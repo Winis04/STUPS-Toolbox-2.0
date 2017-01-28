@@ -4,7 +4,8 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Created by fabian on 28.07.16.
+ * @author fabian
+ * @since 28.07.16
  */
 public class AutomatonCompletePlugin implements CLIPlugin {
 

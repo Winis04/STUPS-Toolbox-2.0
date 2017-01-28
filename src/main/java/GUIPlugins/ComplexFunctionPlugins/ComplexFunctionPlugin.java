@@ -5,7 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
 /**
- * Created by fabian on 19.06.16.
+ * @author fabian
+ * @since 19.06.16
  */
 public abstract class ComplexFunctionPlugin {
 

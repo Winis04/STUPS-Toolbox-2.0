@@ -7,7 +7,8 @@ import java.util.Stack;
 import static org.junit.Assert.*;
 
 /**
- * Created by Isabel on 07.01.2017.
+ * @author Isabel
+ * @since 07.01.2017
  */
 public class PushDownAutomatonUtilTest {
     @Test

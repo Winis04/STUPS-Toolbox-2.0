@@ -1,13 +1,12 @@
 package Print;
 
-/**
- * Created by Isabel on 25.11.2016.
- */
 
 import java.io.BufferedWriter;
 
 /**
  * A Dummy-class for printable objects. Used, if nothing should be printed.
+ * @author Isabel
+ * @since 25.11.2016
  */
 public class Dummy implements Printable {
     String s="";

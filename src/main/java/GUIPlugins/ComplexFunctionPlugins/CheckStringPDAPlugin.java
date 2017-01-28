@@ -20,7 +20,8 @@ import java.util.*;
 import static java.util.stream.Collectors.joining;
 
 /**
- * Created by fabian on 19.06.16.
+ * @author fabian
+ * @since 19.06.16
  */
 public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     RunThroughInfo runThroughInfo;

@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Created by fabian on 23.08.16.
+ * @author fabian
+ * @since 23.08.16
  */
 public class GrammarFollowPlugin implements CLIPlugin {
 

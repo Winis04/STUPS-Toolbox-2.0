@@ -8,7 +8,8 @@ import java.util.Stack;
 import static java.util.stream.Collectors.joining;
 
 /**
- * Created by Isabel on 04.01.2017.
+ * @author Isabel
+ * @since 04.01.2017
  */
 public class RunThroughInfo {
 

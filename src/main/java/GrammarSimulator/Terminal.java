@@ -5,7 +5,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * Created by fabian on 06.08.16.
+ * @author fabian
+ * @since 06.08.16
  */
 public final class Terminal implements Symbol {
 

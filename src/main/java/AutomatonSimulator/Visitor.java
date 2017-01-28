@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Created by fabian on 24.04.16.
+ * @author fabian
+ * @since 24.04.16
  */
 public class Visitor extends DepthFirstAdapter {
     private Automaton automaton;

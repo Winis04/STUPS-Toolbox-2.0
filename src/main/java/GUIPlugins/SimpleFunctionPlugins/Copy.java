@@ -4,7 +4,8 @@ import Main.Storable;
 import javafx.scene.control.TreeItem;
 
 /**
- * Created by Isabel on 03.12.2016.
+ * @author Isabel
+ * @since 03.12.2016
  */
 public class Copy extends SimpleFunctionPlugin {
 

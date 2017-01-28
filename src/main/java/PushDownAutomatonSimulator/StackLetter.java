@@ -6,7 +6,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class StackLetter {
     private String name;

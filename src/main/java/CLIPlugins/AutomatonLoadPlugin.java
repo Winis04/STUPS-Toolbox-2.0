@@ -8,7 +8,8 @@ import AutomatonSimulator.AutomatonUtil;
 import java.io.*;
 
 /**
- * Created by fabian on 15.06.16.
+ * @author fabian
+ * @since 15.06.16
  */
 public class AutomatonLoadPlugin implements CLIPlugin{
 

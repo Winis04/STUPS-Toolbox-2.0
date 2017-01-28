@@ -6,7 +6,8 @@ import Main.Storable;
 import Print.Printer;
 
 /**
- * Created by Isabel on 03.12.2016.
+ * @author Isabel
+ * @since 03.12.2016
  */
 public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override

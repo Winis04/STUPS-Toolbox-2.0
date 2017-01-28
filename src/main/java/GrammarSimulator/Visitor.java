@@ -13,7 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Created by fabian on 06.08.16.
+ * @author fabian
+ * @since 06.08.16
  */
 public class Visitor extends DepthFirstAdapter {
 
@@ -45,7 +46,6 @@ public class Visitor extends DepthFirstAdapter {
      * checks, if the occurring symbols are in the Terminal or the nonterminal set
      * An exception is epsilon, which is added to the terminal alphabet by this method.
      *
-     * @author Fabian Ruhland, Isabel Wingen
      * @param node the node
      */
     @Override

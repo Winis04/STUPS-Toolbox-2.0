@@ -5,7 +5,8 @@ import GrammarSimulator.GrammarUtil;
 import Print.Printer;
 
 /**
- * Created by isabel on 25.10.16.
+ * @author isabel
+ * @since 25.10.16
  */
 public class GrammarChomskyNormalForm implements CLIPlugin {
     private boolean errorFlag;

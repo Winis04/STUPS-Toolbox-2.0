@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.*;
 
 /**
- * Created by Isabel on 27.12.2016.
+ * @author Isabel
+ * @since 27.12.2016
  */
 public class RuleTest {
     @Test

@@ -16,7 +16,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by isabel on 19.01.17.
+ * @author isabel
+ * @since 19.01.17
  */
 public class ConfigurationTest {
     @Test

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
- * Created by fabian on 15.06.16.
+ * @author fabian
+ * @since 15.06.16
  */
 public class AutomatonCheckStringPlugin implements CLIPlugin{
 

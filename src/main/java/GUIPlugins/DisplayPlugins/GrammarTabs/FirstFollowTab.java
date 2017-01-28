@@ -18,7 +18,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Created by fabian on 24.08.16.
+ * @author fabian
+ * @since 24.08.16
  */
 public class FirstFollowTab implements GrammarTab {
 

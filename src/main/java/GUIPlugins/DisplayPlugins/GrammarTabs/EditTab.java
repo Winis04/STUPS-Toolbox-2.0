@@ -17,7 +17,8 @@ import java.io.StringWriter;
 import java.util.*;
 
 /**
- * Created by fabian on 15.08.16.
+ * @author fabian
+ * @since 15.08.16
  */
 public class EditTab implements GrammarTab {
 

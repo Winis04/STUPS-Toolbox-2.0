@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by fabian on 19.06.16.
+ * @author fabian
+ * @since 19.06.16
  */
 public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     public static final TextField field = new TextField();

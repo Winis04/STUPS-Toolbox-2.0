@@ -7,7 +7,8 @@ import Print.Printer;
 import java.util.Arrays;
 
 /**
- * Created by Isabel on 12.12.2016.
+ * @author Isabel
+ * @since 12.12.2016
  */
 public class GrammarCheckWord implements CLIPlugin {
     boolean errorFlag=false;

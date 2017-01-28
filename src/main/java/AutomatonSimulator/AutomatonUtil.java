@@ -13,7 +13,8 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Created by fabian on 20.06.16.
+ * @author fabian
+ * @since 20.06.16
  */
 public class AutomatonUtil {
 

@@ -32,7 +32,8 @@ import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
- * Created by Isabel on 10.12.2016.
+ * @author Isabel
+ * @since 10.12.2016
  */
 public class PushDownAutomatonGUI implements DisplayPlugin {
     private GUI gui;

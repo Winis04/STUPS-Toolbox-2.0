@@ -874,7 +874,6 @@ public class GrammarUtil {
      * the second step of the algorithm to delete lambda-rules.
      * For every rule, that contains a nullable symbol on the right side, a rule with this symbol replaced
      * by "epsilon" is added to the ruleset
-     * @author Isabel Wingen
      * @param g The Grammar
      * @param nullable The set, which contains all the nullable terminals
      */
@@ -994,7 +993,6 @@ public class GrammarUtil {
     }
     /**
      * removes circles in the grammar rules
-     * @author Isabel Wingen
      * @param grammar the grammar that should be modified
      * @return the grammar, if there are circles. Null, if there are no circles anymore
      */
@@ -1039,7 +1037,6 @@ public class GrammarUtil {
 
     /**
      * makes the nonterminals to nodes. the children are the nonterminals on which this nonterminal points
-     * @author Isabel Wingen
      * @param g the grammar, that is searched for unit rules
      * @return a HashSet with the Nonterminals as Nodes connected in a graph
      */
@@ -1115,7 +1112,6 @@ public class GrammarUtil {
 
     /**
      * dept-first search on {@link Node}s
-     * @author Isabel Wingen
      * @param node the current node on which we do the search
      * @param df the counter for dfe and dfs
      * @return the new dfe and dfs counter
@@ -1171,7 +1167,6 @@ public class GrammarUtil {
     }
 
     /**
-     * @author Isabel Wingen
      * @param nodes a hashset of notes that represent the nonterminals in unit rules
      * @param g the grammar
      * @return an arrayList of nodes in the right order
@@ -1210,7 +1205,6 @@ public class GrammarUtil {
 
     /**
      * numbers the parent node and all children nodes with a higher number
-     * @author Isabel Wingen
      * @param node the parent node
      */
     private static void number(Node node) {
@@ -1223,7 +1217,6 @@ public class GrammarUtil {
     /**
      * replaces a Nonterminal through another and remove it from the set
      *
-     * @author Isabel Wingen
      * @param toBeReplaced the nonterminal that should be replaced
      * @param newNonterminal the new nonterminal that replaces the old
      * @param g the grammar g
@@ -1660,7 +1653,6 @@ public class GrammarUtil {
     }
 
     /**
-     * @author Isabel Wingen
      * @param nt a nonterminal of the Grammar g
      * @param g the Grammar g
      * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt

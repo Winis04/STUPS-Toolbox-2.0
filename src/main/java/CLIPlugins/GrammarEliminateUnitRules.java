@@ -4,7 +4,8 @@ import GrammarSimulator.*;
 import Print.Printer;
 
 /**
- * Created by Isabel on 22.10.2016.
+ * @author Isabel
+ * @since 22.10.2016
  */
 public class GrammarEliminateUnitRules implements CLIPlugin {
     private boolean errorFlag = false;

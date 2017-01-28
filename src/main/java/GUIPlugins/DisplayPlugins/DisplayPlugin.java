@@ -5,7 +5,8 @@ import javafx.scene.Node;
 
 
 /**
- * Created by fabian on 18.06.16.
+ * @author fabian
+ * @since 18.06.16
  */
 public interface DisplayPlugin {
 

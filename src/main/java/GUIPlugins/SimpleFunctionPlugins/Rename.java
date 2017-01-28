@@ -11,7 +11,8 @@ import java.util.Optional;
 import static javafx.scene.control.Alert.*;
 
 /**
- * Created by Isabel on 05.12.2016.
+ * @author Isabel
+ * @since 05.12.2016
  */
 public class Rename extends SimpleFunctionPlugin {
     @Override

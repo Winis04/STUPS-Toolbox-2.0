@@ -1,9 +1,8 @@
 package GrammarSimulator;
 
-import Print.Printable;
-
 /**
- * Created by fabian on 06.08.16.
+ * @author fabian
+ * @since 06.08.16
  */
 public interface Symbol {
     /**

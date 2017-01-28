@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by isabel on 22.12.16.
+ * @author isabel
+ * @since 22.12.16
  */
 public final class Rule {
     private final Nonterminal comingFrom;

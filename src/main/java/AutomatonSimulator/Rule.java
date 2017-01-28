@@ -11,7 +11,8 @@ import java.util.HashSet;
 import static java.util.stream.Collectors.joining;
 
 /**
- * Created by fabian on 21.04.16.
+ * @author fabian
+ * @since 21.04.16
  */
 public class Rule implements Printable{
     /**

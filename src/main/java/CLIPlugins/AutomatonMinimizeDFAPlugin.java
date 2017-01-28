@@ -4,7 +4,8 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Created by fabian on 27.07.16.
+ * @author fabian
+ * @since 27.07.16
  */
 public class AutomatonMinimizeDFAPlugin implements CLIPlugin {
 

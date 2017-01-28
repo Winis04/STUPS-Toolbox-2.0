@@ -39,6 +39,8 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
  * One of the two main classes of the application. Allows the user to interact with the application
  * via a graphical user interface.
  * Created by fabian on 17.06.16.
+ * @author fabian
+ * @since 17.06.16
  */
 public class GUI extends Application{
     /**

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Created by fabian on 21.04.16.
+ * @author fabian
+ * @since 21.04.16
  */
 public class State implements Printable{
     /**

@@ -5,7 +5,8 @@ import AutomatonSimulator.AutomatonUtil;
 import Main.Storable;
 
 /**
- * Created by fabian on 28.07.16.
+ * @author fabian
+ * @since 28.07.16
  */
 public class AutomatonCompletePlugin extends SimpleFunctionPlugin {
     @Override

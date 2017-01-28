@@ -5,7 +5,8 @@ import AutomatonSimulator.AutomatonUtil;
 import Main.Storable;
 
 /**
- * Created by fabian on 18.06.16.
+ * @author fabian
+ * @since 18.06.16
  */
 public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 

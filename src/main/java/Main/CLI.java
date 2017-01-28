@@ -21,7 +21,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Created by fabian on 15.06.16.
+ * @author fabian
+ * @since 15.06.16
  */
 public class CLI {
     /**

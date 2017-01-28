@@ -2,24 +2,19 @@ package GrammarSimulator;
 
 
 import Main.Storable;
-import GrammarParser.lexer.LexerException;
-import GrammarParser.parser.ParserException;
 import Print.Printable;
 import Print.Printer;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 import static Print.Printer.makeToGreek;
-
 import static java.util.stream.Collectors.joining;
 
 /**
- * Created by fabian on 06.08.16.
+ * @author fabian
+ * @since 06.08.16
  */
 public final class Grammar implements Printable, Storable {
 

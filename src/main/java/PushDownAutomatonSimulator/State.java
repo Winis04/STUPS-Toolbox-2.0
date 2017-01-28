@@ -6,7 +6,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.HashSet;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class State {
     /**

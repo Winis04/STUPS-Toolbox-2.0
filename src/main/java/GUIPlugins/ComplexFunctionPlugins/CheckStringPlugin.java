@@ -18,7 +18,8 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * Created by fabian on 19.06.16.
+ * @author fabian
+ * @since 19.06.16
  */
 public class CheckStringPlugin extends ComplexFunctionPlugin {
 

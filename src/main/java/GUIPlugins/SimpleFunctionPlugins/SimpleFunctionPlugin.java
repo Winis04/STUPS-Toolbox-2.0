@@ -6,9 +6,9 @@ import Main.Storable;
 import javafx.scene.control.MenuItem;
 
 /**
- * Created by fabian on 18.06.16.
- *
  * SimplePlugins are used on Storables and pop up as context menus of these
+ * @author fabian
+ * @since 18.06.16
  */
 
 public abstract class SimpleFunctionPlugin {

@@ -12,7 +12,8 @@ import javafx.scene.control.*;
 import java.util.*;
 
 /**
- * Created by fabian on 13.08.16.
+ * @author fabian
+ * @since 13.08.16
  */
 public class GrammarGUI implements DisplayPlugin {
 

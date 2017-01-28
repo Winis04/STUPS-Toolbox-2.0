@@ -5,7 +5,8 @@ import AutomatonSimulator.AutomatonUtil;
 import Main.Storable;
 
 /**
- * Created by fabian on 26.07.16.
+ * @author fabian
+ * @since 26.07.16
  */
 public class AutomatonRenameStatesPlugin extends SimpleFunctionPlugin {
     @Override

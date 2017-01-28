@@ -4,7 +4,8 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Created by fabian on 15.06.16.
+ * @author fabian
+ * @since 15.06.16
  */
 public class AutomatonRemoveEpsilonStatesPlugin implements CLIPlugin {
 
