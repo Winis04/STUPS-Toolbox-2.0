@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * A "Configuration" is one step in a derivation of a {@link Grammar}.
  * @author isabel
  * @since 19.01.17
  */
@@ -17,7 +18,7 @@ public class Configuration {
     private final List<Symbol> config;
     private final Configuration previous;
     private final Grammar grammar;
-    public Configuration(List<Symbol> config, Configuration previous, Grammar grammar) {
+    Configuration(List<Symbol> config, Configuration previous, Grammar grammar) {
         this.previous = previous;
         this.config = config;
         this.grammar = grammar;
@@ -25,11 +26,15 @@ public class Configuration {
 
     }
 
+    /**
+     * returns a list with the symbols of this configuration
+     * @return a {@link List}. This list contains every symbol of this configuration
+     */
     public List<Symbol> getConfig() {
         return Collections.unmodifiableList(new ArrayList<>(config));
     }
 
-    public Configuration getPrevious() {
+    Configuration getPrevious() {
         return previous;
     }
 
@@ -63,6 +68,11 @@ public class Configuration {
         return hashCodeBuilder.hashCode();
     }
 
+    /**
+     * computes the children of this config. The children are exactly the configuration we can obtain if we
+     * derice the first nonterminal
+     * @return a {@link HashSet} of {@link Configuration}s
+     */
     public HashSet<Configuration> getChildren() {
         HashSet<Configuration> result = new HashSet<>();
         int j=0;

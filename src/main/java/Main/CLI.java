@@ -25,10 +25,6 @@ import java.util.*;
  * @since 15.06.16
  */
 public class CLI {
-    /**
-     * the workspace: contains the objects of the last session
-     **/
-    private File workspace = null;
 
     private GUI gui;
     /**
@@ -37,13 +33,28 @@ public class CLI {
      */
     public HashMap<Class, Object> objects = new HashMap<>();
 
+    /**
+     * Contains all stored (saved) objects (Automaton, Grammars, etc.).
+     * The class-type of the object is mapped to a hashmap.
+     * In this map names are mapped to instances of the class
+     */
     public HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
 
+    /**
+     * Contains the different types of storable objects (Automaton, Grammar, etc.).
+     * Maps the name of the class to the class.
+     * If you want to add new types of storable objects to the application, you need
+     * to add an entry to this hashmap.
+     */
     public HashMap<String,Class> lookUpTable =new HashMap<>();
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     protected TreeMap<String,Grammar> grammars=new TreeMap<>();
 
+    /**
+     * the constructor. Creates a new instance of cli.
+     * @param gui the {@link GUI}
+     */
     public CLI(GUI gui) {
         this.gui=gui;
     }
@@ -131,7 +142,7 @@ public class CLI {
         return true;
     }
 
-    public boolean doStoreCommand(String command, String parameter1, String parameter2) {
+    private boolean doStoreCommand(String command, String parameter1, String parameter2) {
         if(isStoreFunction(command)) {
                     // Integer i = Integer.parseInt(parameters[1]);
                     String i = parameter2;
@@ -184,6 +195,12 @@ public class CLI {
         return true;
     }
 
+    /**
+     * checks, if the store contains the {@Storable} storable, which is an instance of {@link Class} type.
+     * @param storable the object, that is checked
+     * @param type the class of the object
+     * @return true, if the store contains the storable; false otherwise.
+     */
     public boolean storeContains(Storable storable, Class type) {
         if(store.get(type)==null) {
             return false;
@@ -206,7 +223,6 @@ public class CLI {
                 reader.close();
                 File ret = new File(path);
 
-                this.workspace = ret;
                 File dir = ret;
                 store.clear();
                 File[] directoryListing = dir.listFiles();
@@ -254,12 +270,6 @@ public class CLI {
 
     }
 
-    public void switch_workspace(File file) {
-        if(new File("config").exists()) {
-            save_workspace();
-        }
-
-    }
     /**
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */

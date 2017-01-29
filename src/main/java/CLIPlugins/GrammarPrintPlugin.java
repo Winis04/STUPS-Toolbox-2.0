@@ -5,7 +5,8 @@ import GrammarSimulator.GrammarUtil;
 import Print.Printer;
 
 /**
- * Created by fabian on 11.08.16.
+ * @author fabian
+ * @since 11.08.16
  */
 public class GrammarPrintPlugin implements CLIPlugin {
 

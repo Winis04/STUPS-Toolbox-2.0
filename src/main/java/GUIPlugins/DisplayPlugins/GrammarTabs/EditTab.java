@@ -51,6 +51,10 @@ public class EditTab implements GrammarTab {
 
     int size = 12;
 
+    /**
+     * constructor
+     * @param gui The {@link GUI}
+     */
     public EditTab(GUI gui) {
         this.gui=gui;
     }

@@ -8,7 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Created by fabian on 22.08.16.
+ * @author fabian
+ * @since 22.08.16
  */
 public class GrammarNullablePlugin implements CLIPlugin {
 

@@ -13,6 +13,7 @@ import static Print.Printer.makeToGreek;
 import static java.util.stream.Collectors.joining;
 
 /**
+ * The Model for grammars
  * @author fabian
  * @since 06.08.16
  */
@@ -46,6 +47,14 @@ public final class Grammar implements Printable, Storable {
 
     private final Grammar previousVersion;
 
+    /**
+     * The Constructor with every field.
+     * Grammar are immutable, so you can't fill the fields later.
+     * @param startSymbol the start{@link Symbol} of the Grammar
+     * @param rules a {@link HashSet} of production {@link Rule}s
+     * @param name the name of the grammar
+     * @param previousVersion the previous version of this grammar (null if there isn't any)
+     */
     public Grammar(Nonterminal startSymbol, HashSet<Rule> rules, String name, Grammar previousVersion) {
         this.startSymbol = startSymbol;
         this.rules = rules;
@@ -62,7 +71,14 @@ public final class Grammar implements Printable, Storable {
         }));
         this.rules.stream().map(Rule::getComingFrom).forEach(nonterminals::add);
     }
-
+    /**
+     * The Constructor with every field.
+     * Grammar are immutable, so you can't fill the fields later.
+     * @param startSymbol the start{@link Symbol} of the Grammar
+     * @param rules a {@link Set} of production {@link Rule}s
+     * @param name the name of the grammar
+     * @param previousVersion the previous version of this grammar (null if there isn't any)
+     */
     public Grammar(Nonterminal startSymbol, Set<Rule> rules, String name, Grammar previousVersion) {
         this.startSymbol = startSymbol;
         this.rules = new HashSet<>(rules);
@@ -81,7 +97,9 @@ public final class Grammar implements Printable, Storable {
     }
 
 
-    //DO NOT USE
+    /**
+     * an empty constructor. Use only if you truly want a minimal grammar
+     */
     public Grammar() {
         this.name="G";
         this.previousVersion=null;
@@ -170,22 +188,6 @@ public final class Grammar implements Printable, Storable {
     }
 
 
-    public Terminal getTerminal(String name) {
-        for(Terminal t : this.terminals) {
-            if(t.getName().equals(name)) {
-                return t;
-            }
-        }
-        return null;
-    }
-    public Nonterminal getNonterminal(String name) {
-        for(Nonterminal nt : this.nonterminals) {
-            if(nt.getName().equals(name)) {
-                return nt;
-            }
-        }
-        return null;
-    }
 
 
     public String getName() {
@@ -197,7 +199,7 @@ public final class Grammar implements Printable, Storable {
         return new Grammar(this.getStartSymbol(),this.getRules(),name,this);
     }
 
-    public String getRuleSetName() {
+    private String getRuleSetName() {
         return "R";
     }
 
@@ -264,6 +266,11 @@ public final class Grammar implements Printable, Storable {
     }
 
 
+    /**
+     * Getter-method for {@link #rules}
+     *
+     * @return {@link #rules}
+     */
     public Set<Rule> getRules() {
         return Collections.unmodifiableSet(new HashSet<>(rules));
     }

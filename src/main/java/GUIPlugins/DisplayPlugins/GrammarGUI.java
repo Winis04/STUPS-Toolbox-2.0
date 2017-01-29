@@ -56,6 +56,10 @@ public class GrammarGUI implements DisplayPlugin {
     }
 
 
+    /**
+     * creates a {@link Tab} in which the first and follow sets are printed
+     * @param grammar the {@link Grammar} it handles
+     */
     public void firstfollow(Grammar grammar) {
         String name="First Follow";
         if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
@@ -71,6 +75,11 @@ public class GrammarGUI implements DisplayPlugin {
             rootPane.getTabs().add(ff);
         }
     }
+
+    /**
+     * creates a {@link Tab} in which the LL-Parsing-Table is printed
+     * @param grammar the {@link Grammar} it handles
+     */
     public void llParsingTableTab(Grammar grammar) {
         String name="LL-parsing Table";
         if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
@@ -117,6 +126,10 @@ public class GrammarGUI implements DisplayPlugin {
         return gui;
     }
 
+    /**
+     * Getter-Method for {@link #rootPane}
+     * @return the {@link #rootPane}
+     */
     public TabPane getRootPane() {
         return rootPane;
     }

@@ -10,7 +10,9 @@ import Print.Printer;
 import java.util.ArrayList;
 
 /**
- * Created by Isabel on 03.12.2016.
+ * removes lambda rules
+ * @author Isabel
+ * @since 03.12.2016
  */
 public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
     @Override

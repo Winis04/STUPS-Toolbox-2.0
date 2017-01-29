@@ -4,7 +4,9 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 
 /**
- * Created by fabian on 12.08.16.
+ * saves a grammar in a file
+ * @author fabian
+ * @since 12.08.16
  */
 public class GrammarSavePlugin implements CLIPlugin {
 

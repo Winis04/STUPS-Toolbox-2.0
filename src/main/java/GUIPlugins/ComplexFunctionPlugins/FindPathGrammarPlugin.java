@@ -17,14 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author fabian
- * @since 19.06.16
+ * @author isabel
+ * @since 19.01.2017
  */
 public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
-    public static final TextField field = new TextField();
-    public static final TextField bound = new TextField("500000");
+    private static final TextField field = new TextField();
+    private static final TextField bound = new TextField("500000");
+    /**
+     * the upperbound for the steps of the breadth-first search
+     */
     public static final Label label = new Label("upper bound");
 
+    /**
+     * the start-button. Starts the plugins execution
+     */
     public static final Button start = new Button("start");
 
 
@@ -100,7 +106,4 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
         return Grammar.class;
     }
 
-    public TextField getField() {
-        return field;
-    }
 }

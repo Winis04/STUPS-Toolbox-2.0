@@ -25,9 +25,21 @@ import static java.util.stream.Collectors.joining;
  */
 public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     private RunThroughInfo runThroughInfo;
+    /**
+     * the {@link TextField} that contains the word
+     */
     public static final TextField field = new TextField();
+    /**
+     * the {@link Label} in which the path is printed
+     */
     public static final Label path = new Label();
+    /**
+     * the button which starts the plugin
+     */
     public static final Button start = new Button("start");
+    /**
+     * this button undos the last step
+     */
     public static final Button undo = new Button("undo");
 
     @Override
@@ -100,6 +112,10 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
        return rootPane;
     }
 
+    /**
+     * deletes the previous runthrough and prepares the next
+     * @param pdaGUI the {@link DisplayPlugin} for {@link PushDownAutomaton}s
+     */
     public static void startnew(PushDownAutomatonGUI pdaGUI) {
         field.setText("");
         field.setDisable(false);
@@ -120,7 +136,4 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         return AutomatonGUI.class;
     }
 
-    public TextField getField() {
-        return field;
-    }
 }

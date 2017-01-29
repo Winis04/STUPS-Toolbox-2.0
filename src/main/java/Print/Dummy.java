@@ -10,9 +10,18 @@ import java.io.BufferedWriter;
  */
 public class Dummy implements Printable {
     String s="";
+
+    /**
+     * empty constructor
+     */
     public Dummy() {
 
     }
+
+    /**
+     * a dummy with the content of string
+     * @param string the content of this dummy
+     */
     public Dummy(String string) {
         this.s=string;
     }

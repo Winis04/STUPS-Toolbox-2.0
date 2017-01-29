@@ -3,8 +3,9 @@ package GUIPlugins.DisplayPlugins;
 import Main.GUI;
 import javafx.scene.Node;
 
-
+//TODO better javadoc
 /**
+ * This Interface is for classes that are used for visualizing a certain kind of objects.
  * @author fabian
  * @since 18.06.16
  */
@@ -53,7 +54,16 @@ public interface DisplayPlugin {
      */
     Class displayType();
 
+    /**
+     * setter for the gui
+     * @param gui The {@link GUI}
+     */
     void setGUI(GUI gui);
+
+    /**
+     * getter for the gui
+     * @return the {@link GUI}
+     */
     GUI getGUI();
 
 }

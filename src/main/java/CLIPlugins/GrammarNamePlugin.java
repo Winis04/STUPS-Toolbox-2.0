@@ -4,7 +4,9 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 
 /**
- * Created by Isabel on 19.11.2016.
+ * names a grammar
+ * @author Isabel
+ * @since 19.11.2016
  */
 public class GrammarNamePlugin implements CLIPlugin {
     private boolean errorFlag;

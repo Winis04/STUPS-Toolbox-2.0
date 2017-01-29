@@ -16,11 +16,12 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.reverse;
-import static java.util.stream.Collectors.joining;
+
 
 /**
- * Created by fabian on 06.08.16.
+ * contains the logic for {@link Grammar}s
+ * @author fabian
+ * @since 06.08.16
  */
 public class GrammarUtil {
 
@@ -263,6 +264,15 @@ public class GrammarUtil {
         return GrammarUtil.replaceLambda(g);
     }
 
+    /**
+     * Takes an input {@link File} and parses it into a grammar.
+     *
+     * @param file the input {@link File}
+     * @return Grammar {@link Grammar}
+     * @throws IOException {@link IOException}
+     * @throws LexerException {@link LexerException}
+     * @throws ParserException {@link ParserException}
+     */
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
         Grammar grammar = null;
@@ -334,6 +344,12 @@ public class GrammarUtil {
             e.printStackTrace();
         }
     }
+
+    /**
+     * saves a grammar to a file
+     * @param grammar the {@link Grammar} that should be saved
+     * @param file the {@link File} in which the grammar is saved
+     */
     public static void save(Grammar grammar, File file) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -795,6 +811,11 @@ public class GrammarUtil {
 
     }
 
+    /**
+     * removes the lambda-rules form {@link Grammar} a grammar
+     * @param g the grammar that should be modified
+     * @return the modified grammar, that has no lambda-rules
+     */
     public static Grammar removeLambdaRules(Grammar g) {
         if(GrammarUtil.isLambdaFree(g)) {
             return g;
@@ -960,6 +981,11 @@ public class GrammarUtil {
 
     }
 
+    /**
+     * deletes unit-rules from the grammar, without changing the grammar's language
+     * @param grammar the {@link Grammar} to-be-modified grammar
+     * @return {@link Grammar} a Grammar, that has the same language as before, but now without unit rules
+     */
     public static Grammar eliminateUnitRules(Grammar grammar) {
         if(!GrammarUtil.hasUnitRules(grammar)) {
             return grammar;
@@ -1288,6 +1314,11 @@ public class GrammarUtil {
         return res;
     }
 
+    /**
+     * transforms the grammar to chomsky normal form without changing its language
+     * @param grammar the to-be-modified grammar
+     * @return a {@link Grammar} in CNF
+     */
     public static Grammar chomskyNormalForm(Grammar grammar) {
         if(!GrammarUtil.isLambdaFree(grammar)) {
             return grammar;

@@ -20,15 +20,10 @@ import static org.junit.Assert.*;
  * @since 19.01.17
  */
 public class ConfigurationTest {
-    @Test
-    public void getChildren() throws Exception {
-        Grammar grammar = GrammarUtil.parse(getResourceAsFile("/Grammar/test11.gr"));
 
-
-
-
-    }
-
+    /**
+     * checks equal and hashCode
+     */
     @Test
     public void hashAndEqual() {
         List<Symbol> list1 = new ArrayList<>();
@@ -56,6 +51,9 @@ public class ConfigurationTest {
         System.out.println(test.toString());
     }
 
+    /**
+     * checks equal of lists
+     */
     @Test
     public void listTest() {
         List<Symbol> list1 = new ArrayList<>();
@@ -67,6 +65,11 @@ public class ConfigurationTest {
         assertTrue(GrammarUtil.listEqual(list1,list2));
     }
 
+    /**
+     *
+     * @param path
+     * @return
+     */
     @Ignore
     public File getResourceAsFile(String path) {
 

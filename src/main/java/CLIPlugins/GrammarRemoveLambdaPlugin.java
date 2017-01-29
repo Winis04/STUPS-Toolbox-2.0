@@ -8,7 +8,9 @@ import java.util.*;
 
 
 /**
- * Created by isabel on 20.10.16.
+ * removes lambda-rules
+ * @author isabel
+ * @since 20.10.16
  */
 public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 

@@ -4,7 +4,8 @@ import GrammarSimulator.Grammar;
 import javafx.scene.Node;
 
 /**
- * Created by fabian on 15.08.16.
+ * @author fabian
+ * @since 15.08.16
  */
 public interface GrammarTab {
 

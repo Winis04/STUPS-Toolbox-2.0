@@ -5,7 +5,9 @@ import GrammarSimulator.GrammarUtil;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * translates a grammar to a pda
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class GrammarToPDA implements CLIPlugin {
     boolean errorFlag;

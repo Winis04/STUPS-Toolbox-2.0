@@ -11,7 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by fabian on 11.08.16.
+ * @author fabian
+ * @since 11.08.16
  */
 public class GrammarLoadPlugin implements CLIPlugin {
 
