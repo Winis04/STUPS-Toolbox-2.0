@@ -5,21 +5,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import static java.util.stream.Collectors.joining;
-
 /**
+ * this class describes a single step of a run through a {@link PushDownAutomaton}.
  * @author Isabel
  * @since 04.01.2017
  */
 public class RunThroughInfo {
 
+    /** the current stack **/
     private final Stack<StackLetter> stack;
+    /** the current {@link InputLetter} **/
     private final List<InputLetter> input;
+    /** the current {@link State} of the {@link PushDownAutomaton} **/
     private final State currentState;
+    /** the previous configuration **/
     private final RunThroughInfo previous;
+    /** the {@link PushDownAutomaton} this RunThroughInfo belongs to **/
     private final PushDownAutomaton myPDA;
 
-    public RunThroughInfo(Stack<StackLetter> stack, List<InputLetter> input, State currentState, RunThroughInfo previous, PushDownAutomaton pda) {
+    RunThroughInfo(Stack<StackLetter> stack, List<InputLetter> input, State currentState, RunThroughInfo previous, PushDownAutomaton pda) {
         this.stack = stack;
         this.input = input;
         this.currentState = currentState;
@@ -27,39 +31,41 @@ public class RunThroughInfo {
         this.myPDA=pda;
     }
 
+    /**
+     * Getter-Method for {@link #stack}
+     * @return the {@link #stack}
+     */
     public Stack<StackLetter> getStack() {
         return stack;
     }
 
+    /**
+     * Getter-Method for {@link #input}
+     * @return a {@link java.util.Collections.UnmodifiableList} of {@link InputLetter}s
+     */
     public List<InputLetter> getInput() {
-        return input;
+
+        return Collections.unmodifiableList(new ArrayList<>(input));
     }
 
+    /**
+     * Getter-Method for {@link #currentState}
+     * @return the {@link #currentState} of the RunTrough.
+     */
     public State getCurrentState() {
         return currentState;
     }
 
+    /**
+     * Getter-Method for {@link #previous}
+     * @return the {@link #previous} RunThroughInfo
+     */
     public RunThroughInfo getPrevious() {
         return previous;
     }
 
-    public PushDownAutomaton getMyPDA() {
+    PushDownAutomaton getMyPDA() {
         return myPDA;
     }
 
-    public String asString() {
-        String cS = currentState.getName();
-        String in = InputLetter.NULLSYMBOL.getName();
-        if(!input.isEmpty()) {
-            in = input.stream().map(InputLetter::getName).collect(joining(""));
-        }
-        String st = StackLetter.NULLSYMBOL.getName();
-        if(!stack.isEmpty()) {
-            ArrayList<StackLetter> list = new ArrayList<>();
-            list.addAll(stack);
-            Collections.reverse(list);
-            st = list.stream().map(StackLetter::getName).collect(joining(""));
-        }
-        return "("+cS+", "+in+", "+st+")";
-    }
 }

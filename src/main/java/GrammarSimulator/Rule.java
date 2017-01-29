@@ -6,9 +6,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
+ * this class describes a production rule of a formal {@link Grammar}.
+ * Every rule contains a {@link Nonterminal} on the left side, and a list of {@link Symbol}s on the right side.
+ * That means, the toolbox is only capable of describing context free grammars //TODO
  * @author isabel
  * @since 22.12.16
  */
@@ -16,6 +18,11 @@ public final class Rule {
     private final Nonterminal comingFrom;
     private final List<Symbol> rightSide;
 
+    /**
+     * the constructor for the rule
+     * @param comingFrom the left side of the rule
+     * @param rightSide the right side of the rule
+     */
     public Rule(Nonterminal comingFrom, List<Symbol> rightSide) {
         this.comingFrom = comingFrom;
 
@@ -23,32 +30,31 @@ public final class Rule {
 
     }
 
-    private Rule(Rule old) {
-        this.comingFrom = new Nonterminal(old.getComingFrom().getName());
 
-        List<Symbol> list =old.getRightSide().stream().map(symbol ->{
-            if (symbol instanceof Nonterminal) {
-                return new Nonterminal(symbol.getName());
-            } else {
-                return new Terminal(symbol.getName());
-            }
-        }).collect(Collectors.toList());
-       this.rightSide = new ArrayList<>(list);
-    }
-
+    /**
+     * Getter-Method for {@link #comingFrom}
+     * @return a {@link Nonterminal}, the left side of the rule
+     */
     public Nonterminal getComingFrom() {
         return comingFrom;
     }
 
 
+    /**
+     * Getter-Method for {@link #rightSide}
+     * @return a {@link java.util.Collections.UnmodifiableList} of {@link Symbol}s, the right side of the rule.
+     */
     public List<Symbol> getRightSide() {
         return Collections.unmodifiableList(new ArrayList<>(rightSide));
     }
 
 
-
+    /**
+     * copy-method
+     * @return a copy of this rule
+     */
     public Rule copy() {
-        return new Rule(this);
+        return new Rule(this.comingFrom,this.rightSide);
     }
 
     @Override

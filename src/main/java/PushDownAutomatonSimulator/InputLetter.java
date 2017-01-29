@@ -7,18 +7,30 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
+ * every symbol or string a {@link PushDownAutomaton} reads in, is an instance of this class.
  * @author Isabel
  * @since 29.10.2016
  */
 public final class InputLetter {
 
+    /**
+     * global null symbol
+     */
     public static final InputLetter NULLSYMBOL = new InputLetter("epsilon");
     private final String name;
 
+    /**
+     * constructor for an InputLetter with {@link #name} "name"
+     * @param name the name of this InputLetter
+     */
     public InputLetter(String name) {
         this.name = name;
     }
 
+    /**
+     * Getter-Method for {@link #name}
+     * @return {@link #name}
+     */
     public String getName() {
         if(name.equals("epsilon")) {
             return GUI.nameOfNullSymbol;

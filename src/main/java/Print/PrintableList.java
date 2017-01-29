@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created by isabel on 24.11.16.
- * My own List of Printables. No Null-objects allowed.
+ * My own {@link java.util.List} of {@link Printable}s. No Null-objects allowed.
+ * @author Isabel
+ * @singe 24.11.16
  */
 public class PrintableList extends ArrayList<Printable> implements Printable {
     public PrintableList(int n) {

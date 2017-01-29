@@ -85,6 +85,9 @@ public class GUI extends Application{
 
     private int textSize = 12;
 
+    /**
+     * name of the null symbol
+     */
     public static String nameOfNullSymbol = "\u03B5";
 
     private String defaultStyle = "/royal.css";
@@ -505,14 +508,26 @@ public class GUI extends Application{
     }
 
 
+    /**
+     * the controller for the content panel
+     * @return an {@link OverviewController}
+     */
     public OverviewController getOverviewController() {
         return overviewController;
     }
 
+    /**
+     * the controller for the root elements (menus, etc)
+     * @return a {@link RootController}
+     */
     public RootController getRootController() {
         return rootController;
     }
 
+    /**
+     * sets the style sheet.
+     * @param path Path to to the stylesheet
+     */
     public void setStyleSheet(String path) {
         primaryStage.getScene().getStylesheets().clear();
         String css = this.getClass().getResource(path).toExternalForm();
@@ -520,6 +535,10 @@ public class GUI extends Application{
         primaryStage.getScene().getStylesheets().add(css);
     }
 
+    /**
+     * set the style sheet to a external file
+     * @param file a File not located in the resources
+     */
     public void setStyleSheetExternal(File file) {
         primaryStage.getScene().getStylesheets().clear();
         String css =  "file:///" + file.getAbsolutePath().replace("\\", "/");

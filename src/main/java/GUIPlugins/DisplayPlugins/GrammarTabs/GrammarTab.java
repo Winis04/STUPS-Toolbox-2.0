@@ -7,7 +7,7 @@ import javafx.scene.Node;
  * @author fabian
  * @since 15.08.16
  */
-public interface GrammarTab {
+interface GrammarTab {
 
     /**
      * Return a JavaFX-Node that visualizes the function of this tab.

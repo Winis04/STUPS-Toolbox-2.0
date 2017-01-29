@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class GrammarUtil {
 
-    /****************************************************************************************************************
+    /*
      ---------------------------------------------------------------------------------------------------------------*
      -                      First some private methods. Scroll down to see the public methods.                     -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -230,7 +230,7 @@ public class GrammarUtil {
         return result;
     }
 
-    /****************************************************************************************************************
+    /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                The public methods follow after this comment.                                -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -759,7 +759,7 @@ public class GrammarUtil {
         });
         return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
     }
-    /****************************************************************************************************************
+    /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                Remove Lambda Rules                                                          -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -944,7 +944,7 @@ public class GrammarUtil {
     }
 
 
-    /****************************************************************************************************************
+    /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                eliminate Unit Rules                                                         -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -1231,10 +1231,10 @@ public class GrammarUtil {
         node.getChildren().forEach(GrammarUtil::number);
     }
 
-    /****************************************************************************************************************
-     ---------------------------------------------------------------------------------------------------------------*
-     -                                make chomsky normal form                                                      -*
-     ---------------------------------------------------------------------------------------------------------------*
+    /*
+    --------------------------------------------------------------------------------------------------------------------
+    |                                make chomsky normal form                                                          |
+    --------------------------------------------------------------------------------------------------------------------
      */
 
     /**
@@ -1327,7 +1327,7 @@ public class GrammarUtil {
                         tmp1.add(rule.getRightSide().get(i));
                     }
 
-                    List tmp2 = new ArrayList();
+                    List<Symbol> tmp2 = new ArrayList<>();
                     tmp2.add(first);
                     tmp2.add(mod);
                     Rule rule1 = new Rule(mod,tmp1);
@@ -1352,6 +1352,12 @@ public class GrammarUtil {
         }
         return new Grammar(g.getStartSymbol(),old,g.getName(),original);
     }
+
+    /**
+     * checks if a grammar is in CNF
+     * @param grammar a {@link Grammar} the to-be-checked grammar
+     * @return true, if the grammar is in CNF
+     */
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream().allMatch(rule -> {
             if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
@@ -1376,6 +1382,12 @@ public class GrammarUtil {
         return new Matrix(word.size(),word.size()+1, word);
     }
 
+    /**
+     * runs the cyk-algorithm.
+     * @param g the grammar
+     * @param word the word to be checked for the cyk
+     * @return a cyk-{@link Matrix}
+     */
     public static Matrix cyk(Grammar g, List<String> word) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
@@ -1426,6 +1438,13 @@ public class GrammarUtil {
         List<String> w = word.stream().map(Symbol::getName).collect(Collectors.toList());
         return languageContainsWord(grammar, w);
     }
+
+    /**
+     * checks if the language of a grammar contains a certain word
+     * @param grammar the {@link Grammar}
+     * @param word the word, that should be checked as a List of String (a string for a terminal)
+     * @return true, if the language contains the given word
+     */
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
         Grammar grammar1 = removeLambdaRules(grammar);
         Grammar grammar2 = eliminateUnitRules(grammar1);
@@ -1446,6 +1465,13 @@ public class GrammarUtil {
         return new Configuration(list,null,g);
     }
 
+    /**
+     * returns a derivation path for the given grammar and word (if there is any)
+     * @param g the {@link} Grammar
+     * @param word the word as a list of {@link Symbol}s
+     * @param bound upper bound for the breadth-first search
+     * @return a derivation path as a list of {@link Configuration}s
+     */
     public static List<Configuration> getPath(Grammar g, List<Symbol> word, long bound) {
         Configuration end = getEndConfig(g,word,bound);
         if(end == null) {
@@ -1489,6 +1515,13 @@ public class GrammarUtil {
         return result;
     }
 
+    /**
+     * checks if two lists are equal
+     * @param list1 List 1
+     * @param list2 List 2
+     * @return true, if the lists are equal
+     */
+    @Deprecated
     public static boolean listEqual(List<Symbol> list1, List<Symbol> list2) {
         if(list1.size() != list2.size()) {
             return false;
@@ -1500,7 +1533,7 @@ public class GrammarUtil {
             return res;
         }
     }
-    /****************************************************************************************************************
+    /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                           PDA                                                               -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -1648,13 +1681,18 @@ public class GrammarUtil {
         }
         return g;
     }
+
+    /**
+     * checks if the given grammar has unit rules
+     * @param g the {@link Grammar}
+     * @return true, if the grammar has unit rules
+     */
     public static boolean hasUnitRules(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Nonterminal);
       }
     /**
      * checks, if the start symbol occurs on a right side of any rule
-     * @author Isabel Wingen
      * @param g the grammar g
      * @return true, if it is on a right side
      */
@@ -1666,7 +1704,6 @@ public class GrammarUtil {
     /**
      * checks if a grammar is without any rules pointing on lambda
      *
-     * @author Isabel Wingen
      * @param g the grammar
      * @return true, if the grammar is lambda-free
      */

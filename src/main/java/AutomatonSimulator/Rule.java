@@ -111,14 +111,26 @@ public class Rule implements Printable{
         isLoop = loop;
     }
 
+    /**
+     * Getter-Method for {@link #length}
+     * @return {@link #length}
+     */
     public int getLength() {
         return length;
     }
 
+    /**
+     * Setter-Method for {@link #length}
+     * @param length the new value for {@link #length}
+     */
     public void setLength(int length) {
         this.length = length;
     }
 
+    /**
+     * Setter-method for {@link #maxLength}
+     * @param maxLength the new value for {@link #maxLength}
+     */
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
     }

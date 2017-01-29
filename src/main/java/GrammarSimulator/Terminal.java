@@ -15,6 +15,9 @@ public final class Terminal implements Symbol {
      */
     private final String name;
 
+    /**
+     * the global null symbol for grammars
+     */
     public static final Terminal NULLSYMBOL=new Terminal("epsilon");
 
     /**

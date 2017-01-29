@@ -10,6 +10,10 @@ import java.util.Iterator;
  * @since 24.11.16
  */
 public class PrintableSet extends HashSet<Printable> implements Printable {
+    /**
+     * constructor
+     * @param n number of elements
+     */
     public PrintableSet(int n) {
         super(n);
     }

@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.joining;
 
 /**
+ * this class describes the table that one can obtain by doing the cyk-algorithm.
  * @author Isabel
  * @since 26.10.2016
  */
@@ -18,8 +19,15 @@ public class Matrix implements Printable{
     private final int rows;
     private final int columns;
     private final List<String> word;
-    private final HashSet<Nonterminal>[][] matrix;
+    private final HashSet[][] matrix;
     private int spacing;
+
+    /**
+     * constructor
+     * @param rows number of rows
+     * @param columns number of columns
+     * @param word the word belonging to this matrix
+     */
     public Matrix(int rows, int columns, List<String> word) {
         this.word=word;
         matrix=new HashSet[rows][columns];
@@ -34,6 +42,13 @@ public class Matrix implements Printable{
         this.spacing=3;
 
     }
+
+    /**
+     * add a Nonterminal to a certain cell
+     * @param c the column index of the cell
+     * @param r the row index of the cell
+     * @param nt the {@link Nonterminal} which should be added
+     */
     public void addToCell(int c, int r, Nonterminal nt) {
         if(c > 0) {
             matrix[r][c].add(nt);
@@ -183,19 +198,36 @@ public class Matrix implements Printable{
         Printer.print(space+"\\end{table}\n\n",writer);
     }
 
-
+    /**
+     * Getter-Method for a cell of {@link #matrix}
+     * @param c the column index
+     * @param r the row index
+     * @return a {@link HashSet} of {@link Nonterminal}s
+     */
     public HashSet<Nonterminal> getCell(int c, int r) {
         return matrix[r][c];
     }
 
+    /**
+     * Getter-Method for {@link #word}, the word of this matrix
+     * @return the {@link #word}
+     */
     public List<String> getWord() {
         return word;
     }
 
+    /**
+     * Getter-method for {@link #rows}, the number of rows.
+     * @return {@link #rows}
+     */
     public int getNumberOfRows() {
         return rows;
     }
 
+    /**
+     * Getter-method for {@link #columns}, the number of columns.
+     * @return {@link #columns}
+     */
     public int getNumberOfColumns() {
         return columns;
     }

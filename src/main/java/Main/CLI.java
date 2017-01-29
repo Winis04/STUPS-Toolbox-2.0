@@ -195,7 +195,7 @@ public class CLI {
     }
 
     /**
-     * checks, if the store contains the {@Storable} storable, which is an instance of {@link Class} type.
+     * checks, if the store contains the {@link Storable} storable, which is an instance of {@link Class} type.
      * @param storable the object, that is checked
      * @param type the class of the object
      * @return true, if the store contains the storable; false otherwise.

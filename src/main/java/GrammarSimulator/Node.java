@@ -24,7 +24,7 @@ public class Node {
     /**
      * the following nodes
      */
-    private LinkedHashSet<Node> children;
+    private final LinkedHashSet<Node> children;
     /**
      *
      */

@@ -57,7 +57,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
             if(!input.equals(field.getText())) {
                 input = field.getText();
                 wordLabel.setText("");
-                ArrayList<String> inputList = new ArrayList();
+                ArrayList<String> inputList = new ArrayList<>();
                 StringTokenizer tokenizer = new StringTokenizer(input, " ");
                 while(tokenizer.hasMoreElements()) {
                     inputList.add(tokenizer.nextToken());
