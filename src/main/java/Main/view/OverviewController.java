@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ public class OverviewController {
 
     private final ContextMenu dynamicContextMenu=new ContextMenu();
 
+    public static Comparator<Class> classComparator = (c1,c2) -> c1.getSimpleName().compareTo(c2.getName());
 
     private GUI gui;
 
@@ -67,12 +69,12 @@ public class OverviewController {
         if(!gui.getCli().store.keySet().isEmpty()) {
             /* top items **/
 
-            gui.getCli().store.keySet().forEach(clazz -> {
+            gui.getCli().store.keySet().stream().sorted(classComparator).forEach(clazz -> {
                 // the name of the storable objects
                 TreeItem<String> top = new TreeItem<>(clazz.getSimpleName());
 
                 // every object of the top-type
-                List<TreeItem<String>> list = gui.getCli().store.get(clazz).keySet().stream()
+                List<TreeItem<String>> list = gui.getCli().store.get(clazz).keySet().stream().sorted()
                         .map(TreeItem::new)
                         .collect(Collectors.toList());
 

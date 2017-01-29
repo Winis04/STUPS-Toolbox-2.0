@@ -31,7 +31,7 @@ public class Remove extends SimpleFunctionPlugin {
 
 
     @Override
-    String getName() {
+    public String getName() {
         return "Remove";
     }
 

@@ -32,7 +32,7 @@ public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return "eliminate Unit Rules";
     }
 

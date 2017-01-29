@@ -58,7 +58,7 @@ public class Rename extends SimpleFunctionPlugin {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return "rename";
     }
 

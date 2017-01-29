@@ -22,7 +22,7 @@ public class GrammarToPDA extends SimpleFunctionPlugin {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return "to PDA";
     }
 

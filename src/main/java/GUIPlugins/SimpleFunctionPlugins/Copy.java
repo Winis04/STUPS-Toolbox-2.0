@@ -23,7 +23,7 @@ public class Copy extends SimpleFunctionPlugin {
 
 
     @Override
-    String getName() {
+   public String getName() {
         return "Copy";
     }
 

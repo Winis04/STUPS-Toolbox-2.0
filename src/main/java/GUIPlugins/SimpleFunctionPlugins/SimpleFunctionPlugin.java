@@ -35,7 +35,7 @@ public abstract class SimpleFunctionPlugin {
      *
      * @return The plugin's name.
      */
-    abstract String getName();
+    public abstract String getName();
 
     /**
      * Returns the desired object-type, needed by {@link #execute(Object)}.

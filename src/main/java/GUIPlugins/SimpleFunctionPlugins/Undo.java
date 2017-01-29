@@ -25,7 +25,7 @@ public class Undo extends SimpleFunctionPlugin {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return "Undo";
     }
 

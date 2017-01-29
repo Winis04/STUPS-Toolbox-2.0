@@ -21,7 +21,7 @@ public class GrammarLLParsingTable extends SimpleFunctionPlugin {
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return "LL-Parsing Table";
     }
 

@@ -26,10 +26,10 @@ import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static Main.view.OverviewController.classComparator;
 
 
 /**
@@ -128,7 +128,11 @@ public class GUI extends Application{
      * Is called after a plugin's execution
      */
     public void refresh() {
-        overviewController.makeTree(simpleFunctionPlugins.values()); //makes the tree
+        Collection<SimpleFunctionPlugin> list=simpleFunctionPlugins.values().stream()
+                .sorted()
+              //  .sorted((x,y) -> x.getName().compareTo(y.getName()))
+                .collect(Collectors.toList());
+        overviewController.makeTree(list); //makes the tree
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
