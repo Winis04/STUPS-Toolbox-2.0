@@ -4,6 +4,7 @@ import GrammarSimulator.Grammar;
 import Print.Printer;
 
 /**
+ * Prints the current {@link Grammar}.
  * @author fabian
  * @since 11.08.16
  */

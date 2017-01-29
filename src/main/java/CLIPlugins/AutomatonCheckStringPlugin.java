@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
+ * Checks if an {@link Automaton} accepts a given string.
  * @author fabian
  * @since 15.06.16
  */

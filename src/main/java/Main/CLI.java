@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
+ * One of the two main classes of the application. Is used as a console and executes the commands the user types into
+ * the console.
  * @author fabian
  * @since 15.06.16
  */

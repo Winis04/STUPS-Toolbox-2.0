@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
+ * rints the Follow-sets of the current {@link Grammar}.
  * @author fabian
  * @since 23.08.16
  */

@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
+ * Loads a {@link PushDownAutomaton} from a {@link java.io.File}.
  * @author fabian
  * @since 11.08.16
  */

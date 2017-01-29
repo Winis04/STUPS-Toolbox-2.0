@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 /**
+ * Logic for {@link Automaton}
  * @author fabian
  * @since 20.06.16
  */

@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
+ * Turns an {@link Automaton} into one without epsilon transitions.
  * @author fabian
  * @since 15.06.16
  */
@@ -24,7 +25,7 @@ public class AutomatonRemoveEpsilonStatesPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "Turns the loaded automaton into a one without epsilon transitions. Doesn't take any parameters.";
+        return "Turns the loaded automaton into one without epsilon transitions. Doesn't take any parameters.";
     }
 
     @Override

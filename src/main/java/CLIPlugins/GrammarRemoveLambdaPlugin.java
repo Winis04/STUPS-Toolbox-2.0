@@ -8,7 +8,7 @@ import java.util.*;
 
 
 /**
- * removes lambda-rules
+ * removes lambda-rules of the current {@link Grammar}.
  * @author isabel
  * @since 20.10.16
  */
@@ -28,7 +28,7 @@ public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "removes lambda-rules.";
+        return "removes lambda-rules of the loaded grammar. Doesn't take any parameters";
     }
 
     @Override

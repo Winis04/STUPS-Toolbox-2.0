@@ -8,6 +8,7 @@ import Print.Printer;
 import java.util.Arrays;
 
 /**
+ * Runs the CYK-Algorithm on the current {@link Grammar}.
  * @author Isabel
  * @since 26.10.2016
  */

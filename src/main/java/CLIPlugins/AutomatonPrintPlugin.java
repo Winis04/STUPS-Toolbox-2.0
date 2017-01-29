@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import Print.Printer;
 
 /**
+ * Prints an {@link Automaton} to the console.
  * @author fabian
  * @since 20.06.16
  */

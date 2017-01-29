@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.util.HashSet;
 
 /**
+ * A state of an {@link Automaton}.
  * @author fabian
  * @since 21.04.16
  */

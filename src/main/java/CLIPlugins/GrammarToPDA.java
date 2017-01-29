@@ -5,7 +5,7 @@ import GrammarSimulator.GrammarUtil;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 
 /**
- * translates a grammar to a pda
+ * Transforms a {@link Grammar} into a {@link PushDownAutomaton}.
  * @author Isabel
  * @since 29.10.2016
  */

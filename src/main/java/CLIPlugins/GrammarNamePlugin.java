@@ -3,7 +3,7 @@ package CLIPlugins;
 import GrammarSimulator.Grammar;
 
 /**
- * names a grammar
+ * names a {@link Grammar}.
  * @author Isabel
  * @since 19.11.2016
  */

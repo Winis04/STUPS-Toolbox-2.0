@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
+ * Converts an {@link Automaton} to a DFA.
  * @author fabian
  * @since 13.07.16
  */

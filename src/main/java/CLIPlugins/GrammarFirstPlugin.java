@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
+ * Prints the Firsts-sets of the current {@link Grammar}.
  * @author fabian
  * @since 20.08.16
  */

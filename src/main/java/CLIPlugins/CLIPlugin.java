@@ -1,6 +1,8 @@
 package CLIPlugins;
 
 /**
+ * Plugins are executable commands for the terminal. The plugin operates on the currently loaded object
+ * of the type {@link #inputType()}. Returns an object of type {@link #outputType()}.
  * @author fabian
  * @since 15.06.16
  */

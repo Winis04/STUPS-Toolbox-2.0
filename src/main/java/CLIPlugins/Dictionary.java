@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * A dictionary for uncommon english words regarding grammars and automatons.
  * @author Isabel
  * @since 26.10.2016
  */

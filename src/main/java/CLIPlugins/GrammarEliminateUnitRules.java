@@ -4,6 +4,7 @@ import GrammarSimulator.*;
 import Print.Printer;
 
 /**
+ * Eliminates unit {@link Rule}s of the current {@link Grammar}.
  * @author Isabel
  * @since 22.10.2016
  */

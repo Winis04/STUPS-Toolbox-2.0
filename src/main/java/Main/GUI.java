@@ -425,8 +425,8 @@ public class GUI extends Application{
 
 
     /**
-     * getter for the current display plugin
-     * @return the current display plugin
+     * Getter-Method for the current {@link DisplayPlugin}
+     * @return the current {@link DisplayPlugin}
      */
     public DisplayPlugin getCurrentDisplayPlugin() {
         return currentDisplayPlugin;

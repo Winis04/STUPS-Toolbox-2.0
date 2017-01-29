@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
+ * Prints the nullable-set of the current {@link Grammar}.
  * @author fabian
  * @since 22.08.16
  */

@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
+ * Loads a {@link Grammar} from a text {@link File}.
  * @author fabian
  * @since 11.08.16
  */

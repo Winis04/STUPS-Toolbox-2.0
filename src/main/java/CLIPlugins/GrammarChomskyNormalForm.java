@@ -5,6 +5,7 @@ import GrammarSimulator.GrammarUtil;
 import Print.Printer;
 
 /**
+ * Calculates the chomsky normal form of the current {@link Grammar}.
  * @author isabel
  * @since 25.10.16
  */

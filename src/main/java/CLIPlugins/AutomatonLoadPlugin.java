@@ -8,6 +8,7 @@ import AutomatonSimulator.AutomatonUtil;
 import java.io.*;
 
 /**
+ * Loads an {@link Automaton} from a {@link File}.
  * @author fabian
  * @since 15.06.16
  */

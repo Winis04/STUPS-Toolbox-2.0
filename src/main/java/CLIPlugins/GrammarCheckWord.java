@@ -7,6 +7,7 @@ import Print.Printer;
 import java.util.Arrays;
 
 /**
+ * checks, if the current {@link Grammar}'s language contains the given word.
  * @author Isabel
  * @since 12.12.2016
  */

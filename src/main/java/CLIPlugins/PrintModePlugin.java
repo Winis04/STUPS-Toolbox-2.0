@@ -7,6 +7,7 @@ import java.io.*;
 
 
 /**
+ * Sets the Print-Mode of the {@link Printer}.
  * @author Isabel
  * @since 18.11.2016
  */

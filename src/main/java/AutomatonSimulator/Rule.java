@@ -9,6 +9,8 @@ import java.util.HashSet;
 import static java.util.stream.Collectors.joining;
 
 /**
+ * A production rule of a {@link Automaton}. Describes a transition of {@link Automaton} from one {@link State}
+ * to another {@link State} {@link #goingTo} by reading a input {@link String} {@link #acceptedInputs}.
  * @author fabian
  * @since 21.04.16
  */

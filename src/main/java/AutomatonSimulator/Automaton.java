@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 
 /**
+ * the model for formal automatons.
  * @author fabian
  * @since 21.04.16
  */
@@ -48,6 +49,7 @@ public class Automaton implements Printable, Storable {
      * @param states A set of states.
      * @param startState The initial states.
      * @param allInputs A set of input-strings.
+     * @param name name of the automaton
      */
     public Automaton(HashSet<State> states, State startState, HashSet<String> allInputs, String name) {
         this.states = states;

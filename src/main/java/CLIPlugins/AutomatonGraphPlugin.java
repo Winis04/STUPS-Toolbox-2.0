@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
+ * Writes an automaton into a .dot file.
  * @author fabian
  * @since 15.06.16
  */

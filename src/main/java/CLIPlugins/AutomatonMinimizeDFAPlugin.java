@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
+ * Turns an {@link Automaton} into a minimal DFA
  * @author fabian
  * @since 27.07.16
  */

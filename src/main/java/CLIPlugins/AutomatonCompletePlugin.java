@@ -4,6 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
+ * Completes an {@link Automaton}.
  * @author fabian
  * @since 28.07.16
  */
