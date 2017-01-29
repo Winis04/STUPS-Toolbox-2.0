@@ -59,7 +59,6 @@ public class RootController {
     @FXML
     private void latexModeOn() {
         String[] arr = new String[]{"*.tex"};
-        ArrayList<String> list = new ArrayList<>(Arrays.asList(arr));
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose latex file");
@@ -184,7 +183,7 @@ public class RootController {
     private void loadStorable(Class clazz) {
         File file = gui.loadFile(clazz.getSimpleName());
         if(file != null) {
-            BufferedReader reader = null;
+            BufferedReader reader;
             TextInputDialog dialog = new TextInputDialog(file.getName());
             dialog.setTitle("Choose a name");
             dialog.setContentText("Please enter Name:");

@@ -102,7 +102,7 @@ public class Matrix implements Printable{
                 HashSet<Nonterminal> tmp=matrix[j][i];
                 String cellContent=tmp.stream().map(Nonterminal::getName).collect(joining(", "));
                 Printer.print(cellContent,writer);
-                int fill=0;
+                int fill;
 
 
 

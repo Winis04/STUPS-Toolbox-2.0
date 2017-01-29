@@ -2,8 +2,6 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import Main.Storable;
 
-import java.io.*;
-
 /**
  * @author Isabel
  * @since 04.12.2016

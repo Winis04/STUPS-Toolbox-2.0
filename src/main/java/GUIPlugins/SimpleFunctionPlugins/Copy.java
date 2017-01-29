@@ -18,12 +18,7 @@ public class Copy extends SimpleFunctionPlugin {
 
         Storable storable = (Storable) object;
         Storable copy = storable.otherName(storable.getName()+"_Copy");
-        TreeItem<String> selected = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
-        String parent = selected.getParent().getValue().toLowerCase();
-        Class parentClass = gui.getCli().lookUpTable.get(parent);
-        String name = copy.getName();
 
-        //gui.refresh();
         return copy;
     }
 

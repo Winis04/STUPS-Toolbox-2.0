@@ -36,7 +36,6 @@ public class GrammarGUI implements DisplayPlugin {
         /*
       Contains all {@link GrammarTab}s.
      */
-        HashSet<GrammarTab> tabs = new HashSet<>();
 
         rootPane.getTabs().clear();
         Tab edit =new Tab("edit");

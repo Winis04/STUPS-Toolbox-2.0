@@ -132,7 +132,6 @@ public class AutomatonUtil {
     private static void writeRules(BufferedWriter writer, Automaton automaton) {
         //Get all states in order of their appearance in the automatons rules.
         ArrayList<State> states = getStatesInOrder(automaton);
-        boolean comma = false;
 
         //Iterate through all rules of every state and print their rules.
         try {
@@ -1095,7 +1094,7 @@ public class AutomatonUtil {
         for(int i=0;i<statesSorted.size();i++) {
             State current=statesSorted.get(i);
             for(Rule rule : current.getRules()) {
-                int j=statesSorted.indexOf(rule.getGoingTo());
+                statesSorted.indexOf(rule.getGoingTo());
                 rule.setMaxLength(max);
             }
         }

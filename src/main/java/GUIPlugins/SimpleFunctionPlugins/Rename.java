@@ -28,7 +28,6 @@ public class Rename extends SimpleFunctionPlugin {
 
 
         Optional<String> result = dialog.showAndWait();
-        Storable copy;
         if(result.isPresent()) {
             String string = result.get();
             String oldName = selectedItem.getValue();

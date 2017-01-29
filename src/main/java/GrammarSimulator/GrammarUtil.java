@@ -270,7 +270,7 @@ public class GrammarUtil {
      */
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
-        Grammar grammar = null;
+        Grammar grammar;
         BufferedReader grammarReader = new BufferedReader(new FileReader(file));
         String string = "";
         String line;
@@ -837,7 +837,6 @@ public class GrammarUtil {
      *              has to be called again, but this time with "again" set to false
      */
     private static Grammar removeLambdaRules_StepThree(Grammar g, boolean again, Grammar original) {
-        boolean startSymbolPointsOnLamda=GrammarUtil.startSymbolPointsOnLambda(g);
         // delete lambda-rules
         HashSet<Rule> tmp2 = new HashSet<>();
         g.getRules().stream()
@@ -1313,8 +1312,6 @@ public class GrammarUtil {
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
         HashSet<Rule> tmp = new HashSet<>();
         tmp.addAll(g.getRules());
-        HashSet<Rule> freshRules = new HashSet<>();
-        final boolean[] changed = {true};
         final int[] counter = {0};
         Set<Rule> old = new HashSet<>(g.getRules());
         while(true) {
@@ -1474,7 +1471,6 @@ public class GrammarUtil {
         HashSet<Configuration> alreadySeen = new HashSet<>();
         alreadySeen.add(startConfig);
         long counter=0;
-        boolean goOn= true;
 
         while(!queue.isEmpty() && counter < bound) {
             counter++;

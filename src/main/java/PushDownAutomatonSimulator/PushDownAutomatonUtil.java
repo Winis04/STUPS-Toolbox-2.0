@@ -146,7 +146,7 @@ public class PushDownAutomatonUtil {
         //the rule is not a lambda-rule and can be applied
 
         State currentState = rule.getGoingTo();
-        Stack<StackLetter> stack = new Stack<>();
+        Stack<StackLetter> stack;
         stack = (Stack<StackLetter>) run.getStack().clone();
         stack.pop();
         ArrayList<StackLetter> list = new ArrayList<>();

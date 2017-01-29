@@ -14,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 

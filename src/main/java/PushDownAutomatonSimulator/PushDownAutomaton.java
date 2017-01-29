@@ -144,10 +144,7 @@ public class PushDownAutomaton implements Printable, Storable{
         //1 & 2 & 3\\
         //\hline
         int ruleNumber=this.rules.size();
-        int half = ruleNumber/2;
-        if(2*half < ruleNumber) {
-            half++;
-        }
+
         PDARule current;
         for(int i=0;i<ruleNumber;i+=2) {
             Printer.print(space+"\t\t\\hline\n",writer);
