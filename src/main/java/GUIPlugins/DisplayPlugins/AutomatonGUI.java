@@ -152,7 +152,7 @@ public class AutomatonGUI implements DisplayPlugin {
         //Set the shape of states to a circle with a radius of 30 pixels.
         visualizationViewer.getRenderContext().setVertexShapeTransformer(s -> {
             int diameter = 30;
-            if(s.length() > 4) {
+            if(s!=null && s.length() > 4) {
                 diameter += 8 * (s.length() - 4);
             }
             return new Ellipse2D.Double(-diameter/2, -diameter/2, diameter, diameter);

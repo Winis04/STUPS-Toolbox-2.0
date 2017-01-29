@@ -147,7 +147,7 @@ public class PushDownAutomatonUtil {
 
         State currentState = rule.getGoingTo();
         Stack<StackLetter> stack;
-        stack = (Stack<StackLetter>) run.getStack().clone();
+        stack = run.getStack(); //TODO: check Change
         stack.pop();
         ArrayList<StackLetter> list = new ArrayList<>();
         list.addAll(rule.getNewToS());

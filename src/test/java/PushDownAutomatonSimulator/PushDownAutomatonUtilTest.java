@@ -11,7 +11,7 @@ import java.util.Stack;
 public class PushDownAutomatonUtilTest {
     @Test
     public void stack() {
-        Stack<String> stack = new Stack();
+        Stack<String> stack = new Stack<>();
         stack.add("1");
         stack.add("2");
         stack.add("3");

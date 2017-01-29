@@ -31,13 +31,19 @@ public class RunThroughInfo {
         this.myPDA=pda;
     }
 
+
     /**
-     * Getter-Method for {@link #stack}
-     * @return the {@link #stack}
+     * Getter-Method for Stack. Works with immutable, because a copy is returned.
+     * @return a {@link Stack} which is a copy of the stack of this object.
      */
     public Stack<StackLetter> getStack() {
-        return stack;
+        List<StackLetter> list = Collections.unmodifiableList(stack);
+        Stack<StackLetter> res = new Stack<>();
+        list.forEach(res::push);
+        return res;
     }
+
+
 
     /**
      * Getter-Method for {@link #input}
