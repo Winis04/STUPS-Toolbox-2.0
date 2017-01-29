@@ -49,7 +49,7 @@ public class Automaton implements Printable, Storable {
      * @param startState The initial states.
      * @param allInputs A set of input-strings.
      */
-    public Automaton(HashSet<State> states, State startState, HashSet<String> allInputs) {
+    public Automaton(HashSet<State> states, State startState, HashSet<String> allInputs, String name) {
         this.states = states;
         this.startState = startState;
         this.allInputs = allInputs;
@@ -57,6 +57,7 @@ public class Automaton implements Printable, Storable {
         if(epsilonCycle) {
             System.out.println("Epsilon-cycles in this automaton have been removed automatically!");
         }
+        this.name=name;
 
     }
 
@@ -321,6 +322,10 @@ public class Automaton implements Printable, Storable {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

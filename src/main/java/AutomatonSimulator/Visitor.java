@@ -49,10 +49,10 @@ class Visitor extends DepthFirstAdapter {
     @Override
     public void outARoot(ARoot node) {
         HashSet<State> stateList = states.keySet().stream().map(states::get).collect(Collectors.toCollection(HashSet::new));
-        automaton = new Automaton(stateList, startState, allInputs);
+        automaton = new Automaton(stateList, startState, allInputs,"");
     }
 
     public Automaton getAutomaton(String name) {
-        return (Automaton) automaton.otherName(name);
+        return new Automaton(automaton.getStates(),automaton.getStartState(),automaton.getAllInputs(),name);
     }
 }

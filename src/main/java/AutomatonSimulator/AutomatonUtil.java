@@ -822,7 +822,7 @@ public class AutomatonUtil {
             }
         }
 
-        return new Automaton(new HashSet<>(newStates.values()), newStates.get(startState.getName()), epsilonFreeAutomaton.getAllInputs());
+        return new Automaton(new HashSet<>(newStates.values()), newStates.get(startState.getName()), epsilonFreeAutomaton.getAllInputs(),automaton.getName());
     }
 
     /**
@@ -966,7 +966,7 @@ public class AutomatonUtil {
             }
         }
 
-        return new Automaton(new HashSet<>(states), startState, dfa.getAllInputs());
+        return new Automaton(new HashSet<>(states), startState, dfa.getAllInputs(),dfa.getName());
     }
 
     /**
