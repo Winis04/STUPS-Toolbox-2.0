@@ -7,6 +7,7 @@ import Print.Printer;
  * @author fabian
  * @since 20.06.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonPrintPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

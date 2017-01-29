@@ -24,6 +24,7 @@ import java.util.Optional;
  * @author Isabel
  * @since 28.11.2016
  */
+@SuppressWarnings("ALL")
 public class RootController {
 
 
@@ -56,7 +57,7 @@ public class RootController {
     }
     @FXML
     private void latexModeOn() {
-        String[] arr = new String[]{"*.tex"};
+
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose latex file");
@@ -119,13 +120,13 @@ public class RootController {
         alert.getButtonTypes().setAll(epsilon, lambda, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == epsilon){
-            GUI.nameOfNullSymbol = "\u03B5";
-        } else if (result.get() == lambda) {
-            GUI.nameOfNullSymbol = "\u03BB";
-        } else {
-            // ... user chose CANCEL or closed the dialog
-        }
+        if(result.isPresent()) {
+            if (result.get() == epsilon) {
+                GUI.nameOfNullSymbol = "\u03B5";
+            } else if (result.get() == lambda) {
+                GUI.nameOfNullSymbol = "\u03BB";
+            }
+        } //TODO else-case
 
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
 
@@ -159,23 +160,23 @@ public class RootController {
         alert.getButtonTypes().setAll(royal, autumn, own, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == royal){
-            gui.setStyleSheet("/royal.css");
-        } else if (result.get() == autumn) {
-            gui.setStyleSheet("/mild.css");
-        } else if (result.get() == own){
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("open .css");
-            fileChooser.getExtensionFilters().addAll(
-                    new ExtensionFilter("style-sheets", "*.css"));
+        if(result.isPresent()) {
+            if (result.get() == royal) {
+                gui.setStyleSheet("/royal.css");
+            } else if (result.get() == autumn) {
+                gui.setStyleSheet("/mild.css");
+            } else if (result.get() == own) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("open .css");
+                fileChooser.getExtensionFilters().addAll(
+                        new ExtensionFilter("style-sheets", "*.css"));
 
-            File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
-            if (selectedFile != null) {
-                gui.setStyleSheetExternal(selectedFile);
+                File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
+                if (selectedFile != null) {
+                    gui.setStyleSheetExternal(selectedFile);
+                } //TODO else case
             }
-        } else {
-
-        }
+        } //TODO else case
     }
 
     private void loadStorable(Class clazz) {
@@ -300,12 +301,10 @@ public class RootController {
         Storable storable = new Grammar(grammar.getStartSymbol(),grammar.getRules(),"newGrammar", (Grammar) grammar.getPreviousVersion());
         Class clazz = Grammar.class;
         String name = storable.getName();
-        if (storable != null) {
-            gui.getCli().objects.put(clazz, storable);
-            gui.getCli().store.get(clazz).put(name,storable);
-            gui.refresh(storable);
-            gui.refresh();
-        }
+        gui.getCli().objects.put(clazz, storable);
+        gui.getCli().store.get(clazz).put(name,storable);
+        gui.refresh(storable);
+        gui.refresh();
     }
 
     @FXML
@@ -314,12 +313,10 @@ public class RootController {
         Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
         Class clazz = PushDownAutomaton.class;
         String name = storable.getName();
-        if (storable != null) {
-            gui.getCli().objects.put(clazz, storable);
-            gui.getCli().store.get(clazz).put(name,storable);
-            gui.refresh(storable);
-            gui.refresh();
-        }
+        gui.getCli().objects.put(clazz, storable);
+        gui.getCli().store.get(clazz).put(name,storable);
+        gui.refresh(storable);
+        gui.refresh();
     }
 
     @FXML
@@ -327,12 +324,10 @@ public class RootController {
         Storable storable = new Automaton();
         Class clazz = Automaton.class;
         String name = storable.getName();
-        if (storable != null) {
-            gui.getCli().objects.put(clazz, storable);
-            gui.getCli().store.get(clazz).put(name,storable);
-            gui.refresh(storable);
-            gui.refresh();
-        }
+        gui.getCli().objects.put(clazz, storable);
+        gui.getCli().store.get(clazz).put(name,storable);
+        gui.refresh(storable);
+        gui.refresh();
     }
 
 

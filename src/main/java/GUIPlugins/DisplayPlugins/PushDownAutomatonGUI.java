@@ -85,12 +85,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setOnMouseClicked(event -> {
                         if (event.getButton().equals(MouseButton.SECONDARY)) {
                             PushDownAutomaton freshPDA = editRule(pda,rule);
-                            gui.getCli().objects.put(PushDownAutomaton.class,freshPDA); //add new object as the current object
-                            gui.getCli().store.get(PushDownAutomaton.class).put(freshPDA.getName(),freshPDA); //add object to the store
-                            gui.refresh(freshPDA); //switch to new object
-                            gui.refresh(); //refresh the treeView
-
-                        } else if(event.getButton().equals(MouseButton.PRIMARY)) {
+                            if(freshPDA != null) {
+                                gui.getCli().objects.put(PushDownAutomaton.class, freshPDA); //add new object as the current object
+                                gui.getCli().store.get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
+                                gui.refresh(freshPDA); //switch to new object
+                                gui.refresh(); //refresh the treeView
+                            }
 
                         }
                     });
@@ -117,7 +117,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 alert.setContentText(path(runThroughInfo,"\n")+"\n\ncopy the result?");
                                 alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
                                 Optional<ButtonType> result = alert.showAndWait();
-                                if (result.get() == ButtonType.YES){
+                                if (result.isPresent() && result.get() == ButtonType.YES){
                                     Clipboard clipboard = Clipboard.getSystemClipboard();
                                     ClipboardContent content = new ClipboardContent();
                                     content.putString(path(runThroughInfo,"\n"));
@@ -147,8 +147,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
                                 alert.showAndWait();
                                 CheckStringPDAPlugin.startnew(this);
-                            } else {
-
                             }
                         }
 

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 26.10.2016
  */
+@SuppressWarnings("ALL")
 public class Dictionary implements CLIPlugin {
 
     private final Map<String, String> dictionary = getDictionary();

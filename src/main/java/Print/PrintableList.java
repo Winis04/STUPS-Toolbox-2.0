@@ -9,6 +9,7 @@ import java.util.Collection;
  * @author Isabel
  * @since 24.11.16
  */
+@SuppressWarnings("ALL")
 public class PrintableList extends ArrayList<Printable> implements Printable {
     public PrintableList(int n) {
         super(n);

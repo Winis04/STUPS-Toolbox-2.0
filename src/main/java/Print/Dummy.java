@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
  * @author Isabel
  * @since 25.11.2016
  */
+@SuppressWarnings("ALL")
 public class Dummy implements Printable {
     private String s="";
 

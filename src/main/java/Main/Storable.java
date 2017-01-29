@@ -9,6 +9,7 @@ import java.io.File;
  * @author Isabel
  * @since 27.11.2016
  */
+@SuppressWarnings("ALL")
 public interface Storable {
     /**
      * a deep-copy of the object.

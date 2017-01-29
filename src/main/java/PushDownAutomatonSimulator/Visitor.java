@@ -16,30 +16,11 @@ class Visitor extends DepthFirstAdapter {
     private State start_state;
     private StackLetter initialStackLetter;
     private final HashSet<State> states = new HashSet<>();
-    private final HashSet<InputLetter> inputAlphabet = new HashSet<>();
-    private final HashSet<StackLetter> stackAlphabet = new HashSet<>();
+   // private final HashSet<InputLetter> inputAlphabet = new HashSet<>();
+  //  private final HashSet<StackLetter> stackAlphabet = new HashSet<>();
     private final ArrayList<PDARule> rules = new ArrayList<>();
     @Override
     public void inASymbols(ASymbols node) {
-
-        for(TSymbol inputLetter : node.getInputletters()) {
-            String name = inputLetter.getText().replaceAll("'","");
-            if(name.equals("epsilon") || name.equals("lambda")) {
-                inputAlphabet.add(InputLetter.NULLSYMBOL);
-            } else {
-                inputAlphabet.add(new InputLetter(name));
-            }
-        }
-        inputAlphabet.add(InputLetter.NULLSYMBOL);
-        for(TSymbol stackLetter : node.getStackletters()) {
-            String name = stackLetter.getText().replaceAll("'","");
-            if(name.equals("epsilon") || name.equals("lambda")) {
-                stackAlphabet.add(StackLetter.NULLSYMBOL);
-            } else {
-                stackAlphabet.add(new StackLetter(name));
-            }
-        }
-        stackAlphabet.add(StackLetter.NULLSYMBOL);
 
         for(TIdentifier state : node.getStates()) {
             String name = state.getText().replaceAll("'","");

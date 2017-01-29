@@ -8,6 +8,7 @@ import Main.Storable;
  * @author fabian
  * @since 26.07.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonRenameStatesPlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

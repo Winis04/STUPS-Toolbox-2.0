@@ -11,6 +11,7 @@ import javafx.scene.control.MenuItem;
  * @since 18.06.16
  */
 
+@SuppressWarnings("ALL")
 public abstract class SimpleFunctionPlugin {
 
     /**
@@ -27,7 +28,7 @@ public abstract class SimpleFunctionPlugin {
      * @param object The object.
      * @return The changed object.
      */
-    public abstract Storable execute(Object object);
+    protected abstract Storable execute(Object object);
 
     /**
      * Returns the plugin's name.

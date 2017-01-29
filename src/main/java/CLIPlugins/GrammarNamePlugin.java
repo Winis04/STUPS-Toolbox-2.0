@@ -7,6 +7,7 @@ import GrammarSimulator.Grammar;
  * @author Isabel
  * @since 19.11.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarNamePlugin implements CLIPlugin {
     private boolean errorFlag;
     @Override

@@ -11,6 +11,7 @@ import java.util.Iterator;
  * @author fabian
  * @since 22.08.16
  */
+@SuppressWarnings("ALL")
 public class GrammarNullablePlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

@@ -22,6 +22,7 @@ import java.util.StringTokenizer;
  * @author fabian
  * @since 19.06.16
  */
+@SuppressWarnings("ALL")
 public class CheckStringPlugin extends ComplexFunctionPlugin {
 
     private String input = "";

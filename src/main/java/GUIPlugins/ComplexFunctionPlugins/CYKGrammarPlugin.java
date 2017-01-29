@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 01.12.2016
  */
+@SuppressWarnings("ALL")
 public class CYKGrammarPlugin extends ComplexFunctionPlugin {
 
     @Override
@@ -48,49 +49,51 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
                 Matrix matrix = GrammarUtil.cyk(grammar, word);
-                CLIPlugin cykConsole = new GrammarCYK();
-                cykConsole.execute(grammar, new String[]{input});
-                GridPane grid = new GridPane();
-                grid.setAlignment(Pos.CENTER);
-                for (int c = 1; c < matrix.getNumberOfColumns(); c++) {
-                    grid.add(new Label("" + c), c, 0);
-                }
-                for (int r = matrix.getNumberOfRows() - 1; r >= 0; r--) {
-                    grid.add(new Label("" + r), 0, matrix.getNumberOfRows() - r);
-                }
-                for (int c = 0; c < matrix.getNumberOfColumns(); c++) {
-                    //grid.addColumn(c,new Label(""));
-                    for (int r = 0; r < matrix.getNumberOfRows(); r++) {
-                        //grid.addRow(r,new Label(""));
-                        grid.add(new Label(matrix.getCell(c, r).stream().map(Nonterminal::getName).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
+                if(matrix != null) {
+                    CLIPlugin cykConsole = new GrammarCYK();
+                    cykConsole.execute(grammar, new String[]{input});
+                    GridPane grid = new GridPane();
+                    grid.setAlignment(Pos.CENTER);
+                    for (int c = 1; c < matrix.getNumberOfColumns(); c++) {
+                        grid.add(new Label("" + c), c, 0);
                     }
-                }
-
-                for(int i=0;i<word.size();i++) {
-                    grid.add(new Label(word.get(i)),i+1,matrix.getNumberOfRows()+1);
-                }
-                grid.setGridLinesVisible(true);
-                grid.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
-
-                ScrollPane scrollPane = new ScrollPane();
-                scrollPane.setContent(grid);
-                scrollPane.setFitToHeight(true);
-                scrollPane.setFitToWidth(true);
-
-                String name = "CYK - " + input;
-                Tab tab = new Tab(name);
-                tab.setContent(scrollPane);
-                tab.setClosable(true);
-                GrammarGUI grammarGUI = (GrammarGUI) GUI;
-                if (grammarGUI.getRootPane().getTabs().stream().anyMatch(t -> t.getText().equals(name))) {
-                    grammarGUI.getRootPane().getTabs().forEach(t -> {
-                        if (t.getText().equals(name)) {
-                            grammarGUI.getRootPane().getSelectionModel().select(t);
+                    for (int r = matrix.getNumberOfRows() - 1; r >= 0; r--) {
+                        grid.add(new Label("" + r), 0, matrix.getNumberOfRows() - r);
+                    }
+                    for (int c = 0; c < matrix.getNumberOfColumns(); c++) {
+                        //grid.addColumn(c,new Label(""));
+                        for (int r = 0; r < matrix.getNumberOfRows(); r++) {
+                            //grid.addRow(r,new Label(""));
+                            grid.add(new Label(matrix.getCell(c, r).stream().map(Nonterminal::getName).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
                         }
-                    });
-                } else {
-                    grammarGUI.getRootPane().getTabs().add(tab);
-                    grammarGUI.getRootPane().getSelectionModel().select(tab);
+                    }
+
+                    for (int i = 0; i < word.size(); i++) {
+                        grid.add(new Label(word.get(i)), i + 1, matrix.getNumberOfRows() + 1);
+                    }
+                    grid.setGridLinesVisible(true);
+                    grid.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
+
+                    ScrollPane scrollPane = new ScrollPane();
+                    scrollPane.setContent(grid);
+                    scrollPane.setFitToHeight(true);
+                    scrollPane.setFitToWidth(true);
+
+                    String name = "CYK - " + input;
+                    Tab tab = new Tab(name);
+                    tab.setContent(scrollPane);
+                    tab.setClosable(true);
+                    GrammarGUI grammarGUI = (GrammarGUI) GUI;
+                    if (grammarGUI.getRootPane().getTabs().stream().anyMatch(t -> t.getText().equals(name))) {
+                        grammarGUI.getRootPane().getTabs().forEach(t -> {
+                            if (t.getText().equals(name)) {
+                                grammarGUI.getRootPane().getSelectionModel().select(t);
+                            }
+                        });
+                    } else {
+                        grammarGUI.getRootPane().getTabs().add(tab);
+                        grammarGUI.getRootPane().getSelectionModel().select(tab);
+                    }
                 }
             }
 

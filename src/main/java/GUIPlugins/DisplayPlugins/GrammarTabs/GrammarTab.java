@@ -7,6 +7,7 @@ import javafx.scene.Node;
  * @author fabian
  * @since 15.08.16
  */
+@SuppressWarnings("ALL")
 interface GrammarTab {
 
     /**

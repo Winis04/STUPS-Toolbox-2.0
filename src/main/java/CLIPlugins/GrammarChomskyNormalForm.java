@@ -8,6 +8,7 @@ import Print.Printer;
  * @author isabel
  * @since 25.10.16
  */
+@SuppressWarnings("ALL")
 public class GrammarChomskyNormalForm implements CLIPlugin {
     private boolean errorFlag;
 

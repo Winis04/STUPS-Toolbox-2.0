@@ -10,6 +10,7 @@ import java.io.*;
  * @author Isabel
  * @since 18.11.2016
  */
+@SuppressWarnings("ALL")
 public class PrintModePlugin implements CLIPlugin {
     private boolean errorFlag;
     @Override
@@ -57,9 +58,7 @@ public class PrintModePlugin implements CLIPlugin {
             if(parameters[0].equals("latex")) {
                 Printer.printmode=PrintMode.LATEX;
                 if(new File(parameters[1]).exists()) {
-                    if(parameters.length==3 && parameters[2].equals("--force")) {
-
-                    } else {
+                    if(!(parameters.length==3 && parameters[2].equals("--force"))) {
                         System.out.println("this file already exists");
                         Printer.printmode=PrintMode.CONSOLE;
                         errorFlag=true;

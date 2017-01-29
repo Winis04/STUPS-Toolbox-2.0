@@ -20,6 +20,7 @@ import java.util.Iterator;
  * @author fabian
  * @since 24.08.16
  */
+@SuppressWarnings("ALL")
 public class FirstFollowTab implements GrammarTab {
 
     @Override

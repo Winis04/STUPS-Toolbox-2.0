@@ -10,6 +10,7 @@ import java.util.Arrays;
  * @author Isabel
  * @since 12.12.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarCheckWord implements CLIPlugin {
     private boolean errorFlag=false;
     @Override

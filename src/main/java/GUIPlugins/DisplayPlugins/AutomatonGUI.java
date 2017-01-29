@@ -66,6 +66,7 @@ import java.util.*;
  * @author fabian
  * @since 18.06.16.
  */
+@SuppressWarnings("ALL")
 public class AutomatonGUI implements DisplayPlugin {
 
     /**
@@ -161,7 +162,7 @@ public class AutomatonGUI implements DisplayPlugin {
         //Tell visualizationViewer how to draw a state.
         visualizationViewer.getRenderContext().setVertexIconTransformer(name -> new Icon() {
             private int calculateDiameter(int standardDiameter) {
-                if(name.length() > 4) {
+                if(name != null && name.length() > 4) {
                     standardDiameter += 8 * (name.length() - 4);
                 }
 
@@ -390,6 +391,7 @@ public class AutomatonGUI implements DisplayPlugin {
         @Override
         protected void handlePopup(MouseEvent mouseEvent) {
             //Determine which state or rule has been clicked on.
+            //noinspection unchecked
             VisualizationViewer<String, Integer> visualizationViewer = (VisualizationViewer<String, Integer>) mouseEvent.getSource();
             GraphElementAccessor<String, Integer> graphElementAccessor = visualizationViewer.getPickSupport();
             String state = graphElementAccessor.getVertex(visualizationViewer.getGraphLayout(), mouseEvent.getX(), mouseEvent.getY());

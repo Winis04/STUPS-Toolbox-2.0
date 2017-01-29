@@ -109,7 +109,7 @@ public class AutomatonUtil {
         //Write the states.
         try {
             for(State currentState : states) {
-                if (!onlyFinalStates || onlyFinalStates && currentState.isFinal()) {
+                if (!onlyFinalStates || currentState.isFinal()) {
                     if(comma) {
                         writer.write(", ");
                     }
@@ -916,7 +916,7 @@ public class AutomatonUtil {
                 }
                 String name = "";
                 boolean isStart = false;
-                boolean isFinal = true;
+                boolean isFinal = false;
                 HashSet<Rule> rules = new HashSet<>();
                 for(State mergeState : mergeStates) {
                     name += mergeState.getName();

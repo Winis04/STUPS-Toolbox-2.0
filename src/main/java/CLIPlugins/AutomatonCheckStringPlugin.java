@@ -10,6 +10,7 @@ import java.util.Stack;
  * @author fabian
  * @since 15.06.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonCheckStringPlugin implements CLIPlugin{
 
     private boolean errorFlag = false;

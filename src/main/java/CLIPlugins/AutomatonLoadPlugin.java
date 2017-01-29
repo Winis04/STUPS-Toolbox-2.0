@@ -11,6 +11,7 @@ import java.io.*;
  * @author fabian
  * @since 15.06.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonLoadPlugin implements CLIPlugin{
 
     private boolean errorFlag = false;

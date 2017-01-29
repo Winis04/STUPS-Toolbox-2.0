@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * @author isabel
  * @since 19.01.2017
  */
+@SuppressWarnings("ALL")
 public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     private static final TextField field = new TextField();
     private static final TextField bound = new TextField("500000");

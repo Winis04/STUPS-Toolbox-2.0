@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.joining;
  * @author fabian
  * @since 19.06.16
  */
+@SuppressWarnings("ALL")
 public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     private RunThroughInfo runThroughInfo;
     /**

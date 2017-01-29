@@ -13,6 +13,7 @@ import java.util.Iterator;
  * @author fabian
  * @since 20.08.16
  */
+@SuppressWarnings("ALL")
 public class GrammarFirstPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

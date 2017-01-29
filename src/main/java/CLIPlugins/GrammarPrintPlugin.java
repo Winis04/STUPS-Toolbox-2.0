@@ -7,6 +7,7 @@ import Print.Printer;
  * @author fabian
  * @since 11.08.16
  */
+@SuppressWarnings("ALL")
 public class GrammarPrintPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

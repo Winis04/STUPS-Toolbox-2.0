@@ -6,6 +6,7 @@ import Main.Storable;
  * @author Isabel
  * @since 04.12.2016
  */
+@SuppressWarnings("ALL")
 public class Load extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

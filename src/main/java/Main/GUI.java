@@ -39,6 +39,7 @@ import java.util.Set;
  * @author fabian
  * @since 17.06.16
  */
+@SuppressWarnings("ALL")
 public class GUI extends Application{
     /**
      * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
@@ -241,7 +242,7 @@ public class GUI extends Application{
 
         //Maps the name-string of each simple plugin to an instance of it.
         //This is needed to execute a simple plugin, when the execute-button is pressed.
-        HashMap<String, SimpleFunctionPlugin> executeMap = new HashMap<>();
+
 
         // load every plugin
         Reflections reflections = new Reflections("GUIPlugins/DisplayPlugins");
@@ -294,22 +295,7 @@ public class GUI extends Application{
      //   BorderPane functionsPane = new BorderPane();
        // FlowPane simpleFunctionsPane = new FlowPane();
 
-        //Create a ComboBox to display all the simple plugins and a button to execute the selected plugin.
-        ComboBox<String> functionsBox = new ComboBox<>();
-        Button functionsButton = new Button("Execute");
 
-        //When the functionsButton is pressed, the input-type for the selected simple plugin is loaded into "input",
-        //so that we can get the corresponding object from the HashMap "Main.CLI.objects".
-        //Then we can call the plugin's execute-method with the object as a parameter.
-        functionsButton.setOnAction(event -> {
-            Class input = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).inputType();
-            Object ret = executeMap.get(functionsBox.getSelectionModel().getSelectedItem()).execute(cli.objects.get(input));
-            if(ret != null) {
-                cli.objects.put(input, ret);
-                currentDisplayPlugin.refresh(ret);
-                refreshComplexPlugins();
-            }
-        });
 
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
@@ -464,9 +450,8 @@ public class GUI extends Application{
                 if(currentDisplayPlugin==null) {
                     currentDisplayPlugin = new PushDownAutomatonGUI();
                 }
-            } else {
-                //TODO: if you create a new storable you must add the matching gui here
             }
+                //TODO: if you create a new storable you must add the matching gui here
             refreshComplexPlugins();
     }
 

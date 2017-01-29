@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
  * @author Isabel
  * @since 27.12.2016
  */
+@SuppressWarnings("ALL")
 public class RuleTest {
     @Test
     public void copy() throws Exception {
@@ -56,7 +57,7 @@ public class RuleTest {
 
     @Test
     public void hashsetTest() {
-        HashSet<Integer> res = IntStream.range(0,10).mapToObj(i -> {
+        IntStream.range(0,10).mapToObj(i -> {
             HashSet<Integer> set = new HashSet<>();
             set.add(i);
             return set;

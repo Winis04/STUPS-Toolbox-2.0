@@ -9,6 +9,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
  * @author Isabel
  * @since 29.10.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarToPDA implements CLIPlugin {
     private boolean errorFlag;
     @Override

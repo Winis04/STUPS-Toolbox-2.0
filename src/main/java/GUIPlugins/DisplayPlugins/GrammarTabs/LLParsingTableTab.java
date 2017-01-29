@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 25.08.16
  */
+@SuppressWarnings("ALL")
 public class LLParsingTableTab implements GrammarTab {
     @Override
     public Node getFxNode(Grammar grammar) {

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 28.11.2016
  */
+@SuppressWarnings("ALL")
 public class OverviewController {
     @FXML
     TreeView<String> treeView;
@@ -82,13 +83,13 @@ public class OverviewController {
 
             treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
                 if (e.getButton()==MouseButton.SECONDARY) {
-                    TreeItem selected = treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<String> selected = treeView.getSelectionModel().getSelectedItem();
                     //item is selected - this prevents fail when clicking on empty space
                     if (selected!=null && !selected.equals(root)) {
 
                         //open context menu on current screen position
                         if(selected.getParent().equals(root)) {
-                            String clazz = selected.getValue().toString().toLowerCase();
+                            String clazz = selected.getValue().toLowerCase();
                             this.openContextMenuOnSuperClass(dynamicMenu,e.getScreenX(),e.getScreenY());
                         } else {
                             this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu, e.getScreenX(), e.getScreenY());
@@ -119,9 +120,7 @@ public class OverviewController {
          //   ContextMenu contextMenu = new ContextMenu();
          //   contextMenu.getItems().addAll(gui.getSimpleFunctionPlugins().values().stream().map(x -> x.getMenuItem(gui)).collect(Collectors.toList()));
          //   treeView.setContextMenu(contextMenu);
-        } else { //store is empty! fill store!
-
-        }
+        } //TODO need else here? Store is empty, do what?
     }
 
     public Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {

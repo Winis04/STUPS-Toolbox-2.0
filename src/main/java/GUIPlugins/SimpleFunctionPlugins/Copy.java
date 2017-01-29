@@ -6,6 +6,7 @@ import Main.Storable;
  * @author Isabel
  * @since 03.12.2016
  */
+@SuppressWarnings("ALL")
 public class Copy extends SimpleFunctionPlugin {
 
     @Override

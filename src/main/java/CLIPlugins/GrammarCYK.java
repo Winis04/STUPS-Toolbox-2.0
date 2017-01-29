@@ -11,6 +11,7 @@ import java.util.Arrays;
  * @author Isabel
  * @since 26.10.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarCYK implements CLIPlugin {
     private boolean errorFlag;
 

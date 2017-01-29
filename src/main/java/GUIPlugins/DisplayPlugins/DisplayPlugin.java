@@ -9,6 +9,7 @@ import javafx.scene.Node;
  * @author fabian
  * @since 18.06.16
  */
+@SuppressWarnings("ALL")
 public interface DisplayPlugin {
 
     /**

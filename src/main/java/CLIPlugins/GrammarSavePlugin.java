@@ -8,6 +8,7 @@ import GrammarSimulator.GrammarUtil;
  * @author fabian
  * @since 12.08.16
  */
+@SuppressWarnings("ALL")
 public class GrammarSavePlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

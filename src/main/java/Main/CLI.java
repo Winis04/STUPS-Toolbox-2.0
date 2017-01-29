@@ -21,6 +21,7 @@ import java.util.*;
  * @author fabian
  * @since 15.06.16
  */
+@SuppressWarnings("ALL")
 public class CLI {
 
     private final GUI gui;
@@ -59,76 +60,86 @@ public class CLI {
     }
 
     private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
-        if(command.equals("gui")) {
+        switch (command) {
+            case "gui":
 
-            Platform.runLater(gui::show);
-            while (!gui.IS_VISIBLE) {
-                Thread.sleep(500);
-            }
+                Platform.runLater(gui::show);
+                while (!gui.IS_VISIBLE) {
+                    Thread.sleep(500);
+                }
 
-        } else if(isStoreFunction(command) && doStoreCommand(command,parameters[0],parameters[1])) {
-        } else if(command.equals("sa")||command.equals("show-all")) {
-            if (parameters.length == 1) {
-                Class clazz = lookUpTable.get(parameters[0].toLowerCase());
-                if (clazz == null) {
-                    System.out.println("no such objects stored");
+                //  } else if(isStoreFunction(command) && doStoreCommand(command,parameters[0],parameters[1])) {
+                break;
+            case "sa":
+            case "show-all":
+                if (parameters.length == 1) {
+                    Class clazz = lookUpTable.get(parameters[0].toLowerCase());
+                    if (clazz == null) {
+                        System.out.println("no such objects stored");
+                    } else {
+                        HashMap<String, Storable> correctMap = store.get(clazz);
+                        if (correctMap == null || correctMap.isEmpty()) {
+                            System.out.println("no objects of type " + parameters[0] + " stored!");
+                        } else {
+                            correctMap.keySet().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                        }
+                    }
                 } else {
-                    HashMap<String, Storable> correctMap = store.get(clazz);
-                    if (correctMap == null || correctMap.isEmpty()) {
-                        System.out.println("no objects of type " + parameters[0] + " stored!");
-                    } else {
-                        correctMap.keySet().forEach(key -> Printer.print((Printable) correctMap.get(key)));
-                    }
+                    System.out.println("Please enter a storable type as a parameter for this command!");
                 }
-            } else {
-                System.out.println("Please enter a storable type as a parameter for this command!");
-            }
-        } else if(command.equals("clear_store")) {
-            store.clear();
-        } else if(command.equals("switch_workspace")) {
+                break;
+            case "clear_store":
+                store.clear();
+                //} else if(command.equals("switch_workspace")) { //TODO
 
-        } else if(command.equals("h") || command.equals("help")) {
+                break;
+            case "h":
+            case "help":
 
-            for(CLIPlugin plugin : plugins) {
-                System.out.print("'" + plugin.getNames()[0] + "'");
-                for(int i = 1; i < plugin.getNames().length; i++) {
-                    if(i < plugin.getNames().length - 1) {
-                        System.out.print(", ");
-                    } else {
-                        System.out.print(" or ");
+                for (CLIPlugin plugin : plugins) {
+                    System.out.print("'" + plugin.getNames()[0] + "'");
+                    for (int i = 1; i < plugin.getNames().length; i++) {
+                        if (i < plugin.getNames().length - 1) {
+                            System.out.print(", ");
+                        } else {
+                            System.out.print(" or ");
+                        }
+                        System.out.print("'" + plugin.getNames()[i] + "'");
                     }
-                    System.out.print("'" + plugin.getNames()[i] + "'");
+                    System.out.println("  --  " + plugin.getHelpText());
                 }
-                System.out.println("  --  " + plugin.getHelpText());
-            }
 
-            System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
-            System.out.println("'clear_store' -- deletes every stored item");
-            System.out.println("'switch_workspace' -- takes a directory as a parameter. Changes the workspace");
-            System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
-            System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
-            System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this position");
-            System.out.println("'copy' -- same as 'store', but the grammar is stored as a deep-copy" );
-            System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
-            System.out.println("'a' or 'about' -- Shows the release information");
-            System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
-        } else if(command.equals("e") || command.equals("exit")) {
-            System.out.println("Goodbye!");
-            if(Printer.writerIsNotNull() && Printer.printmode== PrintMode.LATEX) {
-                Printer.printEndOfLatex();
-                Printer.closeWriter();
-            }
-            save_workspace();
-            System.exit(0);
-        } else if(command.equals("a") || command.equals("about")) {
-            System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
-            System.out.println("Written and developed by Fabian Ruhland.");
-            System.out.println("--------------------------------------------");
-            System.out.println("This program uses the JUNG2-library to display automatons.");
-            System.out.println("JUNG2 is licensed under the BSD open-source license.");
-            System.out.println("See http://jung.sourceforge.net/site/license.html or the file \"lib/JUNG2/JUNG-license.txt\" for more information.");
-        } else {
-            return false;
+                System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
+                System.out.println("'clear_store' -- deletes every stored item");
+                System.out.println("'switch_workspace' -- takes a directory as a parameter. Changes the workspace");
+                System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
+                System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
+                System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this position");
+                System.out.println("'copy' -- same as 'store', but the grammar is stored as a deep-copy");
+                System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
+                System.out.println("'a' or 'about' -- Shows the release information");
+                System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
+                break;
+            case "e":
+            case "exit":
+                System.out.println("Goodbye!");
+                if (Printer.writerIsNotNull() && Printer.printmode == PrintMode.LATEX) {
+                    Printer.printEndOfLatex();
+                    Printer.closeWriter();
+                }
+                save_workspace();
+                System.exit(0);
+            case "a":
+            case "about":
+                System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
+                System.out.println("Written and developed by Fabian Ruhland.");
+                System.out.println("--------------------------------------------");
+                System.out.println("This program uses the JUNG2-library to display automatons.");
+                System.out.println("JUNG2 is licensed under the BSD open-source license.");
+                System.out.println("See http://jung.sourceforge.net/site/license.html or the file \"lib/JUNG2/JUNG-license.txt\" for more information.");
+                break;
+            default:
+                return false;
         }
         return true;
     }
@@ -224,22 +235,24 @@ public class CLI {
                             Storable storable = (Storable) clazz.newInstance();
                             // go through every file in the directory
                             File[] files = child.listFiles();
-                            for(File file : files) {
-                                // the parsed object
-                                Storable restored = storable.restoreFromFile(file);
+                            if(files != null) {
+                                for (File file : files) {
+                                    // the parsed object
+                                    Storable restored = storable.restoreFromFile(file);
 
-                                // store it in the store
-                                HashMap<String, Storable> correctMap = store.get(clazz);
-                                String i=restored.getName();
-                                if (correctMap == null) {
-                                    HashMap<String, Storable> tmp = new HashMap<>();
-                                    tmp.put(i, restored);
-                                    store.put(clazz, tmp);
-                                    objects.putIfAbsent(clazz, restored);
-                                } else {
-                                    correctMap.put(i, restored);
-                                    objects.putIfAbsent(clazz, restored);
-                                    //    store.get(clazz).put(i, toBeStored);
+                                    // store it in the store
+                                    HashMap<String, Storable> correctMap = store.get(clazz);
+                                    String i = restored.getName();
+                                    if (correctMap == null) {
+                                        HashMap<String, Storable> tmp = new HashMap<>();
+                                        tmp.put(i, restored);
+                                        store.put(clazz, tmp);
+                                        objects.putIfAbsent(clazz, restored);
+                                    } else {
+                                        correctMap.put(i, restored);
+                                        objects.putIfAbsent(clazz, restored);
+                                        //    store.get(clazz).put(i, toBeStored);
+                                    }
                                 }
                             }
                         } catch (InstantiationException | IllegalAccessException e) {
@@ -247,6 +260,7 @@ public class CLI {
                         } catch (Exception e) {
                             System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
                             e.printStackTrace();
+
                             File ptw = new File("path_to_workspace");
                             ptw.delete();
                         }
@@ -383,14 +397,17 @@ public class CLI {
      * deletes a directory and all files in it
      * @param file the directory, that should be deleted
      */
-    private void deleteDirectory(File file) {
+    private boolean deleteDirectory(File file) {
+        boolean check = true;
         if(file.exists() && file.isDirectory()) {
             File[] list = file.listFiles();
-            for(File child : list) {
-                deleteDirectory(child);
+            if(list != null) {
+                for (File child : list) {
+                    check &= deleteDirectory(child);
+                }
             }
         }
-        file.delete();
+        return check & file.delete();
     }
 
 

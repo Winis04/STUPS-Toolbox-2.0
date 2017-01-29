@@ -8,6 +8,7 @@ import javafx.scene.control.Tab;
  * @author fabian
  * @since 19.06.16
  */
+@SuppressWarnings("ALL")
 public abstract class ComplexFunctionPlugin {
 
     /**

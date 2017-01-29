@@ -7,6 +7,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @author fabian
  * @since 24.07.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonRenameStatesPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

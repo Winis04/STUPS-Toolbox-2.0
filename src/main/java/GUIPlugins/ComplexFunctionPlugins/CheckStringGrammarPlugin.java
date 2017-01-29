@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 19.06.16
  */
+@SuppressWarnings("ALL")
 public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
     private final TextField field = new TextField();
 

@@ -7,6 +7,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @author fabian
  * @since 27.07.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonMinimizeDFAPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

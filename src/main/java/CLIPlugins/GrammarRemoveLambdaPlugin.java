@@ -12,6 +12,7 @@ import java.util.*;
  * @author isabel
  * @since 20.10.16
  */
+@SuppressWarnings("ALL")
 public class GrammarRemoveLambdaPlugin implements CLIPlugin {
 
     private boolean errorFlag = false;

@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
  * @author Isabel
  * @since 14.01.2017
  */
+@SuppressWarnings("ALL")
 public class GrammarUtilTest {
 
     private List<File> files;
@@ -152,7 +153,7 @@ public class GrammarUtilTest {
 
     @Test
     public void isChomskyNormalForm() {
-        Grammar tmp = null;
+        Grammar tmp;
         try {
             tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test1.gr"));
             assertFalse(GrammarUtil.isInChomskyNormalForm(tmp));
@@ -189,7 +190,7 @@ public class GrammarUtilTest {
 
     @Test
     public void isLambdaFree() {
-        Grammar tmp = null;
+        Grammar tmp;
         try {
             tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test1.gr"));
             assertTrue(GrammarUtil.isLambdaFree(tmp));
@@ -225,7 +226,7 @@ public class GrammarUtilTest {
 
     @Test
     public void hasUnitRules() {
-        Grammar tmp = null;
+        Grammar tmp;
         try {
             tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test1.gr"));
             assertFalse(GrammarUtil.hasUnitRules(tmp));

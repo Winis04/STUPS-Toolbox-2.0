@@ -8,6 +8,7 @@ import Main.Storable;
  * @author Isabel
  * @since 01.12.2016
  */
+@SuppressWarnings("ALL")
 public class AutomatonMinimizePlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

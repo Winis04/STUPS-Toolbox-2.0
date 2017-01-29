@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author Isabel
  * @since 03.12.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

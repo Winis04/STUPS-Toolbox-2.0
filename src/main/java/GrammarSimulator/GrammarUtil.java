@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 06.08.16
  */
+@SuppressWarnings("ALL")
 public class GrammarUtil {
 
     /*
@@ -213,8 +214,9 @@ public class GrammarUtil {
                 }
             } else {
                 //If the current symbol is a nonterminal, add its first-set to the result-set.
-                result.addAll(firsts.get(aSymbolList));
-                if (!nullable.contains(aSymbolList)) {
+                Nonterminal nt = (Nonterminal) aSymbolList;
+                result.addAll(firsts.get(nt));
+                if (!nullable.contains(nt)) {
                     break;
                 } else {
                     //If the current symbol is nullable, add the empty word symbol to the result-set.
@@ -594,6 +596,7 @@ public class GrammarUtil {
                                         //If the current symbol is nullable, we have to go on, until we find a symbol,
                                         //that isn't nullable.
                                         int k = j + 1;
+                                        //noinspection SuspiciousMethodCalls
                                         do {
                                             if(symbolList.get(k) instanceof Terminal && (!symbolList.get(k).getName().equals("epsilon"))) {
                                                 if(!result.get(symbolList.get(i)).contains(symbolList.get(k))) {
@@ -611,6 +614,7 @@ public class GrammarUtil {
                                             k++;
                                         } while (k < symbolList.size() && nullable.contains(symbolList.get(k)));
 
+                                        //noinspection SuspiciousMethodCalls
                                         if (k == symbolList.size() - 1 && nullable.contains(symbolList.get(k))) {
                                             if(!result.get(symbolList.get(i)).containsAll(result.get(nonterminal))) {
                                                 //If the do-while-loop has reached the last symbol of the current list
@@ -631,6 +635,7 @@ public class GrammarUtil {
                                     }
 
                                 } else {
+                                    //noinspection SuspiciousMethodCalls
                                     if(!result.get(symbolList.get(i)).contains(symbolList.get(j))) {
                                         //If symbolList.get(j) is a terminal, we can just add it to the follow-set of symbolList.get(i).
                                         result.get(symbolList.get(i)).add((Terminal) symbolList.get(j));
@@ -859,6 +864,7 @@ public class GrammarUtil {
             List<Symbol> tmpList = new ArrayList<>();
             List<Symbol> list = rule.getRightSide();
             for (Symbol aList : list) {
+                //noinspection SuspiciousMethodCalls
                 if (toRemove.contains(aList)) {
                     tmpList.add(Terminal.NULLSYMBOL);
                 } else {
@@ -910,6 +916,7 @@ public class GrammarUtil {
 
                 for(int i = 0; i<current.getRightSide().size(); i++) {
                     // if the i-th Symbol is a nullable symbol, remove it and replace it with lambda
+                    //noinspection MismatchedQueryAndUpdateOfCollection
                     List<Symbol> tmpList = new ArrayList<>();
                     tmpList.addAll(fresh.getRightSide());
                     int finalI = i;
@@ -918,10 +925,7 @@ public class GrammarUtil {
                         List<Symbol> firstTryList = new ArrayList<>(current.getRightSide());
                         firstTryList.set(i,Terminal.NULLSYMBOL);
                         Rule firstTry = new Rule(current.getComingFrom(),firstTryList);
-                        if(queue.stream().anyMatch(elem -> elem.equals(firstTry)) || alreadySeen.contains(firstTry)) {
-                            // if the queue already contains this new Rule, do nothing and go on
-
-                        } else {
+                        if(!queue.stream().anyMatch(elem -> elem.equals(firstTry)) || alreadySeen.contains(firstTry)) {
                             //add the new rule "first try" to the set
                             queue.add(firstTry);
                             queue.add(current);
@@ -1302,6 +1306,7 @@ public class GrammarUtil {
      * @param g the grammar
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
+        //noinspection MismatchedQueryAndUpdateOfCollection
         HashSet<Rule> tmp = new HashSet<>();
         tmp.addAll(g.getRules());
         final int[] counter = {0};
@@ -1539,22 +1544,13 @@ public class GrammarUtil {
         State start_state;
         StackLetter initialStackLetter;
         HashSet<State> states = new HashSet<>();
-        HashSet<InputLetter> inputAlphabet = new HashSet<>();
-        HashSet<StackLetter> stackAlphabet = new HashSet<>();
+
         ArrayList<PDARule> rules;
 
         State onlyState=new State("z");
         states.add(onlyState);
-        /* fill the input- and stack alphabet **/
-        for(Symbol s : g.getTerminals()) {
-            inputAlphabet.add(new InputLetter(s.getName()));
-            stackAlphabet.add(new StackLetter(s.getName()));
-        }
-        /* add  null symbol **/
-        stackAlphabet.add(StackLetter.NULLSYMBOL);
-        inputAlphabet.add(InputLetter.NULLSYMBOL);
-        /* add every nonterminal to the stack alphabet **/
-        stackAlphabet.addAll(g.getNonterminals().stream().map(s -> new StackLetter(s.getName())).collect(Collectors.toList()));
+
+
         start_state = onlyState;
         initialStackLetter = new StackLetter(g.getStartSymbol().getName());
         PushDownAutomaton tmp = new PushDownAutomaton(states,start_state,initialStackLetter,new ArrayList<>(),start_state,"",null);

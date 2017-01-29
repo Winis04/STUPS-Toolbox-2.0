@@ -7,6 +7,7 @@ import Print.Printer;
  * @author Isabel
  * @since 22.10.2016
  */
+@SuppressWarnings("ALL")
 public class GrammarEliminateUnitRules implements CLIPlugin {
     private boolean errorFlag = false;
 

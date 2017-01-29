@@ -7,6 +7,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @author fabian
  * @since 28.07.16
  */
+@SuppressWarnings("ALL")
 public class AutomatonCompletePlugin implements CLIPlugin {
 
     private boolean errorFlag = false;
