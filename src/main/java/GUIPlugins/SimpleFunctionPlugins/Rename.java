@@ -4,6 +4,7 @@ import Main.Storable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.Optional;
 
@@ -19,7 +20,6 @@ public class Rename extends SimpleFunctionPlugin {
     public Storable execute(Object object) {
         Storable storable = (Storable) object;
         return chooseName(storable);
-
     }
     private Storable chooseName(Storable storable) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
@@ -38,6 +38,9 @@ public class Rename extends SimpleFunctionPlugin {
                 /* change tree view entry **/
                 selectedItem.setValue(string);
                 /* change object **/
+                gui.getCli().store.get(parentClass).remove(oldName);
+                TreeItem<String> parentItem = selectedItem.getParent();
+                parentItem.getChildren().remove(selectedItem);
                 return storable.otherName(string);
 
             } else {
