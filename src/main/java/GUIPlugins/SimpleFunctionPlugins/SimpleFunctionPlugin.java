@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
  */
 
 @SuppressWarnings("ALL")
-public abstract class SimpleFunctionPlugin {
+public abstract class SimpleFunctionPlugin implements Comparable{
 
     /**
      * reference to the gui
@@ -107,5 +107,19 @@ public abstract class SimpleFunctionPlugin {
      */
     public boolean createsOutput() {
         return false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof SimpleFunctionPlugin) {
+            SimpleFunctionPlugin other = (SimpleFunctionPlugin) o;
+            if(this.operatesOnAllStorables() && other.operatesOnAllStorables()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
     }
 }

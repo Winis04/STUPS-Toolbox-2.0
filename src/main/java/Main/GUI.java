@@ -128,7 +128,9 @@ public class GUI extends Application{
      * Is called after a plugin's execution
      */
     public void refresh() {
-
+        Collection<SimpleFunctionPlugin> list=simpleFunctionPlugins.values().stream()
+                .sorted((x,y) -> x.compareTo(y))
+                .collect(Collectors.toList());
         overviewController.makeTree(simpleFunctionPlugins.values()); //makes the tree
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
