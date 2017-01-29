@@ -72,6 +72,10 @@ public class Automaton implements Printable, Storable {
 
     }
 
+    /**
+     * The constructor, that copies the passed automaton
+     * @param oldAutomaton the automaton that is copied
+     */
     public Automaton(Automaton oldAutomaton) {
         this.states= new HashSet<>();
 
@@ -300,7 +304,8 @@ public class Automaton implements Printable, Storable {
         Printer.println("",writer);
         Printer.println(AutomatonUtil.getStatesSorted(this).stream().map(stream -> stream.getName()).collect(joining(", ")),writer);
     }
-    public void printAllStates_Console(ArrayList<State> statesSorted,BufferedWriter writer, boolean onlyFinal) {
+
+    private void printAllStates_Console(ArrayList<State> statesSorted, BufferedWriter writer, boolean onlyFinal) {
         ArrayList<State> states;
         if(onlyFinal) {
             states=(ArrayList<State>) statesSorted.stream().filter(state -> state.isFinal()).collect(Collectors.toList());

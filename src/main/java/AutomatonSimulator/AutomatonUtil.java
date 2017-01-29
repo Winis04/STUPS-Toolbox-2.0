@@ -447,6 +447,14 @@ public class AutomatonUtil {
         return setIsLoop(visitor.getAutomaton(name));
     }
 
+    /**
+     * Takes an input {@link File} and parses it into an automaton.
+     * @param file the file containing the automaton
+     * @return The automaton
+     * @throws IOException {@link IOException}
+     * @throws LexerException {@link LexerException}
+     * @throws ParserException {@link ParserException}
+     */
     public static Automaton parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
 
@@ -1090,7 +1098,7 @@ public class AutomatonUtil {
         return takenWay;
     }
 
-    public static void fillLengthsOfEdges(Automaton automaton) {
+    static void fillLengthsOfEdges(Automaton automaton) {
         ArrayList<State> statesSorted=getStatesSorted(automaton);
         for(int i=0;i<statesSorted.size();i++) {
             State current=statesSorted.get(i);
@@ -1116,7 +1124,7 @@ public class AutomatonUtil {
         }
 
     }
-    public static ArrayList<State> getStatesSorted(Automaton automaton) {
+    static ArrayList<State> getStatesSorted(Automaton automaton) {
         return (ArrayList<State>) automaton.getStates().stream().sorted((s1,s2) -> s1.getName().compareTo(s2.getName())).collect(toList());
     }
 

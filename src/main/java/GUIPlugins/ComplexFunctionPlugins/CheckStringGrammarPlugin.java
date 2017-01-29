@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
  * @since 19.06.16
  */
 public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
-    public static final TextField field = new TextField();
+    private final TextField field = new TextField();
 
-    public static final Button start = new Button("start");
+    private final Button start = new Button("start");
 
 
     @Override
@@ -77,7 +77,12 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
         return Grammar.class;
     }
 
-    public TextField getField() {
-        return field;
+
+    /**
+     * getter for the {@link Button} start, that starts the execution of the plugin
+     * @return the start button
+     */
+    public Button getStart() {
+        return start;
     }
 }

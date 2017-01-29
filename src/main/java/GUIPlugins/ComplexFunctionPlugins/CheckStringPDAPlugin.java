@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.joining;
  * @since 19.06.16
  */
 public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
-    RunThroughInfo runThroughInfo;
+    private RunThroughInfo runThroughInfo;
     public static final TextField field = new TextField();
     public static final Label path = new Label();
     public static final Button start = new Button("start");
