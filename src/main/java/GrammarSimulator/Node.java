@@ -33,7 +33,7 @@ public class Node {
     /**
      * the value of this node
      */
-    private Nonterminal value;
+    private final Nonterminal value;
     /**
      *
      */
@@ -75,7 +75,7 @@ public class Node {
     }
 
 
-    public boolean isVisited() {
+    boolean isVisited() {
         return visited;
     }
 

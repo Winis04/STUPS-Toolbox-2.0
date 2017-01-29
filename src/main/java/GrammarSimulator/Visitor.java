@@ -16,7 +16,7 @@ import java.util.List;
  * @author fabian
  * @since 06.08.16
  */
-public class Visitor extends DepthFirstAdapter {
+class Visitor extends DepthFirstAdapter {
 
     private Grammar grammar;
     private Nonterminal startSymbol;

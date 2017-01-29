@@ -3,10 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
-import PushDownAutomatonSimulator.PushDownAutomaton;
-import PushDownAutomatonSimulator.PushDownAutomatonUtil;
-import PushDownAutomatonSimulator.RunThroughInfo;
-import PushDownAutomatonSimulator.StackLetter;
+import PushDownAutomatonSimulator.*;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -90,7 +87,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
             pdaGUI.setRunThroughInfo(old);
             CheckStringPDAPlugin.path.setText(pdaGUI.path(old," "));
-            field.setText(old.getInput().stream().map(il -> il.getName()).collect(joining(" ")));
+            field.setText(old.getInput().stream().map(InputLetter::getName).collect(joining(" ")));
             if(old.getPrevious() == null) {
                 undo.setDisable(true);
                 undo.setStyle("-fx-background-color: lightgray;");

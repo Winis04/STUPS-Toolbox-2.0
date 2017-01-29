@@ -33,7 +33,7 @@ public class Dictonary implements CLIPlugin {
 
            System.out.println(dictonary.get(Arrays.stream(parameters).collect(Collectors.joining(" "))));
         } else {
-            dictonary.keySet().stream().forEach(key -> System.out.println(key +" = "+dictonary.get(key)));
+            dictonary.keySet().forEach(key -> System.out.println(key + " = " + dictonary.get(key)));
         }
 
         return null;

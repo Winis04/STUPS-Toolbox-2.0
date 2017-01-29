@@ -21,7 +21,7 @@ public class Rule implements Printable{
     /**
      * The input-strings, that are valid for this rule.
      */
-    private HashSet<String> acceptedInputs;
+    private final HashSet<String> acceptedInputs;
 
     /**
      * is this rule a loop?

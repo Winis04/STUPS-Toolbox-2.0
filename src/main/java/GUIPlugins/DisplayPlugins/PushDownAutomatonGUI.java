@@ -27,18 +27,18 @@ import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
  */
 public class PushDownAutomatonGUI implements DisplayPlugin {
     private GUI gui;
-    private Label flow = new Label();
+    private final Label flow = new Label();
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
-    private HashMap<PDARule, Button> rulesAndButtons = new HashMap<>();
+    private final HashMap<PDARule, Button> rulesAndButtons = new HashMap<>();
 
-    BorderPane splitPane = new BorderPane();
+    private final BorderPane splitPane = new BorderPane();
 
-    GridPane root = new GridPane();
+    private GridPane root = new GridPane();
 
-    BorderPane anchorPane = new BorderPane();
+    private final BorderPane anchorPane = new BorderPane();
 
-    ScrollPane scrollPane = new ScrollPane();
+    private final ScrollPane scrollPane = new ScrollPane();
 
 
     public PushDownAutomatonGUI() {
@@ -74,7 +74,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         BorderPane.setAlignment(anchorPane,Pos.CENTER);
      //   splitPane.getItems().addAll(scrollPane,anchorPane);
 
-        /** fill with content **/
+        /* fill with content **/
         for(int c=0;c<=1;c++) {
             for(int r=0;r<half;r++) {
                 if(c*half+r<ruleNumber) {
@@ -82,9 +82,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     Button cellLabel = new Button(rule.asString());
                     cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                  //   cellLabel.setDisable(true);
-                    int finalR = r;
-                    int finalHalf = half;
-                    int finalC = c;
                     cellLabel.setOnMouseClicked(event -> {
                         if (event.getButton().equals(MouseButton.SECONDARY)) {
                             PushDownAutomaton freshPDA = editRule(pda,rule);
@@ -110,8 +107,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                                 //    undo.setStyle("");
                             }
                             //  CheckStringPDAPlugin.undo.setDisable(false);
-                            CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(il -> il.getName()).collect(Collectors.joining(" ")));
-                            flow.setText(runThroughInfo.getStack().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
+                            CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(" ")));
+                            flow.setText(runThroughInfo.getStack().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
                             if(CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
 
                                 Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -175,7 +172,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
-    public PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
+    private PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
         Dialog<PDARule> dialog = new Dialog<>();
         dialog.setTitle("edit rule "+ oldRule.asString());
         dialog.setHeaderText("enter the information for the new rule");
@@ -194,8 +191,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         dialog.setResultConverter(param -> {
             if (param == ButtonType.OK) {
                 List<StackLetter> list = Arrays.stream(newTos.getText().split(", ")).map(StackLetter::new).collect(Collectors.toList());
-                PDARule rule = new PDARule(new State(state.getText()),new State(goingTo.getText()),new InputLetter(input.getText()),new StackLetter(oldTos.getText()),list);
-                return rule;
+                return new PDARule(new State(state.getText()),new State(goingTo.getText()),new InputLetter(input.getText()),new StackLetter(oldTos.getText()),list);
             }
             return null;
         });
@@ -228,14 +224,14 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             String state = run.getCurrentState().getName();
             String input="\u03B5";
             if(!run.getInput().isEmpty()) {
-                input = run.getInput().stream().map(s -> s.getName()).collect(Collectors.joining(""));
+                input = run.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(""));
             }
            String st="\u03B5";
             if(!run.getStack().isEmpty()) {
                 ArrayList<StackLetter> stack = new ArrayList<>();
                 stack.addAll(run.getStack());
                 Collections.reverse(stack);
-                st = stack.stream().map(l -> l.getName()).collect(Collectors.joining(""));
+                st = stack.stream().map(StackLetter::getName).collect(Collectors.joining(""));
             }
 
             return "("+state+", "+input+", "+st+")";
@@ -293,35 +289,32 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     public void setRunThroughInfo(RunThroughInfo runThroughInfo) {
         this.runThroughInfo = runThroughInfo;
-        this.rulesAndButtons.values().forEach(rule -> {
-          rule.setDisable(true);
-        });
-        this.rulesAndButtons.keySet().stream().forEach(rule -> {
+        this.rulesAndButtons.values().forEach(rule -> rule.setDisable(true));
+        this.rulesAndButtons.keySet().forEach(rule -> {
             State currentState = runThroughInfo.getCurrentState();
-            if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+            if (runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
                     rulesAndButtons.get(rule).setDisable(false);
-            }
-            } else if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                }
+            } else if (!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
                     rulesAndButtons.get(rule).setDisable(false);
                 }
 
-            } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+            } else if (runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
+                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
                     rulesAndButtons.get(rule).setDisable(false);
                 }
 
             } else {
-                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
-                    if(rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                        if(rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                if (rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                    if (rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                        if (rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
                             rulesAndButtons.get(rule).setDisable(false);
                         }
                     }
                 }
             }
-
 
 
         });

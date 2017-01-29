@@ -32,7 +32,7 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return This plugin's name.
      */
-    public abstract String getName();
+    protected abstract String getName();
 
     /**
      *

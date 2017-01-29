@@ -21,27 +21,27 @@ import java.util.*;
  */
 public class EditTab implements GrammarTab {
 
-    private GUI gui;
+    private final GUI gui;
 
     /**
      * Displays all of the grammar's terminals.
      */
-    public static Label terminalsLabel = new Label();
+    private static final Label terminalsLabel = new Label();
 
     /**
      * Displays all of the grammar's nonterminals.
      */
-    public static Label nonterminalsLabel = new Label();
+    private static final Label nonterminalsLabel = new Label();
 
     /**
      * This Tab's root pane.
      */
-    BorderPane rootPane = new BorderPane();
+    private final BorderPane rootPane = new BorderPane();
 
     /**
      * The ContexMenu, that will pop up, when the user right-clicks something.
      */
-    ContextMenu mouseMenu = new ContextMenu();
+    private final ContextMenu mouseMenu = new ContextMenu();
 
 
     Button up = new Button("+");
@@ -413,8 +413,7 @@ public class EditTab implements GrammarTab {
             HashSet<Rule> freshRules = new HashSet<>();
             freshRules.addAll(grammar1.getRules());
             freshRules.add(newRule);
-            Grammar grammar2 = new Grammar(grammar1.getStartSymbol(),freshRules,grammar1.getName(), (Grammar) grammar1.getPreviousVersion());
-            return grammar2;
+            return new Grammar(grammar1.getStartSymbol(),freshRules,grammar1.getName(), (Grammar) grammar1.getPreviousVersion());
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("STUPS-Toolbox");

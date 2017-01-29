@@ -81,7 +81,7 @@ public class GUI extends Application{
 
     private HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins;
 
-    private  HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
+    private final HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
     private int textsize = 12;
 
@@ -206,17 +206,15 @@ public class GUI extends Application{
 
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
-        for(ComplexFunctionPlugin plugin : complexFunctionPlugins) {
-            if(plugin.getInputType().equals(currentDisplayPlugin.displayType())) {
-                Tab current = plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()),currentDisplayPlugin);
-                if(Printer.printmode==PrintMode.LATEX && plugin.createsOutput()) {
-                    current.setStyle("-fx-background-color: aqua;");
-                } else {
-                    current.setStyle("");
-                }
-                complexFunctionsPane.getTabs().add(current);
+        complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
+            Tab current = plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
+            if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
+                current.setStyle("-fx-background-color: aqua;");
+            } else {
+                current.setStyle("");
             }
-        }
+            complexFunctionsPane.getTabs().add(current);
+        });
     }
 
     /**
@@ -245,7 +243,7 @@ public class GUI extends Application{
         // load every plugin
         Reflections reflections = new Reflections("GUIPlugins/DisplayPlugins");
         Set<Class<? extends DisplayPlugin>> s = reflections.getSubTypesOf(DisplayPlugin.class);
-        s.stream().forEach(r -> {
+        s.forEach(r -> {
             try {
                 DisplayPlugin displayPlugin = (DisplayPlugin) r.newInstance();
 
@@ -261,7 +259,7 @@ public class GUI extends Application{
 
         reflections = new Reflections("GUIPlugins/ComplexFunctionPlugins");
         Set<Class<? extends ComplexFunctionPlugin>> s2 = reflections.getSubTypesOf(ComplexFunctionPlugin.class);
-        s2.stream().forEach(cfp -> {
+        s2.forEach(cfp -> {
             ComplexFunctionPlugin plugin = null;
             try {
                 plugin = (ComplexFunctionPlugin) cfp.newInstance();
@@ -275,10 +273,10 @@ public class GUI extends Application{
 
         reflections = new Reflections("GUIPlugins/SimpleFunctionPlugins");
         Set<Class<? extends SimpleFunctionPlugin>> s3 = reflections.getSubTypesOf(SimpleFunctionPlugin.class);
-        s3.stream().forEach(sfp -> {
+        s3.forEach(sfp -> {
             try {
                 SimpleFunctionPlugin plugin = (SimpleFunctionPlugin) sfp.newInstance();
-                simpleFunctionPlugins.put(plugin.getClass(),plugin);
+                simpleFunctionPlugins.put(plugin.getClass(), plugin);
                 plugin.setGUI(this);
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -362,8 +360,7 @@ public class GUI extends Application{
     public File loadFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load "+string);
-        File file = fileChooser.showOpenDialog(primaryStage);
-        return file;
+        return fileChooser.showOpenDialog(primaryStage);
     }
 
     /**
@@ -382,13 +379,12 @@ public class GUI extends Application{
     public File openFileToSave(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save "+string);
-        File file = fileChooser.showSaveDialog(primaryStage);
-        return file;
+        return fileChooser.showSaveDialog(primaryStage);
     }
     /**
      * Shows the person overview inside the root layout.
      */
-    public void showOverview() {
+    private void showOverview() {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();

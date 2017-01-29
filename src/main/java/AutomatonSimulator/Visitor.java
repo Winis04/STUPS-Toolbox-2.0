@@ -7,16 +7,17 @@ import AutomatonParser.node.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * @author fabian
  * @since 24.04.16
  */
-public class Visitor extends DepthFirstAdapter {
+class Visitor extends DepthFirstAdapter {
     private Automaton automaton;
     private State startState;
-    private HashMap<String, State> states = new HashMap<>();
-    private HashSet<String> allInputs = new HashSet<>();
+    private final HashMap<String, State> states = new HashMap<>();
+    private final HashSet<String> allInputs = new HashSet<>();
 
     @Override
     public void inAStates(AStates node) {
@@ -47,10 +48,7 @@ public class Visitor extends DepthFirstAdapter {
 
     @Override
     public void outARoot(ARoot node) {
-        HashSet<State> stateList =  new HashSet<>();
-        for(String state : states.keySet()) {
-            stateList.add(states.get(state));
-        }
+        HashSet<State> stateList = states.keySet().stream().map(states::get).collect(Collectors.toCollection(HashSet::new));
         automaton = new Automaton(stateList, startState, allInputs);
     }
 

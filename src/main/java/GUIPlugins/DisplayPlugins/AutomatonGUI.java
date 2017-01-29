@@ -92,7 +92,7 @@ public class AutomatonGUI implements DisplayPlugin {
     /**
      * The JUNG-graph representing the loaded {@link #automaton}.
      */
-    private Graph<String, Integer> graph = new SparseMultigraph<>();
+    private final Graph<String, Integer> graph = new SparseMultigraph<>();
 
     /**
      * Responsible for displaying the {@link #graph}.
@@ -112,22 +112,22 @@ public class AutomatonGUI implements DisplayPlugin {
     /**
      * The color, that is used to fill states.
      */
-    private Color stateColor = Color.YELLOW;
+    private final Color stateColor = Color.YELLOW;
 
     /**
      * The color, that is used to fill the start state.
      */
-    private Color startStateColor = Color.GREEN;
+    private final Color startStateColor = Color.GREEN;
 
     /**
      * The color, that is used to mark the active state/rule.
      */
-    private Color markingColor = Color.RED;
+    private final Color markingColor = Color.RED;
 
     /**
      * The color, that is used to draw the rule-arrows.
      */
-    private Color ruleColor = Color.BLACK;
+    private final Color ruleColor = Color.BLACK;
 
     private CheckBox isEpsilonFreeBox;
 
@@ -459,9 +459,11 @@ public class AutomatonGUI implements DisplayPlugin {
                         //Delete all rules, that point to the state, that should be deleted.
                         for(State state1 : automaton.getStates()) {
                             ArrayList<Rule> copyRules = new ArrayList<>(state1.getRules());
-                            copyRules.stream().filter(rule1 -> rule1.getGoingTo().getName().equals(state)).forEach(rule1 -> {
-                                state1.getRules().remove(rule1);
-                            });
+                            for(Rule rule1 : copyRules) {
+                                if(rule1.getGoingTo().getName().equals(state)) {
+                                    state1.getRules().remove(rule1);
+                                }
+                            }
                         }
 
                         //Delete the chosen state and repaint the graph.

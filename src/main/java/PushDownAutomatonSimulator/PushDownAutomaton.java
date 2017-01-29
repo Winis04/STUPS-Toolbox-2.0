@@ -175,7 +175,7 @@ public class PushDownAutomaton implements Printable, Storable{
             }
         }
         Printer.print(space+"\t\t\\hline\n",writer);
-        /** begin table **/
+        /* begin table **/
 
         Printer.print(space+"\t\\end{tabular}\n",writer);
         Printer.print(space+"\\end{table}\n\n",writer);

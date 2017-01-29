@@ -89,7 +89,7 @@ public abstract class SimpleFunctionPlugin {
 
     }
 
-    public boolean shouldBeDisabled() {
+    boolean shouldBeDisabled() {
         return false;
     }
     /**

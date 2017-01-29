@@ -23,17 +23,17 @@ public class PrintableList extends ArrayList<Printable> implements Printable {
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
-        this.stream().forEach(x -> {
+        this.forEach(x -> {
             Printer.print(x);
-            Printer.print("\n",writer);
+            Printer.print("\n", writer);
         });
     }
 
     @Override
     public void printConsole(BufferedWriter writer) {
-        this.stream().forEach(x -> {
+        this.forEach(x -> {
             Printer.print(x);
-            Printer.print("\n",writer);
+            Printer.print("\n", writer);
         });
     }
 }

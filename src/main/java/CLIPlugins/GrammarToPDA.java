@@ -10,7 +10,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
  * @since 29.10.2016
  */
 public class GrammarToPDA implements CLIPlugin {
-    boolean errorFlag;
+    private boolean errorFlag;
     @Override
     public String[] getNames() {
         return new String[]{"toPDA"};

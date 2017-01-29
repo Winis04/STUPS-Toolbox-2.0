@@ -118,7 +118,7 @@ public final class Grammar implements Printable, Storable {
     public void printLatex(BufferedWriter writer, String space) {
         ArrayList<String>[] header= GrammarUtil.getHeader(this);
         Printer.print(space+"$"+this.getName()+"=\\left(\\{",writer);
-        Printer.print(space+header[0].stream().map(string -> makeToGreek(string)).collect(joining(", ")),writer);
+        Printer.print(space+header[0].stream().map(Printer::makeToGreek).collect(joining(", ")),writer);
 
         Printer.print("\\},\\;\\{ ",writer);
 
@@ -237,7 +237,7 @@ public final class Grammar implements Printable, Storable {
 
     }
 
-    /** GETTER **/
+    /* GETTER **/
     /**
      * Getter-method for {@link #terminals}.
      *

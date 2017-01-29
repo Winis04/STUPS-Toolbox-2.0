@@ -32,8 +32,7 @@ public class PushDownAutomatonUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        PushDownAutomaton pda = visitor.getPushDownAutomaton(name);
-        return pda;
+        return visitor.getPushDownAutomaton(name);
     }
 
     public static PushDownAutomaton parse(File file) throws IOException, LexerException, ParserException {
@@ -75,7 +74,7 @@ public class PushDownAutomatonUtil {
                     writer.write(rule.getReadIn().getName() + "', '");
                     writer.write(rule.getOldToS().getName() + "' --> '");
                     writer.write(rule.getGoingTo().getName() + "', '");
-                    writer.write(rule.getNewToS().stream().map(x -> x.getName()).collect(joining("', '")) + "'\n");
+                    writer.write(rule.getNewToS().stream().map(StackLetter::getName).collect(joining("', '")) + "'\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

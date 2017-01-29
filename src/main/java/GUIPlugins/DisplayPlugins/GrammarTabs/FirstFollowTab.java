@@ -61,7 +61,7 @@ public class FirstFollowTab implements GrammarTab {
             for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
                 //Write the first-set of the current nonterminal.
                 sb = new StringBuilder();
-                sb.append("First(" + nonterminal.getName() + ") = {");
+                sb.append("First(").append(nonterminal.getName()).append(") = {");
 
                 Iterator<Terminal> it2 = first.get(nonterminal).iterator();
                 while (it2.hasNext()) {
@@ -77,7 +77,7 @@ public class FirstFollowTab implements GrammarTab {
 
                 //Write the follow-set of the current nonterminal.
                 sb = new StringBuilder();
-                sb.append("Follow(" + nonterminal.getName() + ") = {");
+                sb.append("Follow(").append(nonterminal.getName()).append(") = {");
 
                 it2 = follow.get(nonterminal).iterator();
                 while (it2.hasNext()) {

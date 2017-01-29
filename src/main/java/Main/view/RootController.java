@@ -30,7 +30,7 @@ public class RootController {
 
     boolean showLatexDialog=true;
 
-    boolean inLatexMode=false;
+    private boolean inLatexMode=false;
 
 
     private GUI gui;

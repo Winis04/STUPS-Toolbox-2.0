@@ -26,12 +26,12 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     /**
      * the upperbound for the steps of the breadth-first search
      */
-    public static final Label label = new Label("upper bound");
+    private static final Label label = new Label("upper bound");
 
     /**
      * the start-button. Starts the plugins execution
      */
-    public static final Button start = new Button("start");
+    private static final Button start = new Button("start");
 
 
     @Override

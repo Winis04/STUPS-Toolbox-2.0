@@ -51,14 +51,14 @@ public class RunThroughInfo {
         String cS = currentState.getName();
         String in = InputLetter.NULLSYMBOL.getName();
         if(!input.isEmpty()) {
-            in = input.stream().map(s -> s.getName()).collect(joining(""));
+            in = input.stream().map(InputLetter::getName).collect(joining(""));
         }
         String st = StackLetter.NULLSYMBOL.getName();
         if(!stack.isEmpty()) {
             ArrayList<StackLetter> list = new ArrayList<>();
             list.addAll(stack);
             Collections.reverse(list);
-            st = list.stream().map(s -> s.getName()).collect(joining(""));
+            st = list.stream().map(StackLetter::getName).collect(joining(""));
         }
         return "("+cS+", "+in+", "+st+")";
     }

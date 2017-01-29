@@ -20,7 +20,7 @@ public class Rename extends SimpleFunctionPlugin {
         return chooseName(storable);
 
     }
-    public Storable chooseName(Storable storable) {
+    private Storable chooseName(Storable storable) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         TextInputDialog dialog = new TextInputDialog(selectedItem.getValue());
         dialog.setTitle("Rename "+selectedItem.getParent().getValue());
@@ -35,9 +35,9 @@ public class Rename extends SimpleFunctionPlugin {
             String parent = selectedItem.getParent().getValue().toLowerCase();
             Class parentClass = gui.getCli().lookUpTable.get(parent);
             if(string.equals(oldName) || !gui.getCli().store.get(parentClass).containsKey(string)) {
-                /** change tree view entry **/
+                /* change tree view entry **/
                 selectedItem.setValue(string);
-                /** change object **/
+                /* change object **/
                 return storable.otherName(string);
 
             } else {

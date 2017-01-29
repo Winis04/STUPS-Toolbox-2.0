@@ -29,7 +29,7 @@ public class State implements Printable{
     /**
      * The rules, that are pointing away from this state.
      */
-    private HashSet<Rule> rules;
+    private final HashSet<Rule> rules;
 
     /**
      * The constructor.

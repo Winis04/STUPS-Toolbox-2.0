@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class GrammarUtilTest {
 
-    List<File> files;
+    private List<File> files;
     @Before
     public void initialize() {
 
@@ -283,7 +283,7 @@ public class GrammarUtilTest {
 
 
     @Ignore
-    public File getResourceAsFile(String path) {
+    private File getResourceAsFile(String path) {
 
         try {
             InputStream input = getClass().getResourceAsStream(path);

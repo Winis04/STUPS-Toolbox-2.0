@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @since 29.10.2016
  */
 public class StackLetter {
-    private String name;
+    private final String name;
 
     public static final StackLetter NULLSYMBOL = new StackLetter("epsilon");
 

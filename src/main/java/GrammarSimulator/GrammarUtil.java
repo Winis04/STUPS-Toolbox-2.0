@@ -25,11 +25,11 @@ import java.util.stream.Collectors;
  */
 public class GrammarUtil {
 
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                      First some private methods. Scroll down to see the public methods.                     -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                      First some private methods. Scroll down to see the public methods.                     -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
 
     /**
      * Returns an ArrayList that contains all terminals, that are somehow reachable from the start symbol,
@@ -48,15 +48,13 @@ public class GrammarUtil {
             //and all nonterminals, that comingFrom points to, to nextSymbols.
             grammar.getRules().stream()
                     .filter(rule -> rule.getComingFrom().equals(comingFrom))
-                    .map(rule -> rule.getRightSide()).forEach(comparableList -> {
-                comparableList.stream().forEach(symbol -> {
-                    if(symbol instanceof  Terminal && !terminals.contains(symbol)) {
-                        terminals.add((Terminal) symbol);
-                    } else if(symbol instanceof  Nonterminal) {
-                        nextSymbols.add((Nonterminal) symbol);
-                    }
-                });
-            });
+                    .map(Rule::getRightSide).forEach(comparableList -> comparableList.forEach(symbol -> {
+                        if (symbol instanceof Terminal && !terminals.contains(symbol)) {
+                            terminals.add((Terminal) symbol);
+                        } else if (symbol instanceof Nonterminal) {
+                            nextSymbols.add((Nonterminal) symbol);
+                        }
+                    }));
 
             visitedSymbols.add(comingFrom);
 
@@ -90,15 +88,13 @@ public class GrammarUtil {
             //Do the same for all symbols, that comingFrom points to.
             grammar.getRules().stream()
                     .filter(rule -> rule.getComingFrom().equals(comingFrom))
-                    .map(rule -> rule.getRightSide())
-                    .forEach(comparableList -> {
-                        comparableList.stream().forEach(symbol -> {
-                            if(symbol instanceof Nonterminal && !nonterminals.contains(symbol)) {
-                                nonterminals.add((Nonterminal) symbol);
-                                nextSymbols.add((Nonterminal) symbol);
-                            }
-                        });
-                    });
+                    .map(Rule::getRightSide)
+                    .forEach(comparableList -> comparableList.forEach(symbol -> {
+                        if (symbol instanceof Nonterminal && !nonterminals.contains(symbol)) {
+                            nonterminals.add((Nonterminal) symbol);
+                            nextSymbols.add((Nonterminal) symbol);
+                        }
+                    }));
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -234,11 +230,11 @@ public class GrammarUtil {
         return result;
     }
 
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                The public methods follow after this comment.                                -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                The public methods follow after this comment.                                -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
 
     /**
      * Takes an input-string and parses it into a grammar. Typically the input-string comes from a file,
@@ -439,7 +435,6 @@ public class GrammarUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return;
         }
     }
 
@@ -449,10 +444,10 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return A HashSet containing all nullable nonterminals,
      */
-    public static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
+    private static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
         HashSet<Nonterminal> res = calculateNullable(grammar);
         PrintableSet result = new PrintableSet(res.size());
-        res.forEach(nt -> result.add(nt));
+        res.forEach(result::add);
         return  result;
     }
     /**
@@ -735,7 +730,7 @@ public class GrammarUtil {
                     tmp.add(Terminal.NULLSYMBOL);
                     freshRules.add(new Rule(rule.getComingFrom(), tmp));
                 } else {
-                    List<Symbol> tmp = new ArrayList<Symbol>();
+                    List<Symbol> tmp = new ArrayList<>();
                     tmp = rule.getRightSide().stream()
                             .filter(symbol -> !symbol.equals(Terminal.NULLSYMBOL))
                             .collect(Collectors.toList());
@@ -764,11 +759,11 @@ public class GrammarUtil {
         });
         return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
     }
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                Remove Lambda Rules                                                          -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                Remove Lambda Rules                                                          -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
     /**
      *  This method removes lambda-rules in three steps and returns the result of every step
      * @param grammar the grammar, that should be modified
@@ -819,7 +814,7 @@ public class GrammarUtil {
         if(GrammarUtil.isLambdaFree(g)) {
             return g;
         } else {
-            /** change original grammar **/
+            /* change original grammar **/
             // Grammar grammar = specialRuleForEmptyWord(g);
             HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(g);
             Grammar grammar1 = removeLambdaRules_StepTwo(g, nullable, g);
@@ -878,9 +873,8 @@ public class GrammarUtil {
         // to find any new lambdas and lambda-rules
         if(again) {
             Grammar res1 = GrammarUtil.removeUnneccesaryEpsilons(res, original);
-            Grammar res2 = GrammarUtil.removeLambdaRules_StepThree(res1,false,original);
 
-            return res2;
+            return GrammarUtil.removeLambdaRules_StepThree(res1,false,original);
         } else {
             return res;
         }
@@ -951,11 +945,11 @@ public class GrammarUtil {
     }
 
 
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                eliminate Unit Rules                                                         -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                eliminate Unit Rules                                                         -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
     /**
      *  This method eliminates unit rules in three steps and returns the result of every step
      * @param grammar the grammar, that should be modified
@@ -1233,9 +1227,9 @@ public class GrammarUtil {
      */
     private static void number(Node node) {
         if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
-            node.getChildren().stream().forEach(child -> child.setNumber(node.getNumber()+1));
+            node.getChildren().forEach(child -> child.setNumber(node.getNumber() + 1));
         }
-        node.getChildren().stream().forEach(child -> GrammarUtil.number(child));
+        node.getChildren().forEach(GrammarUtil::number);
     }
 
     /**
@@ -1283,11 +1277,11 @@ public class GrammarUtil {
         });
         return new Grammar(g.getStartSymbol(),freshRules2,g.getName(), (Grammar) g.getPreviousVersion());
     }
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                make chomsky normal form                                                      -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                make chomsky normal form                                                      -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
 
     /**
      * This method makes the grammar to cnf in steps and returns the result of every step
@@ -1338,12 +1332,12 @@ public class GrammarUtil {
         g.getRules().forEach(rule -> {
             if(rule.getRightSide().size()>1 && rule.getRightSide().stream().anyMatch(symbol -> symbol instanceof Terminal)) {
                 List<Symbol> list = new ArrayList<>();
-                rule.getRightSide().stream().forEach(sym -> {
-                    if(sym instanceof Terminal) {
-                        list.add(new Nonterminal("X_"+sym.getName()));
+                rule.getRightSide().forEach(sym -> {
+                    if (sym instanceof Terminal) {
+                        list.add(new Nonterminal("X_" + sym.getName()));
                         List<Symbol> tmp = new ArrayList<>();
                         tmp.add(sym);
-                        freshRules.add(new Rule(new Nonterminal("X_"+sym.getName()),tmp));
+                        freshRules.add(new Rule(new Nonterminal("X_" + sym.getName()), tmp));
                     } else {
                         list.add(sym);
                     }
@@ -1412,13 +1406,11 @@ public class GrammarUtil {
                 boolean a = rule.getRightSide().size()==1 && rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL);
                 boolean b = rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal;
                 boolean c = rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal);
-                boolean d = a || b || c;
-                return d;
+                return a || b || c;
             } else {
                 boolean a = rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Terminal && !rule.getRightSide().get(0).equals(Terminal.NULLSYMBOL);
                 boolean b = rule.getRightSide().size()==2 && rule.getRightSide().stream().allMatch(sym -> sym instanceof Nonterminal);
-                boolean c = a || b;
-                return c;
+                return a || b;
             }
         });
     }
@@ -1429,8 +1421,7 @@ public class GrammarUtil {
      ******************************************************************************************************************/
 
     private static Matrix createMatrix(List<String> word) {
-        Matrix m=new Matrix(word.size(),word.size()+1, word);
-        return m;
+        return new Matrix(word.size(),word.size()+1, word);
     }
 
     public static boolean containsWord(Grammar g, List<String> word) {
@@ -1471,7 +1462,7 @@ public class GrammarUtil {
                         int finalJ = j;
                         g.getRules().stream()
                                 .filter(rule -> rule.getComingFrom().equals(nonterminal))
-                                .map(rule -> rule.getRightSide())
+                                .map(Rule::getRightSide)
                                 .forEach(list -> {
                                     if(list.size()==2) {
                                         Nonterminal b= (Nonterminal) list.get(0);
@@ -1488,8 +1479,8 @@ public class GrammarUtil {
         return m;
 
     }
-    public static boolean languageContainsWordAsSymbolList(Grammar grammar, List<Symbol> word) {
-        List<String> w = word.stream().map(s -> s.getName()).collect(Collectors.toList());
+    private static boolean languageContainsWordAsSymbolList(Grammar grammar, List<Symbol> word) {
+        List<String> w = word.stream().map(Symbol::getName).collect(Collectors.toList());
         return languageContainsWord(grammar, w);
     }
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
@@ -1506,7 +1497,7 @@ public class GrammarUtil {
         return list.get(0).getName().equals(word.get(i-1));
     }
 
-    public static Configuration getStartConfiguration(Grammar g) {
+    private static Configuration getStartConfiguration(Grammar g) {
         List<Symbol> list = new ArrayList<>();
         list.add(g.getStartSymbol());
         return new Configuration(list,null,g);
@@ -1526,7 +1517,7 @@ public class GrammarUtil {
         result.add(0,result.get(0).getPrevious());
         return result;
     }
-    public static Configuration getEndConfig(Grammar g, List<Symbol> word, long bound) {
+    private static Configuration getEndConfig(Grammar g, List<Symbol> word, long bound) {
         if(!languageContainsWordAsSymbolList(g,word)) {
             return null;
         }
@@ -1567,11 +1558,11 @@ public class GrammarUtil {
             return res;
         }
     }
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                           PDA                                                               -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                           PDA                                                               -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
     /**
      * Returns an PushDownAutomaton constructed from a {@link Grammar}
      * @param g     the Grammar, from which a pda should be created
@@ -1587,26 +1578,23 @@ public class GrammarUtil {
 
         State onlyState=new State("z");
         states.add(onlyState);
-        /** fill the input- and stackalphabet **/
+        /* fill the input- and stackalphabet **/
         for(Symbol s : g.getTerminals()) {
             inputAlphabet.add(new InputLetter(s.getName()));
             stackAlphabet.add(new StackLetter(s.getName()));
         }
-        /** add nullsymbol **/
+        /* add nullsymbol **/
         stackAlphabet.add(StackLetter.NULLSYMBOL);
         inputAlphabet.add(InputLetter.NULLSYMBOL);
-        /** add every nonterminal to the stack alphabet **/
-        for(Symbol s : g.getNonterminals()) {
-            stackAlphabet.add(new StackLetter(s.getName()));
-        }
+        /* add every nonterminal to the stack alphabet **/
+        stackAlphabet.addAll(g.getNonterminals().stream().map(s -> new StackLetter(s.getName())).collect(Collectors.toList()));
         start_state = onlyState;
         initialStackLetter = new StackLetter(g.getStartSymbol().getName());
         PushDownAutomaton tmp = new PushDownAutomaton(states,start_state,initialStackLetter,new ArrayList<>(),start_state,"",null);
-        /** create the rules **/
+        /* create the rules **/
         rules = createRules(g,tmp);
 
-        PushDownAutomaton pda = new PushDownAutomaton(states,start_state,initialStackLetter,rules,start_state,"PDA_"+g.getName(),null);
-        return pda;
+        return new PushDownAutomaton(states,start_state,initialStackLetter,rules,start_state,"PDA_"+g.getName(),null);
     }
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
         ArrayList<PDARule> rules = new ArrayList<>();
@@ -1619,7 +1607,7 @@ public class GrammarUtil {
             State goingTo = help.getStartState();
             InputLetter readIn = InputLetter.NULLSYMBOL;
             StackLetter oldTos = new StackLetter(rule.getComingFrom().getName());
-            List<StackLetter> newTos = calculateNewTos(list, help);
+            List<StackLetter> newTos = calculateNewTos(list);
             PDARule pdaRule = new PDARule(comingFrom, goingTo, readIn, oldTos, newTos);
             rules.add(pdaRule);
 
@@ -1637,11 +1625,8 @@ public class GrammarUtil {
         });
         return rules;
     }
-    private static List<StackLetter> calculateNewTos(List<Symbol> list, PushDownAutomaton pda) {
-        ArrayList<StackLetter> res=new ArrayList<>();
-        for(Symbol s : list) {
-            res.add(new StackLetter(s.getName()));
-        }
+    private static List<StackLetter> calculateNewTos(List<Symbol> list) {
+        ArrayList<StackLetter> res= list.stream().map(s -> new StackLetter(s.getName())).collect(Collectors.toCollection(ArrayList::new));
         return res;
     }
 
@@ -1660,15 +1645,15 @@ public class GrammarUtil {
         return header;
     }
 
-    public static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
+    private static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
-        return (ArrayList<String>) terminals.stream().map(terminal -> terminal.getName()).collect(Collectors.toList());
+        return (ArrayList<String>) terminals.stream().map(Terminal::getName).collect(Collectors.toList());
     }
 
-    public static ArrayList<String> getNonterminalsAsStrings(Grammar grammar) {
+    private static ArrayList<String> getNonterminalsAsStrings(Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
-        return (ArrayList<String>) nonterminals.stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.toList());
+        return (ArrayList<String>) nonterminals.stream().map(Nonterminal::getName).collect(Collectors.toList());
     }
 
     /**
@@ -1699,7 +1684,7 @@ public class GrammarUtil {
      * @param original the original grammar, which functions as the previous version of the newly created grammar
      * @return a grammar, where the special rule vor the empty word has been applied
      */
-    public static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
+    private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
         if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
             HashSet<Rule> freshRules = new HashSet<>();
@@ -1753,8 +1738,8 @@ public class GrammarUtil {
      * @param g the grammar g
      * @return true, if it is on a right side
      */
-    public static boolean startSymbolOnRightSide(Grammar g) {
-        return g.getRules().stream().map(rule -> rule.getRightSide())
+    private static boolean startSymbolOnRightSide(Grammar g) {
+        return g.getRules().stream().map(Rule::getRightSide)
                 .anyMatch(list -> list.stream().anyMatch(symol -> symol.equals(g.getStartSymbol())));
         
     }
@@ -1778,7 +1763,7 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the language contains lambda
      */
-    public static boolean languageContainsLambda(Grammar g) {
+    private static boolean languageContainsLambda(Grammar g) {
        return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
     }
 
@@ -1787,13 +1772,13 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the startsymbol points on lambda
      */
-    public static boolean startSymbolPointsOnLambda(Grammar g) {
+    private static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
 
     public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
-       return a.stream().allMatch(object -> b.contains(object)) && b.stream().allMatch(object -> a.contains(object));
+       return a.stream().allMatch(b::contains) && b.stream().allMatch(a::contains);
     }
 
 }

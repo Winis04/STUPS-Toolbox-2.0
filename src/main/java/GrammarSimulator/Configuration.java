@@ -62,9 +62,7 @@ public class Configuration {
     @Override
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17,31);
-        for (Symbol aConfig : this.config) {
-            hashCodeBuilder.append(aConfig);
-        }
+        this.config.forEach(hashCodeBuilder::append);
         return hashCodeBuilder.hashCode();
     }
 

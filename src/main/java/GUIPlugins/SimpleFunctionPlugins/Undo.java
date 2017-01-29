@@ -50,10 +50,6 @@ public class Undo extends SimpleFunctionPlugin {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
         Class parentClazz = gui.getCli().lookUpTable.get(parent);
         Storable current = (Storable) gui.getCli().objects.get(parentClazz);
-        if(current.getPreviousVersion()==null) {
-            return true;
-        } else {
-            return false;
-        }
+        return current.getPreviousVersion() == null;
     }
 }

@@ -15,10 +15,10 @@ class Visitor extends DepthFirstAdapter {
     private PushDownAutomaton pushDownAutomaton;
     private State start_state;
     private StackLetter initialStackLetter;
-    private HashSet<State> states = new HashSet<>();
-    private HashSet<InputLetter> inputAlphabet = new HashSet<>();
-    private HashSet<StackLetter> stackAlphabet = new HashSet<>();
-    private ArrayList<PDARule> rules = new ArrayList<>();
+    private final HashSet<State> states = new HashSet<>();
+    private final HashSet<InputLetter> inputAlphabet = new HashSet<>();
+    private final HashSet<StackLetter> stackAlphabet = new HashSet<>();
+    private final ArrayList<PDARule> rules = new ArrayList<>();
     @Override
     public void inASymbols(ASymbols node) {
 

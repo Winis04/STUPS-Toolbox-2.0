@@ -7,6 +7,7 @@ import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Matrix;
+import GrammarSimulator.Nonterminal;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -61,7 +62,7 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                     //grid.addColumn(c,new Label(""));
                     for (int r = 0; r < matrix.getNumberOfRows(); r++) {
                         //grid.addRow(r,new Label(""));
-                        grid.add(new Label(matrix.getCell(c, r).stream().map(nonterminal -> nonterminal.getName()).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
+                        grid.add(new Label(matrix.getCell(c, r).stream().map(Nonterminal::getName).collect(Collectors.joining(", "))), c, matrix.getNumberOfRows() - r);
                     }
                 }
 
@@ -69,9 +70,7 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                     grid.add(new Label(word.get(i)),i+1,matrix.getNumberOfRows()+1);
                 }
                 grid.setGridLinesVisible(true);
-                grid.getChildren().stream().forEach(node -> {
-                    grid.setMargin(node, new Insets(5, 10, 5, 10));
-                });
+                grid.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
 
                 ScrollPane scrollPane = new ScrollPane();
                 scrollPane.setContent(grid);

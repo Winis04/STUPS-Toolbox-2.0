@@ -23,7 +23,7 @@ public class Automaton implements Printable, Storable {
     /**
      * Contains all the states of the automaton.
      */
-    private HashSet<State> states;
+    private final HashSet<State> states;
 
     /**
      * The initial state.
@@ -33,7 +33,7 @@ public class Automaton implements Printable, Storable {
     /**
      * Contains all the input string, that are used for the transitions of this automaton.
      */
-    private HashSet<String> allInputs;
+    private final HashSet<String> allInputs;
 
     /**
      * true, if there are cyclic epsilon-transitions in this automaton.
@@ -81,22 +81,17 @@ public class Automaton implements Printable, Storable {
         this.states= new HashSet<>();
 
         //adds the states, but without Rules.
-        oldAutomaton.states.stream()
-                .forEach(state -> this.states.add(new State(state.getName(),state.isStart(),state.isFinal(),new HashSet<>())));
-        this.states.stream().forEach(state -> {
-            if(state.isStart()) {
-                this.startState=state;
+        oldAutomaton.states.forEach(state -> this.states.add(new State(state.getName(), state.isStart(), state.isFinal(), new HashSet<>())));
+        this.states.forEach(state -> {
+            if (state.isStart()) {
+                this.startState = state;
             }
         });
         // for every old State, find the matching new State and copy the rules, so the new rules will have references to the new states.
-        oldAutomaton.states.stream()
-                .forEach(oldState -> {
-                    State newState = this.getState(oldState.getName());
-                    oldState.getRules().stream()
-                            .forEach(rule -> {
-                                newState.getRules().add(new Rule(this.getState(rule.getGoingTo().getName()),rule.getAcceptedInputs()));
-                            });
-                });
+        oldAutomaton.states.forEach(oldState -> {
+            State newState = this.getState(oldState.getName());
+            oldState.getRules().forEach(rule -> newState.getRules().add(new Rule(this.getState(rule.getGoingTo().getName()), rule.getAcceptedInputs())));
+        });
         this.allInputs=oldAutomaton.allInputs;
         this.previousAutomaton = (Automaton) oldAutomaton.getPreviousVersion();
         this.name="A";
@@ -112,9 +107,7 @@ public class Automaton implements Printable, Storable {
         for(State state : states) {
             //Make a local copy of the rules, so we don't get a "ConcurrentModificationException", while removing rules.
             HashSet<Rule> localRules = new HashSet<>(state.getRules());
-            localRules.stream().filter(rule -> (rule.getAcceptedInputs().contains("lambda") || rule.getAcceptedInputs().contains("epsilon")) && rule.getGoingTo().equals(state)).forEach(rule -> {
-                state.getRules().remove(rule);
-            });
+            localRules.stream().filter(rule -> (rule.getAcceptedInputs().contains("lambda") || rule.getAcceptedInputs().contains("epsilon")) && rule.getGoingTo().equals(state)).forEach(rule -> state.getRules().remove(rule));
         }
 
         //For every state, call a method that checks if this state is part of a epsilon-cycle and if so, gets rid of this cycle.
@@ -175,9 +168,7 @@ public class Automaton implements Printable, Storable {
 
                     //Let all rules that pointed to one of the old states point to the newly created state.
                     for (State state1 : states) {
-                        state1.getRules().stream().filter(rule -> cycleStates.contains(rule.getGoingTo())).forEach(rule -> {
-                            rule.setGoingTo(newState);
-                        });
+                        state1.getRules().stream().filter(rule -> cycleStates.contains(rule.getGoingTo())).forEach(rule -> rule.setGoingTo(newState));
                     }
 
                     //Add the new state to the automaton and remove the old states.
@@ -293,13 +284,13 @@ public class Automaton implements Printable, Storable {
         }
 
         Printer.println("",writer);
-        Printer.println(AutomatonUtil.getStatesSorted(this).stream().map(stream -> stream.getName()).collect(joining(", ")),writer);
+        Printer.println(AutomatonUtil.getStatesSorted(this).stream().map(State::getName).collect(joining(", ")),writer);
     }
 
     private void printAllStates_Console(ArrayList<State> statesSorted, BufferedWriter writer, boolean onlyFinal) {
         ArrayList<State> states;
         if(onlyFinal) {
-            states=(ArrayList<State>) statesSorted.stream().filter(state -> state.isFinal()).collect(Collectors.toList());
+            states=(ArrayList<State>) statesSorted.stream().filter(State::isFinal).collect(Collectors.toList());
         } else {
             states=(ArrayList<State>) statesSorted.stream().collect(Collectors.toList());
         }
@@ -320,9 +311,9 @@ public class Automaton implements Printable, Storable {
 
     private State getState(String name) {
         final State[] res = {null};
-        states.stream().forEach(state -> {
-            if(state.getName().equals(name)) {
-                res[0] =state;
+        states.forEach(state -> {
+            if (state.getName().equals(name)) {
+                res[0] = state;
             }
         });
         return res[0];

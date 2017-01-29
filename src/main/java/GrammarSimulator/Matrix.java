@@ -15,11 +15,11 @@ import static java.util.stream.Collectors.joining;
  * @since 26.10.2016
  */
 public class Matrix implements Printable{
-    private int rows;
-    private int columns;
-    private List<String> word;
-    private HashSet<Nonterminal>[][] matrix;
-    int spacing;
+    private final int rows;
+    private final int columns;
+    private final List<String> word;
+    private final HashSet<Nonterminal>[][] matrix;
+    private int spacing;
     public Matrix(int rows, int columns, List<String> word) {
         this.word=word;
         matrix=new HashSet[rows][columns];
@@ -39,12 +39,12 @@ public class Matrix implements Printable{
             matrix[r][c].add(nt);
         }
         for (HashSet<Nonterminal>[] aMatrix : matrix) {
-            for (int i = 0; i < aMatrix.length; i++) {
+            for (HashSet<Nonterminal> anAMatrix : aMatrix) {
                 int tmp = 0;
-                for (Symbol s : aMatrix[i]) {
+                for (Symbol s : anAMatrix) {
                     tmp += s.getName().length();
                 }
-                tmp += 2 * aMatrix[i].size();
+                tmp += 2 * anAMatrix.size();
                 if (tmp > spacing) {
                     this.spacing = tmp;
                 }
@@ -100,7 +100,7 @@ public class Matrix implements Printable{
 
             for(int i=1;i<columns;i++) {
                 HashSet<Nonterminal> tmp=matrix[j][i];
-                String cellContent=tmp.stream().map(nonterminal -> nonterminal.getName()).collect(joining(", "));
+                String cellContent=tmp.stream().map(Nonterminal::getName).collect(joining(", "));
                 Printer.print(cellContent,writer);
                 int fill=0;
 

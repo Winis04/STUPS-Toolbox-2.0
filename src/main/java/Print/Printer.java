@@ -83,7 +83,7 @@ public class Printer {
             case NO:
                 break;
             case CONSOLE:
-                printEnumerationConsole(printables,point_descriptions,texts,titel);
+                printEnumerationConsole(printables,point_descriptions,texts);
                 break;
             case LATEX:
                 printEnumerationLatex(printables,point_descriptions,texts,titel);
@@ -105,13 +105,13 @@ public class Printer {
 
     }
 
-    public static void printWithTitelLatex(String titel, Printable printable) {
+    private static void printWithTitelLatex(String titel, Printable printable) {
         Printer.print("\\section{"+titel+"}\n\n",writer);
         printable.printLatex(writer,getSpace(deepnes));
 
     }
 
-    public static void printWithTitelConsole(String titel, Printable printable) {
+    private static void printWithTitelConsole(String titel, Printable printable) {
         Printer.print(titel+"\n\n",writer);
         printable.printConsole(writer);
     }
@@ -204,7 +204,7 @@ public class Printer {
     /** CONSOLE **/
 
 
-    private static void printEnumerationConsole(ArrayList<Printable> printables, String[] point_description, String[] texts, String titel) {
+    private static void printEnumerationConsole(ArrayList<Printable> printables, String[] point_description, String[] texts) {
         if(printables.size()!=texts.length) {
             return;
         }

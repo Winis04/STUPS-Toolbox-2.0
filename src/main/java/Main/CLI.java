@@ -23,19 +23,19 @@ import java.util.*;
  */
 public class CLI {
 
-    private GUI gui;
+    private final GUI gui;
     /**
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
-    public HashMap<Class, Object> objects = new HashMap<>();
+    public final HashMap<Class, Object> objects = new HashMap<>();
 
     /**
      * Contains all stored (saved) objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to a hashmap.
      * In this map names are mapped to instances of the class
      */
-    public HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
+    public final HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
 
     /**
      * Contains the different types of storable objects (Automaton, Grammar, etc.).
@@ -43,7 +43,7 @@ public class CLI {
      * If you want to add new types of storable objects to the application, you need
      * to add an entry to this hashmap.
      */
-    public HashMap<String,Class> lookUpTable =new HashMap<>();
+    public final HashMap<String,Class> lookUpTable =new HashMap<>();
 
     //public static ArrayList<Grammar> grammars=new ArrayList<>();
     protected TreeMap<String,Grammar> grammars=new TreeMap<>();
@@ -83,7 +83,7 @@ public class CLI {
                     if (correctMap == null || correctMap.isEmpty()) {
                         System.out.println("no objects of type " + parameters[0] + " stored!");
                     } else {
-                        correctMap.keySet().stream().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                        correctMap.keySet().forEach(key -> Printer.print((Printable) correctMap.get(key)));
                     }
                 }
             } else {
@@ -142,7 +142,6 @@ public class CLI {
     private boolean doStoreCommand(String command, String parameter1, String parameter2) {
         if(isStoreFunction(command)) {
                     // Integer i = Integer.parseInt(parameters[1]);
-                    String i = parameter2;
                     //first: detect which object should be stored
                     Class clazz = lookUpTable.get(parameter1.toLowerCase());
 
@@ -150,40 +149,49 @@ public class CLI {
                         System.out.println("There are no objects of type " + parameter1);
                     } else {
                         HashMap<String, Storable> correctMap = store.get(clazz);
-                        if (command.equals("store") || command.equals("str") || command.equals("copy")) {
+                        switch (command) {
+                            case "store":
+                            case "str":
+                            case "copy":
 
-                            Object object = objects.get(clazz);
-                            if (object == null) {
-                                System.out.println("Please load an object of type " + parameter1 + " before using this command!");
-                            } else {
-
-                                Storable toBeStored;
-                                if (command.equals("copy")) {
-                                    toBeStored = ((Storable) object).otherName(i);
+                                Object object = objects.get(clazz);
+                                if (object == null) {
+                                    System.out.println("Please load an object of type " + parameter1 + " before using this command!");
                                 } else {
-                                    toBeStored = ((Storable) object).otherName(i);
-                                }
-                                if (correctMap == null) {
-                                    HashMap<String, Storable> tmp = new HashMap<>();
-                                    tmp.put(i, toBeStored);
 
-                                    store.put(clazz, tmp);
-                                } else {
-                                    correctMap.put(i, toBeStored);
-                                    //    store.get(clazz).put(i, toBeStored);
+                                    Storable toBeStored;
+                                    if (command.equals("copy")) {
+                                        toBeStored = ((Storable) object).otherName(i);
+                                    } else {
+                                        toBeStored = ((Storable) object).otherName(i);
+                                    }
+                                    if (correctMap == null) {
+                                        HashMap<String, Storable> tmp = new HashMap<>();
+                                        tmp.put(i, toBeStored);
+
+                                        store.put(clazz, tmp);
+                                    } else {
+                                        correctMap.put(i, toBeStored);
+                                        //    store.get(clazz).put(i, toBeStored);
+                                    }
                                 }
-                            }
-                        } else if (command.equals("switch") || command.equals("swt")) {
-                            Storable theNewCurrent = correctMap.get(i);
-                            if (theNewCurrent == null) {
-                                System.out.println("no Object with this Index"); //TODO
-                            } else {
-                                objects.put(clazz, theNewCurrent);
-                            }
-                        } else if (command.equals("remove") || command.equals("rmv")) {
-                            correctMap.remove(i);
-                        } else {
-                            System.out.println("something went wrong");
+                                break;
+                            case "switch":
+                            case "swt":
+                                Storable theNewCurrent = correctMap.get(i);
+                                if (theNewCurrent == null) {
+                                    System.out.println("no Object with this Index"); //TODO
+                                } else {
+                                    objects.put(clazz, theNewCurrent);
+                                }
+                                break;
+                            case "remove":
+                            case "rmv":
+                                correctMap.remove(i);
+                                break;
+                            default:
+                                System.out.println("something went wrong");
+                                break;
                         }
                     }
         } else {
@@ -205,10 +213,7 @@ public class CLI {
         if(store.get(type).values().isEmpty()) {
             return false;
         }
-        if(store.get(type).values().contains(storable)) {
-            return true;
-        }
-        return false;
+        return store.get(type).values().contains(storable);
     }
 
 
@@ -220,9 +225,8 @@ public class CLI {
                 reader.close();
                 File ret = new File(path);
 
-                File dir = ret;
                 store.clear();
-                File[] directoryListing = dir.listFiles();
+                File[] directoryListing = ret.listFiles();
                 if (directoryListing != null) {
                     for (File child : directoryListing) {
                         // get the class belonging to that directory
@@ -284,7 +288,7 @@ public class CLI {
 
         Reflections reflections = new Reflections("CLIPlugins");
         Set<Class<? extends CLIPlugin>> s = reflections.getSubTypesOf(CLIPlugin.class);
-        s.stream().forEach(r -> {
+        s.forEach(r -> {
             try {
                 CLIPlugin plugin = (CLIPlugin) r.newInstance();
                 plugins.add(plugin);

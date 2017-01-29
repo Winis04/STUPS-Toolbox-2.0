@@ -11,7 +11,7 @@ import java.util.Arrays;
  * @since 12.12.2016
  */
 public class GrammarCheckWord implements CLIPlugin {
-    boolean errorFlag=false;
+    private boolean errorFlag=false;
     @Override
     public String[] getNames() {
         return new String[]{"csg","check-string-grammar"};

@@ -91,7 +91,7 @@ public class PDARule implements Printable{
         Printer.print(this.getOldToS().getName(),writer);
         Printer.print(" --> ",writer);
         Printer.print(this.getGoingTo().getName(),writer);
-        Printer.print(this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""))+"\n",writer);
+        Printer.print(this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""))+"\n",writer);
     }
 
     public String asString() {
@@ -100,7 +100,7 @@ public class PDARule implements Printable{
         s+=" "+this.getOldToS().getName();
         s+=" \u2192";
         s+=" "+this.getGoingTo().getName();
-        s+=" "+this.getNewToS().stream().map(t -> t.getName()).collect(Collectors.joining(""));
+        s+=" "+this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""));
         return s;
     }
 
@@ -134,7 +134,7 @@ public class PDARule implements Printable{
                 .append(readIn)
                 .append(oldToS)
                 .append(goingTo);
-        newToS.forEach(sym -> builder.append(sym));
+        newToS.forEach(builder::append);
         return builder.toHashCode();
     }
 }

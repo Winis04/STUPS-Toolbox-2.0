@@ -63,8 +63,8 @@ public class GrammarGUI implements DisplayPlugin {
     public void firstfollow(Grammar grammar) {
         String name="First Follow";
         if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
-            rootPane.getTabs().stream().forEach(tab -> {
-                if(tab.getText().equals(name)) {
+            rootPane.getTabs().forEach(tab -> {
+                if (tab.getText().equals(name)) {
                     rootPane.getSelectionModel().select(tab);
                 }
             });
@@ -83,8 +83,8 @@ public class GrammarGUI implements DisplayPlugin {
     public void llParsingTableTab(Grammar grammar) {
         String name="LL-parsing Table";
         if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
-            rootPane.getTabs().stream().forEach(tab -> {
-                if(tab.getText().equals(name)) {
+            rootPane.getTabs().forEach(tab -> {
+                if (tab.getText().equals(name)) {
                     rootPane.getSelectionModel().select(tab);
                 }
             });

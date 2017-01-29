@@ -36,7 +36,7 @@ public class OverviewController {
     AnchorPane overview;
 
 
-    ContextMenu dynamicContextMenu=new ContextMenu();
+    private final ContextMenu dynamicContextMenu=new ContextMenu();
 
     private HashMap<Class, List<MenuItem>> map = new HashMap<>();
 
@@ -67,22 +67,21 @@ public class OverviewController {
         TreeItem<String> root=new TreeItem<>("Storables");
 
         if(!gui.getCli().store.keySet().isEmpty()) {
-            /** top items **/
+            /* top items **/
 
-            gui.getCli().store.keySet().stream()
-                    .forEach(clazz -> {
-                        // the name of the storable objects
-                        TreeItem<String> top= new TreeItem<>(clazz.getSimpleName());
+            gui.getCli().store.keySet().forEach(clazz -> {
+                // the name of the storable objects
+                TreeItem<String> top = new TreeItem<>(clazz.getSimpleName());
 
-                        // every object of the top-type
-                        List<TreeItem<String>> list= gui.getCli().store.get(clazz).keySet().stream()
-                                .map(key -> new TreeItem<>(key))
-                                .collect(Collectors.toList());
+                // every object of the top-type
+                List<TreeItem<String>> list = gui.getCli().store.get(clazz).keySet().stream()
+                        .map(TreeItem::new)
+                        .collect(Collectors.toList());
 
-                        top.getChildren().addAll(list);
-                        top.setExpanded(true);
-                        root.getChildren().add(top);
-                    });
+                top.getChildren().addAll(list);
+                top.setExpanded(true);
+                root.getChildren().add(top);
+            });
 
             treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
                 if (e.getButton()==MouseButton.SECONDARY) {
@@ -93,7 +92,7 @@ public class OverviewController {
                         //open context menu on current screen position
                         if(selected.getParent().equals(root)) {
                             String clazz = selected.getValue().toString().toLowerCase();
-                            this.openContextMenuOnSuperClass(gui.getCli().lookUpTable.get(clazz),dynamicMenu,e.getScreenX(),e.getScreenY());
+                            this.openContextMenuOnSuperClass(dynamicMenu,e.getScreenX(),e.getScreenY());
                         } else {
                             this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu, e.getScreenX(), e.getScreenY());
                         }
@@ -111,11 +110,10 @@ public class OverviewController {
             treeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 // the selected Item
-                TreeItem<String> selectedItem = newValue;
 
                 if(newValue != null && !newValue.equals(root) && newValue.getParent()!= null &&!newValue.getParent().equals(root) && newValue.getParent().getParent()!=null) {
                     // the String that belongs to the parent treeItem
-                   gui.switchStorable(selectedItem);
+                   gui.switchStorable(newValue);
 
                 }
             });
@@ -133,8 +131,7 @@ public class OverviewController {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the childs class) by looking in the lookup table
-        Class parentClass = gui.getCli().lookUpTable.get(parent);
-        return parentClass;
+        return gui.getCli().lookUpTable.get(parent);
 
     }
 
@@ -142,7 +139,7 @@ public class OverviewController {
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables()==false && sfp.operatesOnSuperClass()==false && sfp.inputType().equals(parent) )
+                .filter(sfp -> !sfp.operatesOnAllStorables() && !sfp.operatesOnSuperClass() && sfp.inputType().equals(parent) )
                 .map(sfp -> {
                     MenuItem item = sfp.getMenuItem(gui);
                     if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
@@ -151,16 +148,16 @@ public class OverviewController {
                     return item;
                 }).collect(Collectors.toList()));
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables()==true && sfp.operatesOnSuperClass()==false)
+                .filter(sfp -> sfp.operatesOnAllStorables() && !sfp.operatesOnSuperClass())
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu
         dynamicContextMenu.show(treeView, x, y);
     }
-    private void openContextMenuOnSuperClass(Class clazz, Collection<SimpleFunctionPlugin> list, double x, double y) {
+    private void openContextMenuOnSuperClass(Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnSuperClass()==true)
+                .filter(sfp -> sfp.operatesOnSuperClass())
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu

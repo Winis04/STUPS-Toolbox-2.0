@@ -9,7 +9,7 @@ import java.io.BufferedWriter;
  * @since 25.11.2016
  */
 public class Dummy implements Printable {
-    String s="";
+    private String s="";
 
     /**
      * empty constructor

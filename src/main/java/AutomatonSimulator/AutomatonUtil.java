@@ -9,6 +9,7 @@ import javafx.util.Pair;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -53,11 +54,11 @@ public class AutomatonUtil {
     private static HashSet<State> emptyWordStates = new HashSet<>();
 
 
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                      First some private methods. Scroll down to see the public methods.                     -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                      First some private methods. Scroll down to see the public methods.                     -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
 
     /**
      * Returns an ArrayList that contains all states, that are somehow reachable from the start state,
@@ -251,16 +252,14 @@ public class AutomatonUtil {
 
         //Go through state and map each input to a set of states, that can be reached from that state.
         for(State state : epsilonStates) {
-            for(String input : automaton.getAllInputs()) {
-                if(!input.equals("lambda") && !input.equals("epsilon")) {
-                    for(Rule rule : state.getRules()) {
-                        if (rule.getAcceptedInputs().contains(input)) {
-                            transitionMap.get(input).add(rule.getGoingTo());
-                            transitionMap.get(input).addAll(epsilonReachableStates(rule.getGoingTo(), new HashSet<>()));
-                        }
+            automaton.getAllInputs().stream().filter(input -> !input.equals("lambda") && !input.equals("epsilon")).forEachOrdered(input -> {
+                for (Rule rule : state.getRules()) {
+                    if (rule.getAcceptedInputs().contains(input)) {
+                        transitionMap.get(input).add(rule.getGoingTo());
+                        transitionMap.get(input).addAll(epsilonReachableStates(rule.getGoingTo(), new HashSet<>()));
                     }
                 }
-            }
+            });
         }
 
         return transitionMap;
@@ -342,7 +341,7 @@ public class AutomatonUtil {
             //If we can reach the start state with a lambda-transition, and this transition does not point to the current state itself,
             //we can put the removed input back to the front of our input-list and call this method recursively.
             if(emptyWordStates.contains(currentState) && !currentState.equals(startState) && !currentInput.equals("lambda") && !currentInput.equals("epsilon")) {
-                ArrayList<String> newLocalInput = new ArrayList<>(Arrays.asList(currentInput));
+                ArrayList<String> newLocalInput = new ArrayList<>(Collections.singletonList(currentInput));
                 newLocalInput.addAll(localInput);
                 takenWay.push(startState.getName() + " --lambda--> " + currentState.getName());
                 accepted = checkInput(newLocalInput, currentState);
@@ -370,18 +369,14 @@ public class AutomatonUtil {
     private static HashMap<Pair<State, State>, Boolean> getMinimizeMap(Automaton automaton) {
         HashMap<Pair<State, State>, Boolean> statePairs = new HashMap<>();
         for(State state1 : automaton.getStates()) {
-            for(State state2 : automaton.getStates()) {
-                if(!state1.equals(state2) && !statePairs.keySet().contains(new Pair<>(state2, state1))) {
-                    statePairs.put(new Pair<>(state1, state2), false);
-                }
-            }
+            automaton.getStates().stream().filter(state2 -> !state1.equals(state2) && !statePairs.keySet().contains(new Pair<>(state2, state1))).forEachOrdered(state2 -> {
+                statePairs.put(new Pair<>(state1, state2), false);
+            });
         }
 
-        for(Pair<State, State> statePair : statePairs.keySet()) {
-            if(statePair.getKey().isFinal() && !statePair.getValue().isFinal() || !statePair.getKey().isFinal() && statePair.getValue().isFinal()) {
-                statePairs.put(statePair, true);
-            }
-        }
+        statePairs.keySet().stream().filter(statePair -> statePair.getKey().isFinal() && !statePair.getValue().isFinal() || !statePair.getKey().isFinal() && statePair.getValue().isFinal()).forEachOrdered(statePair -> {
+            statePairs.put(statePair, true);
+        });
 
         boolean changed = true;
         while(changed) {
@@ -409,7 +404,7 @@ public class AutomatonUtil {
                                     changed = true;
                                 }
                             }
-                        } catch (NullPointerException e) {
+                        } catch (NullPointerException ignored) {
                         }
                     }
                 }
@@ -419,11 +414,11 @@ public class AutomatonUtil {
         return statePairs;
     }
 
-    /******************************************************************************************************************
-     * ---------------------------------------------------------------------------------------------------------------*
-     * -                                The public methods follow after this comment.                                -*
-     * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+    /*****************************************************************************************************************
+     ---------------------------------------------------------------------------------------------------------------*
+     -                                The public methods follow after this comment.                                -*
+     ---------------------------------------------------------------------------------------------------------------*
+     */
 
     /**
      * Takes an input-string and parses it into an automaton. Typically the input-string comes from a file,
@@ -469,15 +464,13 @@ public class AutomatonUtil {
     }
 
     private static Automaton setIsLoop(Automaton automaton) {
-        automaton.getStates().stream().forEach(state -> {
-            state.getRules().stream().forEach(rule -> {
-                if(rule.getGoingTo().getName().equals(state.getName())) {
-                    rule.setLoop(true);
-                } else {
-                    rule.setLoop(false);
-                }
-            });
-        });
+        automaton.getStates().forEach(state -> state.getRules().forEach(rule -> {
+            if (rule.getGoingTo().getName().equals(state.getName())) {
+                rule.setLoop(true);
+            } else {
+                rule.setLoop(false);
+            }
+        }));
         return automaton;
     }
     /**
@@ -486,7 +479,7 @@ public class AutomatonUtil {
      * @param automaton The automaton.
      * @return The ArrayList.
      */
-    public static ArrayList<State> getStatesInOrder(Automaton automaton) {
+    private static ArrayList<State> getStatesInOrder(Automaton automaton) {
         ArrayList<State> states = getStatesInOrder(automaton.getStartState(), new ArrayList<>());
         HashSet<State> missingStates = new HashSet<>(automaton.getStates());
         missingStates.removeAll(states);
@@ -725,9 +718,7 @@ public class AutomatonUtil {
                 if (!visitedStates.get(state)) {
                     state.setName("z" + counter);
                     visitedStates.put(state, true);
-                    for (Rule rule : state.getRules()) {
-                        nextStates.add(rule.getGoingTo());
-                    }
+                    nextStates.addAll(state.getRules().stream().map(Rule::getGoingTo).collect(Collectors.toList()));
                     counter++;
                 }
             }
@@ -778,7 +769,7 @@ public class AutomatonUtil {
 
                     //Add a new rule to newState if necessary.
                     if(newRule) {
-                        state.getRules().add(new Rule(newState, new HashSet<>(Arrays.asList(input))));
+                        state.getRules().add(new Rule(newState, new HashSet<>(Collections.singletonList(input))));
                     }
                 }
             }
@@ -806,7 +797,7 @@ public class AutomatonUtil {
 
         HashMap<HashSet<State>, Boolean> stateMap = new HashMap<>();
         State startState = new State(epsilonFreeAutomaton.getStartState().getName(), true, epsilonFreeAutomaton.getStartState().isFinal(), epsilonFreeAutomaton.getStartState().getRules());
-        stateMap.put(new HashSet<>(Arrays.asList(startState)), false);
+        stateMap.put(new HashSet<>(Collections.singletonList(startState)), false);
 
         HashMap<String, State> newStates = new HashMap<>();
         newStates.put(epsilonFreeAutomaton.getStartState().getName(), new State(epsilonFreeAutomaton.getStartState().getName(), true, epsilonFreeAutomaton.getStartState().isFinal(), new HashSet<>()));
@@ -843,7 +834,7 @@ public class AutomatonUtil {
                             Arrays.sort(goingToNameArray);
                             Arrays.sort(startStateNameArray);
                             boolean containsGoingTo = false;
-                            boolean equalsStartState = Arrays.equals(goingToNameArray, startStateNameArray);;
+                            boolean equalsStartState = Arrays.equals(goingToNameArray, startStateNameArray);
                             for(String name : newStates.keySet()) {
                                 char nameArray[] = name.toCharArray();
                                 Arrays.sort(nameArray);
@@ -856,7 +847,7 @@ public class AutomatonUtil {
                             if (!containsGoingTo) {
                                 newStates.put(goingToName, new State(goingToName, false, isFinal, new HashSet<>()));
                             }
-                            newStates.get(comingFromName).getRules().add(new Rule(newStates.get(goingToName), new HashSet<>(Arrays.asList(input))));
+                            newStates.get(comingFromName).getRules().add(new Rule(newStates.get(goingToName), new HashSet<>(Collections.singletonList(input))));
 
 
 
@@ -957,12 +948,10 @@ public class AutomatonUtil {
                 boolean addedState = true;
                 while(addedState) {
                     addedState = false;
-                    for (Pair<State, State> mergePair : statePairs.keySet()) {
-                        if(!statePairs.get(mergePair) && (mergeStates.contains(mergePair.getKey()) || mergeStates.contains(mergePair.getValue()))) {
-                            mergeStates.add(mergePair.getKey());
-                            mergeStates.add(mergePair.getValue());
-                        }
-                    }
+                    statePairs.keySet().stream().filter(mergePair -> !statePairs.get(mergePair) && (mergeStates.contains(mergePair.getKey()) || mergeStates.contains(mergePair.getValue()))).forEachOrdered(mergePair -> {
+                        mergeStates.add(mergePair.getKey());
+                        mergeStates.add(mergePair.getValue());
+                    });
                 }
                 String name = "";
                 boolean isStart = false;

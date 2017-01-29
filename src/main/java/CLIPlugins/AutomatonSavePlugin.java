@@ -9,7 +9,7 @@ import AutomatonSimulator.AutomatonUtil;
  */
 public class AutomatonSavePlugin implements CLIPlugin {
 
-    boolean errorFlag = false;
+    private boolean errorFlag = false;
 
     @Override
     public String[] getNames() {

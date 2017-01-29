@@ -10,7 +10,7 @@ import GrammarSimulator.GrammarUtil;
  */
 public class GrammarSavePlugin implements CLIPlugin {
 
-    boolean errorFlag = false;
+    private boolean errorFlag = false;
 
     @Override
     public String[] getNames() {

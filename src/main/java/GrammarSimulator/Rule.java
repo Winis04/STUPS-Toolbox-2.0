@@ -23,7 +23,7 @@ public final class Rule {
 
     }
 
-    public Rule(Rule old) {
+    private Rule(Rule old) {
         this.comingFrom = new Nonterminal(old.getComingFrom().getName());
 
         List<Symbol> list =old.getRightSide().stream().map(symbol ->{
@@ -75,7 +75,7 @@ public final class Rule {
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder(17,31);
         builder.append(this.comingFrom);
-        this.rightSide.forEach(sym -> builder.append(sym));
+        this.rightSide.forEach(builder::append);
         return builder.toHashCode();
     }
 }

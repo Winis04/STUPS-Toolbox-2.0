@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author fabian
@@ -21,11 +22,7 @@ public class LLParsingTableTab implements GrammarTab {
         //if(GrammarUtil.isLambdaFree(grammar)) {
             HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> llTable = GrammarUtil.llParsingTable(grammar);
             ArrayList<Terminal> terminalList = GrammarUtil.getTerminalsInOrder(grammar);
-            for (Terminal terminal : llTable.get(grammar.getStartSymbol()).keySet()) {
-                if (terminal.getName().equals("$")) {
-                    terminalList.add(terminal);
-                }
-            }
+        terminalList.addAll(llTable.get(grammar.getStartSymbol()).keySet().stream().filter(terminal -> terminal.getName().equals("$")).collect(Collectors.toList()));
 
             //Add a column for every terminal.
             int i = 1;
@@ -51,7 +48,7 @@ public class LLParsingTableTab implements GrammarTab {
                         StringBuilder sb = new StringBuilder();
                         int k = 0;
                         for (String rule : llTable.get(nonterminal).get(terminal)) {
-                            sb.append(rule + "\n");
+                            sb.append(rule).append("\n");
                             k++;
                         }
                         Label cellLabel = new Label(sb.toString());
