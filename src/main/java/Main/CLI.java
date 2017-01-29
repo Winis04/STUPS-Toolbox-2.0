@@ -161,24 +161,24 @@ public class CLI {
 
                                     Storable toBeStored;
                                     if (command.equals("copy")) {
-                                        toBeStored = ((Storable) object).otherName(i);
+                                        toBeStored = ((Storable) object).otherName(parameter2);
                                     } else {
-                                        toBeStored = ((Storable) object).otherName(i);
+                                        toBeStored = ((Storable) object).otherName(parameter2);
                                     }
                                     if (correctMap == null) {
                                         HashMap<String, Storable> tmp = new HashMap<>();
-                                        tmp.put(i, toBeStored);
+                                        tmp.put(parameter2, toBeStored);
 
                                         store.put(clazz, tmp);
                                     } else {
-                                        correctMap.put(i, toBeStored);
+                                        correctMap.put(parameter2, toBeStored);
                                         //    store.get(clazz).put(i, toBeStored);
                                     }
                                 }
                                 break;
                             case "switch":
                             case "swt":
-                                Storable theNewCurrent = correctMap.get(i);
+                                Storable theNewCurrent = correctMap.get(parameter2);
                                 if (theNewCurrent == null) {
                                     System.out.println("no Object with this Index"); //TODO
                                 } else {
@@ -187,7 +187,7 @@ public class CLI {
                                 break;
                             case "remove":
                             case "rmv":
-                                correctMap.remove(i);
+                                correctMap.remove(parameter2);
                                 break;
                             default:
                                 System.out.println("something went wrong");
