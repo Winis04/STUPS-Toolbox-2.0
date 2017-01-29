@@ -5,6 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
 /**
+ * A plugin for the GUI, which executes more complicate commands than
+ * {@link GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin}.
  * @author fabian
  * @since 19.06.16
  */

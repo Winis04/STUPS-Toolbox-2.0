@@ -4,7 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Renames the {@link State}s of an {@link Automaton}.
+ * Renames the {@link AutomatonSimulator.State}s of an {@link Automaton}.
  * @author fabian
  * @since 24.07.16
  */

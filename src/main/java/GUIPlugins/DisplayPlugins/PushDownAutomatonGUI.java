@@ -22,6 +22,7 @@ import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
+ * Displays {@link PushDownAutomaton}.
  * @author Isabel
  * @since 10.12.2016
  */

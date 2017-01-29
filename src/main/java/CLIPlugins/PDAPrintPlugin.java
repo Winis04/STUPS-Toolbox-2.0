@@ -4,7 +4,7 @@ import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 
 /**
- * Prints the current {@link Grammar} to the console.
+ * Prints the current {@link GrammarSimulator.Grammar} to the console.
  * @author Isabel
  * @since 29.10.2016
  */

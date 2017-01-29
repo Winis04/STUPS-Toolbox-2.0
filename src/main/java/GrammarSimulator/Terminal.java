@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
+ * An element of a {@link Grammar}, which describes a terminal symbol. It is a part of the result of a derivation.
  * @author fabian
  * @since 06.08.16
  */

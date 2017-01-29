@@ -2,8 +2,9 @@ package GUIPlugins.DisplayPlugins.GrammarTabs;
 
 import GrammarSimulator.Grammar;
 import javafx.scene.Node;
-
+//TODO better java doc
 /**
+ * Visualizes things that have to do with {@link Grammar}s
  * @author fabian
  * @since 15.08.16
  */

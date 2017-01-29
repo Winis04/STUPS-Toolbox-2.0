@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * displays the LL-Parsing Table.
  * @author fabian
  * @since 25.08.16
  */

@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 
 
 /**
+ * An element of a {@link Grammar}, which has further derivation. It is therefore non-terminal.
  * @author fabian
  * @since 06.08.16
  */

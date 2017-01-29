@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
+ * A Tab, that visualizes the First- and Follow-Sets.
  * @author fabian
  * @since 24.08.16
  */

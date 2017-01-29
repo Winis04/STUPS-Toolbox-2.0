@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.util.*;
 
 /**
+ * A Tab for editing {@link Grammar}.
  * @author fabian
  * @since 15.08.16
  */

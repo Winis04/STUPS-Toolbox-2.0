@@ -4,7 +4,7 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 
 /**
- * Saved an {@link Automaton} to a {@link File}, which can later be reloaded by this program.
+ * Saved an {@link Automaton} to a file, which can later be reloaded by this program.
  * @author fabian
  * @since 15.06.16
  */

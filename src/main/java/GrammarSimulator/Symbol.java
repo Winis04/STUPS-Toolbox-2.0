@@ -1,6 +1,8 @@
 package GrammarSimulator;
 
 /**
+ * A symbol is an element of a {@link Grammar}. It is either a {@link Nonterminal}, which has further derivations,
+ * or a {@link Terminal}, which is terminal.
  * @author fabian
  * @since 06.08.16
  */

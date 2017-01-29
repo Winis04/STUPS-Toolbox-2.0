@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * executed the cyk with a by the user given word.
  * @author Isabel
  * @since 01.12.2016
  */

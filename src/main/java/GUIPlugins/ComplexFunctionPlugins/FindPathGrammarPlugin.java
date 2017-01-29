@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * finds a derivation path of a given word and a current {@link Grammar}.
  * @author isabel
  * @since 19.01.2017
  */

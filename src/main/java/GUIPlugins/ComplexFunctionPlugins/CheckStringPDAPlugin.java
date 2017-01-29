@@ -17,6 +17,8 @@ import java.util.*;
 import static java.util.stream.Collectors.joining;
 
 /**
+ * makes it possible for the user to execute the {@link PDARule}s of the current {@link PushDownAutomaton}
+ * to check, if the {@link PushDownAutomaton} contains a given word.
  * @author fabian
  * @since 19.06.16
  */

@@ -4,7 +4,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 
 /**
- * saves the current {@link Grammar} into a {@link File}.
+ * saves the current {@link Grammar} into a file.
  * @author fabian
  * @since 12.08.16
  */

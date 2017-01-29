@@ -89,6 +89,7 @@ public class PushDownAutomatonUtil {
     }
 
 
+
     public static RunThroughInfo doRule(PDARule rule, RunThroughInfo run) {
         PushDownAutomaton pda = run.getMyPDA();
         if(run.getStack().isEmpty()) {

@@ -37,7 +37,7 @@ import java.util.*;
 /**
  *
  * <pre>
- * This class uses the JUNG2-library to display automatons.
+ * This class uses the JUNG2-library to display {@link Automaton}s.
  * JUNG2 is licensed under BSD open-source license:
  *
  * The license below is the BSD open-source license. See

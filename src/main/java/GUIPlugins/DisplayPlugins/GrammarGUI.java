@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 
 /**
+ * Displays {@link Grammar}.
  * @author fabian
  * @since 13.08.16
  */

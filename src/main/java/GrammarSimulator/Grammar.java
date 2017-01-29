@@ -12,7 +12,7 @@ import java.util.*;
 import static java.util.stream.Collectors.joining;
 
 /**
- * The Model for grammars
+ * The Model for formal grammars.
  * @author fabian
  * @since 06.08.16
  */

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * checks, if the current {@link Grammar} contains a given word.
  * @author fabian
  * @since 19.06.16
  */

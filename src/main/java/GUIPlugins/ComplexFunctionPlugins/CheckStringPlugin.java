@@ -19,6 +19,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
+ * checks, if the current {@link Automaton} contains a given word.
  * @author fabian
  * @since 19.06.16
  */
