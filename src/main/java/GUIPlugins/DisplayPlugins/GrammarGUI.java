@@ -2,14 +2,11 @@ package GUIPlugins.DisplayPlugins;
 
 import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.FirstFollowTab;
-import GUIPlugins.DisplayPlugins.GrammarTabs.GrammarTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.LLParsingTableTab;
 import GrammarSimulator.Grammar;
 import Main.GUI;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-
-import java.util.*;
 
 /**
  * @author fabian

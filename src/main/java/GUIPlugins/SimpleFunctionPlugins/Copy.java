@@ -1,7 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
 import Main.Storable;
-import javafx.scene.control.TreeItem;
 
 /**
  * @author Isabel
@@ -17,9 +16,8 @@ public class Copy extends SimpleFunctionPlugin {
     public Storable execute(Object object) {
 
         Storable storable = (Storable) object;
-        Storable copy = storable.otherName(storable.getName()+"_Copy");
 
-        return copy;
+        return storable.otherName(storable.getName()+"_Copy");
     }
 
 
