@@ -58,11 +58,7 @@ public class GrammarLoadPlugin implements CLIPlugin {
         } catch (IOException e) {
             System.out.println("Unable to read file!");
             errorFlag = true;
-        } catch (ParserException e) {
-            System.out.println("Error while parsing the file!");
-            e.printStackTrace();
-            errorFlag = true;
-        } catch (LexerException e) {
+        } catch (ParserException | LexerException e) {
             System.out.println("Error while parsing the file!");
             e.printStackTrace();
             errorFlag = true;

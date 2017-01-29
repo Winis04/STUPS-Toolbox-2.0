@@ -67,7 +67,7 @@ public class CLI {
     private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         if(command.equals("gui")) {
 
-            Platform.runLater(() -> gui.show());
+            Platform.runLater(gui::show);
             while (!gui.IS_VISIBLE) {
                 Thread.sleep(500);
             }
@@ -113,7 +113,7 @@ public class CLI {
             System.out.println("'switch_workspace' -- takes a directory as a parameter. Changes the workspace");
             System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
             System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
-            System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this postion");
+            System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this position");
             System.out.println("'copy' -- same as 'store', but the grammar is stored as a deep-copy" );
             System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
             System.out.println("'a' or 'about' -- Shows the release information");
@@ -207,13 +207,7 @@ public class CLI {
      * @return true, if the store contains the storable; false otherwise.
      */
     public boolean storeContains(Storable storable, Class type) {
-        if(store.get(type)==null) {
-            return false;
-        }
-        if(store.get(type).values().isEmpty()) {
-            return false;
-        }
-        return store.get(type).values().contains(storable);
+        return store.get(type) != null && !store.get(type).values().isEmpty() && store.get(type).values().contains(storable);
     }
 
 
@@ -292,9 +286,7 @@ public class CLI {
             try {
                 CLIPlugin plugin = (CLIPlugin) r.newInstance();
                 plugins.add(plugin);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });

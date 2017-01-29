@@ -54,7 +54,7 @@ public class AutomatonUtil {
     private static HashSet<State> emptyWordStates = new HashSet<>();
 
 
-    /*****************************************************************************************************************
+    /****************************************************************************************************************
      ---------------------------------------------------------------------------------------------------------------*
      -                      First some private methods. Scroll down to see the public methods.                     -*
      ---------------------------------------------------------------------------------------------------------------*
@@ -65,7 +65,7 @@ public class AutomatonUtil {
      * in order of their appearance in the automaton's rules.
      *
      * @param comingFrom This should be the automaton' start state initially.
-     * @param states Holds the added states. Should be empty initally.
+     * @param states Holds the added states. Should be empty initially.
      * @return The ArrayList.
      */
     private static ArrayList<State> getStatesInOrder(State comingFrom, ArrayList<State> states) {
@@ -244,22 +244,14 @@ public class AutomatonUtil {
 
         //Initialize the HashMap with empty HashSets.
         HashMap<String, HashSet<State>> transitionMap = new HashMap<>();
-        for(String input : automaton.getAllInputs()) {
-            if(!input.equals("lambda") && !input.equals("epsilon")) {
-                transitionMap.put(input, new HashSet<>());
-            }
-        }
+        automaton.getAllInputs().stream().filter(input -> !input.equals("lambda") && !input.equals("epsilon")).forEachOrdered(input -> transitionMap.put(input, new HashSet<>()));
 
         //Go through state and map each input to a set of states, that can be reached from that state.
         for(State state : epsilonStates) {
-            automaton.getAllInputs().stream().filter(input -> !input.equals("lambda") && !input.equals("epsilon")).forEachOrdered(input -> {
-                for (Rule rule : state.getRules()) {
-                    if (rule.getAcceptedInputs().contains(input)) {
-                        transitionMap.get(input).add(rule.getGoingTo());
-                        transitionMap.get(input).addAll(epsilonReachableStates(rule.getGoingTo(), new HashSet<>()));
-                    }
-                }
-            });
+            automaton.getAllInputs().stream().filter(input -> !input.equals("lambda") && !input.equals("epsilon")).forEachOrdered(input -> state.getRules().stream().filter(rule -> rule.getAcceptedInputs().contains(input)).forEachOrdered(rule -> {
+                transitionMap.get(input).add(rule.getGoingTo());
+                transitionMap.get(input).addAll(epsilonReachableStates(rule.getGoingTo(), new HashSet<>()));
+            }));
         }
 
         return transitionMap;
@@ -369,14 +361,10 @@ public class AutomatonUtil {
     private static HashMap<Pair<State, State>, Boolean> getMinimizeMap(Automaton automaton) {
         HashMap<Pair<State, State>, Boolean> statePairs = new HashMap<>();
         for(State state1 : automaton.getStates()) {
-            automaton.getStates().stream().filter(state2 -> !state1.equals(state2) && !statePairs.keySet().contains(new Pair<>(state2, state1))).forEachOrdered(state2 -> {
-                statePairs.put(new Pair<>(state1, state2), false);
-            });
+            automaton.getStates().stream().filter(state2 -> !state1.equals(state2) && !statePairs.keySet().contains(new Pair<>(state2, state1))).forEachOrdered(state2 -> statePairs.put(new Pair<>(state1, state2), false));
         }
 
-        statePairs.keySet().stream().filter(statePair -> statePair.getKey().isFinal() && !statePair.getValue().isFinal() || !statePair.getKey().isFinal() && statePair.getValue().isFinal()).forEachOrdered(statePair -> {
-            statePairs.put(statePair, true);
-        });
+        statePairs.keySet().stream().filter(statePair -> statePair.getKey().isFinal() && !statePair.getValue().isFinal() || !statePair.getKey().isFinal() && statePair.getValue().isFinal()).forEachOrdered(statePair -> statePairs.put(statePair, true));
 
         boolean changed = true;
         while(changed) {
@@ -414,7 +402,7 @@ public class AutomatonUtil {
         return statePairs;
     }
 
-    /*****************************************************************************************************************
+    /****************************************************************************************************************
      ---------------------------------------------------------------------------------------------------------------*
      -                                The public methods follow after this comment.                                -*
      ---------------------------------------------------------------------------------------------------------------*

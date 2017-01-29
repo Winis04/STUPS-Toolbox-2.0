@@ -35,7 +35,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
      */
     public static final Button start = new Button("start");
     /**
-     * this button undos the last step
+     * this button undoes the last step
      */
     public static final Button undo = new Button("undo");
 

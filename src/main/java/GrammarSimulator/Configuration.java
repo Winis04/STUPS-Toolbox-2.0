@@ -68,8 +68,8 @@ public class Configuration {
 
     /**
      * computes the children of this config. The children are exactly the configuration we can obtain if we
-     * derice the first nonterminal
-     * @return a {@link HashSet} of {@link Configuration}s
+     * derive the first nonterminal
+     * @return a {@link HashSet} of Configuration
      */
     public HashSet<Configuration> getChildren() {
         HashSet<Configuration> result = new HashSet<>();

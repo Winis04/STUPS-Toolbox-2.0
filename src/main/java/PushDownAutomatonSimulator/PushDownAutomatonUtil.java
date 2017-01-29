@@ -65,7 +65,7 @@ public class PushDownAutomatonUtil {
             writer.write("; ");
             writer.write(pda.getStartState().getName());
             writer.write("; '");
-            writer.write(pda.getInitalStackLetter().getName());
+            writer.write(pda.getInitialStackLetter().getName());
             writer.write("'}\n\n");
 
             pda.getRules().forEach(rule -> {
@@ -97,7 +97,7 @@ public class PushDownAutomatonUtil {
         if(!run.getCurrentState().equals(rule.getComingFrom())) {//rule cannot be applied, because the states don't match
             return run;
         }
-        if(!run.getStack().peek().equals(rule.getOldToS())) { //rule cannto be applied because the ToS doens't match
+        if(!run.getStack().peek().equals(rule.getOldToS())) { //rule cannot be applied because the ToS doens't match
             return run;
         }
         if(run.getInput().isEmpty()) {
@@ -168,7 +168,7 @@ public class PushDownAutomatonUtil {
     public static RunThroughInfo startRunThrough(PushDownAutomaton pda, List<String> strings) {
         State currentState = pda.getStartState();
         Stack<StackLetter> stack = new Stack<>();
-        stack.add(pda.getInitalStackLetter());
+        stack.add(pda.getInitialStackLetter());
         ArrayList<InputLetter> input = (ArrayList<InputLetter>) strings.stream().map(InputLetter::new).collect(toList());
         return new RunThroughInfo(stack,input,currentState,null,pda);
     }

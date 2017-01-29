@@ -54,7 +54,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
 
         button.setOnAction(event -> {
             automatonGUI.setActiveRule(null);
-            automatonGUI.setAcitveState(null);
+            automatonGUI.setActiveState(null);
 
             if(!input.equals(field.getText())) {
                 input = field.getText();
@@ -77,14 +77,14 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
                         currentInput = currentInput.substring(0, currentInput.indexOf('-'));
                         comingFromState = automatonGUI.getStateMap().get(currentString.substring(0, currentString.indexOf(' ')));
                         goingToState = automatonGUI.getStateMap().get(currentString.substring(currentString.lastIndexOf(' ') + 1));
-                        automatonGUI.setAcitveState(comingFromState);
+                        automatonGUI.setActiveState(comingFromState);
 
                         if(!lastInput.equals("epsilon") && !lastInput.equals("lambda")) {
                             wordLabel.setText(wordLabel.getText() + lastInput + " ");
                         }
                         lastInput = currentInput;
                     } else {
-                        automatonGUI.setAcitveState(goingToState);
+                        automatonGUI.setActiveState(goingToState);
                         if(!lastInput.equals("epsilon") && !lastInput.equals("lambda")) {
                             wordLabel.setText(wordLabel.getText() + currentInput + " ");
                         }
@@ -99,7 +99,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
                         alert.showAndWait();
 
                         automatonGUI.setActiveRule(null);
-                        automatonGUI.setAcitveState(null);
+                        automatonGUI.setActiveState(null);
 
                         input = "";
                         lastInput = "";

@@ -139,7 +139,7 @@ public class RootController {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
 
         String parent = selectedItem.getParent().getValue().toLowerCase();
-        // we get the parents (and the childs class) by looking in the lookup table
+        // we get the parents (and the child's class) by looking in the lookup table
         Class parentClass = gui.getCli().lookUpTable.get(parent);
 
 
@@ -180,7 +180,7 @@ public class RootController {
 
             File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
             if (selectedFile != null) {
-                gui.setStyleSheetExterne(selectedFile);
+                gui.setStyleSheetExternal(selectedFile);
             }
         } else {
 
@@ -320,7 +320,7 @@ public class RootController {
     @FXML
     public void newPDA() {
         PushDownAutomaton pda = new PushDownAutomaton();
-        Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitalStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
+        Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
         Class clazz = PushDownAutomaton.class;
         String name = storable.getName();
         if (storable != null) {

@@ -15,7 +15,7 @@ public class GrammarFirstFollow extends SimpleFunctionPlugin {
         Grammar grammar = (Grammar) object;
         if(gui.getCurrentDisplayPlugin() instanceof GrammarGUI) {
             GrammarGUI grammarGUI = (GrammarGUI) gui.getCurrentDisplayPlugin();
-            grammarGUI.firstfollow(grammar);
+            grammarGUI.firstFollow(grammar);
         }
         return null;
     }

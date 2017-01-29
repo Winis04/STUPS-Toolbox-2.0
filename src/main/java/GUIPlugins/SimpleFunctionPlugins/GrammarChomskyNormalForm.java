@@ -14,7 +14,7 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     public Storable execute(Object object) {
         Grammar grammar = (Grammar) object;
         if(object == null) {
-            gui.errorDialog("Please load a Grammar befor using this command");
+            gui.errorDialog("Please load a Grammar before using this command");
             return null;
         }
         if(!GrammarUtil.isLambdaFree(grammar)) {

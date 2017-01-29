@@ -24,7 +24,7 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     private static final TextField field = new TextField();
     private static final TextField bound = new TextField("500000");
     /**
-     * the upperbound for the steps of the breadth-first search
+     * the upper bound for the steps of the breadth-first search
      */
     private static final Label label = new Label("upper bound");
 

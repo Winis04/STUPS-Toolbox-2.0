@@ -74,7 +74,7 @@ public class AutomatonGUI implements DisplayPlugin {
     private Automaton automaton;
 
     /**
-     * The number of edges, the graph has (Equals the number of rules, the automaon has).
+     * The number of edges, the graph has (Equals the number of rules, the automaton has).
      */
     private int edgeCount;
 
@@ -107,7 +107,7 @@ public class AutomatonGUI implements DisplayPlugin {
     /**
      * Can be set to a specific state. This state will then be highlighted in red in the graph.
      */
-    private State acitveState;
+    private State activeState;
 
     /**
      * The color, that is used to fill states.
@@ -185,7 +185,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 if(stateMap.get(name).isStart()) {
                     color = startStateColor;
                 }
-                if(stateMap.get(name).equals(acitveState)) {
+                if(stateMap.get(name).equals(activeState)) {
                     color = markingColor;
                 }
 
@@ -206,7 +206,7 @@ public class AutomatonGUI implements DisplayPlugin {
         });
 
         //Tell visualizationViewer how to label the states.
-        //In this case, the graph's vertices are just the states' names, so it should just printEnumeartion strings.
+        //In this case, the graph's vertices are just the states' names, so it should just printEnumeration strings.
         //This is automatically handled by a ToStringLabeller.
         visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 
@@ -364,7 +364,7 @@ public class AutomatonGUI implements DisplayPlugin {
     }
 
     /**
-     * Refresch the CheckBoxes, that display whether the loaded automaton is epsilon free, deterministic an minimal.
+     * Refresh the CheckBoxes, that display whether the loaded automaton is epsilon free, deterministic an minimal.
      */
     private void refreshCheckBoxes() {
         boolean isEpsilonFree = AutomatonUtil.isEpsilonFree(automaton);
@@ -459,11 +459,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         //Delete all rules, that point to the state, that should be deleted.
                         for(State state1 : automaton.getStates()) {
                             ArrayList<Rule> copyRules = new ArrayList<>(state1.getRules());
-                            for(Rule rule1 : copyRules) {
-                                if(rule1.getGoingTo().getName().equals(state)) {
-                                    state1.getRules().remove(rule1);
-                                }
-                            }
+                            copyRules.stream().filter(rule1 -> rule1.getGoingTo().getName().equals(state)).forEachOrdered(rule1 -> state1.getRules().remove(rule1));
                         }
 
                         //Delete the chosen state and repaint the graph.
@@ -761,12 +757,12 @@ public class AutomatonGUI implements DisplayPlugin {
     }
 
     /**
-     * Setter-method for {@link #acitveState}.
+     * Setter-method for {@link #activeState}.
      *
-     * @param acitveState The state, that should be marked as active.
+     * @param activeState The state, that should be marked as active.
      */
-    public void setAcitveState(State acitveState) {
-        this.acitveState = acitveState;
+    public void setActiveState(State activeState) {
+        this.activeState = activeState;
         visualizationViewer.repaint();
     }
 

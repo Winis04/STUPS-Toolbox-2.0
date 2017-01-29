@@ -39,7 +39,7 @@ public class EditTab implements GrammarTab {
     private final BorderPane rootPane = new BorderPane();
 
     /**
-     * The ContexMenu, that will pop up, when the user right-clicks something.
+     * The ContextMenu, that will pop up, when the user right-clicks something.
      */
     private final ContextMenu mouseMenu = new ContextMenu();
 
@@ -234,7 +234,7 @@ public class EditTab implements GrammarTab {
                        mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
 
                    } else if (event.getClickCount() == 2) {
-                       //If the user double-clicks the nonterminal, replace the label with a textfield,
+                       //If the user double-clicks the nonterminal, replace the label with a TextField,
                        //so that the user can edit it.
                        String oldName = nonterminal.getName();
                        TextField field = new TextField(oldName);
@@ -297,7 +297,7 @@ public class EditTab implements GrammarTab {
                        mouseMenu.show(rootPane, event.getScreenX(), event.getScreenY());
 
                    } else if (event.getClickCount() == 2) {
-                       //If the user double-clicks the symbol list, replace the label with a textfield,
+                       //If the user double-clicks the symbol list, replace the label with a TextField,
                        //so that the user can edit it.
                        TextField field = new TextField(symbolString.toString());
 
@@ -369,7 +369,7 @@ public class EditTab implements GrammarTab {
 
                 if (grammar.getTerminals().contains(new Terminal(name))) {
                     //If the entered nonterminal is contained in the grammar's terminals,
-                    //Replace every occurence of this terminal with the new nonterminal.
+                    //Replace every occurrence of this terminal with the new nonterminal.
                     HashSet<Rule> freshRules = new HashSet<>();
                     grammar.getRules().forEach(rule -> {
                         List<Symbol> tmp = new ArrayList<>();
@@ -453,7 +453,7 @@ public class EditTab implements GrammarTab {
      * Deletes a symbol list from a nonterminal.
      *
      * @param nonterminal The nonterminal.
-     * @param symbolString A string, containing the symbols, seperated by commas.
+     * @param symbolString A string, containing the symbols, separated by commas.
      */
     private Grammar deleteRule(Nonterminal nonterminal, String symbolString, Grammar grammar) {
         List<Symbol> symbolList = new ArrayList<>();

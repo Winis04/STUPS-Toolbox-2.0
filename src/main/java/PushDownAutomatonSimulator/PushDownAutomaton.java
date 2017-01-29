@@ -34,7 +34,7 @@ public class PushDownAutomaton implements Printable, Storable{
     /**
      * the initial stack letter
      */
-    private final StackLetter initalStackLetter;
+    private final StackLetter initialStackLetter;
 
     /**
      * the name of the pda
@@ -54,7 +54,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
 
 
-    public PushDownAutomaton(Set<State> states, State startState, StackLetter initalStackLetter, List<PDARule> rules, State currentState, String name, PushDownAutomaton previousPDA) {
+    public PushDownAutomaton(Set<State> states, State startState, StackLetter initialStackLetter, List<PDARule> rules, State currentState, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(states);
         this.inputAlphabet = new HashSet<>();
         rules.stream().map(PDARule::getReadIn).forEach(inputAlphabet::add);
@@ -62,9 +62,9 @@ public class PushDownAutomaton implements Printable, Storable{
         rules.stream().map(PDARule::getOldToS).forEach(stackAlphabet::add);
         rules.stream().map(PDARule::getNewToS).forEach(list -> list.forEach(stackAlphabet::add));
         this.startState = startState;
-        this.initalStackLetter = initalStackLetter;
+        this.initialStackLetter = initialStackLetter;
         //unnecessary
-        stackAlphabet.add(initalStackLetter);
+        stackAlphabet.add(initialStackLetter);
         this.rules = rules;
         this.name = name;
         this.previousPDA = previousPDA;
@@ -79,7 +79,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.inputAlphabet=new HashSet<>();
         this.stackAlphabet=new HashSet<>();
         this.startState = new State("a");
-        this.initalStackLetter = new StackLetter("p");
+        this.initialStackLetter = new StackLetter("p");
 
 
         this.currentState = startState;
@@ -87,7 +87,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.rules = new ArrayList<>();
         List<StackLetter> tmp = new ArrayList<>();
         tmp.add(new StackLetter("epsilon"));
-        this.rules.add(new PDARule(startState,startState,new InputLetter("b"),initalStackLetter,tmp));
+        this.rules.add(new PDARule(startState,startState,new InputLetter("b"), initialStackLetter,tmp));
         this.name="G";
         this.previousPDA = null;
 
@@ -96,7 +96,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public Storable deep_copy() {
-        return new PushDownAutomaton(this.states, this.startState, this.initalStackLetter, this.rules, this.currentState, this.name, this.previousPDA);
+        return new PushDownAutomaton(this.states, this.startState, this.initialStackLetter, this.rules, this.currentState, this.name, this.previousPDA);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public Storable otherName(String name) {
-        return new PushDownAutomaton(this.states,this.startState,this.initalStackLetter,this.rules, this.currentState, name,this.previousPDA);
+        return new PushDownAutomaton(this.states,this.startState,this.initialStackLetter,this.rules, this.currentState, name,this.previousPDA);
     }
 
 
@@ -194,7 +194,7 @@ public class PushDownAutomaton implements Printable, Storable{
         Printer.print("Stack Alphabet: "+"\n",writer);
         Printer.print(this.stackAlphabet.stream().map(StackLetter::getName).collect(joining(", "))+"\n",writer);
         Printer.print("initial stack symbol:"+"\n",writer);
-        Printer.print(this.initalStackLetter.getName()+"\n",writer);
+        Printer.print(this.initialStackLetter.getName()+"\n",writer);
         Printer.print("rules:"+"\n",writer);
         this.rules.forEach(rule -> {
             Printer.print(rule.getComingFrom().getName() + ", ", writer);
@@ -223,8 +223,8 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
 
-    public StackLetter getInitalStackLetter() {
-        return initalStackLetter;
+    public StackLetter getInitialStackLetter() {
+        return initialStackLetter;
     }
 
     public List<PDARule> getRules() {

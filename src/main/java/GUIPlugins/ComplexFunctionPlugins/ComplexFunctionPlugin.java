@@ -11,8 +11,8 @@ import javafx.scene.control.Tab;
 public abstract class ComplexFunctionPlugin {
 
     /**
-     * Every {@link ComplexFunctionPlugin} can process one type of objects.
-     * @return the class of the object this {@link ComplexFunctionPlugin} processes
+     * Every  ComplexFunctionPlugin can process one type of objects.
+     * @return the class of the object this ComplexFunctionPlugin processes
      */
     //TODO better javadoc
     public abstract Class getInputType();
@@ -36,7 +36,7 @@ public abstract class ComplexFunctionPlugin {
 
     /**
      *
-     * @param object the object this {@link ComplexFunctionPlugin} handles
+     * @param object the object this ComplexFunctionPlugin handles
      * @param GUI the {@link DisplayPlugin} which displays the class belonging to object
      * @return a {@link Tab} which contains the content of {@see #getFxNode}
      */

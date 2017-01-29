@@ -52,7 +52,7 @@ public class GUI extends Application{
 
 
     /**
-     * The currenty displayed display-plugin.
+     * The currently displayed display-plugin.
      */
     private DisplayPlugin currentDisplayPlugin;
 
@@ -83,7 +83,7 @@ public class GUI extends Application{
 
     private final HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
-    private int textsize = 12;
+    private int textSize = 12;
 
     public static String nameOfNullSymbol = "\u03B5";
 
@@ -178,12 +178,12 @@ public class GUI extends Application{
     }
 
     /**
-     * cahnges the object currently displayed depending on the selection of the user
+     * changes the object currently displayed depending on the selection of the user
      * @param selectedItem the currently selected TreeView cell
      */
     public void switchStorable(TreeItem<String> selectedItem) {
         String parent = selectedItem.getParent().getValue().toLowerCase();
-        // we get the parents (and the childs class) by looking in the lookup table
+        // we get the parents (and the child's class) by looking in the lookup table
         Class parentClass = cli.lookUpTable.get(parent);
 
 
@@ -250,9 +250,7 @@ public class GUI extends Application{
                 displayPlugins.put(displayPlugin.displayType(), displayPlugin);
                 displayPlugin.setGUI(this);
 
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
@@ -264,9 +262,7 @@ public class GUI extends Application{
             try {
                 plugin = (ComplexFunctionPlugin) cfp.newInstance();
                 complexFunctionPlugins.add(plugin);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
@@ -278,9 +274,7 @@ public class GUI extends Application{
                 SimpleFunctionPlugin plugin = (SimpleFunctionPlugin) sfp.newInstance();
                 simpleFunctionPlugins.put(plugin.getClass(), plugin);
                 plugin.setGUI(this);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         });
@@ -364,7 +358,7 @@ public class GUI extends Application{
     }
 
     /**
-     * returns the primary {@link Stage} of the {@link GUI}
+     * returns the primary {@link Stage} of the GUI
      * @return the primary {@link Stage}
      */
     public Stage getPrimaryStage() {
@@ -401,13 +395,13 @@ public class GUI extends Application{
             }
             overview.setOnKeyTyped(event -> {
                 if(event.getCharacter().equals("u")) {
-                    textsize+=1;
-                    overview.setStyle("-fx-font-size: "+(textsize));
+                    textSize +=1;
+                    overview.setStyle("-fx-font-size: "+(textSize));
 
                 }
                 if(event.getCharacter().equals("d")) {
-                    textsize-=1;
-                    overview.setStyle("-fx-font-size: "+(textsize));
+                    textSize -=1;
+                    overview.setStyle("-fx-font-size: "+(textSize));
 
                 }
             });
@@ -420,7 +414,7 @@ public class GUI extends Application{
     }
 
     /**
-     * refreshes the {@link GUI} so that it shows the passed object and the matching {@link ComplexFunctionPlugin}s
+     * refreshes the GUI so that it shows the passed object and the matching {@link ComplexFunctionPlugin}s
      * @param object the object that is displayed
      */
     public void refresh(Object object) {
@@ -476,13 +470,13 @@ public class GUI extends Application{
     /**
      * opens a {@link Dialog} with the forwarded strings
      * @param type the {@link javafx.scene.control.Alert.AlertType} of the dialog
-     * @param titel the title of the dialog
+     * @param title the title of the dialog
      * @param header the header text
      * @param content the content text
      */
-    public void dialog(Alert.AlertType type, String titel, String header, String content) {
+    public void dialog(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
-        alert.setTitle(titel);
+        alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
@@ -526,8 +520,7 @@ public class GUI extends Application{
         primaryStage.getScene().getStylesheets().add(css);
     }
 
-    public void setStyleSheetExterne(File file) {
-    //    File f = new File("filecss.css");
+    public void setStyleSheetExternal(File file) {
         primaryStage.getScene().getStylesheets().clear();
         String css =  "file:///" + file.getAbsolutePath().replace("\\", "/");
         defaultStyle = css;

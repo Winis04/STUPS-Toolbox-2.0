@@ -130,7 +130,7 @@ public class OverviewController {
     public Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
-        // we get the parents (and the childs class) by looking in the lookup table
+        // we get the parents (and the child's class) by looking in the lookup table
         return gui.getCli().lookUpTable.get(parent);
 
     }
@@ -157,7 +157,7 @@ public class OverviewController {
     private void openContextMenuOnSuperClass(Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnSuperClass())
+                .filter(SimpleFunctionPlugin::operatesOnSuperClass)
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu

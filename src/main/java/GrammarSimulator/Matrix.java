@@ -156,7 +156,6 @@ public class Matrix implements Printable{
         }
         Printer.print(space+"\t\\begin{tabular}{"+s+"}\n",writer);
         //1 & 2 & 3\\
-        //\hline
         Printer.print(space+"\t\t\\hline\n",writer);
         for(int r=rows-1;r>=0;r--) {
             Printer.print(space+"\t\t",writer);

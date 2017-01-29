@@ -97,7 +97,7 @@ class Visitor extends DepthFirstAdapter {
 
     PushDownAutomaton getPushDownAutomaton(String name) {
         PushDownAutomaton p = pushDownAutomaton;
-        return new PushDownAutomaton(p.getStates(),p.getStartState(),p.getInitalStackLetter(),p.getRules(),start_state,name,null);
+        return new PushDownAutomaton(p.getStates(),p.getStartState(),p.getInitialStackLetter(),p.getRules(),start_state,name,null);
 
     }
 

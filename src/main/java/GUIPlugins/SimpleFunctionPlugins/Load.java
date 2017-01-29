@@ -25,8 +25,8 @@ public class Load extends SimpleFunctionPlugin {
         return null;
     }
 
-    private String readFile(String titel) throws IOException {
-        File file = gui.loadFile(titel);
+    private String readFile(String title) throws IOException {
+        File file = gui.loadFile(title);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String string = "";
         String line;

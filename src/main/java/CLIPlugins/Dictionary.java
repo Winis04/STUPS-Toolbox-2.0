@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 26.10.2016
  */
-public class Dictonary implements CLIPlugin {
+public class Dictionary implements CLIPlugin {
 
-    private final Map<String, String> dictonary=getDictonary();
+    private final Map<String, String> dictionary = getDictionary();
     @Override
     public String[] getNames() {
-        return new String[]{"dict","dictonary"};
+        return new String[]{"dict","dictionary"};
     }
 
     @Override
@@ -31,9 +31,9 @@ public class Dictonary implements CLIPlugin {
     public Object execute(Object object, String[] parameters) {
         if(parameters.length!=0) {
 
-           System.out.println(dictonary.get(Arrays.stream(parameters).collect(Collectors.joining(" "))));
+           System.out.println(dictionary.get(Arrays.stream(parameters).collect(Collectors.joining(" "))));
         } else {
-            dictonary.keySet().forEach(key -> System.out.println(key + " = " + dictonary.get(key)));
+            dictionary.keySet().forEach(key -> System.out.println(key + " = " + dictionary.get(key)));
         }
 
         return null;
@@ -53,11 +53,11 @@ public class Dictonary implements CLIPlugin {
     public boolean errorFlag() {
         return false;
     }
-    private Map<String, String> getDictonary() {
-        Map<String, String> dictonary=new HashMap<>(3);
-        dictonary.put("unit rule","einfache Regel");
-        dictonary.put("lambda-rule","Lambda-Regel");
-        dictonary.put("nonterminal","Nichtterminal");
-        return dictonary;
+    private Map<String, String> getDictionary() {
+        Map<String, String> dictionary=new HashMap<>(3);
+        dictionary.put("unit rule","einfache Regel");
+        dictionary.put("lambda-rule","Lambda-Regel");
+        dictionary.put("nonterminal","Nichtterminal");
+        return dictionary;
     }
 }

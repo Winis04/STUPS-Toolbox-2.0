@@ -18,19 +18,9 @@ import java.util.*;
 public class GrammarGUI implements DisplayPlugin {
 
     /**
-     * The grammar, that is being displayed.
-     */
-    private Grammar grammar;
-
-    /**
      * This GUI's root pane.
      */
     private TabPane rootPane;
-
-    /**
-     * Contains all {@link GrammarTab}s.
-     */
-    private HashSet<GrammarTab> tabs;
 
     /**
      * Maps each GUI-Tab to its {@link GrammarTab}.
@@ -41,11 +31,17 @@ public class GrammarGUI implements DisplayPlugin {
 
     @Override
     public Node display(Object object) {
-        grammar = (Grammar) object;
+        /*
+      The grammar, that is being displayed.
+     */
+        Grammar grammar = (Grammar) object;
 
         rootPane = new TabPane();
 
-        tabs = new HashSet<>();
+        /*
+      Contains all {@link GrammarTab}s.
+     */
+        HashSet<GrammarTab> tabs = new HashSet<>();
 
         rootPane.getTabs().clear();
         Tab edit =new Tab("edit");
@@ -60,7 +56,7 @@ public class GrammarGUI implements DisplayPlugin {
      * creates a {@link Tab} in which the first and follow sets are printed
      * @param grammar the {@link Grammar} it handles
      */
-    public void firstfollow(Grammar grammar) {
+    public void firstFollow(Grammar grammar) {
         String name="First Follow";
         if(rootPane.getTabs().stream().anyMatch(tab -> tab.getText().equals(name))) {
             rootPane.getTabs().forEach(tab -> {

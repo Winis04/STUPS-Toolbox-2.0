@@ -56,9 +56,7 @@ public class PDALoadPlugin implements CLIPlugin {
         } catch (IOException e) {
             System.out.println("Unable to read file!");
             errorFlag = true;
-        } catch (PushDownAutomatonParser.lexer.LexerException e) {
-            e.printStackTrace();
-        } catch (PushDownAutomatonParser.parser.ParserException e) {
+        } catch (PushDownAutomatonParser.lexer.LexerException | PushDownAutomatonParser.parser.ParserException e) {
             e.printStackTrace();
         }
         return pda;

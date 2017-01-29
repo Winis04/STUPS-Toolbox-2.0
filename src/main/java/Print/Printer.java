@@ -27,7 +27,7 @@ public class Printer {
     public static String currentFile;
     //BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
-    private static int deepnes=0;
+    private static int deepness =0;
     private static BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static void print(Printable printable) {
@@ -35,7 +35,7 @@ public class Printer {
             case NO:
                 break;
             case LATEX:
-                printable.printLatex(writer,getSpace(deepnes));
+                printable.printLatex(writer,getSpace(deepness));
                 break;
             case CONSOLE:
                 printable.printConsole(writer);
@@ -78,7 +78,7 @@ public class Printer {
         }
     }
 
-    public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
+    public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         switch(printmode) {
             case NO:
                 break;
@@ -86,33 +86,33 @@ public class Printer {
                 printEnumerationConsole(printables,point_descriptions,texts);
                 break;
             case LATEX:
-                printEnumerationLatex(printables,point_descriptions,texts,titel);
+                printEnumerationLatex(printables,point_descriptions,texts,title);
                 break;
         }
     }
 
-    public static void printWithTitel(String titel, Printable printable) {
+    public static void printWithTitle(String title, Printable printable) {
         switch(printmode) {
             case NO:
                 break;
             case CONSOLE:
-                printWithTitelLatex(titel,printable);
+                printWithTitleLatex(title,printable);
                 break;
             case LATEX:
-                printWithTitelConsole(titel, printable);
+                printWithTitleConsole(title, printable);
                 break;
         }
 
     }
 
-    private static void printWithTitelLatex(String titel, Printable printable) {
-        Printer.print("\\section{"+titel+"}\n\n",writer);
-        printable.printLatex(writer,getSpace(deepnes));
+    private static void printWithTitleLatex(String title, Printable printable) {
+        Printer.print("\\section{"+title+"}\n\n",writer);
+        printable.printLatex(writer,getSpace(deepness));
 
     }
 
-    private static void printWithTitelConsole(String titel, Printable printable) {
-        Printer.print(titel+"\n\n",writer);
+    private static void printWithTitleConsole(String title, Printable printable) {
+        Printer.print(title+"\n\n",writer);
         printable.printConsole(writer);
     }
 
@@ -133,20 +133,20 @@ public class Printer {
     }
 
     /** LATEX **/
-    private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String titel) {
+    private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         if(printables.size()!=texts.length) {
             return;
         }
         try {
-            Printer.print("\\section{"+titel+"}\n\n",writer);
+            Printer.print("\\section{"+title+"}\n\n",writer);
             Printer.print("\\begin{description}\n",writer);
-            Printer.deepnes++;
+            Printer.deepness++;
             for(int i=0;i<printables.size();i++) {
                 writeItem(point_descriptions[i],texts[i]);
-                printables.get(i).printLatex(writer,getSpace(deepnes));
+                printables.get(i).printLatex(writer,getSpace(deepness));
 
             }
-            Printer.deepnes--;
+            Printer.deepness--;
             Printer.print("\\end{description}\n\n",writer);
 
         } catch (IOException e) {
@@ -187,15 +187,15 @@ public class Printer {
     }
 
 
-    private static void writeItem(String titel, String subtitel) throws IOException {
+    private static void writeItem(String title, String subtitle) throws IOException {
         String s="";
-        for(int i=0;i<Printer.deepnes;i++) {
+        for(int i = 0; i<Printer.deepness; i++) {
             s+="\t";
         }
-        if(subtitel.isEmpty()) {
-            Printer.print(s+"\\item["+titel+"] \\hfill \\\\ \n"+s+subtitel,writer);
+        if(subtitle.isEmpty()) {
+            Printer.print(s+"\\item["+title+"] \\hfill \\\\ \n"+s+subtitle,writer);
         } else {
-            Printer.print(s+"\\item["+titel+"] \\hfill \\\\ \n"+s+subtitel+"\\\\ \n",writer);
+            Printer.print(s+"\\item["+title+"] \\hfill \\\\ \n"+s+subtitle+"\\\\ \n",writer);
         }
 
     }
