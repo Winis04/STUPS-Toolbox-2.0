@@ -8,7 +8,8 @@ import java.util.*;
 
 
 /**
- * Created by Isabel on 09.12.2016.
+ * @author Isabel
+ * @since 09.12.2016
  */
 class Visitor extends DepthFirstAdapter {
     private PushDownAutomaton pushDownAutomaton;

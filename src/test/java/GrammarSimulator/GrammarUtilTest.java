@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,8 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.*;
 
 /**
- * Created by Isabel on 14.01.2017.
+ * @author Isabel
+ * @since 14.01.2017
  */
 public class GrammarUtilTest {
 

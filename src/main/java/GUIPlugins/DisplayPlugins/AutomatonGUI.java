@@ -459,11 +459,9 @@ public class AutomatonGUI implements DisplayPlugin {
                         //Delete all rules, that point to the state, that should be deleted.
                         for(State state1 : automaton.getStates()) {
                             ArrayList<Rule> copyRules = new ArrayList<>(state1.getRules());
-                            for(Rule rule1 : copyRules) {
-                                if(rule1.getGoingTo().getName().equals(state)) {
-                                    state1.getRules().remove(rule1);
-                                }
-                            }
+                            copyRules.stream().filter(rule1 -> rule1.getGoingTo().getName().equals(state)).forEach(rule1 -> {
+                                state1.getRules().remove(rule1);
+                            });
                         }
 
                         //Delete the chosen state and repaint the graph.

@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import java.util.Stack;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Isabel
  * @since 07.01.2017

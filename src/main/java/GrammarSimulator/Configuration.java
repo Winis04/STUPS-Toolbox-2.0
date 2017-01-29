@@ -62,8 +62,8 @@ public class Configuration {
     @Override
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17,31);
-        for(int i=0;i<this.config.size();i++) {
-            hashCodeBuilder.append(this.config.get(i));
+        for (Symbol aConfig : this.config) {
+            hashCodeBuilder.append(aConfig);
         }
         return hashCodeBuilder.hashCode();
     }
@@ -91,7 +91,7 @@ public class Configuration {
                 .filter(rule -> rule.getComingFrom().equals(first))
                 .map(Rule::getRightSide)
                 .forEach(list -> {
-                    List<Symbol> tmp = new ArrayList<Symbol>();
+                    List<Symbol> tmp = new ArrayList<>();
                     tmp.addAll(config);
                     tmp.remove(k);
                     if (!list.stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL))) {

@@ -1,7 +1,6 @@
 package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
-import AutomatonSimulator.AutomatonUtil;
 import Print.Printer;
 
 /**

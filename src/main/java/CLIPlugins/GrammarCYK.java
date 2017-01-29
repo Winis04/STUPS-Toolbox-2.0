@@ -1,16 +1,11 @@
 package CLIPlugins;
 
-import GrammarSimulator.*;
+import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
+import GrammarSimulator.Matrix;
 import Print.Printer;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.*;
 
 /**
  * @author Isabel

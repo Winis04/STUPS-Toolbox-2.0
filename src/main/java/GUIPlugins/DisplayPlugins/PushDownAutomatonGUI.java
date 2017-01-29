@@ -1,30 +1,20 @@
 package GUIPlugins.DisplayPlugins;
 
 import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
-import GrammarSimulator.Rule;
 import Main.GUI;
 import PushDownAutomatonSimulator.*;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-
-
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
-
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,7 +30,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     private Label flow = new Label();
     private ArrayList<Button> rulesAsButtons = new ArrayList<>();
     private RunThroughInfo runThroughInfo = null;
-    private HashMap<PDARule, Button> rulesAndButtons = new HashMap<PDARule, Button>();
+    private HashMap<PDARule, Button> rulesAndButtons = new HashMap<>();
 
     BorderPane splitPane = new BorderPane();
 
@@ -242,7 +232,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             }
            String st="\u03B5";
             if(!run.getStack().isEmpty()) {
-                ArrayList<StackLetter> stack = new ArrayList<StackLetter>();
+                ArrayList<StackLetter> stack = new ArrayList<>();
                 stack.addAll(run.getStack());
                 Collections.reverse(stack);
                 st = stack.stream().map(l -> l.getName()).collect(Collectors.joining(""));

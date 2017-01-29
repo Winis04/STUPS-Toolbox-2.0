@@ -3,8 +3,6 @@ package PushDownAutomatonSimulator;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.HashSet;
-
 /**
  * @author Isabel
  * @since 29.10.2016

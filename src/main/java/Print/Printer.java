@@ -13,7 +13,8 @@ import java.util.List;
 
 
 /**
- * Created by Isabel on 18.11.2016.
+ * @author Isabel
+ * @since 18.11.2016
  */
 public class Printer {
     /**

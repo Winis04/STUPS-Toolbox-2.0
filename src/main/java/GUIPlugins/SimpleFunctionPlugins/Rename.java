@@ -1,6 +1,5 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import GrammarSimulator.Grammar;
 import Main.Storable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
@@ -8,7 +7,7 @@ import javafx.scene.control.TreeItem;
 
 import java.util.Optional;
 
-import static javafx.scene.control.Alert.*;
+import static javafx.scene.control.Alert.AlertType;
 
 /**
  * @author Isabel

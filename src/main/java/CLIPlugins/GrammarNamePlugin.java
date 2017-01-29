@@ -1,7 +1,6 @@
 package CLIPlugins;
 
 import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
 
 /**
  * names a grammar

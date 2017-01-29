@@ -3,18 +3,16 @@ package PushDownAutomatonSimulator;
 import Main.Storable;
 import Print.Printable;
 import Print.Printer;
-import PushDownAutomatonParser.lexer.LexerException;
-import PushDownAutomatonParser.parser.ParserException;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 import static java.util.stream.Collectors.joining;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class PushDownAutomaton implements Printable, Storable{
     /**

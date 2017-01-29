@@ -18,8 +18,7 @@ public class PrintableList extends ArrayList<Printable> implements Printable {
 
     @Override
     public boolean add(Printable p) {
-        if(p==null) return false;
-        return super.add(p);
+        return p != null && super.add(p);
     }
 
     @Override

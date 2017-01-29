@@ -5,7 +5,8 @@ import Main.Storable;
 import java.io.*;
 
 /**
- * Created by Isabel on 04.12.2016.
+ * @author Isabel
+ * @since 04.12.2016
  */
 public class Load extends SimpleFunctionPlugin {
     @Override

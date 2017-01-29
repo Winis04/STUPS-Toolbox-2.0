@@ -1,13 +1,14 @@
 package AutomatonSimulator;
 
-import AutomatonParser.lexer.LexerException;
-import AutomatonParser.parser.ParserException;
 import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
@@ -111,11 +112,9 @@ public class Automaton implements Printable, Storable {
         for(State state : states) {
             //Make a local copy of the rules, so we don't get a "ConcurrentModificationException", while removing rules.
             HashSet<Rule> localRules = new HashSet<>(state.getRules());
-            for(Rule rule : localRules) {
-                if((rule.getAcceptedInputs().contains("lambda") || rule.getAcceptedInputs().contains("epsilon")) && rule.getGoingTo().equals(state)) {
-                    state.getRules().remove(rule);
-                }
-            }
+            localRules.stream().filter(rule -> (rule.getAcceptedInputs().contains("lambda") || rule.getAcceptedInputs().contains("epsilon")) && rule.getGoingTo().equals(state)).forEach(rule -> {
+                state.getRules().remove(rule);
+            });
         }
 
         //For every state, call a method that checks if this state is part of a epsilon-cycle and if so, gets rid of this cycle.
@@ -169,22 +168,16 @@ public class Automaton implements Printable, Storable {
                         if (cycleState.isFinal()) {
                             isFinal = true;
                         }
-                        for (Rule rule : cycleState.getRules()) {
-                            if (!cycleStates.contains(rule.getGoingTo())) {
-                                rules.add(rule);
-                            }
-                        }
+                        rules.addAll(cycleState.getRules().stream().filter(rule -> !cycleStates.contains(rule.getGoingTo())).collect(Collectors.toList()));
                     }
 
                     State newState = new State(name, isStart, isFinal, rules);
 
                     //Let all rules that pointed to one of the old states point to the newly created state.
                     for (State state1 : states) {
-                        for (Rule rule : state1.getRules()) {
-                            if (cycleStates.contains(rule.getGoingTo())) {
-                                rule.setGoingTo(newState);
-                            }
-                        }
+                        state1.getRules().stream().filter(rule -> cycleStates.contains(rule.getGoingTo())).forEach(rule -> {
+                            rule.setGoingTo(newState);
+                        });
                     }
 
                     //Add the new state to the automaton and remove the old states.
@@ -273,9 +266,7 @@ public class Automaton implements Printable, Storable {
             Printer.print(space+"(",writer);
             Printer.print(s);
             Printer.print(") \t",writer);
-            for(Rule r : s.getRules()) {
-                Printer.print(r);
-            }
+            s.getRules().forEach(Printer::print);
         }
         Printer.println(";",writer);
         Printer.println("\\end{tikzpicture}\n\n",writer);

@@ -5,7 +5,6 @@ import GUIPlugins.ComplexFunctionPlugins.ComplexFunctionPlugin;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
-
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import GrammarSimulator.Grammar;
@@ -14,7 +13,6 @@ import Main.view.RootController;
 import Print.PrintMode;
 import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -22,17 +20,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
 
-
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
-import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 
 /**

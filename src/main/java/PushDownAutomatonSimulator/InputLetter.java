@@ -7,7 +7,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public final class InputLetter {
 

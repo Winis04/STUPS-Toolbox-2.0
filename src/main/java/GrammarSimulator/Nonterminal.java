@@ -6,14 +6,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import static Print.Printer.printmode;
 
 
 /**
- * Created by fabian on 06.08.16.
+ * @author fabian
+ * @since 06.08.16
  */
 public final class Nonterminal implements Symbol, Printable {
 

@@ -7,7 +7,8 @@ import java.io.*;
 
 
 /**
- * Created by Isabel on 18.11.2016.
+ * @author Isabel
+ * @since 18.11.2016
  */
 public class PrintModePlugin implements CLIPlugin {
     private boolean errorFlag;

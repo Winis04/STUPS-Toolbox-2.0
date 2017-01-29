@@ -8,7 +8,8 @@ import java.util.Set;
 
 
 /**
- * Created by isabel on 24.11.16.
+ * @author isabel
+ * @since 24.11.16
  */
 public class PrintableSet extends HashSet<Printable> implements Printable {
     private String help_text;
@@ -24,8 +25,7 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
 
     @Override
     public boolean add(Printable p) {
-        if(p==null) return false;
-        return super.add(p);
+        return p != null && super.add(p);
     }
     @Override
     public void printConsole(BufferedWriter writer) {

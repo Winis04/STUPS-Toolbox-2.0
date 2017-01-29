@@ -11,7 +11,8 @@ import javafx.scene.paint.Color;
 import java.util.*;
 
 /**
- * Created by fabian on 25.08.16.
+ * @author fabian
+ * @since 25.08.16
  */
 public class LLParsingTableTab implements GrammarTab {
     @Override

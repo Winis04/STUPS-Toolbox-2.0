@@ -7,8 +7,6 @@ import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Matrix;
-import GrammarSimulator.Nonterminal;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,10 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

@@ -2,25 +2,26 @@ package Main.view;
 
 
 
-import GUIPlugins.DisplayPlugins.GrammarTabs.EditTab;
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
 import Main.GUI;
-
 import Print.PrintMode;
 import Print.Printer;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
-import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
 /**
- * Created by Isabel on 28.11.2016.
+ * @author Isabel
+ * @since 28.11.2016
  */
 public class OverviewController {
     @FXML

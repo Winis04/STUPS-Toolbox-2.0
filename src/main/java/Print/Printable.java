@@ -3,7 +3,8 @@ package Print;
 import java.io.BufferedWriter;
 
 /**
- * Created by isabel on 24.11.16.
+ * @author isabel
+ * @since 24.11.16
  */
 public interface Printable {
     void printLatex(BufferedWriter writer, String space);

@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class PDARule implements Printable{
     /**

@@ -1,12 +1,11 @@
 package CLIPlugins;
 
-import GrammarSimulator.Grammar;
 import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
-import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
 /**
- * Created by Isabel on 29.10.2016.
+ * @author Isabel
+ * @since 29.10.2016
  */
 public class PDAPrintPlugin implements CLIPlugin {
     private boolean errorFlag;

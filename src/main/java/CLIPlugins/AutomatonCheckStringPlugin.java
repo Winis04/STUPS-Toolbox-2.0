@@ -2,7 +2,6 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
-import Print.Printer;
 
 import java.util.ArrayList;
 import java.util.Stack;

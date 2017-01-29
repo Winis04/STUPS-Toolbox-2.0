@@ -1,22 +1,18 @@
 package GrammarSimulator;
 
-import GrammarSimulator.Nonterminal;
 import Print.Printable;
 import Print.Printer;
 
 import java.io.BufferedWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.joining;
 
 /**
- * Created by Isabel on 26.10.2016.
+ * @author Isabel
+ * @since 26.10.2016
  */
 public class Matrix implements Printable{
     private int rows;
@@ -42,15 +38,15 @@ public class Matrix implements Printable{
         if(c > 0) {
             matrix[r][c].add(nt);
         }
-        for(int j=0;j<matrix.length;j++) {
-            for (int i = 0; i < matrix[j].length; i++) {
-                int tmp=0;
-                for(Symbol s : matrix[j][i]) {
-                    tmp+=s.getName().length();
+        for (HashSet<Nonterminal>[] aMatrix : matrix) {
+            for (int i = 0; i < aMatrix.length; i++) {
+                int tmp = 0;
+                for (Symbol s : aMatrix[i]) {
+                    tmp += s.getName().length();
                 }
-                tmp+=2*matrix[j][i].size();
-                if(tmp>spacing) {
-                    this.spacing=tmp;
+                tmp += 2 * aMatrix[i].size();
+                if (tmp > spacing) {
+                    this.spacing = tmp;
                 }
             }
         }
@@ -121,12 +117,12 @@ public class Matrix implements Printable{
             horizontalLine(writer);
         }
         Printer.print("| j | ",writer);
-        for(int i=0;i<word.size();i++) {
-            Printer.print(word.get(i),writer);
-            for(int j=0;j<spacing-2;j++) {
-                Printer.print(" ",writer);
+        for (String aWord : word) {
+            Printer.print(aWord, writer);
+            for (int j = 0; j < spacing - 2; j++) {
+                Printer.print(" ", writer);
             }
-            Printer.print("| ",writer);
+            Printer.print("| ", writer);
         }
        Printer.println("",writer);
         horizontalLine(writer);

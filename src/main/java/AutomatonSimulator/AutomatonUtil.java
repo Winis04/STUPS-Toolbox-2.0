@@ -721,11 +721,11 @@ public class AutomatonUtil {
 
             //Go through every entry in visited states and rename it, if it has not already been renamed.
             //Then add all its successors to nextStates.
-            for(int i = 0; i < states.size(); i++) {
-                if(!visitedStates.get(states.get(i))) {
-                    states.get(i).setName("z" + counter);
-                    visitedStates.put(states.get(i), true);
-                    for (Rule rule : states.get(i).getRules()) {
+            for (State state : states) {
+                if (!visitedStates.get(state)) {
+                    state.setName("z" + counter);
+                    visitedStates.put(state, true);
+                    for (Rule rule : state.getRules()) {
                         nextStates.add(rule.getGoingTo());
                     }
                     counter++;
