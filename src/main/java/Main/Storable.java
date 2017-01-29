@@ -40,7 +40,7 @@ public interface Storable {
      * restores a Storable from a file
      * @param file the source file
      * @return a Storable object
-     * @throws Exception
+     * @throws Exception every Exception
      */
     Storable restoreFromFile(File file) throws Exception;
 

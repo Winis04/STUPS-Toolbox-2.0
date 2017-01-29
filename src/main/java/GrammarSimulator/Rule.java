@@ -42,7 +42,7 @@ public final class Rule {
 
     /**
      * Getter-Method for {@link #rightSide}
-     * @return a {@link java.util.Collections.UnmodifiableList} of {@link Symbol}s, the right side of the rule.
+     * @return a {@link List} of {@link Symbol}s, the right side of the rule.
      */
     public List<Symbol> getRightSide() {
         return Collections.unmodifiableList(new ArrayList<>(rightSide));

@@ -41,7 +41,7 @@ public class RunThroughInfo {
 
     /**
      * Getter-Method for {@link #input}
-     * @return a {@link java.util.Collections.UnmodifiableList} of {@link InputLetter}s
+     * @return a {@link List} of {@link InputLetter}s
      */
     public List<InputLetter> getInput() {
 

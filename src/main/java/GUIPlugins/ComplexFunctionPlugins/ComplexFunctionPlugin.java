@@ -38,7 +38,7 @@ public abstract class ComplexFunctionPlugin {
      *
      * @param object the object this ComplexFunctionPlugin handles
      * @param GUI the {@link DisplayPlugin} which displays the class belonging to object
-     * @return a {@link Tab} which contains the content of {@see #getFxNode}
+     * @return a {@link Tab} which contains the content of {@link #getFxNode}
      */
     public Tab getAsTab(Object object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
