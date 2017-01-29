@@ -1123,7 +1123,7 @@ public class GrammarUtil {
         df.add(dfs);
         df.add(dfe);
         for(Node node : unitRules) {
-            if(!node.isVisited()) {
+            if(node.isNotVisited()) {
                 df=GrammarUtil.dfs(node,df);
             }
         }
@@ -1140,7 +1140,7 @@ public class GrammarUtil {
         node.setDfs(df.get(0).intValue());
         df.set(0,new Integer(df.get(0).intValue()+1));
         for(Node child : node.getChildren()) {
-            if(!child.isVisited()) {
+            if(child.isNotVisited()) {
                 df=GrammarUtil.dfs(child,df);
             }
         }
@@ -1232,51 +1232,6 @@ public class GrammarUtil {
         node.getChildren().forEach(GrammarUtil::number);
     }
 
-    /**
-     * replaces a Nonterminal through another and remove it from the set
-     *
-     * @param toBeReplaced the nonterminal that should be replaced
-     * @param newNonterminal the new nonterminal that replaces the old
-     * @param g the grammar g
-     */
-    private static Grammar replaceNonterminal(Nonterminal toBeReplaced, Nonterminal newNonterminal, Grammar g) {
-        HashSet<Rule> freshRules = new HashSet<>();
-        g.getRules().forEach(rule -> {
-            if(rule.getComingFrom().equals(toBeReplaced)) {
-                //if the rule is now A --> A remove it
-                if(rule.getRightSide().size()==1 && toBeReplaced.equals(rule.getRightSide().get(0))) {
-                    //do nothing
-                } else if(rule.getRightSide().isEmpty()) {
-
-                } else {
-                    freshRules.add(new Rule(newNonterminal, rule.getRightSide()));
-                }
-
-            } else {
-                freshRules.add(rule);
-            }
-        });
-        HashSet<Rule> freshRules2 = new HashSet<>();
-        freshRules.forEach(rule -> {
-            List<Symbol> list = new ArrayList<>();
-            rule.getRightSide().forEach(symbol -> {
-                if (symbol.equals(toBeReplaced)) {
-                    list.add(newNonterminal);
-                } else {
-                   list.add(symbol);
-                }
-            });
-            // if the rule now equals A --> A remove i
-            if(list.size()==1 && rule.getComingFrom().equals(list.get(0))) {
-                //do nothing
-            } else if(list.isEmpty()) {
-
-            } else {
-                freshRules2.add(new Rule(rule.getComingFrom(), list));
-            }
-        });
-        return new Grammar(g.getStartSymbol(),freshRules2,g.getName(), (Grammar) g.getPreviousVersion());
-    }
     /****************************************************************************************************************
      ---------------------------------------------------------------------------------------------------------------*
      -                                make chomsky normal form                                                      -*
@@ -1422,15 +1377,6 @@ public class GrammarUtil {
 
     private static Matrix createMatrix(List<String> word) {
         return new Matrix(word.size(),word.size()+1, word);
-    }
-
-    public static boolean containsWord(Grammar g, List<String> word) {
-        GrammarUtil.chomskyNormalFormAsPrintables(g);
-        Matrix matrix = GrammarUtil.cyk(g, word);
-        return matrix != null && matrix.getCell(1, word.size() - 1).contains(g.getStartSymbol());
-    }
-    public static boolean containsWord(Grammar g, String word, Matrix matrix) {
-        return matrix != null && matrix.getCell(1, word.length() - 1).contains(g.getStartSymbol());
     }
 
     public static Matrix cyk(Grammar g, List<String> word) {
@@ -1656,27 +1602,6 @@ public class GrammarUtil {
     }
 
     /**
-     * @param nt a nonterminal of the Grammar g
-     * @param g the Grammar g
-     * @return a HashSet with all right sides except the empty rule belonging to nonterminal nt
-     */
-    private static HashSet<List<Symbol>> getSymbolListsWithoutEmptyRules(Nonterminal nt, Grammar g) {
-        HashSet<List<Symbol>> tmp = new HashSet<>();
-        g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).map(Rule::getRightSide)
-                .forEach(tmp::add);
-        HashSet<List<Symbol>> res=new HashSet<>();
-        for(List<Symbol> list : tmp) {
-            boolean allNull;
-            allNull=list.stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL));
-            if(!allNull) {
-                res.add(list);
-            }
-        }
-        return res;
-
-    }
-
-    /**
      * the special rule for empty word guarantees, that if the start symbol points on lambda,
      * it does not occurs on any right side.
      * @param g the grammar, that should be modified
@@ -1774,10 +1699,6 @@ public class GrammarUtil {
     private static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
-    }
-
-    public static <T> boolean hashSetEqual(HashSet<T> a, HashSet<T> b) {
-       return a.stream().allMatch(b::contains) && b.stream().allMatch(a::contains);
     }
 
 }

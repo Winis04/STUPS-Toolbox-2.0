@@ -45,9 +45,6 @@ public class CLI {
      */
     public final HashMap<String,Class> lookUpTable =new HashMap<>();
 
-    //public static ArrayList<Grammar> grammars=new ArrayList<>();
-    protected TreeMap<String,Grammar> grammars=new TreeMap<>();
-
     /**
      * the constructor. Creates a new instance of cli.
      * @param gui the {@link GUI}
@@ -59,9 +56,6 @@ public class CLI {
     private boolean isStoreFunction(String command) {
         String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv","copy"};
         return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
-    }
-    private boolean storeFunctionCheckParameter(String[] parameters) {
-        return parameters.length==2;
     }
 
     private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
@@ -120,7 +114,7 @@ public class CLI {
             System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
         } else if(command.equals("e") || command.equals("exit")) {
             System.out.println("Goodbye!");
-            if(!Printer.writerIsNull() && Printer.printmode== PrintMode.LATEX) {
+            if(Printer.writerIsNotNull() && Printer.printmode== PrintMode.LATEX) {
                 Printer.printEndOfLatex();
                 Printer.closeWriter();
             }
@@ -284,7 +278,7 @@ public class CLI {
         Set<Class<? extends CLIPlugin>> s = reflections.getSubTypesOf(CLIPlugin.class);
         s.forEach(r -> {
             try {
-                CLIPlugin plugin = (CLIPlugin) r.newInstance();
+                CLIPlugin plugin = r.newInstance();
                 plugins.add(plugin);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();

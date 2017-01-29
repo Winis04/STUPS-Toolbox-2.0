@@ -22,11 +22,6 @@ public class GrammarGUI implements DisplayPlugin {
      */
     private TabPane rootPane;
 
-    /**
-     * Maps each GUI-Tab to its {@link GrammarTab}.
-     */
-    private HashMap<Tab, GrammarTab> tabMap = new HashMap<>();
-
     private GUI gui;
 
     @Override

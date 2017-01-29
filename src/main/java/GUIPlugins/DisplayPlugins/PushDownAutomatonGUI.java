@@ -34,7 +34,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private final BorderPane splitPane = new BorderPane();
 
-    private GridPane root = new GridPane();
+    private final GridPane root = new GridPane();
 
     private final BorderPane anchorPane = new BorderPane();
 
@@ -131,7 +131,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
                                 CheckStringPDAPlugin.startnew(this);
 
-                            } else if(!validRules(runThroughInfo)) {
+                            } else if(noValidRules(runThroughInfo)) {
                                 Alert alert = new Alert(AlertType.INFORMATION);
                                 alert.setTitle("Failure");
                                 alert.setHeaderText(null);
@@ -240,10 +240,6 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
        return "   "+res;
     }
 
-    private String runThroughInfoAsString(RunThroughInfo runThroughInfo) {
-        return runThroughInfo.asString();
-    }
-
 
     @Override
     public Node refresh(Object object) {
@@ -322,8 +318,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
-    public boolean validRules(RunThroughInfo runThroughInfo) {
-        return this.rulesAndButtons.keySet().stream().anyMatch(rule -> {
+    public boolean noValidRules(RunThroughInfo runThroughInfo) {
+        return !this.rulesAndButtons.keySet().stream().anyMatch(rule -> {
             State currentState = runThroughInfo.getCurrentState();
             if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
                 if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {

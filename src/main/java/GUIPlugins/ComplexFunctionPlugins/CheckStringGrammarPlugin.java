@@ -78,11 +78,4 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
     }
 
 
-    /**
-     * getter for the {@link Button} start, that starts the execution of the plugin
-     * @return the start button
-     */
-    public Button getStart() {
-        return start;
-    }
 }

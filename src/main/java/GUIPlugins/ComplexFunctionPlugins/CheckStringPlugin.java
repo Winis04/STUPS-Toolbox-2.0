@@ -33,8 +33,6 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
     private State comingFromState, goingToState;
     private boolean accept;
 
-    private String name="Check String";
-
     @Override
     public Class getInputType() {
         return Automaton.class;

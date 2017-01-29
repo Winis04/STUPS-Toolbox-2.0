@@ -75,8 +75,8 @@ public class Node {
     }
 
 
-    boolean isVisited() {
-        return visited;
+    boolean isNotVisited() {
+        return !visited;
     }
 
 
@@ -114,10 +114,6 @@ public class Node {
         this.dfs = dfs;
     }
 
-    public void setChildren(LinkedHashSet<Node> children) {
-        this.children = children;
-    }
-
 
     public int getNumber() {
         return number;
@@ -126,8 +122,6 @@ public class Node {
     public void setNumber(int number) {
         this.number = number;
     }
-
-    public static final Node EMPTY_NODE=new Node();
 
 
 }

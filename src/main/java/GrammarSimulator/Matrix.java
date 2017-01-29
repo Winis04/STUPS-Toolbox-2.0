@@ -187,9 +187,6 @@ public class Matrix implements Printable{
     public HashSet<Nonterminal> getCell(int c, int r) {
         return matrix[r][c];
     }
-    public void clearCell(int c, int r) {
-        matrix[r][c]=new HashSet<>();
-    }
 
     public List<String> getWord() {
         return word;

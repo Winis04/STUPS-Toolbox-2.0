@@ -30,7 +30,7 @@ public class PrintModePlugin implements CLIPlugin {
     @Override
     public Object execute(Object object, String[] parameters) {
         errorFlag = false;
-        if(Printer.printmode==PrintMode.LATEX && !Printer.writerIsNull()) {
+        if(Printer.printmode==PrintMode.LATEX && Printer.writerIsNotNull()) {
             Printer.printEndOfLatex();
             Printer.closeWriter();
             Printer.setWriter(null);

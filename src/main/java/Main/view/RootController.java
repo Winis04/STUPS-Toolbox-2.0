@@ -28,10 +28,6 @@ import java.util.Optional;
  */
 public class RootController {
 
-    boolean showLatexDialog=true;
-
-    private boolean inLatexMode=false;
-
 
     private GUI gui;
     @FXML
@@ -72,7 +68,6 @@ public class RootController {
         File file = fileChooser.showSaveDialog(gui.getPrimaryStage());
 
         if(file!=null) {
-            inLatexMode = true;
             latexModeOn.setDisable(true);
             latexModeOff.setDisable(false);
             borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
@@ -91,7 +86,6 @@ public class RootController {
     }
     @FXML
     private void latexModeOff() {
-        inLatexMode=false;
         latexModeOn.setDisable(false);
         latexModeOff.setDisable(true);
         borderPane.setStyle("");

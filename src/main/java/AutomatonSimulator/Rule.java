@@ -90,7 +90,7 @@ public class Rule implements Printable{
             if(maxLength==1) {
                 arc=45;
             } else {
-                arc = (int) ((90*length)/maxLength);
+                arc = (90*length)/maxLength;
             }
             String s=""+arc;
               Printer.print("[bend left="+s+"] ",writer);
@@ -107,7 +107,7 @@ public class Rule implements Printable{
 
     }
 
-    public void setLoop(boolean loop) {
+    void setLoop(boolean loop) {
         isLoop = loop;
     }
 
@@ -117,10 +117,6 @@ public class Rule implements Printable{
 
     public void setLength(int length) {
         this.length = length;
-    }
-
-    public int getMaxLength() {
-        return maxLength;
     }
 
     public void setMaxLength(int maxLength) {

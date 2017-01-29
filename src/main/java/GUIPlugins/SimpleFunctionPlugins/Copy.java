@@ -9,8 +9,6 @@ import javafx.scene.control.TreeItem;
  */
 public class Copy extends SimpleFunctionPlugin {
 
-    private Class inputType;
-
     @Override
     public boolean operatesOnAllStorables() {
         return true;
@@ -24,7 +22,7 @@ public class Copy extends SimpleFunctionPlugin {
         String parent = selected.getParent().getValue().toLowerCase();
         Class parentClass = gui.getCli().lookUpTable.get(parent);
         String name = copy.getName();
-       // gui.addToStore(copy,parentClass,copy.getName() );
+
         //gui.refresh();
         return copy;
     }

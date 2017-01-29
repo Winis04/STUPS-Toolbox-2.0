@@ -44,12 +44,6 @@ public class EditTab implements GrammarTab {
     private final ContextMenu mouseMenu = new ContextMenu();
 
 
-    Button up = new Button("+");
-
-    Button down = new Button("-");
-
-    int size = 12;
-
     /**
      * constructor
      * @param gui The {@link GUI}
@@ -221,7 +215,7 @@ public class EditTab implements GrammarTab {
                        });
 
                        setAsStartSymbolItem.setOnAction(event1 -> {
-                            Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), (Grammar) grammar);
+                            Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), grammar);
                            gui.refresh(grammar1);
                            gui.getCli().objects.put(Grammar.class,grammar1);
                            gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);

@@ -9,8 +9,6 @@ import javafx.scene.control.TreeItem;
  */
 public class Remove extends SimpleFunctionPlugin {
 
-    private Class inputType;
-
     @Override
     public boolean operatesOnAllStorables() {
         return true;

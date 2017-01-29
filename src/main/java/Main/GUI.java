@@ -245,7 +245,7 @@ public class GUI extends Application{
         Set<Class<? extends DisplayPlugin>> s = reflections.getSubTypesOf(DisplayPlugin.class);
         s.forEach(r -> {
             try {
-                DisplayPlugin displayPlugin = (DisplayPlugin) r.newInstance();
+                DisplayPlugin displayPlugin = r.newInstance();
 
                 displayPlugins.put(displayPlugin.displayType(), displayPlugin);
                 displayPlugin.setGUI(this);
@@ -260,7 +260,7 @@ public class GUI extends Application{
         s2.forEach(cfp -> {
             ComplexFunctionPlugin plugin = null;
             try {
-                plugin = (ComplexFunctionPlugin) cfp.newInstance();
+                plugin = cfp.newInstance();
                 complexFunctionPlugins.add(plugin);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -271,7 +271,7 @@ public class GUI extends Application{
         Set<Class<? extends SimpleFunctionPlugin>> s3 = reflections.getSubTypesOf(SimpleFunctionPlugin.class);
         s3.forEach(sfp -> {
             try {
-                SimpleFunctionPlugin plugin = (SimpleFunctionPlugin) sfp.newInstance();
+                SimpleFunctionPlugin plugin = sfp.newInstance();
                 simpleFunctionPlugins.put(plugin.getClass(), plugin);
                 plugin.setGUI(this);
             } catch (InstantiationException | IllegalAccessException e) {
@@ -330,7 +330,7 @@ public class GUI extends Application{
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/Root.fxml"));
-            root = (BorderPane) loader.load();
+            root = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(root);
@@ -383,7 +383,7 @@ public class GUI extends Application{
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/Overview.fxml"));
-            AnchorPane overview = (AnchorPane) loader.load();
+            AnchorPane overview = loader.load();
 
             // Set person overview into the center of root layout.
             root.setCenter(overview);

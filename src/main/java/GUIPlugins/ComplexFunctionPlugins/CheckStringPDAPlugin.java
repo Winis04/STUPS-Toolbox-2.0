@@ -69,7 +69,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             path.setText("");
             CheckStringPDAPlugin.path.setText(pdaGUI.path(runThroughInfo," "));
             start.setVisible(false);
-            if(!pdaGUI.validRules(runThroughInfo)) {
+            if(pdaGUI.noValidRules(runThroughInfo)) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Failure");
                 alert.setHeaderText(null);

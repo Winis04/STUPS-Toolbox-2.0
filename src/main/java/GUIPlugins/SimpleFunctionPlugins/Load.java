@@ -25,23 +25,6 @@ public class Load extends SimpleFunctionPlugin {
         return null;
     }
 
-    private String readFile(String title) throws IOException {
-        File file = gui.loadFile(title);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String string = "";
-        String line;
-        while ((line = reader.readLine()) != null) {
-            string = string + line + "\n";
-        }
-        return string;
-    }
-
-    private void load(Class typ, Storable storable) {
-        gui.getCli().objects.put(typ, storable);
-        gui.switchDisplayGui(typ);
-        gui.refresh(storable);
-    }
-
     @Override
     String getName() {
         return "load ...";

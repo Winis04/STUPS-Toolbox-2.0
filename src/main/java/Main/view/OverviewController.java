@@ -38,8 +38,6 @@ public class OverviewController {
 
     private final ContextMenu dynamicContextMenu=new ContextMenu();
 
-    private HashMap<Class, List<MenuItem>> map = new HashMap<>();
-
 
     private GUI gui;
 

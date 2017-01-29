@@ -69,14 +69,6 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    private static void println(int i, BufferedWriter writer) {
-        try {
-            writer.write(i+"\n");
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         switch(printmode) {
@@ -128,9 +120,10 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    public static boolean writerIsNull() {
-        return writer==null;
+    public static boolean writerIsNotNull() {
+        return writer != null;
     }
+
 
     /** LATEX **/
     private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {

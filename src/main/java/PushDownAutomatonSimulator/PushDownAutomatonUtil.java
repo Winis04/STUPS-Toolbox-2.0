@@ -97,7 +97,7 @@ public class PushDownAutomatonUtil {
         if(!run.getCurrentState().equals(rule.getComingFrom())) {//rule cannot be applied, because the states don't match
             return run;
         }
-        if(!run.getStack().peek().equals(rule.getOldToS())) { //rule cannot be applied because the ToS doens't match
+        if(!run.getStack().peek().equals(rule.getOldToS())) { //rule cannot be applied because the ToS doesn't match
             return run;
         }
         if(run.getInput().isEmpty()) {

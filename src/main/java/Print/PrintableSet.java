@@ -1,10 +1,8 @@
 package Print;
 
 import java.io.BufferedWriter;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 
 /**
@@ -12,15 +10,8 @@ import java.util.Set;
  * @since 24.11.16
  */
 public class PrintableSet extends HashSet<Printable> implements Printable {
-    private String help_text;
     public PrintableSet(int n) {
         super(n);
-    }
-    public PrintableSet(Collection<Printable> collection) {
-        super(collection);
-    }
-    public PrintableSet(Set<Printable> set) {
-        super(set);
     }
 
     @Override

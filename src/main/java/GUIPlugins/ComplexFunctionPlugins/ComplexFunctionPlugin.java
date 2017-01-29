@@ -16,7 +16,7 @@ public abstract class ComplexFunctionPlugin {
      */
     //TODO better javadoc
     public abstract Class getInputType();
-    String name;
+
     /**
      * Returns a JavaFX-{@link Node}, e.g. a {@link javafx.scene.layout.Pane},
      * that contains all the necessary control elements, for this plugin.
