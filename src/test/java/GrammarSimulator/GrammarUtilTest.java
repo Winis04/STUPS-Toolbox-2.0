@@ -100,11 +100,7 @@ public class GrammarUtilTest {
             assertEquals(GrammarUtil.calculateNullable(tmp),new HashSet<Nonterminal>());
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (ParserException e) {
+        } catch (IOException | LexerException | ParserException e) {
             e.printStackTrace();
         }
 
@@ -117,11 +113,7 @@ public class GrammarUtilTest {
             try {
                 Grammar grammar = GrammarUtil.parse(file);
                 assertTrue(GrammarUtil.isLambdaFree(GrammarUtil.removeLambdaRules(grammar)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LexerException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
+            } catch (IOException | LexerException | ParserException e) {
                 e.printStackTrace();
             }
         });
@@ -134,18 +126,14 @@ public class GrammarUtilTest {
             try {
                 Grammar grammar = GrammarUtil.parse(file);
                 assertFalse(GrammarUtil.hasUnitRules(GrammarUtil.eliminateUnitRules(grammar)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LexerException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
+            } catch (IOException | LexerException | ParserException e) {
                 e.printStackTrace();
             }
         });
     }
 
     @Ignore
-    public void chomskyNormalForm() throws Exception {
+    public void chomskyNormalForm() {
         files.forEach(file -> {
             try {
                 Grammar grammar = GrammarUtil.parse(file);
@@ -154,11 +142,7 @@ public class GrammarUtilTest {
                 Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
                 assertFalse(GrammarUtil.hasUnitRules(grammar2));
                 assertTrue(GrammarUtil.isInChomskyNormalForm(grammar3));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LexerException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
+            } catch (IOException | LexerException | ParserException e) {
                 e.printStackTrace();
             }
         });
@@ -196,11 +180,7 @@ public class GrammarUtilTest {
             assertFalse(GrammarUtil.isInChomskyNormalForm(tmp));
             tmp = GrammarUtil.parse(getResourceAsFile("/Grammar/test13.gr"));
             assertFalse(GrammarUtil.isInChomskyNormalForm(tmp));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LexerException e) {
-            e.printStackTrace();
-        } catch (ParserException e) {
+        } catch (IOException | LexerException | ParserException e) {
             e.printStackTrace();
         }
 

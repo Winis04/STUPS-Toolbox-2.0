@@ -1,14 +1,9 @@
 package GrammarSimulator;
 
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,50 +46,8 @@ public class ConfigurationTest {
         System.out.println(test.toString());
     }
 
-    /**
-     * checks equal of lists
-     */
-    @Test
-    public void listTest() {
-        List<Symbol> list1 = new ArrayList<>();
-        List<Symbol> list2 = new ArrayList<>();
-        list1.add(new Nonterminal("a"));
-        list1.add(new Nonterminal("b"));
-        list2.add(new Nonterminal("a"));
-        list2.add(new Nonterminal("b"));
-        assertTrue(GrammarUtil.listEqual(list1,list2));
-    }
 
-    /**
-     *
-     * @param path
-     * @return
-     */
-    @Ignore
-    public File getResourceAsFile(String path) {
 
-        try {
-            InputStream input = getClass().getResourceAsStream(path);
-            if (input == null) {
-                return null;
-            }
 
-            File res = File.createTempFile(String.valueOf(input.hashCode()), ".tmp");
-            res.deleteOnExit();
-
-            try (FileOutputStream out = new FileOutputStream(res)) {
-                //copy stream
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = input.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-            return res;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 }

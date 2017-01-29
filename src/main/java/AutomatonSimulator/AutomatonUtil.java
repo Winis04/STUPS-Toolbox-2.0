@@ -433,9 +433,9 @@ public class AutomatonUtil {
      * Takes an input {@link File} and parses it into an automaton.
      * @param file the file containing the automaton
      * @return The automaton
-     * @throws IOException {@link IOException}
-     * @throws LexerException {@link LexerException}
-     * @throws ParserException {@link ParserException}
+     * @throws IOException {@link IOException} an IOException
+     * @throws LexerException {@link LexerException} an Exception with the {@link Lexer}
+     * @throws ParserException {@link ParserException} an Exception with the {@link Parser}
      */
     public static Automaton parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
@@ -474,32 +474,6 @@ public class AutomatonUtil {
         return states;
     }
 
-    /**
-     * Prints a given automaton to stdout.
-     * It does the same as {@link #save(Automaton, String)}, but uses System.out instead of a filename for the BufferedWriter.
-     *
-     * @param automaton The automaton.
-     */
-    public static void print(Automaton automaton) {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        try {
-            writer.write("{");
-
-            writeStates(writer, automaton, false);
-            writer.write("; ");
-
-            writer.write(automaton.getStartState().getName() + "; ");
-
-            writeStates(writer, automaton, true);
-            writer.write("}\n");
-            writer.newLine();
-
-            writeRules(writer, automaton);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     /**
      * Writes a given automaton to a file, so it can be loaded again later.
      *

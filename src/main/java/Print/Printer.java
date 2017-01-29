@@ -130,21 +130,16 @@ public class Printer {
         if(printables.size()!=texts.length) {
             return;
         }
-        try {
-            Printer.print("\\section{"+title+"}\n\n",writer);
-            Printer.print("\\begin{description}\n",writer);
-            Printer.deepness++;
-            for(int i=0;i<printables.size();i++) {
-                writeItem(point_descriptions[i],texts[i]);
-                printables.get(i).printLatex(writer,getSpace(deepness));
+        Printer.print("\\section{"+title+"}\n\n",writer);
+        Printer.print("\\begin{description}\n",writer);
+        Printer.deepness++;
+        for(int i=0;i<printables.size();i++) {
+            writeItem(point_descriptions[i],texts[i]);
+            printables.get(i).printLatex(writer,getSpace(deepness));
 
-            }
-            Printer.deepness--;
-            Printer.print("\\end{description}\n\n",writer);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        Printer.deepness--;
+        Printer.print("\\end{description}\n\n",writer);
 
     }
     public static void printStartOfLatex() {
@@ -180,7 +175,7 @@ public class Printer {
     }
 
 
-    private static void writeItem(String title, String subtitle) throws IOException {
+    private static void writeItem(String title, String subtitle) {
         String s="";
         for(int i = 0; i<Printer.deepness; i++) {
             s+="\t";

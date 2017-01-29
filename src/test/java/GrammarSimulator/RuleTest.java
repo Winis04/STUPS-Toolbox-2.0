@@ -48,7 +48,7 @@ public class RuleTest {
         ArrayList<Symbol> right3 = new ArrayList<>();
         right3.add(new Nonterminal("A"));
         right3.add(new Terminal("C"));
-        right3.add(new Nonterminal("dfklsj"));
+        right3.add(new Nonterminal("a"));
         Rule rule3  = new Rule(new Nonterminal("A"),right3);
         test.add(rule3);
         assertTrue(test.size()==2);

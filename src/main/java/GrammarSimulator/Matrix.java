@@ -4,6 +4,7 @@ import Print.Printable;
 import Print.Printer;
 
 import java.io.BufferedWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -19,7 +20,9 @@ public class Matrix implements Printable{
     private final int rows;
     private final int columns;
     private final List<String> word;
-    private final HashSet[][] matrix;
+
+    private final HashMap<Integer,HashMap<Integer,HashSet<Symbol>>> matrix2;
+    private final HashSet<Symbol>[][] matrix;
     private int spacing;
 
     /**
@@ -30,16 +33,21 @@ public class Matrix implements Printable{
      */
     public Matrix(int rows, int columns, List<String> word) {
         this.word=word;
-        matrix=new HashSet[rows][columns];
+        matrix=new HashSet<>[rows][columns];
+        matrix2 = new HashMap<>();
         this.rows=rows;
         this.columns=columns;
-        for(int j=0;j<matrix.length;j++) {
-            for (int i = 0; i < matrix[j].length; i++) {
-                matrix[j][i]=new HashSet<>();
+        for(int j=0;j<rows;j++) {
+            for(int i=0; i < columns;i++) {
+                matrix2.put(j,new HashMap<>());
+                matrix2.get(j).put(i,new HashSet<>());
             }
         }
 
+
         this.spacing=3;
+
+
 
     }
 

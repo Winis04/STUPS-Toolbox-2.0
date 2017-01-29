@@ -264,9 +264,9 @@ public class GrammarUtil {
      *
      * @param file the input {@link File}
      * @return Grammar {@link Grammar}
-     * @throws IOException {@link IOException}
-     * @throws LexerException {@link LexerException}
-     * @throws ParserException {@link ParserException}
+     * @throws IOException {@link IOException} an IOException
+     * @throws LexerException {@link LexerException} an Exception with the {@link Lexer}
+     * @throws ParserException {@link ParserException} an Exception with the {@link Parser}
      */
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
@@ -1111,40 +1111,34 @@ public class GrammarUtil {
         return null;
     }
 
-    /**
-     * start of the dept-first search
-     * @param unitRules a hashset of node that represent the unit Rules
-     */
+
     private static void dfs(HashSet<Node> unitRules) {
-        ArrayList<Integer> df=new ArrayList<>();
-        Integer dfe=new Integer(1);
-        Integer dfs=new Integer(1);
-        df.add(dfs);
-        df.add(dfe);
+        int[] df = new int[2];
+        df[0]=1;
+        df[1]=1;
         for(Node node : unitRules) {
             if(node.isNotVisited()) {
-                df=GrammarUtil.dfs(node,df);
+                df = GrammarUtil.dfs(node,df);
             }
         }
+
     }
 
-    /**
-     * dept-first search on {@link Node}s
-     * @param node the current node on which we do the search
-     * @param df the counter for dfe and dfs
-     * @return the new dfe and dfs counter
-     */
-    private static ArrayList<Integer> dfs(Node node, ArrayList<Integer> df){
+
+
+
+    private static int[] dfs(Node node, int[] df) {
+
         node.setVisited(true);
-        node.setDfs(df.get(0).intValue());
-        df.set(0,new Integer(df.get(0).intValue()+1));
+        node.setDfs(df[0]);
+        df[0]++;
         for(Node child : node.getChildren()) {
             if(child.isNotVisited()) {
                 df=GrammarUtil.dfs(child,df);
             }
         }
-        node.setDfe(df.get(1).intValue());
-        df.set(1,new Integer(df.get(1).intValue()+1));
+        node.setDfe(df[1]);
+        df[1]++;
         return df;
     }
 
@@ -1199,8 +1193,6 @@ public class GrammarUtil {
         }
 
         if(start!=null) {
-            HashSet<Integer> takenNumbers=new HashSet<>();
-            takenNumbers.add(new Integer(0));
             // as long as some nodes have children with higher numbers, do the number-method
             while(nodes.stream().
                     anyMatch(node -> node.getChildren().stream().
@@ -1609,13 +1601,13 @@ public class GrammarUtil {
      * -                                other things                                                                 -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
-    static ArrayList<String>[] getHeader(Grammar grammar) {
-        ArrayList<String>[] header=new ArrayList[3];
-        header[0]=getTerminalsAsStrings(grammar);
-        header[1]=getNonterminalsAsStrings(grammar);
+    static ArrayList<ArrayList<String>> getHeader(Grammar grammar) {
+        ArrayList<ArrayList<String>> header= new ArrayList<>();
+        header.set(0,getTerminalsAsStrings(grammar));
+        header.set(1,getNonterminalsAsStrings(grammar));
         ArrayList<String> tmp=new ArrayList<>();
         tmp.add(grammar.getStartSymbol().getName());
-        header[2]=tmp;
+        header.set(2,tmp);
         return header;
     }
 

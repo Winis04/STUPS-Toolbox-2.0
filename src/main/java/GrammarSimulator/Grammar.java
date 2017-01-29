@@ -115,16 +115,16 @@ public final class Grammar implements Printable, Storable {
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
-        ArrayList<String>[] header= GrammarUtil.getHeader(this);
+        ArrayList<ArrayList<String>> header= GrammarUtil.getHeader(this);
         Printer.print(space+"$"+this.getName()+"=\\left(\\{",writer);
-        Printer.print(space+header[0].stream().map(Printer::makeToGreek).collect(joining(", ")),writer);
+        Printer.print(space+header.get(0).stream().map(Printer::makeToGreek).collect(joining(", ")),writer);
 
         Printer.print("\\},\\;\\{ ",writer);
 
-        Printer.print(header[1].stream().collect(joining(", ")),writer);
+        Printer.print(header.get(1).stream().collect(joining(", ")),writer);
         Printer.print("\\},\\;",writer);
 
-        Printer.print(header[2].get(0),writer);
+        Printer.print(header.get(2).get(0),writer);
 
         Printer.print(",\\;"+this.getRuleSetName()+"\\right)",writer);
         Printer.print("$ with\n",writer);
@@ -156,17 +156,17 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print(this.getName()+"\n",writer);
 
-        ArrayList<String>[] header=GrammarUtil.getHeader(this);
+        ArrayList<ArrayList<String>> header=GrammarUtil.getHeader(this);
 
         Printer.print("{",writer);
-        Printer.print(header[0].stream().collect(joining(", ")),writer);
+        Printer.print(header.get(0).stream().collect(joining(", ")),writer);
 
         Printer.print("; ",writer);
 
-        Printer.print(header[1].stream().collect(joining(", ")),writer);
+        Printer.print(header.get(1).stream().collect(joining(", ")),writer);
 
         Printer.print("; ",writer);
-        Printer.print(header[2].get(0),writer);
+        Printer.print(header.get(2).get(0),writer);
 
         Printer.print("}\n\n",writer);
 

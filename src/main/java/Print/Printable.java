@@ -16,7 +16,7 @@ public interface Printable {
     void printLatex(BufferedWriter writer, String space);
 
     /**
-     * fromats the code such that it can be written on the terminal
+     * formats the code such that it can be written on the terminal
      * @param writer the {@link BufferedWriter}
      */
     void printConsole(BufferedWriter writer);
