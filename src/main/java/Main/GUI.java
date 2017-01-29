@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static Main.view.OverviewController.classComparator;
-
 
 /**
  * One of the two main classes of the application. Allows the user to interact with the application

@@ -198,6 +198,7 @@ public final class Grammar implements Printable, Storable {
         return new Grammar(this.getStartSymbol(),this.getRules(),name,this);
     }
 
+    @SuppressWarnings("SameReturnValue")
     private String getRuleSetName() {
         return "R";
     }
