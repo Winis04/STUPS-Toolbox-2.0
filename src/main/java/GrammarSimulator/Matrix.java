@@ -21,8 +21,8 @@ public class Matrix implements Printable{
     private final int columns;
     private final List<String> word;
 
-    private final HashMap<Integer,HashMap<Integer,HashSet<Symbol>>> matrix2;
-    private final HashSet<Symbol>[][] matrix;
+    private final HashMap<Integer,HashMap<Integer,HashSet<Nonterminal>>> matrix;
+
     private int spacing;
 
     /**
@@ -31,16 +31,16 @@ public class Matrix implements Printable{
      * @param columns number of columns
      * @param word the word belonging to this matrix
      */
-    public Matrix(int rows, int columns, List<String> word) {
+    Matrix(int rows, int columns, List<String> word) {
         this.word=word;
-        matrix=new HashSet<>[rows][columns];
-        matrix2 = new HashMap<>();
+        matrix = new HashMap<>();
         this.rows=rows;
         this.columns=columns;
         for(int j=0;j<rows;j++) {
+            matrix.put(j, new HashMap<>());
             for(int i=0; i < columns;i++) {
-                matrix2.put(j,new HashMap<>());
-                matrix2.get(j).put(i,new HashSet<>());
+
+                matrix.get(j).put(i,new HashSet<>());
             }
         }
 
@@ -59,18 +59,19 @@ public class Matrix implements Printable{
      */
     public void addToCell(int c, int r, Nonterminal nt) {
         if(c > 0) {
-            matrix[r][c].add(nt);
+            matrix.get(r).get(c).add(nt);
         }
-        for (HashSet<Nonterminal>[] aMatrix : matrix) {
-            for (HashSet<Nonterminal> anAMatrix : aMatrix) {
-                int tmp = 0;
-                for (Symbol s : anAMatrix) {
+        for(HashMap<Integer,HashSet<Nonterminal>> row : matrix.values()) {
+            for(HashSet<Nonterminal> cell : row.values()) {
+                int tmp=0;
+                for(Nonterminal s : cell) {
                     tmp += s.getName().length();
                 }
-                tmp += 2 * anAMatrix.size();
-                if (tmp > spacing) {
-                    this.spacing = tmp;
+                tmp += 2* cell.size();
+                if(tmp > spacing) {
+                    this.spacing=tmp;
                 }
+
             }
         }
     }
@@ -122,7 +123,7 @@ public class Matrix implements Printable{
             }
 
             for(int i=1;i<columns;i++) {
-                HashSet<Nonterminal> tmp=matrix[j][i];
+                HashSet<Nonterminal> tmp=matrix.get(j).get(i);
                 String cellContent=tmp.stream().map(Nonterminal::getName).collect(joining(", "));
                 Printer.print(cellContent,writer);
                 int fill;
@@ -213,7 +214,7 @@ public class Matrix implements Printable{
      * @return a {@link HashSet} of {@link Nonterminal}s
      */
     public HashSet<Nonterminal> getCell(int c, int r) {
-        return matrix[r][c];
+        return matrix.get(r).get(c);
     }
 
     /**
