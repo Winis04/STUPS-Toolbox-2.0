@@ -8,7 +8,7 @@ import GrammarSimulator.Grammar;
  * @since 19.11.2016
  */
 @SuppressWarnings("ALL")
-public class GrammarNamePlugin implements CLIPlugin {
+public class GrammarNamePlugin extends CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {

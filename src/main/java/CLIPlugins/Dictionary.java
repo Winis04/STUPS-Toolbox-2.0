@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @since 26.10.2016
  */
 @SuppressWarnings("ALL")
-public class Dictionary implements CLIPlugin {
+public class Dictionary extends CLIPlugin {
 
     private final Map<String, String> dictionary = getDictionary();
     @Override

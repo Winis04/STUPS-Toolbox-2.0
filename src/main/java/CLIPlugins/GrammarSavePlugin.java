@@ -9,7 +9,7 @@ import GrammarSimulator.GrammarUtil;
  * @since 12.08.16
  */
 @SuppressWarnings("ALL")
-public class GrammarSavePlugin implements CLIPlugin {
+public class GrammarSavePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 

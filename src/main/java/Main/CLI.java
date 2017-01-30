@@ -98,6 +98,7 @@ public class CLI {
             case "h":
             case "help":
 
+            //    plugins.stream().sorted()
                 for (CLIPlugin plugin : plugins) {
                     System.out.print("'" + plugin.getNames()[0] + "'");
                     for (int i = 1; i < plugin.getNames().length; i++) {

@@ -8,7 +8,7 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
  * @author Isabel
  * @since 29.01.2017
  */
-public class PDASavePlugin implements CLIPlugin{
+public class PDASavePlugin extends CLIPlugin{
 
         private boolean errorFlag = false;
 

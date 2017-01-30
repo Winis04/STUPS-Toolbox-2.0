@@ -9,7 +9,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @since 15.06.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonSavePlugin implements CLIPlugin {
+public class AutomatonSavePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 

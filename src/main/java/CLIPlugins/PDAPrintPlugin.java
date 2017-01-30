@@ -9,7 +9,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
  * @since 29.10.2016
  */
 @SuppressWarnings("ALL")
-public class PDAPrintPlugin implements CLIPlugin {
+public class PDAPrintPlugin extends CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {

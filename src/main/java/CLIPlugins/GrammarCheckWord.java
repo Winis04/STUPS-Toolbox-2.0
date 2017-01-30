@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @since 12.12.2016
  */
 @SuppressWarnings("ALL")
-public class GrammarCheckWord implements CLIPlugin {
+public class GrammarCheckWord extends CLIPlugin {
     private boolean errorFlag=false;
     @Override
     public String[] getNames() {

@@ -13,7 +13,7 @@ import java.util.*;
  * @since 20.10.16
  */
 @SuppressWarnings("ALL")
-public class GrammarRemoveLambdaPlugin implements CLIPlugin {
+public class GrammarRemoveLambdaPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
     @Override

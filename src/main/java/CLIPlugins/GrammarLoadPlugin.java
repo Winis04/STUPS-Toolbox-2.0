@@ -16,7 +16,7 @@ import java.io.IOException;
  * @since 11.08.16
  */
 @SuppressWarnings("ALL")
-public class GrammarLoadPlugin implements CLIPlugin {
+public class GrammarLoadPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 

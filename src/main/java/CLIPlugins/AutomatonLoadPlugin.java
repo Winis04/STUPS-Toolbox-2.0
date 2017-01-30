@@ -13,7 +13,7 @@ import java.io.*;
  * @since 15.06.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonLoadPlugin implements CLIPlugin{
+public class AutomatonLoadPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 

@@ -14,7 +14,7 @@ import java.io.IOException;
  * @since 11.08.16
  */
 @SuppressWarnings("ALL")
-public class PDALoadPlugin implements CLIPlugin {
+public class PDALoadPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
