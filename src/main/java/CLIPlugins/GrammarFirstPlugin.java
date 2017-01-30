@@ -4,6 +4,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Nonterminal;
 import GrammarSimulator.Terminal;
+import Main.Storable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +16,7 @@ import java.util.Iterator;
  * @since 20.08.16
  */
 @SuppressWarnings("ALL")
-public class GrammarFirstPlugin implements CLIPlugin {
+public class GrammarFirstPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -35,7 +36,7 @@ public class GrammarFirstPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

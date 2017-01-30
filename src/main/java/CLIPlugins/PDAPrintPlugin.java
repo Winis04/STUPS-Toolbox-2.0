@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import Main.Storable;
 import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 
@@ -13,7 +14,7 @@ public class PDAPrintPlugin extends CLIPlugin {
     private boolean errorFlag;
     @Override
     public String[] getNames() {
-        return new String[]{"print-push-down-automaton","ppda"};
+        return new String[]{"ppda","print-push-down-automaton"};
     }
 
     @Override
@@ -27,7 +28,7 @@ public class PDAPrintPlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

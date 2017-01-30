@@ -4,6 +4,7 @@ import AutomatonParser.lexer.LexerException;
 import AutomatonParser.parser.ParserException;
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 import java.io.*;
 
@@ -37,7 +38,7 @@ public class AutomatonLoadPlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         Automaton automaton = null;
         try {

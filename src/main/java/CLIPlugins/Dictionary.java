@@ -1,5 +1,7 @@
 package CLIPlugins;
 
+import Main.Storable;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class Dictionary extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         if(parameters.length!=0) {
 
            System.out.println(dictionary.get(Arrays.stream(parameters).collect(Collectors.joining(" "))));

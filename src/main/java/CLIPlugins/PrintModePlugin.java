@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import Main.Storable;
 import Print.PrintMode;
 import Print.Printer;
 
@@ -30,7 +31,7 @@ public class PrintModePlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(Printer.printmode==PrintMode.LATEX && Printer.writerIsNotNull()) {
             Printer.printEndOfLatex();

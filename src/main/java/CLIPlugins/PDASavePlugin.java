@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
@@ -32,7 +33,7 @@ public class PDASavePlugin extends CLIPlugin{
         }
 
         @Override
-        public Object execute(Object object, String[] parameters) {
+        public Storable execute(Object object, String[] parameters) {
             errorFlag = false;
             if(object == null) {
                 System.out.println("Please load a pda before using this command!");

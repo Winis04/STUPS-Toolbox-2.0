@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.Storable;
 
 /**
  * saves the current {@link Grammar} into a file.
@@ -33,7 +34,7 @@ public class GrammarSavePlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

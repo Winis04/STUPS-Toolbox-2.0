@@ -1,7 +1,6 @@
 package CLIPlugins;
 
-import Main.CLI;
-import org.junit.runner.manipulation.Sortable;
+import Main.Storable;
 
 /**
  * Plugins are executable commands for the terminal. The plugin operates on the currently loaded object
@@ -43,7 +42,7 @@ public abstract class CLIPlugin implements Comparable{
      * @param parameters The parameters, that the user has entered.
      * @return The changed object.
      */
-    public abstract Object execute(Object object, String[] parameters);
+    public abstract Storable execute(Object object, String[] parameters);
 
     /**
      * Returns the desired object-type, needed by {@link #execute(Object, String[])}.

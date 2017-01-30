@@ -1,5 +1,6 @@
 package CLIPlugins;
 
+import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
@@ -38,7 +39,7 @@ public class PDALoadPlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         PushDownAutomaton pda = null;
         try {

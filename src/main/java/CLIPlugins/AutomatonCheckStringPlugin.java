@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -12,7 +13,7 @@ import java.util.Stack;
  * @since 15.06.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonCheckStringPlugin implements CLIPlugin{
+public class AutomatonCheckStringPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -36,7 +37,7 @@ public class AutomatonCheckStringPlugin implements CLIPlugin{
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

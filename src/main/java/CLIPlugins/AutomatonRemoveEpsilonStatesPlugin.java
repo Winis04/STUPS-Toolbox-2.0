@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Turns an {@link Automaton} into one without epsilon transitions.
@@ -9,7 +10,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @since 15.06.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonRemoveEpsilonStatesPlugin implements CLIPlugin {
+public class AutomatonRemoveEpsilonStatesPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -29,7 +30,7 @@ public class AutomatonRemoveEpsilonStatesPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

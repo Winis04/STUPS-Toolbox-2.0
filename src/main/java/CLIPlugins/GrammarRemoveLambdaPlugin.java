@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.*;
+import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 
@@ -32,7 +33,7 @@ public class GrammarRemoveLambdaPlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

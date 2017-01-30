@@ -3,6 +3,7 @@ package CLIPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Nonterminal;
+import Main.Storable;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,7 +14,7 @@ import java.util.Iterator;
  * @since 22.08.16
  */
 @SuppressWarnings("ALL")
-public class GrammarNullablePlugin implements CLIPlugin {
+public class GrammarNullablePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -33,7 +34,7 @@ public class GrammarNullablePlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

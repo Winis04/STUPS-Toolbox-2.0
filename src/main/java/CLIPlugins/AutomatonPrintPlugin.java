@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
+import Main.Storable;
 import Print.Printer;
 
 /**
@@ -9,7 +10,7 @@ import Print.Printer;
  * @since 20.06.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonPrintPlugin implements CLIPlugin {
+public class AutomatonPrintPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -29,7 +30,7 @@ public class AutomatonPrintPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

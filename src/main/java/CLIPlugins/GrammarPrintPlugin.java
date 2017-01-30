@@ -1,6 +1,7 @@
 package CLIPlugins;
 
 import GrammarSimulator.Grammar;
+import Main.Storable;
 import Print.Printer;
 
 /**
@@ -9,7 +10,7 @@ import Print.Printer;
  * @since 11.08.16
  */
 @SuppressWarnings("ALL")
-public class GrammarPrintPlugin implements CLIPlugin {
+public class GrammarPrintPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -29,7 +30,7 @@ public class GrammarPrintPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

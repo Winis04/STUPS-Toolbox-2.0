@@ -4,6 +4,7 @@ import GrammarParser.lexer.LexerException;
 import GrammarParser.parser.ParserException;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.Storable;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -40,7 +41,7 @@ public class GrammarLoadPlugin extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         Grammar grammar = null;
         try {

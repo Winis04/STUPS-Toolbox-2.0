@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * One of the two main classes of the application. Is used as a console and executes the commands the user types into
@@ -48,6 +49,8 @@ public class CLI {
      */
     public final HashMap<String,Class> lookUpTable =new HashMap<>();
 
+    String types="";
+
     /**
      * the constructor. Creates a new instance of cli.
      * @param gui the {@link GUI}
@@ -72,7 +75,6 @@ public class CLI {
 
                 //  } else if(isStoreFunction(command) && doStoreCommand(command,parameters[0],parameters[1])) {
                 break;
-            case "sa":
             case "show-all":
                 if (parameters.length == 1) {
                     Class clazz = lookUpTable.get(parameters[0].toLowerCase());
@@ -95,11 +97,72 @@ public class CLI {
                 //} else if(command.equals("switch_workspace")) { //TODO
 
                 break;
+            case "remove":
+            case "rmv":
+                if(parameters.length==2) {
+                    Class clazz = lookUpTable.get(parameters[0]);
+                    if(clazz != null) {
+                        HashMap rightMap = store.get(clazz);
+                        rightMap.remove(parameters[1]);
+                    } else {
+                        System.out.println("no such type!");
+                    }
+                } else {
+                    System.out.println("you need two parameters");
+                }
+                break;
+            case "str":
+            case "store":
+                if(parameters.length==2) {
+                    Class clazz = lookUpTable.get(parameters[0]);
+
+                    if(clazz != null) {
+                        HashMap rightMap = store.get(clazz);
+                        if(rightMap == null) {
+                            store.put(clazz,new HashMap<>());
+                        }
+                        if(objects.get(clazz) != null) {
+                            Storable storable = (Storable) objects.get(clazz);
+                            store.get(clazz).put(parameters[1], storable.otherName(parameters[1]));
+                        } else {
+                            System.out.print("no current object of type "+parameters[0]);
+                        }
+                    } else {
+                        System.out.println("no such type!");
+                    }
+                } else {
+                    System.out.println("you need two parameters");
+                }
+                break;
+            case "swt":
+            case "switch":
+                if(parameters.length==2) {
+                    Class clazz = lookUpTable.get(parameters[0]);
+                    if(clazz != null) {
+                        HashMap rightMap = store.get(clazz);
+                        if(rightMap != null) {
+                            if(rightMap.keySet().contains(parameters[1])) {
+                                Storable storable = (Storable) rightMap.get(parameters[1]);
+                                if(storable != null) {
+                                    objects.put(clazz,storable);
+                                }
+                            } else {
+                                System.out.println("no object of type "+ parameters[0] + " and name "+ parameters[1]);
+                            }
+                        } else {
+                            System.out.println("no objects stored of this type");
+                        }
+                    } else {
+                        System.out.println("no such type!");
+                    }
+                } else {
+                    System.out.println("you need two parameters");
+                }
+                break;
             case "h":
             case "help":
 
-            //    plugins.stream().sorted()
-                for (CLIPlugin plugin : plugins) {
+                plugins.stream().sorted().forEach(plugin -> {
                     System.out.print("'" + plugin.getNames()[0] + "'");
                     for (int i = 1; i < plugin.getNames().length; i++) {
                         if (i < plugin.getNames().length - 1) {
@@ -110,15 +173,14 @@ public class CLI {
                         System.out.print("'" + plugin.getNames()[i] + "'");
                     }
                     System.out.println("  --  " + plugin.getHelpText());
-                }
+                });
 
                 System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
                 System.out.println("'clear_store' -- deletes every stored item");
-                System.out.println("'switch_workspace' -- takes a directory as a parameter. Changes the workspace");
-                System.out.println("'store' or 'str' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Store the current grammar or automaton (shallow-copy)");
-                System.out.println("'remove' or 'rmv' -- takes 'grammar' or 'automaton' as first parameter and an index as second. Removes the stored object at this position");
-                System.out.println("'switch' or 'swt' --  takes 'grammar' or 'automaton' as first parameter and an index as second. Sets the current grammar or automaton to the object at this position");
-                System.out.println("'copy' -- same as 'store', but the grammar is stored as a deep-copy");
+                System.out.println("'str' or 'store' -- takes "+types+" as first parameter and a name as second. Stores the current object of this type");
+                System.out.println("'remove' or 'rmv' -- takes "+types+" as first parameter and a name as second. Removes the stored object at this position");
+                System.out.println("'swt' or 'switch' --  takes "+types+" as first parameter and a name as second. Sets the current objects of this type to the object at this position");
+                System.out.println("'show-all' -- takes "+types+" as a parameter. Prints all objects of this kind");
                 System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
                 System.out.println("'a' or 'about' -- Shows the release information");
                 System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
@@ -284,6 +346,16 @@ public class CLI {
         lookUpTable.put("automaton",Automaton.class);
         lookUpTable.put("pda",PushDownAutomaton.class);
         lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
+        List<String> list = lookUpTable.keySet().stream().filter(x -> !x.equals("pda"))
+                .map(s -> "'"+s+"'")
+                .sorted()
+                .collect(Collectors.toList());
+        types=list.get(0);
+        for(int i=1;i<list.size()-1;i++) {
+            types+=", ";
+            types+=list.get(i);
+        }
+        types+=" or "+list.get(list.size()-1);
         //Print a welcome message and initialize some variables.
         System.out.println("Welcome to the STUPS-Toolbox!\nPlease enter a command!\nFor a list of commands enter 'h' or 'help'...");
         String input, command, parameters[];
@@ -330,7 +402,7 @@ public class CLI {
 
                 //Execute the entered command. "gui" and "help" are hardcoded, all the other commands come from plugins.
                 //If a plugin returns an object, it is put into the objects-Hashmap. If an object of this type already exists, it will be overwritten.
-                Object ret;
+                Storable ret;
                 boolean validCommand = false;
                 if(buildIn(command,parameters,plugins)) {
                     validCommand=true;
@@ -341,6 +413,9 @@ public class CLI {
                             ret = plugin.execute(objects.get(plugin.inputType()), parameters);
                             if (!plugin.errorFlag()) {
                                 objects.put(plugin.outputType(), ret);
+                                if(store.get(plugin.outputType()) != null && store.get(plugin.outputType()).keySet().contains(ret.getName())) {
+                                    store.get(plugin.outputType()).put(ret.getName(),ret);
+                                }
                             }
                             break;
                         }

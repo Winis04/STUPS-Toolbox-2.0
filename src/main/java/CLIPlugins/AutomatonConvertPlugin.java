@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Converts an {@link Automaton} to a DFA.
@@ -9,7 +10,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @since 13.07.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonConvertPlugin implements CLIPlugin {
+public class AutomatonConvertPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -29,7 +30,7 @@ public class AutomatonConvertPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

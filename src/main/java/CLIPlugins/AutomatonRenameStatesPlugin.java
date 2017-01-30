@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
+import Main.Storable;
 
 /**
  * Renames the {@link AutomatonSimulator.State}s of an {@link Automaton}.
@@ -9,7 +10,7 @@ import AutomatonSimulator.AutomatonUtil;
  * @since 24.07.16
  */
 @SuppressWarnings("ALL")
-public class AutomatonRenameStatesPlugin implements CLIPlugin {
+public class AutomatonRenameStatesPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
 
@@ -29,7 +30,7 @@ public class AutomatonRenameStatesPlugin implements CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

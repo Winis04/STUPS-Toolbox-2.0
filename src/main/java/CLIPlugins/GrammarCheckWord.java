@@ -2,6 +2,7 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.Storable;
 import Print.Printer;
 
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class GrammarCheckWord extends CLIPlugin {
     }
 
     @Override
-    public Object execute(Object object, String[] parameters) {
+    public Storable execute(Object object, String[] parameters) {
         if(object == null) {
             System.out.println("please load a grammar before using this command");
             errorFlag = true;

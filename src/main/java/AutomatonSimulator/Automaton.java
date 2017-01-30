@@ -329,9 +329,8 @@ public class Automaton implements Printable, Storable {
 
     @Override
     public Storable otherName(String name) {
-        Automaton copy = (Automaton) this.deep_copy();
-        copy.name = name;
-        return copy;
+
+        return new Automaton(new HashSet<State>(this.states),new State(this.startState.getName(),this.startState.isStart(),this.startState.isFinal(),this.startState.getRules()),new HashSet<>(this.allInputs),name);
     }
 
 
