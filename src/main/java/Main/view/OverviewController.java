@@ -3,7 +3,9 @@ package Main.view;
 
 
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
+import Main.CLI;
 import Main.GUI;
+import Main.Storable;
 import Print.PrintMode;
 import Print.Printer;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,9 @@ public class OverviewController {
 
     private final ContextMenu dynamicContextMenu=new ContextMenu();
 
+    private Collection<SimpleFunctionPlugin> dynamicMenuContent;
+
+
     public static Comparator<Class> classComparator = (c1,c2) -> c1.getSimpleName().compareTo(c2.getName());
 
     private GUI gui;
@@ -50,6 +56,12 @@ public class OverviewController {
     public OverviewController() {
 //
     }
+
+    public void initialize(GUI gui, Collection<SimpleFunctionPlugin> dynamicMenuContent) {
+        this.gui=gui;
+        this.dynamicMenuContent=dynamicMenuContent;
+        makeTree();
+    }
     /**
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
@@ -59,67 +71,72 @@ public class OverviewController {
 
     }
 
-    public void makeTree(Collection<SimpleFunctionPlugin> dynamicMenu) {
-
-        if(treeView.getRoot()!=null) {
-            treeView.getRoot().getChildren().clear();
+    public void updateTree() {
+        if(gui.getCli().store == null) {
+            //
         }
+        if(gui.getCli().store.isEmpty()) {
+
+        }
+        treeView.getRoot().getChildren().forEach(top -> top.getChildren().clear());
+        treeView.getRoot().getChildren()
+                .forEach(top -> {
+                    Class clazz = gui.getCli().lookUpTable.get(top.getValue().toLowerCase());
+                    HashMap<String, Storable> map = gui.getCli().store.get(clazz);
+                    if(map != null && !map.isEmpty()) {
+                        map.keySet().forEach(key -> {
+                            TreeItem<String> child = new TreeItem<String>(key);
+                            top.getChildren().add(child);
+                        });
+                    }
+                });
+
+    }
+    public void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
 
-        if(!gui.getCli().store.keySet().isEmpty()) {
-            /* top items **/
+        gui.getCli().lookUpTable.keySet().stream().filter(s -> !s.equals("pda"))
+                .sorted()
+                .forEach(type -> {
+                    Class clazz = gui.getCli().lookUpTable.get(type);
+                    TreeItem<String> top = new TreeItem<String>(clazz.getSimpleName());
+                    top.setExpanded(true);
+                    root.getChildren().add(top);
+                });
 
-            gui.getCli().store.keySet().stream().sorted(classComparator).forEach(clazz -> {
-                // the name of the storable objects
-                TreeItem<String> top = new TreeItem<>(clazz.getSimpleName());
+        treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            if (e.getButton()==MouseButton.SECONDARY) {
+                TreeItem<String> selected = treeView.getSelectionModel().getSelectedItem();
+                //item is selected - this prevents fail when clicking on empty space
+                if (selected!=null && !selected.equals(root)) {
 
-                // every object of the top-type
-                List<TreeItem<String>> list = gui.getCli().store.get(clazz).keySet().stream().sorted()
-                        .map(TreeItem::new)
-                        .collect(Collectors.toList());
-
-                top.getChildren().addAll(list);
-                top.setExpanded(true);
-                root.getChildren().add(top);
-            });
-
-            treeView.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-                if (e.getButton()==MouseButton.SECONDARY) {
-                    TreeItem<String> selected = treeView.getSelectionModel().getSelectedItem();
-                    //item is selected - this prevents fail when clicking on empty space
-                    if (selected!=null && !selected.equals(root)) {
-
-                        //open context menu on current screen position
-                        if(!selected.getParent().equals(root)) {
-                            this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenu, e.getScreenX(), e.getScreenY());
-                        }
+                    //open context menu on current screen position
+                    if(!selected.getParent().equals(root)) {
+                        this.openContextMenu(getSuperTypeOfSelectedItem(selected),dynamicMenuContent, e.getScreenX(), e.getScreenY());
                     }
-                } else {
-                    //any other click cause hiding menu
-                    dynamicContextMenu.hide();
                 }
-            });
+            } else {
+                //any other click cause hiding menu
+                dynamicContextMenu.hide();
+            }
+        });
 
 
-            root.setExpanded(true);
+        root.setExpanded(true);
 
-            treeView.setRoot(root);
-            treeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                // the selected Item
+        treeView.setRoot(root);
+        treeView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            // the selected Item
 
-                if(newValue != null && !newValue.equals(root) && newValue.getParent()!= null &&!newValue.getParent().equals(root) && newValue.getParent().getParent()!=null) {
-                    // the String that belongs to the parent treeItem
-                   gui.switchStorable(newValue);
+            if(newValue != null && !newValue.equals(root) && newValue.getParent()!= null &&!newValue.getParent().equals(root) && newValue.getParent().getParent()!=null) {
+                // the String that belongs to the parent treeItem
+                gui.switchStorable(newValue);
 
-                }
-            });
-            treeView.setEditable(true);
-           // treeView.setEditable(true);
-         //   ContextMenu contextMenu = new ContextMenu();
-         //   contextMenu.getItems().addAll(gui.getSimpleFunctionPlugins().values().stream().map(x -> x.getMenuItem(gui)).collect(Collectors.toList()));
-         //   treeView.setContextMenu(contextMenu);
-        } //TODO need else here? Store is empty, do what?
+            }
+        });
+        treeView.setEditable(true);
+
     }
 
     public Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {

@@ -110,7 +110,8 @@ public class GUI extends Application{
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
-        overviewController.makeTree(simpleFunctionPlugins.values());
+        //TODO something like update Tree
+        overviewController.updateTree();
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
@@ -129,7 +130,7 @@ public class GUI extends Application{
         Collection<SimpleFunctionPlugin> list=simpleFunctionPlugins.values().stream()
                 .sorted((x,y) -> x.compareTo(y))
                 .collect(Collectors.toList());
-        overviewController.makeTree(simpleFunctionPlugins.values()); //makes the tree
+        overviewController.updateTree(); //makes the tree //todo!
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
@@ -240,6 +241,7 @@ public class GUI extends Application{
 
         simpleFunctionPlugins = new HashMap<>();
         complexFunctionPlugins = new HashSet<>();
+
 
         //Maps the name-string of each simple plugin to an instance of it.
         //This is needed to execute a simple plugin, when the execute-button is pressed.
@@ -379,10 +381,9 @@ public class GUI extends Application{
             root.setCenter(overview);
             // Give the controller access to the main app.
             overviewController = loader.getController();
-            overviewController.setGui(this);
-            if(overviewController.getTreeView().getRoot() == null) {
-                overviewController.makeTree(simpleFunctionPlugins.values());
-            }
+            overviewController.initialize(this,simpleFunctionPlugins.values());
+
+
             overview.setOnKeyTyped(event -> {
                 if(event.getCharacter().equals("u")) {
                     textSize +=1;

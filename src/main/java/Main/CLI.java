@@ -56,6 +56,10 @@ public class CLI {
      * @param gui the {@link GUI}
      */
     public CLI(GUI gui) {
+        lookUpTable.put("grammar",Grammar.class);
+        lookUpTable.put("automaton",Automaton.class);
+        lookUpTable.put("pda",PushDownAutomaton.class);
+        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
         this.gui=gui;
     }
 
@@ -342,10 +346,7 @@ public class CLI {
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
     public void start() {
-        lookUpTable.put("grammar",Grammar.class);
-        lookUpTable.put("automaton",Automaton.class);
-        lookUpTable.put("pda",PushDownAutomaton.class);
-        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
+
         List<String> list = lookUpTable.keySet().stream().filter(x -> !x.equals("pda"))
                 .map(s -> "'"+s+"'")
                 .sorted()
