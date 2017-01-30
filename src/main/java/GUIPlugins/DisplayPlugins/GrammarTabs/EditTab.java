@@ -131,12 +131,12 @@ public class EditTab implements GrammarTab {
         try {
             StringWriter writer = new StringWriter();
             GrammarUtil.writePart(new BufferedWriter(writer), grammar, true, false, false);
-            terminalsLabel.setText("Terminals: " + writer.toString());
+            terminalsLabel.setText("Terminals: " + writer);
             writer.close();
 
             writer = new StringWriter();
             GrammarUtil.writePart(new BufferedWriter(writer), grammar, false, true, false);
-            nonterminalsLabel.setText("Nonterminals: " + writer.toString());
+            nonterminalsLabel.setText("Nonterminals: " + writer);
             writer.close();
         } catch(Exception e) {
             e.printStackTrace();
@@ -153,7 +153,7 @@ public class EditTab implements GrammarTab {
     private void writeRules(Grammar grammar, GridPane editPane) {
         editPane.getChildren().clear();
 
-        final int[] i = {0};
+        int[] i = {0};
         for (Nonterminal nonterminal : GrammarUtil.getNonterminalsInOrder(grammar)) {
            grammar.getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
                     .map(Rule::getRightSide).forEach(symbols -> {
@@ -238,7 +238,7 @@ public class EditTab implements GrammarTab {
                            if(event1.getCode().equals(KeyCode.ENTER)) {
                                Grammar grammar1=grammar;
                                if(!field.getText().isEmpty()) {
-                                  grammar1=editSymbol(grammar, oldName, field.getText());
+                                  grammar1= editSymbol(grammar, oldName, field.getText());
                                    gui.refresh(grammar1);
                                    gui.getCli().objects.put(Grammar.class,grammar1);
                                    gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
@@ -274,7 +274,7 @@ public class EditTab implements GrammarTab {
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                   Grammar grammar1=editRule(grammar, nonterminal, symbols, field.getText());
+                                   Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
                                    gui.refresh(grammar1);
                                    gui.getCli().objects.put(Grammar.class,grammar1);
                                    gui.getCli().store.get(Grammar.class).put(grammar1.getName(),grammar1);
@@ -352,7 +352,7 @@ public class EditTab implements GrammarTab {
 
         Optional<String[]> result = dialog.showAndWait();
 
-        if (result.isPresent() && result.get()[0].length() > 0 && result.get()[1].length() > 0) {
+        if (result.isPresent() && !result.get()[0].isEmpty() && !result.get()[1].isEmpty()) {
             String name = result.get()[0];
             String symbols = result.get()[1];
             Nonterminal nonterminal;

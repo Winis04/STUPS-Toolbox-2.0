@@ -287,27 +287,29 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         this.rulesAndButtons.values().forEach(rule -> rule.setDisable(true));
         this.rulesAndButtons.keySet().forEach(rule -> {
             State currentState = runThroughInfo.getCurrentState();
-            if (runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    rulesAndButtons.get(rule).setDisable(false);
-                }
-            } else if (!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    rulesAndButtons.get(rule).setDisable(false);
-                }
+            if (!runThroughInfo.getInput().isEmpty() || !runThroughInfo.getStack().isEmpty()) {
+                if (!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                    if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                        rulesAndButtons.get(rule).setDisable(false);
+                    }
 
-            } else if (runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
-                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                    rulesAndButtons.get(rule).setDisable(false);
-                }
+                } else if (runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
+                    if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                        rulesAndButtons.get(rule).setDisable(false);
+                    }
 
-            } else {
-                if (rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
-                    if (rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                        if (rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
-                            rulesAndButtons.get(rule).setDisable(false);
+                } else {
+                    if (rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                        if (rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                            if (rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                                rulesAndButtons.get(rule).setDisable(false);
+                            }
                         }
                     }
+                }
+            } else {
+                if (rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    rulesAndButtons.get(rule).setDisable(false);
                 }
             }
 
@@ -320,27 +322,29 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     public boolean noValidRules(RunThroughInfo runThroughInfo) {
         return !this.rulesAndButtons.keySet().stream().anyMatch(rule -> {
             State currentState = runThroughInfo.getCurrentState();
-            if(runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    return true;
-                }
-            } else if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                    return true;
-                }
+            if (!runThroughInfo.getInput().isEmpty() || !runThroughInfo.getStack().isEmpty()) {
+                if(!runThroughInfo.getInput().isEmpty() && runThroughInfo.getStack().isEmpty() ){
+                    if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(runThroughInfo.getInput().get(0)) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                        return true;
+                    }
 
-            } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
-                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
-                   return true;
-                }
+                } else  if(runThroughInfo.getInput().isEmpty() && !runThroughInfo.getStack().isEmpty()) {
+                    if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(runThroughInfo.getStack().peek())) {
+                       return true;
+                    }
 
-            } else {
-                if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
-                    if(rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
-                        if(rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
-                            return true;
+                } else {
+                    if(rule.getComingFrom().equals(runThroughInfo.getCurrentState())) {
+                        if(rule.getOldToS().equals(runThroughInfo.getStack().peek()) || rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                            if(rule.getReadIn().equals(runThroughInfo.getInput().get(0)) || rule.getReadIn().equals(InputLetter.NULLSYMBOL)) {
+                                return true;
+                            }
                         }
                     }
+                }
+            } else {
+                if(rule.getComingFrom().equals(currentState) && rule.getReadIn().equals(InputLetter.NULLSYMBOL) && rule.getOldToS().equals(StackLetter.NULLSYMBOL)) {
+                    return true;
                 }
             }
             return false;

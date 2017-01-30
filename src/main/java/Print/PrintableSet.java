@@ -57,4 +57,7 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
     }
 
 
+    public PrintableSet clone() {
+        return (PrintableSet) super.clone();
+    }
 }

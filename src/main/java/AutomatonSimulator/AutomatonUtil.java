@@ -791,14 +791,14 @@ public class AutomatonUtil {
                                 goingToName += state.getName();
                             }
 
-                            char goingToNameArray[] = goingToName.toCharArray();
-                            char startStateNameArray[] = startState.getName().toCharArray();
+                            char[] goingToNameArray = goingToName.toCharArray();
+                            char[] startStateNameArray = startState.getName().toCharArray();
                             Arrays.sort(goingToNameArray);
                             Arrays.sort(startStateNameArray);
                             boolean containsGoingTo = false;
                             boolean equalsStartState = Arrays.equals(goingToNameArray, startStateNameArray);
                             for(String name : newStates.keySet()) {
-                                char nameArray[] = name.toCharArray();
+                                char[] nameArray = name.toCharArray();
                                 Arrays.sort(nameArray);
                                 if(Arrays.equals(goingToNameArray, nameArray)) {
                                     containsGoingTo = true;

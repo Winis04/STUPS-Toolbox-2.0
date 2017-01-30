@@ -126,11 +126,11 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print(header.get(2).get(0),writer);
 
-        Printer.print(",\\;"+this.getRuleSetName()+"\\right)",writer);
+        Printer.print(",\\;"+"R"+"\\right)",writer);
         Printer.print("$ with\n",writer);
         Printer.print(space+"\\begin{align*}\n",writer);
 
-        Printer.print(space+"\t"+this.getRuleSetName()+"=\\{",writer);
+        Printer.print(space+"\t"+"R"+"=\\{",writer);
 
 
         Printer.print(GrammarUtil.getNonterminalsInOrder(this).stream().
@@ -198,10 +198,6 @@ public final class Grammar implements Printable, Storable {
         return new Grammar(this.getStartSymbol(),this.getRules(),name,this);
     }
 
-    @SuppressWarnings("SameReturnValue")
-    private String getRuleSetName() {
-        return "R";
-    }
 
     @Override
     public Storable deep_copy() {

@@ -49,7 +49,7 @@ public class Configuration {
         }
         Configuration rhs = (Configuration) obj;
         EqualsBuilder equalsBuilder = new EqualsBuilder();
-        if(rhs.getConfig().size() != this.getConfig().size()) {
+        if(rhs.getConfig().size() != getConfig().size()) {
             return false;
         }
         for(int i=0;i<rhs.config.size();i++) {

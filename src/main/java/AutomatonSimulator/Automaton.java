@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.joining;
  */
 public class Automaton implements Printable, Storable {
 
-    private String name;
+    private final String name;
     /**
      * Contains all the states of the automaton.
      */
@@ -55,7 +55,7 @@ public class Automaton implements Printable, Storable {
         this.states = states;
         this.startState = startState;
         this.allInputs = allInputs;
-        this.removeEpsilonCycles();
+        removeEpsilonCycles();
         if(epsilonCycle) {
             System.out.println("Epsilon-cycles in this automaton have been removed automatically!");
         }
@@ -90,7 +90,8 @@ public class Automaton implements Printable, Storable {
                 this.startState = state;
             }
         });
-        // for every old State, find the matching new State and copy the rules, so the new rules will have references to the new states.
+        // for every old State, find the matching new State and copy the rules, so the new rules will
+        // have references to the new states.
         oldAutomaton.states.forEach(oldState -> {
             State newState = this.getState(oldState.getName());
             oldState.getRules().forEach(rule -> newState.getRules().add(new Rule(this.getState(rule.getGoingTo().getName()), rule.getAcceptedInputs())));
@@ -330,7 +331,7 @@ public class Automaton implements Printable, Storable {
     @Override
     public Storable otherName(String name) {
 
-        return new Automaton(new HashSet<State>(this.states),new State(this.startState.getName(),this.startState.isStart(),this.startState.isFinal(),this.startState.getRules()),new HashSet<>(this.allInputs),name);
+        return new Automaton(new HashSet<>(this.states),new State(this.startState.getName(),this.startState.isStart(),this.startState.isFinal(),this.startState.getRules()),new HashSet<>(this.allInputs),name);
     }
 
 
