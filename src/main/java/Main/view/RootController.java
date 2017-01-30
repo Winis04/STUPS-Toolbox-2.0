@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 
@@ -122,9 +123,15 @@ public class RootController {
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent()) {
             if (result.get() == epsilon) {
-                GUI.nameOfNullSymbol = "\u03B5";
+                String t="\u03B5";
+                GUI.nameOfNullSymbol = t;
+
+
             } else if (result.get() == lambda) {
-                GUI.nameOfNullSymbol = "\u03BB";
+               String t="\u03BB";
+                GUI.nameOfNullSymbol = t;
+
+
             }
         } //TODO else-case
 
