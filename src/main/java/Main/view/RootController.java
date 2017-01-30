@@ -163,10 +163,11 @@ public class RootController {
 
         ButtonType royal = new ButtonType("royal");
         ButtonType autumn = new ButtonType("autumn");
+        ButtonType ocean = new ButtonType("ocean");
         ButtonType own = new ButtonType("own...");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(royal, autumn, own, buttonTypeCancel);
+        alert.getButtonTypes().setAll(royal, autumn, ocean, own, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent()) {
@@ -174,6 +175,8 @@ public class RootController {
                 gui.setStyleSheet("/royal.css");
             } else if (result.get() == autumn) {
                 gui.setStyleSheet("/mild.css");
+            } else if (result.get() == ocean) {
+                gui.setStyleSheet("/ocean.css");
             } else if (result.get() == own) {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("open .css");
