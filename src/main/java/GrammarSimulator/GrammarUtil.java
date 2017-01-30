@@ -1598,12 +1598,12 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
     static ArrayList<ArrayList<String>> getHeader(Grammar grammar) {
-        ArrayList<ArrayList<String>> header= new ArrayList<>();
-        header.set(0,getTerminalsAsStrings(grammar));
-        header.set(1,getNonterminalsAsStrings(grammar));
+        ArrayList<ArrayList<String>> header= new ArrayList<>(3);
+        header.add(0,getTerminalsAsStrings(grammar));
+        header.add(1,getNonterminalsAsStrings(grammar));
         ArrayList<String> tmp=new ArrayList<>();
         tmp.add(grammar.getStartSymbol().getName());
-        header.set(2,tmp);
+        header.add(2,tmp);
         return header;
     }
 

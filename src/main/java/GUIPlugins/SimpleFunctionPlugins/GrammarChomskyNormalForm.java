@@ -25,7 +25,7 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
         } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
             gui.infoDialog("Can't do this! The grammar is already in chomsky normal-form");
         } else {
-            String[] texts=new String[]{"","rules, that point only on one Nonterminal are already in chomsky normal form and we keep them",
+            String[] texts=new String[]{"","rules, that point only on one terminal are already in chomsky normal form and we keep them",
                     "in all other rules replace every appearance of Terminal a through a new Nonterminal",
                     "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule."};
 
