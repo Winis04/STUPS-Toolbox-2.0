@@ -18,9 +18,9 @@ public class Undo extends SimpleFunctionPlugin {
         Storable prev = storable.getPreviousVersion();
 
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        Class parentClazz = gui.getCli().lookUpTable.get(parent);
-        gui.getCli().objects.put(parentClazz,prev);
-        gui.getCli().store.get(parentClazz).put(storable.getName(),prev);
+        Class parentClazz = gui.getContentController().getLookUpTable().get(parent);
+       gui.getContentController().getObjects().put(parentClazz,prev);
+       gui.getContentController().getStore().get(parentClazz).put(storable.getName(),prev);
         return prev;
     }
 
@@ -32,13 +32,13 @@ public class Undo extends SimpleFunctionPlugin {
     @Override
     public Class inputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 
     @Override
     Class outputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class Undo extends SimpleFunctionPlugin {
     @Override
     public boolean shouldBeDisabled() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        Class parentClazz = gui.getCli().lookUpTable.get(parent);
-        Storable current = (Storable) gui.getCli().objects.get(parentClazz);
+        Class parentClazz = gui.getContentController().getLookUpTable().get(parent);
+        Storable current = (Storable)gui.getContentController().getObjects().get(parentClazz);
         return current.getPreviousVersion() == null;
     }
 }

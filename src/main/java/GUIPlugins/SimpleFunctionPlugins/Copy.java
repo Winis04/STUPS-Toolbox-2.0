@@ -30,12 +30,12 @@ public class Copy extends SimpleFunctionPlugin {
     @Override
     public Class inputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 
     @Override
     Class outputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 }

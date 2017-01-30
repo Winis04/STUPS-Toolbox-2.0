@@ -39,6 +39,8 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("ALL")
 public class GUI extends Application{
+    
+    private ContentController contentController;
     /**
      * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
      */
@@ -113,7 +115,7 @@ public class GUI extends Application{
         //TODO something like update Tree
         overviewController.updateTree();
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType()));
+            currentDisplayPlugin.refresh(contentController.getObjects().get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
         }
 
@@ -132,7 +134,7 @@ public class GUI extends Application{
                 .collect(Collectors.toList());
         overviewController.updateTree(); //makes the tree //todo!
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(cli.objects.get(currentDisplayPlugin.displayType())); //shows current object
+            currentDisplayPlugin.refresh(contentController.getObjects().get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
         }
         /* selected the right treeViewObject **/
@@ -153,9 +155,9 @@ public class GUI extends Application{
                 TreeItem<String> root = s.get();
                 Optional<TreeItem<String>> selected = root.getChildren().stream()
                         .reduce((x, y) -> {
-                            if (x != null && x.getValue().equals(((Storable) cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                            if (x != null && x.getValue().equals(((Storable) contentController.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
                                 return x;
-                            } else if (y != null && y.getValue().equals(((Storable) cli.objects.get(currentDisplayPlugin.displayType())).getName())) {
+                            } else if (y != null && y.getValue().equals(((Storable) contentController.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
                                 return y;
                             } else {
                                 return null;
@@ -178,8 +180,8 @@ public class GUI extends Application{
      */
     public void addToStore(Storable storable, Class clazz, String name) {
         Storable storable1 = storable.otherName(name);
-        cli.store.putIfAbsent(clazz, new HashMap<>());
-        cli.store.get(clazz).put(name, storable1);
+        contentController.getStore().putIfAbsent(clazz, new HashMap<>());
+        contentController.getStore().get(clazz).put(name, storable1);
         refresh();
     }
 
@@ -190,14 +192,14 @@ public class GUI extends Application{
     public void switchStorable(TreeItem<String> selectedItem) {
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
-        Class parentClass = cli.lookUpTable.get(parent);
+        Class parentClass = contentController.getLookUpTable().get(parent);
 
 
         // now we can get the matching storable object
-        Storable selectedStorable = cli.store.get(parentClass).get(selectedItem.getValue());
+        Storable selectedStorable = contentController.getStore().get(parentClass).get(selectedItem.getValue());
         // put it as the current grammar/automaton/..
 
-        cli.objects.put(parentClass, selectedStorable);
+        contentController.getObjects().put(parentClass, selectedStorable);
         switchDisplayGui(parentClass);
         refresh(selectedStorable);
     }
@@ -213,7 +215,7 @@ public class GUI extends Application{
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
-            Tab current = plugin.getAsTab(cli.objects.get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
+            Tab current = plugin.getAsTab(contentController.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
             if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
                 current.setStyle("-fx-background-color: aqua;");
             } else {
@@ -230,7 +232,8 @@ public class GUI extends Application{
      */
     @Override
     public void start(Stage stage) {
-        this.cli=new CLI(this);
+        this.contentController = new ContentController();
+        this.cli=new CLI(this,contentController);
         //Prevent the JavaFX-Application Thread from exiting, when the window is closed.
         Platform.setImplicitExit(false);
 
@@ -533,5 +536,7 @@ public class GUI extends Application{
         primaryStage.getScene().getStylesheets().add(css);
     }
 
-
+    public ContentController getContentController() {
+        return contentController;
+    }
 }

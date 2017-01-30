@@ -22,7 +22,7 @@ public class Remove extends SimpleFunctionPlugin {
             gui.getOverviewController().getTreeView().getSelectionModel().select(sibling);
             gui.switchStorable(sibling);
         }
-        gui.getCli().store.get(gui.getOverviewController().getSuperTypeOfSelectedItem(selectedItem)).remove(selectedItem.getValue());
+       gui.getContentController().getStore().get(gui.getOverviewController().getSuperTypeOfSelectedItem(selectedItem)).remove(selectedItem.getValue());
         selectedItem.getParent().getChildren().remove(selectedItem);
 
 

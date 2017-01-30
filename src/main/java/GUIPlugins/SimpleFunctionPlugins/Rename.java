@@ -32,12 +32,12 @@ public class Rename extends SimpleFunctionPlugin {
             String string = result.get();
             String oldName = selectedItem.getValue();
             String parent = selectedItem.getParent().getValue().toLowerCase();
-            Class parentClass = gui.getCli().lookUpTable.get(parent);
-            if(string.equals(oldName) || !gui.getCli().store.get(parentClass).containsKey(string)) {
+            Class parentClass = gui.getContentController().getLookUpTable().get(parent);
+            if(string.equals(oldName) || !gui.getContentController().getStore().get(parentClass).containsKey(string)) {
                 /* change tree view entry **/
                 selectedItem.setValue(string);
                 /* change object **/
-                gui.getCli().store.get(parentClass).remove(oldName);
+                gui.getContentController().getStore().get(parentClass).remove(oldName);
                 TreeItem<String> parentItem = selectedItem.getParent();
                 parentItem.getChildren().remove(selectedItem);
                 return storable.otherName(string);
@@ -64,13 +64,13 @@ public class Rename extends SimpleFunctionPlugin {
     @Override
     public Class inputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 
     @Override
     Class outputType() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
     }
 
     @Override

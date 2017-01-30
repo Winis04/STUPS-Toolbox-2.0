@@ -717,7 +717,7 @@ public class AutomatonGUI implements DisplayPlugin {
                                 dialog.setContentText("Enter the name of the automaton: ");
                                 Optional<String> result = dialog.showAndWait();
                                 result.ifPresent(name -> {
-                                    //  gui.getCli().objects.put(Grammar.class,grammar);
+                                    // gui.getContentController().getObjects().put(Grammar.class,grammar);
                                     gui.addToStore(automaton, Automaton.class, name);
                                 });
                             });

@@ -72,17 +72,17 @@ public class OverviewController {
     }
 
     public void updateTree() {
-        if(gui.getCli().store == null) {
+        if(gui.getContentController().getStore() == null) {
             //
         }
-        if(gui.getCli().store.isEmpty()) {
+        if(gui.getContentController().getStore().isEmpty()) {
 
         }
         treeView.getRoot().getChildren().forEach(top -> top.getChildren().clear());
         treeView.getRoot().getChildren()
                 .forEach(top -> {
-                    Class clazz = gui.getCli().lookUpTable.get(top.getValue().toLowerCase());
-                    HashMap<String, Storable> map = gui.getCli().store.get(clazz);
+                    Class clazz = gui.getContentController().getLookUpTable().get(top.getValue().toLowerCase());
+                    HashMap<String, Storable> map = gui.getContentController().getStore().get(clazz);
                     if(map != null && !map.isEmpty()) {
                         map.keySet().forEach(key -> {
                             TreeItem<String> child = new TreeItem<String>(key);
@@ -95,10 +95,10 @@ public class OverviewController {
     public void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
 
-        gui.getCli().lookUpTable.keySet().stream().filter(s -> !s.equals("pda"))
+        gui.getContentController().getLookUpTable().keySet().stream().filter(s -> !s.equals("pda"))
                 .sorted()
                 .forEach(type -> {
-                    Class clazz = gui.getCli().lookUpTable.get(type);
+                    Class clazz = gui.getContentController().getLookUpTable().get(type);
                     TreeItem<String> top = new TreeItem<String>(clazz.getSimpleName());
                     top.setExpanded(true);
                     root.getChildren().add(top);
@@ -143,7 +143,7 @@ public class OverviewController {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
-        return gui.getCli().lookUpTable.get(parent);
+        return gui.getContentController().getLookUpTable().get(parent);
 
     }
 

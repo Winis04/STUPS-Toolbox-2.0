@@ -141,14 +141,14 @@ public class RootController {
 
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
-        Class parentClass = gui.getCli().lookUpTable.get(parent);
+        Class parentClass = gui.getContentController().getLookUpTable().get(parent);
 
 
         // now we can get the matching storable object
-        Storable selectedStorable = gui.getCli().store.get(parentClass).get(selectedItem.getValue());
+        Storable selectedStorable =  gui.getContentController().getStore().get(parentClass).get(selectedItem.getValue());
         // put it as the current grammar/automaton/..
 
-        gui.getCli().objects.put(parentClass, selectedStorable);
+        gui.getContentController().getObjects().put(parentClass, selectedStorable);
         gui.switchDisplayGui(parentClass);
         gui.refresh(selectedStorable);
 
@@ -220,8 +220,8 @@ public class RootController {
                         //TODO: add other types here
                     }
                     if (storable != null) {
-                        gui.getCli().objects.put(clazz, storable);
-                        gui.getCli().store.get(clazz).put(name,storable);
+                        gui.getContentController().getObjects().put(clazz, storable);
+                        gui.getContentController().getStore().get(clazz).put(name,storable);
                         gui.refresh(storable);
                         gui.refresh();
                     }
@@ -254,7 +254,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentGrammar() {
-        Object object = gui.getCli().objects.get(Grammar.class);
+        Object object = gui.getContentController().getObjects().get(Grammar.class);
         if(object != null) {
             Grammar grammar = (Grammar) object;
             File file = gui.openFileToSave("Grammar");
@@ -266,7 +266,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentAutomaton() {
-        Object object = gui.getCli().objects.get(Automaton.class);
+        Object object = gui.getContentController().getObjects().get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFileToSave("Automaton");
@@ -278,7 +278,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentPushDownAutomaton() {
-        Object object = gui.getCli().objects.get(PushDownAutomaton.class);
+        Object object = gui.getContentController().getObjects().get(PushDownAutomaton.class);
         if(object != null) {
             PushDownAutomaton pda= (PushDownAutomaton) object;
             File file = gui.openFileToSave("PDA");
@@ -290,7 +290,7 @@ public class RootController {
 
     @FXML
     public void toGraphViz() {
-        Object object = gui.getCli().objects.get(Automaton.class);
+        Object object = gui.getContentController().getObjects().get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFileToSave("Automaton");
@@ -313,8 +313,8 @@ public class RootController {
         Storable storable = new Grammar(grammar.getStartSymbol(),grammar.getRules(),"newGrammar", (Grammar) grammar.getPreviousVersion());
         Class clazz = Grammar.class;
         String name = storable.getName();
-        gui.getCli().objects.put(clazz, storable);
-        gui.getCli().store.get(clazz).put(name,storable);
+        gui.getContentController().getObjects().put(clazz, storable);
+        gui.getContentController().getStore().get(clazz).put(name,storable);
         gui.refresh(storable);
         gui.refresh();
     }
@@ -325,8 +325,8 @@ public class RootController {
         Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
         Class clazz = PushDownAutomaton.class;
         String name = storable.getName();
-        gui.getCli().objects.put(clazz, storable);
-        gui.getCli().store.get(clazz).put(name,storable);
+        gui.getContentController().getObjects().put(clazz, storable);
+        gui.getContentController().getStore().get(clazz).put(name,storable);
         gui.refresh(storable);
         gui.refresh();
     }
@@ -336,8 +336,8 @@ public class RootController {
         Storable storable = new Automaton();
         Class clazz = Automaton.class;
         String name = storable.getName();
-        gui.getCli().objects.put(clazz, storable);
-        gui.getCli().store.get(clazz).put(name,storable);
+        gui.getContentController().getObjects().put(clazz, storable);
+        gui.getContentController().getStore().get(clazz).put(name,storable);
         gui.refresh(storable);
         gui.refresh();
     }
