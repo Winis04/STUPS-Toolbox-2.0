@@ -89,7 +89,7 @@ public class GUI extends Application{
      */
     public static String nameOfNullSymbol = "\u03B5";
 
-    private String defaultStyle = "/royal.css";
+    private String defaultStyle = "/blue.css";
     // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.

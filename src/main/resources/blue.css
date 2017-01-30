@@ -1,12 +1,11 @@
 
 
 .root {
-    -fx-text-fill: blue;
-    r: #271b49;        //color selected
-    b1: #e8e8e8;        // tree view
-    b2: #271b49;       //tab header background
-    b3: #7c7a7a;       //textcolor
-    b4: #494949;     //background
+   r: #1a936f;      //color selected
+   b1: #c6dabf;     // tree view
+   b2: #114b5f;     //tab header background
+   b3: black;      //textcolor
+   b4: #f1faee;        //background
 
 }
 
