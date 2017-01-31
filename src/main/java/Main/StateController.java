@@ -13,14 +13,72 @@ import java.util.stream.Stream;
 public class StateController {
     
     Content content;
+    GUI gui;
 
     private String path_to_workspace;
     private String path_to_stylesheet;
-    public StateController(Content content) {
+
+    public StateController(Content content, GUI gui) {
         this.content=content;
+        this.gui = gui;
     }
 
-    public void initWorkspace() {
+
+    public void init() {
+        path_to_stylesheet = "/blue.css";
+        path_to_workspace = "workspace/";
+        String fileName = "config";
+
+        //read file into stream, try-with-resources
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+            stream.forEach(line -> {
+                String[] parts = line.replaceAll(" ","").split("=");
+                //check if parts.length==2
+                switch(parts[0]) {
+                    case "WORKSPACE":
+                        path_to_workspace = parts[1];
+                        break;
+                    case "STYLESHEET":
+                        path_to_stylesheet = parts[1];
+                        break;
+                }
+            });
+
+            initWorkspace();
+            initStyle();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    /**
+     * saves the current workspace
+     */
+
+    public void exit() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
+            writer.write("WORKSPACE = "+path_to_workspace+"\n");
+            writer.write("STYLESHEET = "+path_to_stylesheet+"\n");
+            writer.close();
+
+            exitWorkspace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initStyle() {
+
+        gui.setStyleSheet(path_to_stylesheet);
+
+
+    }
+    private void initWorkspace() {
         File ret = new File(path_to_workspace);
 
         content.getStore().clear();
@@ -86,55 +144,6 @@ public class StateController {
         });
 
     }
-    public void init() {
-        path_to_stylesheet = "/blue.css";
-        path_to_workspace = "workspace";
-        String fileName = "config";
-
-        //read file into stream, try-with-resources
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-
-            stream.forEach(line -> {
-                String[] parts = line.replaceAll(" ","").split("=");
-                //check if parts.length==2
-                switch(parts[0]) {
-                    case "WORKSPACE":
-                        path_to_workspace = parts[1];
-                        break;
-                    case "STYLESHEET":
-                        path_to_stylesheet = parts[1];
-                        break;
-                }
-            });
-
-            initWorkspace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-    }
-
-    /**
-     * saves the current workspace
-     */
-
-    public void exit() {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
-            writer.write("WORKSPACE = "+path_to_workspace+"\n");
-            writer.write("STYLESHEET = "+path_to_stylesheet+"\n");
-            writer.close();
-
-            exitWorkspace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * deletes a directory and all files in it
      * @param file the directory, that should be deleted
@@ -150,5 +159,9 @@ public class StateController {
             }
         }
         return check & file.delete();
+    }
+
+    public void setPathToStyleSheet(String path, boolean isExternal) {
+        this.path_to_stylesheet = path;
     }
 }

@@ -176,7 +176,7 @@ public class RootController {
             } else if (result.get() == autumn) {
                 gui.setStyleSheet("/mild.css");
             } else if (result.get() == ocean) {
-                gui.setStyleSheet("/ocean.css");
+                gui.setStyleSheet("/blue.css");
             } else if (result.get() == own) {
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("open .css");
@@ -185,7 +185,7 @@ public class RootController {
 
                 File selectedFile = fileChooser.showOpenDialog(gui.getPrimaryStage());
                 if (selectedFile != null) {
-                    gui.setStyleSheetExternal(selectedFile);
+                    gui.setStyleSheet(selectedFile.getAbsolutePath());
                 } //TODO else case
             }
         } //TODO else case

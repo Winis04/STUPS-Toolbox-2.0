@@ -93,7 +93,6 @@ public class GUI extends Application{
      */
     public static String nameOfNullSymbol = "\u03B5";
 
-    private String defaultStyle = "/blue.css";
     // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**
      * The main method. It just launches the JavaFX-Application Thread.
@@ -235,7 +234,7 @@ public class GUI extends Application{
     @Override
     public void start(Stage stage) {
         this.content = new Content();
-        this.stateController = new StateController(content);
+        this.stateController = new StateController(content,this);
         this.cli=new CLI(this, content,stateController);
         //Prevent the JavaFX-Application Thread from exiting, when the window is closed.
         Platform.setImplicitExit(false);
@@ -312,7 +311,7 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
-        setStyleSheet(defaultStyle);
+     //   setStyleSheet(defaultStyle);
 
         //Now, that everything is loaded, we can start the Main.CLI in a different Thread.
         //The JavaFX-Application Thread will continue running in the background,
@@ -522,20 +521,26 @@ public class GUI extends Application{
      * @param path Path to to the stylesheet
      */
     public void setStyleSheet(String path) {
-        primaryStage.getScene().getStylesheets().clear();
-        String css = this.getClass().getResource(path).toExternalForm();
-        defaultStyle = css;
-        primaryStage.getScene().getStylesheets().add(css);
+        if(this.getClass().getResource(path)==null) {
+            setStyleSheetExternal(path);
+        } else {
+            stateController.setPathToStyleSheet(path,false);
+            primaryStage.getScene().getStylesheets().clear();
+            String css = this.getClass().getResource(path).toExternalForm();
+            // defaultStyle = css;
+            primaryStage.getScene().getStylesheets().add(css);
+        }
     }
 
     /**
      * set the style sheet to a external file
      * @param file a File not located in the resources
      */
-    public void setStyleSheetExternal(File file) {
+    private void setStyleSheetExternal(String path) {
+        stateController.setPathToStyleSheet(path,true);
         primaryStage.getScene().getStylesheets().clear();
-        String css =  "file:///" + file.getAbsolutePath().replace("\\", "/");
-        defaultStyle = css;
+        String css =  "file:///" + path.replace("\\", "/");
+        //defaultStyle = css;
         primaryStage.getScene().getStylesheets().add(css);
     }
 
