@@ -32,6 +32,10 @@ public final class InputLetter {
      * @return {@link #name}
      */
     public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
         if(name.equals("epsilon")) {
             return GUI.nameOfNullSymbol;
         }

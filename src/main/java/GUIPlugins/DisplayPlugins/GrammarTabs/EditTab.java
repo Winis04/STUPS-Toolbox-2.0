@@ -172,7 +172,7 @@ public class EditTab implements GrammarTab {
                StringBuilder symbolString = new StringBuilder();
                Iterator<Symbol> it = symbols.iterator();
                while (it.hasNext()) {
-                   symbolString.append(it.next().getName());
+                   symbolString.append(it.next().getDisplayName());
 
                    if (it.hasNext()) {
                        symbolString.append(", ");

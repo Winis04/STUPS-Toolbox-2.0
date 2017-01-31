@@ -30,8 +30,17 @@ public final class Terminal implements Symbol {
         this.name = name;
     }
 
+
+    /**
+     * Getter-Method for {@link #name}
+     * @return {@link #name}
+     */
     @Override
     public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
         if(name.equals("epsilon")) {
             return GUI.nameOfNullSymbol;
         }

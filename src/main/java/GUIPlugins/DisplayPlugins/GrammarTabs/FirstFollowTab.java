@@ -68,7 +68,7 @@ public class FirstFollowTab implements GrammarTab {
                 Iterator<Terminal> it2 = first.get(nonterminal).iterator();
                 while (it2.hasNext()) {
                     Terminal currentTerminal = it2.next();
-                    sb.append(currentTerminal.getName());
+                    sb.append(currentTerminal.getDisplayName());
 
                     if (it2.hasNext()) {
                         sb.append(", ");
@@ -84,7 +84,7 @@ public class FirstFollowTab implements GrammarTab {
                 it2 = follow.get(nonterminal).iterator();
                 while (it2.hasNext()) {
                     Terminal currentTerminal = it2.next();
-                    sb.append(currentTerminal.getName());
+                    sb.append(currentTerminal.getDisplayName());
 
                     if (it2.hasNext()) {
                         sb.append(", ");

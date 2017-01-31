@@ -32,6 +32,10 @@ public class StackLetter {
      * @return the {@link #name} of this StackLetter
      */
     public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
         if(name.equals("epsilon")) {
             return GUI.nameOfNullSymbol;
         }

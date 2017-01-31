@@ -14,4 +14,6 @@ public interface Symbol {
      */
     String getName();
 
+    String getDisplayName();
+
 }

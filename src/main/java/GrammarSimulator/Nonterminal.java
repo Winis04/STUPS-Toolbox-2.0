@@ -37,6 +37,11 @@ public final class Nonterminal implements Symbol, Printable {
         return name;
     }
 
+    @Override
+    public String getDisplayName() {
+        return name;
+    }
+
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {

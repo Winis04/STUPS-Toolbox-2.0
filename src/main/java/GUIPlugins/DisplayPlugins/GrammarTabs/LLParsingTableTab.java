@@ -30,7 +30,7 @@ public class LLParsingTableTab implements GrammarTab {
             int i = 1;
             for (Terminal terminal : terminalList) {
                 if (!terminal.getName().equals("epsilon")) {
-                    Label label = new Label(terminal.getName());
+                    Label label = new Label(terminal.getDisplayName());
                     label.setStyle("-fx-font-weight: bold");
                     rootPane.addColumn(i, label);
                     i++;

@@ -114,7 +114,7 @@ public class GrammarUtil {
      * @param writer The BufferedWriter.
      * @param grammar The grammar.
      */
-    private static void writeTerminals(BufferedWriter writer, Grammar grammar) {
+    private static void writeTerminals(boolean onGui, BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = getTerminalsInOrder(grammar);
         Iterator<Terminal> it = terminals.iterator();
@@ -123,7 +123,11 @@ public class GrammarUtil {
         try {
             while(it.hasNext()) {
                 Terminal currentTerminal = it.next();
-                writer.write("'" + currentTerminal.getName() + "'");
+                if(onGui) {
+                    writer.write("'" + currentTerminal.getDisplayName() + "'");
+                } else {
+                    writer.write("'" + currentTerminal.getName() + "'");
+                }
                 if(it.hasNext()) {
                     writer.write(", ");
                 }
@@ -319,13 +323,13 @@ public class GrammarUtil {
      *
      * @param grammar The grammar.
      */
-    public static void print(Grammar grammar) {
+    public static void print(boolean onGUI, Grammar grammar) {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
         try {
             writer.write("{");
 
-            writeTerminals(writer, grammar);
+            writeTerminals(onGUI,writer, grammar);
             writer.write("; ");
 
             writeNonterminals(writer, grammar);
@@ -353,7 +357,7 @@ public class GrammarUtil {
 
             writer.write("{");
 
-            writeTerminals(writer, grammar);
+            writeTerminals(false,writer, grammar);
             writer.write("; ");
 
             writeNonterminals(writer, grammar);
@@ -380,7 +384,7 @@ public class GrammarUtil {
 
             writer.write("{");
 
-            writeTerminals(writer, grammar);
+            writeTerminals(false, writer, grammar);
             writer.write("; ");
 
             writeNonterminals(writer, grammar);
@@ -409,7 +413,7 @@ public class GrammarUtil {
     public static void writePart(BufferedWriter writer, Grammar grammar, boolean terminals, boolean nonterminals, boolean rules) {
         //Write terminals.
         if(terminals) {
-            writeTerminals(writer, grammar);
+            writeTerminals(true, writer, grammar);
             try {
                 writer.newLine();
             } catch (IOException e) {
