@@ -87,8 +87,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         if (event.getButton().equals(MouseButton.SECONDARY)) {
                             PushDownAutomaton freshPDA = editRule(pda,rule);
                             if(freshPDA != null) {
-                                gui.getContentController().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
-                                gui.getContentController().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
+                                gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
+                                gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
                                 gui.refresh(freshPDA); //switch to new object
                                 gui.refresh(); //refresh the treeView
                             }

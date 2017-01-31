@@ -1,19 +1,14 @@
 package Main;
 
-import AutomatonSimulator.Automaton;
+import AutomatonSimulator.State;
 import CLIPlugins.CLIPlugin;
-import GrammarSimulator.Grammar;
 import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
-import PushDownAutomatonSimulator.PushDownAutomaton;
 import javafx.application.Platform;
 import org.reflections.Reflections;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,7 +24,9 @@ public class CLI {
 
     private final GUI gui;
     
-    private final ContentController contentController;
+    private final Content content;
+
+    private final StateController stateController;
     
 
     String types="";
@@ -38,9 +35,10 @@ public class CLI {
      * the constructor. Creates a new instance of cli.
      * @param gui the {@link GUI}
      */
-    public CLI(GUI gui, ContentController contentController) {
-        this.contentController = contentController;
+    public CLI(GUI gui, Content content, StateController stateController) {
+        this.content = content;
         this.gui=gui;
+        this.stateController=stateController;
     }
 
     private boolean isStoreFunction(String command) {
@@ -61,11 +59,11 @@ public class CLI {
                 break;
             case "show-all":
                 if (parameters.length == 1) {
-                    Class clazz = contentController.getLookUpTable().get(parameters[0].toLowerCase());
+                    Class clazz = content.getLookUpTable().get(parameters[0].toLowerCase());
                     if (clazz == null) {
                         System.out.println("no such objects stored");
                     } else {
-                        HashMap<String, Storable> correctMap = contentController.getStore().get(clazz);
+                        HashMap<String, Storable> correctMap = content.getStore().get(clazz);
                         if (correctMap == null || correctMap.isEmpty()) {
                             System.out.println("no objects of type " + parameters[0] + " stored!");
                         } else {
@@ -77,16 +75,16 @@ public class CLI {
                 }
                 break;
             case "clear_store":
-                contentController.getStore().clear();
+                content.getStore().clear();
                 //} else if(command.equals("switch_workspace")) { //TODO
 
                 break;
             case "remove":
             case "rmv":
                 if(parameters.length==2) {
-                    Class clazz = contentController.getLookUpTable().get(parameters[0]);
+                    Class clazz = content.getLookUpTable().get(parameters[0]);
                     if(clazz != null) {
-                        HashMap rightMap = contentController.getStore().get(clazz);
+                        HashMap rightMap = content.getStore().get(clazz);
                         rightMap.remove(parameters[1]);
                     } else {
                         System.out.println("no such type!");
@@ -98,16 +96,16 @@ public class CLI {
             case "str":
             case "store":
                 if(parameters.length==2) {
-                    Class clazz = contentController.getLookUpTable().get(parameters[0]);
+                    Class clazz = content.getLookUpTable().get(parameters[0]);
 
                     if(clazz != null) {
-                        HashMap rightMap = contentController.getStore().get(clazz);
+                        HashMap rightMap = content.getStore().get(clazz);
                         if(rightMap == null) {
-                            contentController.getStore().put(clazz,new HashMap<>());
+                            content.getStore().put(clazz,new HashMap<>());
                         }
-                        if(contentController.getObjects().get(clazz) != null) {
-                            Storable storable = (Storable) contentController.getObjects().get(clazz);
-                            contentController.getStore().get(clazz).put(parameters[1], storable.otherName(parameters[1]));
+                        if(content.getObjects().get(clazz) != null) {
+                            Storable storable = (Storable) content.getObjects().get(clazz);
+                            content.getStore().get(clazz).put(parameters[1], storable.otherName(parameters[1]));
                         } else {
                             System.out.print("no current object of type "+parameters[0]);
                         }
@@ -121,14 +119,14 @@ public class CLI {
             case "swt":
             case "switch":
                 if(parameters.length==2) {
-                    Class clazz = contentController.getLookUpTable().get(parameters[0]);
+                    Class clazz = content.getLookUpTable().get(parameters[0]);
                     if(clazz != null) {
-                        HashMap rightMap = contentController.getStore().get(clazz);
+                        HashMap rightMap = content.getStore().get(clazz);
                         if(rightMap != null) {
                             if(rightMap.keySet().contains(parameters[1])) {
                                 Storable storable = (Storable) rightMap.get(parameters[1]);
                                 if(storable != null) {
-                                    contentController.getObjects().put(clazz,storable);
+                                    content.getObjects().put(clazz,storable);
                                 }
                             } else {
                                 System.out.println("no object of type "+ parameters[0] + " and name "+ parameters[1]);
@@ -176,7 +174,7 @@ public class CLI {
                     Printer.printEndOfLatex();
                     Printer.closeWriter();
                 }
-                contentController.save_workspace();
+                stateController.exit();
                 System.exit(0);
             case "a":
             case "about":
@@ -197,18 +195,18 @@ public class CLI {
         if(isStoreFunction(command)) {
                     // Integer i = Integer.parseInt(parameters[1]);
                     //first: detect which object should be stored
-                    Class clazz = contentController.getLookUpTable().get(parameter1.toLowerCase());
+                    Class clazz = content.getLookUpTable().get(parameter1.toLowerCase());
 
                     if (clazz == null) {
                         System.out.println("There are no objects of type " + parameter1);
                     } else {
-                        HashMap<String, Storable> correctMap = contentController.getStore().get(clazz);
+                        HashMap<String, Storable> correctMap = content.getStore().get(clazz);
                         switch (command) {
                             case "store":
                             case "str":
                             case "copy":
 
-                                Object object = contentController.getObjects().get(clazz);
+                                Object object = content.getObjects().get(clazz);
                                 if (object == null) {
                                     System.out.println("Please load an object of type " + parameter1 + " before using this command!");
                                 } else {
@@ -223,7 +221,7 @@ public class CLI {
                                         HashMap<String, Storable> tmp = new HashMap<>();
                                         tmp.put(parameter2, toBeStored);
 
-                                        contentController.getStore().put(clazz, tmp);
+                                        content.getStore().put(clazz, tmp);
                                     } else {
                                         correctMap.put(parameter2, toBeStored);
                                         //    store.get(clazz).put(i, toBeStored);
@@ -236,7 +234,7 @@ public class CLI {
                                 if (theNewCurrent == null) {
                                     System.out.println("no Object with this Index"); //TODO
                                 } else {
-                                    contentController.getObjects().put(clazz, theNewCurrent);
+                                    content.getObjects().put(clazz, theNewCurrent);
                                 }
                                 break;
                             case "remove":
@@ -261,7 +259,7 @@ public class CLI {
      * @return true, if the store contains the storable; false otherwise.
      */
     public boolean storeContains(Storable storable, Class type) {
-        return contentController.getStore().get(type) != null && !contentController.getStore().get(type).values().isEmpty() && contentController.getStore().get(type).values().contains(storable);
+        return content.getStore().get(type) != null && !content.getStore().get(type).values().isEmpty() && content.getStore().get(type).values().contains(storable);
     }
 
 
@@ -272,7 +270,7 @@ public class CLI {
      */
     public void start() {
 
-        List<String> list = contentController.getLookUpTable().keySet().stream().filter(x -> !x.equals("pda"))
+        List<String> list = content.getLookUpTable().keySet().stream().filter(x -> !x.equals("pda"))
                 .map(s -> "'"+s+"'")
                 .sorted()
                 .collect(Collectors.toList());
@@ -286,8 +284,8 @@ public class CLI {
         System.out.println("Welcome to the STUPS-Toolbox!\nPlease enter a command!\nFor a list of commands enter 'h' or 'help'...");
         String input, command, parameters[];
         ArrayList<CLIPlugin> plugins = new ArrayList<>();
-        contentController.getObjects().put(null, null);
-        contentController.restore_workspace();
+        content.getObjects().put(null, null);
+        stateController.init();
 
         Reflections reflections = new Reflections("CLIPlugins");
         Set<Class<? extends CLIPlugin>> s = reflections.getSubTypesOf(CLIPlugin.class);
@@ -336,11 +334,11 @@ public class CLI {
                     for (CLIPlugin plugin : plugins) {
                         if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
                             validCommand = true;
-                            ret = plugin.execute(contentController.getObjects().get(plugin.inputType()), parameters);
+                            ret = plugin.execute(content.getObjects().get(plugin.inputType()), parameters);
                             if (!plugin.errorFlag()) {
-                                contentController.getObjects().put(plugin.outputType(), ret);
-                                if(contentController.getStore().get(plugin.outputType()) != null && contentController.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
-                                    contentController.getStore().get(plugin.outputType()).put(ret.getName(),ret);
+                                content.getObjects().put(plugin.outputType(), ret);
+                                if(content.getStore().get(plugin.outputType()) != null && content.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
+                                    content.getStore().get(plugin.outputType()).put(ret.getName(),ret);
                                 }
                             }
                             break;

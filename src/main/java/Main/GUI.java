@@ -40,7 +40,9 @@ import java.util.stream.Collectors;
 @SuppressWarnings("ALL")
 public class GUI extends Application{
     
-    private ContentController contentController;
+    private Content content;
+
+    private StateController stateController;
     /**
      * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
      */
@@ -115,7 +117,7 @@ public class GUI extends Application{
         //TODO something like update Tree
         overviewController.updateTree();
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(contentController.getObjects().get(currentDisplayPlugin.displayType()));
+            currentDisplayPlugin.refresh(content.getObjects().get(currentDisplayPlugin.displayType()));
             refreshComplexPlugins();
         }
 
@@ -134,7 +136,7 @@ public class GUI extends Application{
                 .collect(Collectors.toList());
         overviewController.updateTree(); //makes the tree //todo!
         if(currentDisplayPlugin != null) {
-            currentDisplayPlugin.refresh(contentController.getObjects().get(currentDisplayPlugin.displayType())); //shows current object
+            currentDisplayPlugin.refresh(content.getObjects().get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
         }
         /* selected the right treeViewObject **/
@@ -155,9 +157,9 @@ public class GUI extends Application{
                 TreeItem<String> root = s.get();
                 Optional<TreeItem<String>> selected = root.getChildren().stream()
                         .reduce((x, y) -> {
-                            if (x != null && x.getValue().equals(((Storable) contentController.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                            if (x != null && x.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
                                 return x;
-                            } else if (y != null && y.getValue().equals(((Storable) contentController.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                            } else if (y != null && y.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
                                 return y;
                             } else {
                                 return null;
@@ -180,8 +182,8 @@ public class GUI extends Application{
      */
     public void addToStore(Storable storable, Class clazz, String name) {
         Storable storable1 = storable.otherName(name);
-        contentController.getStore().putIfAbsent(clazz, new HashMap<>());
-        contentController.getStore().get(clazz).put(name, storable1);
+        content.getStore().putIfAbsent(clazz, new HashMap<>());
+        content.getStore().get(clazz).put(name, storable1);
         refresh();
     }
 
@@ -192,14 +194,14 @@ public class GUI extends Application{
     public void switchStorable(TreeItem<String> selectedItem) {
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
-        Class parentClass = contentController.getLookUpTable().get(parent);
+        Class parentClass = content.getLookUpTable().get(parent);
 
 
         // now we can get the matching storable object
-        Storable selectedStorable = contentController.getStore().get(parentClass).get(selectedItem.getValue());
+        Storable selectedStorable = content.getStore().get(parentClass).get(selectedItem.getValue());
         // put it as the current grammar/automaton/..
 
-        contentController.getObjects().put(parentClass, selectedStorable);
+        content.getObjects().put(parentClass, selectedStorable);
         switchDisplayGui(parentClass);
         refresh(selectedStorable);
     }
@@ -215,7 +217,7 @@ public class GUI extends Application{
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
-            Tab current = plugin.getAsTab(contentController.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
+            Tab current = plugin.getAsTab(content.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
             if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
                 current.setStyle("-fx-background-color: aqua;");
             } else {
@@ -232,8 +234,9 @@ public class GUI extends Application{
      */
     @Override
     public void start(Stage stage) {
-        this.contentController = new ContentController();
-        this.cli=new CLI(this,contentController);
+        this.content = new Content();
+        this.stateController = new StateController(content);
+        this.cli=new CLI(this, content,stateController);
         //Prevent the JavaFX-Application Thread from exiting, when the window is closed.
         Platform.setImplicitExit(false);
 
@@ -536,7 +539,7 @@ public class GUI extends Application{
         primaryStage.getScene().getStylesheets().add(css);
     }
 
-    public ContentController getContentController() {
-        return contentController;
+    public Content getContent() {
+        return content;
     }
 }

@@ -1,9 +1,5 @@
 package Main;
 
-import AutomatonSimulator.Automaton;
-import GrammarSimulator.Grammar;
-import PushDownAutomatonSimulator.PushDownAutomaton;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,39 +8,16 @@ import java.util.HashMap;
 
 /**
  * @author Isabel
- * @since 30.01.2017
+ * @since 31.01.2017
  */
-public class ContentController {
-
-    /**
-     * Contains all loaded objects (Automaton, Grammars, etc.).
-     * The class-type of the object is mapped to an instance of it.
-     */
-    public final HashMap<Class, Storable> objects = new HashMap<>();
-
-    /**
-     * Contains all stored (saved) objects (Automaton, Grammars, etc.).
-     * The class-type of the object is mapped to a hashmap.
-     * In this map names are mapped to instances of the class
-     */
-    public final HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
-
-    /**
-     * Contains the different types of storable objects (Automaton, Grammar, etc.).
-     * Maps the name of the class to the class.
-     * If you want to add new types of storable objects to the application, you need
-     * to add an entry to this hashmap.
-     */
-    public final HashMap<String,Class> lookUpTable =new HashMap<>();
-    public ContentController() {
-
-        lookUpTable.put("grammar", Grammar.class);
-        lookUpTable.put("automaton", Automaton.class);
-        lookUpTable.put("pda", PushDownAutomaton.class);
-        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
+public class StateController {
+    
+    Content content;
+    public StateController(Content content) {
+        this.content=content;
     }
 
-    public void restore_workspace() {
+    public void init() {
         if(new File("config").exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader("config"));
@@ -52,12 +25,12 @@ public class ContentController {
                 reader.close();
                 File ret = new File(path);
 
-                store.clear();
+                content.getStore().clear();
                 File[] directoryListing = ret.listFiles();
                 if (directoryListing != null) {
                     for (File child : directoryListing) {
                         // get the class belonging to that directory
-                        Class clazz = lookUpTable.get(child.getName().toLowerCase());
+                        Class clazz = content.getLookUpTable().get(child.getName().toLowerCase());
                         try {
                             // a instance of this class to parse the saved storable
                             Storable storable = (Storable) clazz.newInstance();
@@ -69,17 +42,17 @@ public class ContentController {
                                     Storable restored = storable.restoreFromFile(file);
 
                                     // store it in the store
-                                    HashMap<String, Storable> correctMap = store.get(clazz);
+                                    HashMap<String, Storable> correctMap = content.getStore().get(clazz);
                                     String i = restored.getName();
                                     if (correctMap == null) {
                                         HashMap<String, Storable> tmp = new HashMap<>();
                                         tmp.put(i, restored);
-                                        store.put(clazz, tmp);
-                                        objects.putIfAbsent(clazz, restored);
+                                        content.getStore().put(clazz, tmp);
+                                        content.getObjects().putIfAbsent(clazz, restored);
                                     } else {
                                         correctMap.put(i, restored);
-                                        objects.putIfAbsent(clazz, restored);
-                                        //    store.get(clazz).put(i, toBeStored);
+                                        content.getObjects().putIfAbsent(clazz, restored);
+                                        //    content.getStore().get(clazz).put(i, toBeStored);
                                     }
                                 }
                             }
@@ -105,7 +78,7 @@ public class ContentController {
      * saves the current workspace
      */
 
-    public void save_workspace() {
+    public void exit() {
         if(new File("config").exists()) {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader("config"));
@@ -116,13 +89,13 @@ public class ContentController {
                 reader.close();
                 File workspace= new File(path);
                 workspace.mkdir();
-                store.keySet().forEach(key -> {
-                    if (!store.get(key).isEmpty()) {
+                content.getStore().keySet().forEach(key -> {
+                    if (!content.getStore().get(key).isEmpty()) {
                         File subDir = new File(path + key.getSimpleName());
                         if (!subDir.exists()) {
                             subDir.mkdir();
                         }
-                        store.get(key).values().forEach(storable -> {
+                        content.getStore().get(key).values().forEach(storable -> {
                             String name = storable.getName();
                             storable.printToSave(path + key.getSimpleName() + "/" + name);
                         });
@@ -154,17 +127,5 @@ public class ContentController {
             }
         }
         return check & file.delete();
-    }
-
-    public HashMap<String, Class> getLookUpTable() {
-        return lookUpTable;
-    }
-
-    public HashMap<Class, Storable> getObjects() {
-        return objects;
-    }
-
-    public HashMap<Class, HashMap<String, Storable>> getStore() {
-        return store;
     }
 }

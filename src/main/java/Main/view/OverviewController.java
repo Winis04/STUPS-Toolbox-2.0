@@ -3,7 +3,6 @@ package Main.view;
 
 
 import GUIPlugins.SimpleFunctionPlugins.SimpleFunctionPlugin;
-import Main.CLI;
 import Main.GUI;
 import Main.Storable;
 import Print.PrintMode;
@@ -18,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -72,17 +70,17 @@ public class OverviewController {
     }
 
     public void updateTree() {
-        if(gui.getContentController().getStore() == null) {
+        if(gui.getContent().getStore() == null) {
             //
         }
-        if(gui.getContentController().getStore().isEmpty()) {
+        if(gui.getContent().getStore().isEmpty()) {
 
         }
         treeView.getRoot().getChildren().forEach(top -> top.getChildren().clear());
         treeView.getRoot().getChildren()
                 .forEach(top -> {
-                    Class clazz = gui.getContentController().getLookUpTable().get(top.getValue().toLowerCase());
-                    HashMap<String, Storable> map = gui.getContentController().getStore().get(clazz);
+                    Class clazz = gui.getContent().getLookUpTable().get(top.getValue().toLowerCase());
+                    HashMap<String, Storable> map = gui.getContent().getStore().get(clazz);
                     if(map != null && !map.isEmpty()) {
                         map.keySet().forEach(key -> {
                             TreeItem<String> child = new TreeItem<String>(key);
@@ -95,10 +93,10 @@ public class OverviewController {
     public void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
 
-        gui.getContentController().getLookUpTable().keySet().stream().filter(s -> !s.equals("pda"))
+        gui.getContent().getLookUpTable().keySet().stream().filter(s -> !s.equals("pda"))
                 .sorted()
                 .forEach(type -> {
-                    Class clazz = gui.getContentController().getLookUpTable().get(type);
+                    Class clazz = gui.getContent().getLookUpTable().get(type);
                     TreeItem<String> top = new TreeItem<String>(clazz.getSimpleName());
                     top.setExpanded(true);
                     root.getChildren().add(top);
@@ -143,7 +141,7 @@ public class OverviewController {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
-        return gui.getContentController().getLookUpTable().get(parent);
+        return gui.getContent().getLookUpTable().get(parent);
 
     }
 
