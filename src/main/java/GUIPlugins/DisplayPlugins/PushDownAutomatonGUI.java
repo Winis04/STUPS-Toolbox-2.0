@@ -80,7 +80,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             for(int r=0;r<half;r++) {
                 if(c*half+r<ruleNumber) {
                     PDARule rule = pda.getRules().get(c * half + r);
-                    Button cellLabel = new Button(rule.asString());
+                    Button cellLabel = new Button(rule.asString(true));
                     cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                  //   cellLabel.setDisable(true);
                     cellLabel.setOnMouseClicked(event -> {
@@ -173,7 +173,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
         Dialog<PDARule> dialog = new Dialog<>();
-        dialog.setTitle("edit rule "+ oldRule.asString());
+        dialog.setTitle("edit rule "+ oldRule.asString(true));
         dialog.setHeaderText("enter the information for the new rule");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
         FlowPane flowPane = new FlowPane();

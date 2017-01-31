@@ -95,13 +95,25 @@ public class PDARule implements Printable{
         Printer.print(this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""))+"\n",writer);
     }
 
-    public String asString() {
-        String s=this.getComingFrom().getName();
-        s+=" "+this.getReadIn().getName();
-        s+=" "+this.getOldToS().getName();
-        s+=" \u2192";
-        s+=" "+this.getGoingTo().getName();
-        s+=" "+this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""));
+    public String asString(boolean onGUI) {
+        String s="";
+        if(onGUI) {
+            s += this.getComingFrom().getName();
+            s += " " + this.getReadIn().getDisplayName();
+            s+=" "+this.getOldToS().getDisplayName();
+            s+=" \u2192";
+            s+=" "+this.getGoingTo().getName();
+            s+=" "+this.getNewToS().stream().map(StackLetter::getDisplayName).collect(Collectors.joining(""));
+        } else {
+            s += this.getComingFrom().getName();
+            s += " " + this.getReadIn().getName();
+            s+=" "+this.getOldToS().getName();
+            s+=" \u2192";
+            s+=" "+this.getGoingTo().getName();
+            s+=" "+this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""));
+        }
+
+
         return s;
     }
 
