@@ -1,10 +1,10 @@
 package Main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * @author Isabel
@@ -13,64 +13,108 @@ import java.util.HashMap;
 public class StateController {
     
     Content content;
+
+    private String path_to_workspace;
+    private String path_to_stylesheet;
     public StateController(Content content) {
         this.content=content;
     }
 
-    public void init() {
-        if(new File("config").exists()) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader("config"));
-                String path=reader.readLine();
-                reader.close();
-                File ret = new File(path);
+    public void initWorkspace() {
+        File ret = new File(path_to_workspace);
 
-                content.getStore().clear();
-                File[] directoryListing = ret.listFiles();
-                if (directoryListing != null) {
-                    for (File child : directoryListing) {
-                        // get the class belonging to that directory
-                        Class clazz = content.getLookUpTable().get(child.getName().toLowerCase());
-                        try {
-                            // a instance of this class to parse the saved storable
-                            Storable storable = (Storable) clazz.newInstance();
-                            // go through every file in the directory
-                            File[] files = child.listFiles();
-                            if(files != null) {
-                                for (File file : files) {
-                                    // the parsed object
-                                    Storable restored = storable.restoreFromFile(file);
+        content.getStore().clear();
+        File[] directoryListing = ret.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                // get the class belonging to that directory
+                Class clazz = content.getLookUpTable().get(child.getName().toLowerCase());
+                try {
+                    // a instance of this class to parse the saved storable
+                    Storable storable = (Storable) clazz.newInstance();
+                    // go through every file in the directory
+                    File[] files = child.listFiles();
+                    if(files != null) {
+                        for (File file : files) {
+                            // the parsed object
+                            Storable restored = storable.restoreFromFile(file);
 
-                                    // store it in the store
-                                    HashMap<String, Storable> correctMap = content.getStore().get(clazz);
-                                    String i = restored.getName();
-                                    if (correctMap == null) {
-                                        HashMap<String, Storable> tmp = new HashMap<>();
-                                        tmp.put(i, restored);
-                                        content.getStore().put(clazz, tmp);
-                                        content.getObjects().putIfAbsent(clazz, restored);
-                                    } else {
-                                        correctMap.put(i, restored);
-                                        content.getObjects().putIfAbsent(clazz, restored);
-                                        //    content.getStore().get(clazz).put(i, toBeStored);
-                                    }
-                                }
+                            // store it in the store
+                            HashMap<String, Storable> correctMap = content.getStore().get(clazz);
+                            String i = restored.getName();
+                            if (correctMap == null) {
+                                HashMap<String, Storable> tmp = new HashMap<>();
+                                tmp.put(i, restored);
+                                content.getStore().put(clazz, tmp);
+                                content.getObjects().putIfAbsent(clazz, restored);
+                            } else {
+                                correctMap.put(i, restored);
+                                content.getObjects().putIfAbsent(clazz, restored);
+                                //    content.getStore().get(clazz).put(i, toBeStored);
                             }
-                        } catch (InstantiationException | IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
-                            e.printStackTrace();
-
-                            File ptw = new File("path_to_workspace");
-                            ptw.delete();
                         }
                     }
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
+                    e.printStackTrace();
+
+                    File ptw = new File("path_to_workspace");
+                    ptw.delete();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
+    }
+
+    public void exitWorkspace() {
+        deleteDirectory(new File(path_to_workspace));
+
+        File workspace= new File(path_to_workspace);
+        workspace.mkdir();
+        content.getStore().keySet().forEach(key -> {
+            if (!content.getStore().get(key).isEmpty()) {
+                File subDir = new File(path_to_workspace + key.getSimpleName());
+                if (!subDir.exists()) {
+                    subDir.mkdir();
+                }
+                content.getStore().get(key).values().forEach(storable -> {
+                    String name = storable.getName();
+                    storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
+                });
+            }
+        });
+
+    }
+    public void init() {
+        path_to_stylesheet = "/blue.css";
+        path_to_workspace = "workspace";
+        String fileName = "config";
+
+        //read file into stream, try-with-resources
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+
+            stream.forEach(line -> {
+                String[] parts = line.replaceAll(" ","").split("=");
+                //check if parts.length==2
+                switch(parts[0]) {
+                    case "WORKSPACE":
+                        path_to_workspace = parts[1];
+                        break;
+                    case "STYLESHEET":
+                        path_to_stylesheet = parts[1];
+                        break;
+                }
+            });
+
+            initWorkspace();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
     }
 
@@ -79,36 +123,15 @@ public class StateController {
      */
 
     public void exit() {
-        if(new File("config").exists()) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader("config"));
-                String ground = reader.readLine();
-                String path = ground+"/";
-                // String path_tmp =  ground+ "_tmp/";
-                deleteDirectory(new File(path));
-                reader.close();
-                File workspace= new File(path);
-                workspace.mkdir();
-                content.getStore().keySet().forEach(key -> {
-                    if (!content.getStore().get(key).isEmpty()) {
-                        File subDir = new File(path + key.getSimpleName());
-                        if (!subDir.exists()) {
-                            subDir.mkdir();
-                        }
-                        content.getStore().get(key).values().forEach(storable -> {
-                            String name = storable.getName();
-                            storable.printToSave(path + key.getSimpleName() + "/" + name);
-                        });
-                    }
-                });
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
+            writer.write("WORKSPACE = "+path_to_workspace+"\n");
+            writer.write("STYLESHEET = "+path_to_stylesheet+"\n");
+            writer.close();
 
-
-            } catch (IOException io) {
-                io.printStackTrace();
-            }
-
-
-
+            exitWorkspace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

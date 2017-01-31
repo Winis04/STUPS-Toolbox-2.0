@@ -43,7 +43,7 @@ public class Content {
         lookUpTable.put("pda", PushDownAutomaton.class);
         lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
     }
-    
+
 
     public HashMap<String, Class> getLookUpTable() {
         return lookUpTable;
