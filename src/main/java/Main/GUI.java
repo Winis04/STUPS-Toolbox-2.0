@@ -133,39 +133,41 @@ public class GUI extends Application{
         Collection<SimpleFunctionPlugin> list=simpleFunctionPlugins.values().stream()
                 .sorted((x,y) -> x.compareTo(y))
                 .collect(Collectors.toList());
-        overviewController.updateTree(); //makes the tree //todo!
+        overviewController.updateTree(); //makes the tree
+
         if(currentDisplayPlugin != null) {
             currentDisplayPlugin.refresh(content.getObjects().get(currentDisplayPlugin.displayType())); //shows current object
             refreshComplexPlugins(); //refreshes the complex plugins
-        }
-        /* selected the right treeViewObject **/
-        if(overviewController.getTreeView().getRoot() != null && !overviewController.getTreeView().getRoot().getChildren().isEmpty()) {
-            Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
-                    .stream()
-                    .reduce((x, y) -> {
-                        if (x != null && x.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
-                            return x;
-                        } else if (y != null && y.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
-                            return y;
-                        } else {
-                            return null;
-                        }
-                    });
 
-            if (s.isPresent()) {
-                TreeItem<String> root = s.get();
-                Optional<TreeItem<String>> selected = root.getChildren().stream()
+        /* selected the right treeViewObject **/
+            if (overviewController.getTreeView().getRoot() != null && !overviewController.getTreeView().getRoot().getChildren().isEmpty()) {
+                Optional<TreeItem<String>> s = overviewController.getTreeView().getRoot().getChildren()
+                        .stream()
                         .reduce((x, y) -> {
-                            if (x != null && x.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                            if (x != null && x.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                                 return x;
-                            } else if (y != null && y.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                            } else if (y != null && y.getValue().equals(currentDisplayPlugin.displayType().getSimpleName())) {
                                 return y;
                             } else {
                                 return null;
                             }
                         });
-                if (selected.isPresent()) {
-                    overviewController.getTreeView().getSelectionModel().select(selected.get());
+
+                if (s.isPresent()) {
+                    TreeItem<String> root = s.get();
+                    Optional<TreeItem<String>> selected = root.getChildren().stream()
+                            .reduce((x, y) -> {
+                                if (x != null && x.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                                    return x;
+                                } else if (y != null && y.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                                    return y;
+                                } else {
+                                    return null;
+                                }
+                            });
+                    if (selected.isPresent()) {
+                        overviewController.getTreeView().getSelectionModel().select(selected.get());
+                    }
                 }
             }
         }
@@ -546,5 +548,9 @@ public class GUI extends Application{
 
     public Content getContent() {
         return content;
+    }
+
+    public StateController getStateController() {
+        return stateController;
     }
 }

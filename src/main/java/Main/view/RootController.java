@@ -13,6 +13,7 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -302,7 +303,24 @@ public class RootController {
 
     @FXML
     public void switchWorkspace() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setInitialDirectory(new File(gui.getStateController().getPath_to_workspace()));
+        chooser.setTitle("Choose new workspace");
+        File dir = chooser.showDialog(gui.getPrimaryStage());
+        if(dir == null) {
 
+        } else {
+            gui.getStateController().exitWorkspace();
+            String path = dir.getAbsolutePath();
+            if(path.endsWith("/") || (path.endsWith("\\"))) {
+
+            } else {
+                path += "/";
+            }
+            gui.getStateController().setPath_to_workspace(dir.getAbsolutePath());
+            gui.getStateController().initWorkspace();
+            gui.refresh();
+        }
 
 
     }

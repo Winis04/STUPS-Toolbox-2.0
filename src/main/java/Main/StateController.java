@@ -38,6 +38,11 @@ public class StateController {
                 switch(parts[0]) {
                     case "WORKSPACE":
                         path_to_workspace = parts[1];
+                        if(path_to_workspace.endsWith("/") || path_to_workspace.endsWith("\\")) {
+
+                        } else {
+                            path_to_workspace += "\\";
+                        }
                         break;
                     case "STYLESHEET":
                         path_to_stylesheet = parts[1];
@@ -78,7 +83,7 @@ public class StateController {
 
 
     }
-    private void initWorkspace() {
+    public void initWorkspace() {
         File ret = new File(path_to_workspace);
 
         content.getStore().clear();
@@ -163,5 +168,13 @@ public class StateController {
 
     public void setPathToStyleSheet(String path, boolean isExternal) {
         this.path_to_stylesheet = path;
+    }
+
+    public void setPath_to_workspace(String path_to_workspace) {
+        this.path_to_workspace = path_to_workspace;
+    }
+
+    public String getPath_to_workspace() {
+        return path_to_workspace;
     }
 }

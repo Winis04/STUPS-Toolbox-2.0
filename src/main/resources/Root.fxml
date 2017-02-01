@@ -10,58 +10,54 @@
        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
               <items>
+               <MenuItem mnemonicParsing="false" onAction="#switchWorkspace" text="Switch Workspace" />
                   <Menu fx:id="Export" mnemonicParsing="false" text="Export">
                       <items>
                           <Menu mnemonicParsing="false" text="Save">
                               <items>
                                   <Menu mnemonicParsing="false" text="Automaton">
                                       <items>
-                                          <MenuItem mnemonicParsing="false" onAction="#toGraphViz" text="as .dot"/>
-                                          <MenuItem mnemonicParsing="false" onAction="#saveCurrentAutomaton"
-                                                    text="in file"/>
+                                          <MenuItem mnemonicParsing="false" onAction="#toGraphViz" text="as .dot" />
+                                          <MenuItem mnemonicParsing="false" onAction="#saveCurrentAutomaton" text="in file" />
                                       </items>
                                   </Menu>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar"/>
-                                  <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton"
-                                            text="PushDownAutomaton"/>
+                                  <MenuItem mnemonicParsing="false" onAction="#saveCurrentGrammar" text="Grammar" />
+                                  <MenuItem mnemonicParsing="false" onAction="#saveCurrentPushDownAutomaton" text="PushDownAutomaton" />
                               </items>
                           </Menu>
                           <Menu mnemonicParsing="false" text="Latex">
                               <items>
-                                  <MenuItem fx:id="latexModeOn" mnemonicParsing="false" onAction="#latexModeOn"
-                                            text="Start Latex Export"/>
-                                  <MenuItem fx:id="latexModeOff" disable="true" mnemonicParsing="false"
-                                            onAction="#latexModeOff" text="End Latex"/>
+                                  <MenuItem fx:id="latexModeOn" mnemonicParsing="false" onAction="#latexModeOn" text="Start Latex Export" />
+                                  <MenuItem fx:id="latexModeOff" disable="true" mnemonicParsing="false" onAction="#latexModeOff" text="End Latex" />
                               </items>
                           </Menu>
                       </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="New">
                       <items>
-                          <MenuItem mnemonicParsing="false" onAction="#newGrammar" text="Grammar"/>
-                          <MenuItem mnemonicParsing="false" onAction="#newAutomaton" text="Automaton"/>
-                          <MenuItem mnemonicParsing="false" onAction="#newPDA" text="PushDownAutomaton"/>
+                          <MenuItem mnemonicParsing="false" onAction="#newGrammar" text="Grammar" />
+                          <MenuItem mnemonicParsing="false" onAction="#newAutomaton" text="Automaton" />
+                          <MenuItem mnemonicParsing="false" onAction="#newPDA" text="PushDownAutomaton" />
                       </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Open">
                       <items>
-                          <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar"/>
-                          <MenuItem mnemonicParsing="false" onAction="#loadAutomaton" text="Automaton"/>
-                          <MenuItem mnemonicParsing="false" onAction="#loadPushDownAutomaton"
-                                    text="PushDownAutomaton"/>
+                          <MenuItem mnemonicParsing="false" onAction="#loadGrammar" text="Grammar" />
+                          <MenuItem mnemonicParsing="false" onAction="#loadAutomaton" text="Automaton" />
+                          <MenuItem mnemonicParsing="false" onAction="#loadPushDownAutomaton" text="PushDownAutomaton" />
                       </items>
                   </Menu>
               </items>
            </Menu>
            <Menu mnemonicParsing="false" text="View">
                <items>
-                   <MenuItem mnemonicParsing="false" onAction="#changeNullSymbol" text="change Nullsymbol"/>
-                   <MenuItem mnemonicParsing="false" onAction="#changeStyle" text="change style"/>
+                   <MenuItem mnemonicParsing="false" onAction="#changeNullSymbol" text="change Nullsymbol" />
+                   <MenuItem mnemonicParsing="false" onAction="#changeStyle" text="change style" />
                </items>
            </Menu>
            <Menu fx:id="Help" mnemonicParsing="false" text="Help">
                <items>
-                   <MenuItem mnemonicParsing="false" onAction="#about" text="About"/>
+                   <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
                </items>
            </Menu>
        </MenuBar>
