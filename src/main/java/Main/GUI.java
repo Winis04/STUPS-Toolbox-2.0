@@ -100,7 +100,11 @@ public class GUI extends Application{
      * @param args This program doesn't take any arguments, so this array will just be ignored
      */
     public static void main(String[] args) {
-        launch();
+        if(args.length==0) {
+            launch();
+        } else {
+            System.exit(0);
+        }
     }
 
     private CLI cli;

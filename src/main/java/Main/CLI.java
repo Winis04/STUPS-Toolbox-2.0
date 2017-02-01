@@ -1,19 +1,22 @@
 package Main;
 
-import AutomatonSimulator.State;
 import CLIPlugins.CLIPlugin;
 import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
+
 import org.reflections.Reflections;
 
-import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
+import jline.TerminalFactory;
+import jline.console.ConsoleReader;
+
+
 
 /**
  * One of the two main classes of the application. Is used as a console and executes the commands the user types into
@@ -299,6 +302,7 @@ public class CLI {
                 e.printStackTrace();
             }
         });
+        
 
         //Enter an endless loop and listen for user input.
         while(true) {
@@ -315,10 +319,8 @@ public class CLI {
             System.out.print(">");
             try {
 
-
                 //Read user input from stdin and tokenize it into a command and parameters.
                 BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
-
 
 
                 input = inputReader.readLine();
@@ -326,6 +328,7 @@ public class CLI {
                 if(inputTokenizer.hasMoreElements()) {
                     command = inputTokenizer.nextToken();
                 }
+
                 parameters = new String[inputTokenizer.countTokens()];
                 for (int i = 0; inputTokenizer.hasMoreElements(); i++) {
                     parameters[i] = inputTokenizer.nextToken();
