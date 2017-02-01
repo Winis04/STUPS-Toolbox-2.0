@@ -3,6 +3,7 @@ package Main;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -34,22 +35,21 @@ public class StateController {
 
             stream.forEach(line -> {
                 String[] parts = line.replaceAll(" ","").split("=");
-                //check if parts.length==2
-                switch(parts[0]) {
-                    case "WORKSPACE":
-                        path_to_workspace = parts[1];
-                        if(path_to_workspace.endsWith("/") || path_to_workspace.endsWith("\\")) {
-
-                        } else {
-                            path_to_workspace += "\\";
-                        }
-                        break;
-                    case "STYLESHEET":
-                        path_to_stylesheet = parts[1];
-                        break;
+                if(parts.length==2) {
+                    switch (parts[0]) {
+                        case "WORKSPACE":
+                            path_to_workspace = parts[1];
+                            if (!path_to_workspace.endsWith("/") && !path_to_workspace.endsWith("\\")) {
+                                path_to_workspace += "/";
+                            }
+                            break;
+                        case "STYLESHEET":
+                            path_to_stylesheet = parts[1];
+                            break;
+                    }
                 }
             });
-
+            initContent();
             initWorkspace();
             initStyle();
 
@@ -58,6 +58,9 @@ public class StateController {
         }
     }
 
+    private void initContent() {
+        content.init();
+    }
 
 
     /**
@@ -86,46 +89,55 @@ public class StateController {
     public void initWorkspace() {
         File ret = new File(path_to_workspace);
 
-        content.getStore().clear();
+        if(gui.getCurrentDisplayPlugin() != null) {
+            gui.getFunctionsPane().setCenter(gui.getCurrentDisplayPlugin().clear());
+        }
+        content.getLookUpTable().values().forEach(clazz -> content.getStore().get(clazz).clear());
         File[] directoryListing = ret.listFiles();
-        if (directoryListing != null) {
-            for (File child : directoryListing) {
-                // get the class belonging to that directory
-                Class clazz = content.getLookUpTable().get(child.getName().toLowerCase());
-                try {
-                    // a instance of this class to parse the saved storable
-                    Storable storable = (Storable) clazz.newInstance();
-                    // go through every file in the directory
-                    File[] files = child.listFiles();
-                    if(files != null) {
-                        for (File file : files) {
-                            // the parsed object
-                            Storable restored = storable.restoreFromFile(file);
+        if(directoryListing != null) {
+            if (Arrays.stream(directoryListing).allMatch(x -> content.getLookUpTable().keySet().contains(x.getName().toLowerCase()))) {
+                for (File child : directoryListing) {
 
-                            // store it in the store
-                            HashMap<String, Storable> correctMap = content.getStore().get(clazz);
-                            String i = restored.getName();
-                            if (correctMap == null) {
-                                HashMap<String, Storable> tmp = new HashMap<>();
-                                tmp.put(i, restored);
-                                content.getStore().put(clazz, tmp);
-                                content.getObjects().putIfAbsent(clazz, restored);
-                            } else {
-                                correctMap.put(i, restored);
-                                content.getObjects().putIfAbsent(clazz, restored);
-                                //    content.getStore().get(clazz).put(i, toBeStored);
+
+                    // get the class belonging to that directory
+                    Class clazz = content.getLookUpTable().get(child.getName().toLowerCase());
+                    try {
+                        // a instance of this class to parse the saved storable
+                        Storable storable = (Storable) clazz.newInstance();
+                        // go through every file in the directory
+                        File[] files = child.listFiles();
+                        if (files != null) {
+                            for (File file : files) {
+                                // the parsed object
+                                Storable restored = storable.restoreFromFile(file);
+
+                                // store it in the store
+                                HashMap<String, Storable> correctMap = content.getStore().get(clazz);
+                                String i = restored.getName();
+                                if (correctMap == null) {
+                                    HashMap<String, Storable> tmp = new HashMap<>();
+                                    tmp.put(i, restored);
+                                    content.getStore().put(clazz, tmp);
+                                    content.getObjects().putIfAbsent(clazz, restored);
+                                } else {
+                                    correctMap.put(i, restored);
+                                    content.getObjects().putIfAbsent(clazz, restored);
+                                    //    content.getStore().get(clazz).put(i, toBeStored);
+                                }
                             }
                         }
-                    }
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    System.err.println("error while restoring the workspace. A " +child.getName()+ " is corrupt");
-                    e.printStackTrace();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        System.err.println("error while restoring the workspace. A " + child.getName() + " is corrupt");
+                        e.printStackTrace();
 
-                    File ptw = new File("path_to_workspace");
-                    ptw.delete();
+                        File ptw = new File("path_to_workspace");
+                        ptw.delete();
+                    }
                 }
+            } else {
+                System.out.println("This directory is not a valid workspace!");
             }
         }
     }

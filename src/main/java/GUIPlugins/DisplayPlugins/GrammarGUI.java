@@ -7,6 +7,7 @@ import GrammarSimulator.Grammar;
 import Main.GUI;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Displays {@link Grammar}.
@@ -44,6 +45,10 @@ public class GrammarGUI implements DisplayPlugin {
         return rootPane;
     }
 
+     @Override
+     public Node clear() {
+         return new AnchorPane();
+     }
 
     /**
      * creates a {@link Tab} in which the first and follow sets are printed

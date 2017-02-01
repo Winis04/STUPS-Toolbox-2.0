@@ -23,6 +23,8 @@ public interface DisplayPlugin {
      */
     Node display(Object object);
 
+
+    Node clear();
     /**
      * This method is called by the main program, when the object has changed,
      * so the plugin gets the opportunity to update the view.
@@ -31,6 +33,7 @@ public interface DisplayPlugin {
      * @return Node the Node that contains the object
      */
     Node refresh(Object object);
+
 
     /**
      * This method is called by the main program, when the user desires to create a new object from scratch.

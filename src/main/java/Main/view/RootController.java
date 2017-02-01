@@ -304,7 +304,9 @@ public class RootController {
     @FXML
     public void switchWorkspace() {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setInitialDirectory(new File(gui.getStateController().getPath_to_workspace()));
+        if(new File(gui.getStateController().getPath_to_workspace()).exists()) {
+            chooser.setInitialDirectory(new File(gui.getStateController().getPath_to_workspace()));
+        }
         chooser.setTitle("Choose new workspace");
         File dir = chooser.showDialog(gui.getPrimaryStage());
         if(dir == null) {
@@ -312,12 +314,10 @@ public class RootController {
         } else {
             gui.getStateController().exitWorkspace();
             String path = dir.getAbsolutePath();
-            if(path.endsWith("/") || (path.endsWith("\\"))) {
-
-            } else {
+            if (!path.endsWith("/") && !path.endsWith("\\")) {
                 path += "/";
             }
-            gui.getStateController().setPath_to_workspace(dir.getAbsolutePath());
+            gui.getStateController().setPath_to_workspace(path);
             gui.getStateController().initWorkspace();
             gui.refresh();
         }

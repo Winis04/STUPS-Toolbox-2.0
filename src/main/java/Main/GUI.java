@@ -553,4 +553,8 @@ public class GUI extends Application{
     public StateController getStateController() {
         return stateController;
     }
+
+    public BorderPane getFunctionsPane() {
+        return functionsPane;
+    }
 }

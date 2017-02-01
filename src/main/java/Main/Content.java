@@ -37,11 +37,24 @@ public class Content {
      */
     public final HashMap<String,Class> lookUpTable =new HashMap<>();
     public Content() {
-
         lookUpTable.put("grammar", Grammar.class);
         lookUpTable.put("automaton", Automaton.class);
         lookUpTable.put("pda", PushDownAutomaton.class);
         lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
+
+
+        lookUpTable.values().forEach(clazz -> store.putIfAbsent(clazz, new HashMap<>()));
+
+    }
+
+    public void init() {
+        lookUpTable.put("grammar", Grammar.class);
+        lookUpTable.put("automaton", Automaton.class);
+        lookUpTable.put("pda", PushDownAutomaton.class);
+        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
+
+
+        lookUpTable.values().forEach(clazz -> store.putIfAbsent(clazz, new HashMap<>()));
     }
 
 

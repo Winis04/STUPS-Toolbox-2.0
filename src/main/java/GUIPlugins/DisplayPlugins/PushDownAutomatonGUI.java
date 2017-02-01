@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -45,6 +46,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     public PushDownAutomatonGUI() {
 
     }
+
+    @Override
+    public Node clear() {
+        return new AnchorPane();
+    }
+
     @Override
     public Node display(Object object) {
         CheckStringPDAPlugin.start.setVisible(true);

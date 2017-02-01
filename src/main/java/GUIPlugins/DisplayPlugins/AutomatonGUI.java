@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -139,6 +140,12 @@ public class AutomatonGUI implements DisplayPlugin {
     private CheckBox isMinimalBox;
 
     private GUI gui;
+
+
+    @Override
+    public Node clear() {
+        return new AnchorPane();
+    }
 
     @Override
     public Node display(Object object) {
