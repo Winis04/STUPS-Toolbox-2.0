@@ -8,9 +8,11 @@ import Print.Printer;
 import javafx.application.Platform;
 import org.reflections.Reflections;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -312,8 +314,13 @@ public class CLI {
             command = "";
             System.out.print(">");
             try {
+
+
                 //Read user input from stdin and tokenize it into a command and parameters.
                 BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+
+
+
                 input = inputReader.readLine();
                 StringTokenizer inputTokenizer = new StringTokenizer(input, " ");
                 if(inputTokenizer.hasMoreElements()) {
@@ -357,6 +364,14 @@ public class CLI {
         }
     }
 
+
+    private String startAutoCompletion(String before) {
+        if(before.equals("gu")) {
+            return "gui";
+        } else {
+            return "";
+        }
+    }
    
 
 
