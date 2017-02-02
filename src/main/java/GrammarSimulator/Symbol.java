@@ -14,6 +14,10 @@ public interface Symbol {
      */
     String getName();
 
+    /**
+     * Returen the symbol's name for the screen on the gui
+     * @return the symbol's name
+     */
     String getDisplayName();
 
 }

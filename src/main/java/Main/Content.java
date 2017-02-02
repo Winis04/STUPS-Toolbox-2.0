@@ -21,14 +21,14 @@ public class Content {
      * Contains all loaded objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to an instance of it.
      */
-    public final HashMap<Class, Storable> objects = new HashMap<>();
+    private final HashMap<Class, Storable> objects = new HashMap<>();
 
     /**
      * Contains all stored (saved) objects (Automaton, Grammars, etc.).
      * The class-type of the object is mapped to a hashmap.
      * In this map names are mapped to instances of the class
      */
-    public final HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
+    private final HashMap<Class, HashMap<String, Storable>> store= new HashMap<>();
 
     /**
      * Contains the different types of storable objects (Automaton, Grammar, etc.).
@@ -36,8 +36,8 @@ public class Content {
      * If you want to add new types of storable objects to the application, you need
      * to add an entry to this hashmap.
      */
-    public final HashMap<String,Class> lookUpTable =new HashMap<>();
-    public Content() {
+    private final HashMap<String,Class> lookUpTable =new HashMap<>();
+    Content() {
         lookUpTable.put("grammar", Grammar.class);
         lookUpTable.put("automaton", Automaton.class);
         lookUpTable.put("pda", PushDownAutomaton.class);
@@ -48,7 +48,7 @@ public class Content {
 
     }
 
-    public void init() {
+    void init() {
         lookUpTable.put("grammar", Grammar.class);
         lookUpTable.put("automaton", Automaton.class);
         lookUpTable.put("pda", PushDownAutomaton.class);
@@ -59,14 +59,27 @@ public class Content {
     }
 
 
+    /**
+     * Getter-Method for {@link #lookUpTable}
+     * @return the {@link #lookUpTable}
+     */
     public HashMap<String, Class> getLookUpTable() {
         return lookUpTable;
     }
 
+    /**
+     * Getter-Method for {@link #objects}
+     * @return the {@link #objects}
+     */
     public HashMap<Class, Storable> getObjects() {
         return objects;
     }
 
+
+    /**
+     * Getter-Method for {@link #store}
+     * @return the {@link #store}
+     */
     public HashMap<Class, HashMap<String, Storable>> getStore() {
         return store;
     }
