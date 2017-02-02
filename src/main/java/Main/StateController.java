@@ -32,30 +32,33 @@ public class StateController {
         String fileName = "config";
 
         //read file into stream, try-with-resources
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+        if(new File(fileName).exists()) {
+            try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
-            stream.forEach(line -> {
-                String[] parts = line.replaceAll(" ","").split("=");
-                if(parts.length==2) {
-                    switch (parts[0]) {
-                        case "WORKSPACE":
-                            path_to_workspace = parts[1];
-                            if (!path_to_workspace.endsWith("/") && !path_to_workspace.endsWith("\\")) {
-                                path_to_workspace += "/";
-                            }
-                            break;
-                        case "STYLESHEET":
-                            path_to_stylesheet = parts[1];
-                            break;
+                stream.forEach(line -> {
+                    String[] parts = line.replaceAll(" ", "").split("=");
+                    if (parts.length == 2) {
+                        switch (parts[0]) {
+                            case "WORKSPACE":
+                                path_to_workspace = parts[1];
+                                if (!path_to_workspace.endsWith("/") && !path_to_workspace.endsWith("\\")) {
+                                    path_to_workspace += "/";
+                                }
+                                break;
+                            case "STYLESHEET":
+                                path_to_stylesheet = parts[1];
+                                break;
+                        }
                     }
-                }
-            });
-            initContent();
-            initWorkspace();
-            initStyle();
+                });
 
-        } catch (IOException e) {
-            e.printStackTrace();
+                initContent();
+                initWorkspace();
+                initStyle();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
