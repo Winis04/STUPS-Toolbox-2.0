@@ -63,3 +63,5 @@ de/
 /build
 /lib
 /test
+
+*.odt
