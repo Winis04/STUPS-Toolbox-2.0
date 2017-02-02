@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
+ * This class holds the actual content. Stored Grammars, Automaton, ...
  * @author Isabel
  * @since 30.01.2017
  */

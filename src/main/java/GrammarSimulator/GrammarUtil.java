@@ -322,6 +322,7 @@ public class GrammarUtil {
      * It does the same as {@link #save(Grammar, String)}, but uses System.out instead of a filename for the BufferedWriter.
      *
      * @param grammar The grammar.
+     * @param onGUI true, if the grammar is printed on the GUI
      */
     public static void print(boolean onGUI, Grammar grammar) {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));

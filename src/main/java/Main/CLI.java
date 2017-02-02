@@ -39,6 +39,8 @@ public class CLI {
     /**
      * the constructor. Creates a new instance of cli.
      * @param gui the {@link GUI}
+     * @param content the {@link Content}
+     * @param stateController the {@link StateController}
      */
     public CLI(GUI gui, Content content, StateController stateController) {
         this.content = content;
@@ -302,7 +304,7 @@ public class CLI {
                 e.printStackTrace();
             }
         });
-        
+
 
         //Enter an endless loop and listen for user input.
         while(true) {

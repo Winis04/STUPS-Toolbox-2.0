@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 
 /**
+ * This class manages the state of the application. It initiates the workspace and the design.
  * @author Isabel
  * @since 31.01.2017
  */
