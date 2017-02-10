@@ -1745,12 +1745,16 @@ public class GrammarUtil {
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
 
+
+    public static Grammar simplify(Grammar g) {
+        return removeRedundantNonterminals(g);
+    }
     /**
      * removes redudant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
      * @param g the {@link Grammar}
      * @return
      */
-    public static Grammar removeRedundantNonterminal(Grammar g) {
+    private static Grammar removeRedundantNonterminals(Grammar g) {
         Grammar res = redundantSet(g);
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
 
@@ -1771,6 +1775,7 @@ public class GrammarUtil {
         return g;
     }
 
+
     private static boolean compareRules(Set<Rule> rules, Nonterminal one, Nonterminal two) {
         Set<Rule> rules1 = rules.stream().filter(rule -> rule.getComingFrom().equals(one)).collect(Collectors.toSet());
         Set<Rule> rules2 = rules.stream().filter(rule -> rule.getComingFrom().equals(two))
@@ -1785,6 +1790,8 @@ public class GrammarUtil {
         }
         return check;
     }
+
+
     /**
      * replaces a Nonterminal through another
      * @param g

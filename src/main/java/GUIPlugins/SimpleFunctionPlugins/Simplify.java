@@ -10,7 +10,7 @@ import Print.Printer;
  * @since 03.12.2016
  */
 @SuppressWarnings("ALL")
-public class RemoveRedundant extends SimpleFunctionPlugin {
+public class Simplify extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         if(object == null) {
@@ -19,12 +19,12 @@ public class RemoveRedundant extends SimpleFunctionPlugin {
         }
         Grammar grammar = (Grammar) object;
 
-        return GrammarUtil.removeRedundantNonterminal(grammar);
+        return GrammarUtil.simplify(grammar);
     }
 
     @Override
     public String getName() {
-        return "redundant";
+        return "simplify";
     }
 
     @Override
