@@ -1281,6 +1281,15 @@ public class GrammarUtil {
 
 
     private static Grammar chomskyNormalForm_StepOne(Grammar g, Grammar original) {
+        String nonterminal_prefix = "X_";
+        int numberOfNonterminals = (int) g.getNonterminals().stream().filter(x -> x.getName().startsWith("X")).count();
+        boolean newName = g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getName().startsWith("X_"));
+        if(newName) {
+            for(int i=0;i<numberOfNonterminals;i++) {
+                nonterminal_prefix = "X"+nonterminal_prefix;
+            }
+        }
+        final String name = nonterminal_prefix;
 
         //replace every occurrences of a Terminal through a new Nonterminal
         HashSet<Rule> freshRules = new HashSet<>();
@@ -1289,10 +1298,10 @@ public class GrammarUtil {
                 List<Symbol> list = new ArrayList<>();
                 rule.getRightSide().forEach(sym -> {
                     if (sym instanceof Terminal) {
-                        list.add(new Nonterminal("X_" + sym.getName()));
+                        list.add(new Nonterminal(name + sym.getName()));
                         List<Symbol> tmp = new ArrayList<>();
                         tmp.add(sym);
-                        freshRules.add(new Rule(new Nonterminal("X_" + sym.getName()), tmp));
+                        freshRules.add(new Rule(new Nonterminal(name + sym.getName()), tmp));
                     } else {
                         list.add(sym);
                     }
@@ -1311,6 +1320,15 @@ public class GrammarUtil {
      * @param g the grammar
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
+        String nonterminal_prefix = "P_";
+        int numberOfNonterminals = (int) g.getNonterminals().stream().filter(x -> x.getName().startsWith("P")).count();
+        boolean newName = g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getName().startsWith("P_"));
+        if(newName) {
+            for(int i=0;i<numberOfNonterminals;i++) {
+                nonterminal_prefix = "P"+nonterminal_prefix;
+            }
+        }
+        final String name = nonterminal_prefix;
         //noinspection MismatchedQueryAndUpdateOfCollection
         HashSet<Rule> tmp = new HashSet<>();
         tmp.addAll(g.getRules());
@@ -1322,7 +1340,7 @@ public class GrammarUtil {
                 if(rule.getRightSide().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL)) || rule.getRightSide().size()<=2) {
                     x.add(rule);
                 } else {
-                    Nonterminal mod = new Nonterminal("P_"+ counter[0]++);
+                    Nonterminal mod = new Nonterminal(name+ counter[0]++);
                     Symbol first = rule.getRightSide().get(0);
                     List<Symbol> tmp1 = new ArrayList<>();
                     for(int i = 1; i<rule.getRightSide().size(); i++) {

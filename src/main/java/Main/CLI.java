@@ -5,16 +5,12 @@ import Print.PrintMode;
 import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
-
 import org.reflections.Reflections;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
-import jline.TerminalFactory;
-import jline.console.ConsoleReader;
 
 
 

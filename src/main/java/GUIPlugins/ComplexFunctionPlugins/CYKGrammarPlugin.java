@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import java.util.Arrays;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -46,13 +47,47 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
 
 
         start.setOnAction(event -> {
-            if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            Grammar doCYKWith = grammar;
+            if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("make to CNF?");
+                alert.setHeaderText("This grammar is not in cnf");
+                alert.setContentText("Should the grammar now be converted to CNF?");
+
+                ButtonType yes = new ButtonType("Yes");
+                ButtonType no = new ButtonType("No");
+                ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(yes,no,cancel);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == yes){
+                    Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
+                    Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
+                    Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
+                    doCYKWith = grammar3;
+                    if(doCYKWith != null) {
+                        Class clazz = Grammar.class;
+
+                        GUI.getGUI().getContent().getObjects().put(clazz,doCYKWith); //add new object as the current object
+                        GUI.getGUI().getContent().getStore().get(clazz).put(doCYKWith.getName(),doCYKWith); //add object to the store
+                        GUI.getGUI().refresh(doCYKWith); //switch to new object
+                        GUI.getGUI().refresh(); //refresh the treeView
+
+                    }
+                } else if (result.get() == no) {
+
+                }  else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+            }
+            if(GrammarUtil.isInChomskyNormalForm(doCYKWith)) {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
-                Matrix matrix = GrammarUtil.cyk(grammar, word);
+                Matrix matrix = GrammarUtil.cyk(doCYKWith, word);
                 if(matrix != null) {
                     CLIPlugin cykConsole = new GrammarCYK();
-                    cykConsole.execute(grammar, new String[]{input});
+                    cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();
                     grid.setAlignment(Pos.CENTER);
                     for (int c = 1; c < matrix.getNumberOfColumns(); c++) {
@@ -96,6 +131,9 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                         grammarGUI.getRootPane().getSelectionModel().select(tab);
                     }
                 }
+            } else {
+
+
             }
 
 
