@@ -1745,5 +1745,82 @@ public class GrammarUtil {
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
 
+    /**
+     * removes redudant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
+     * @param g the {@link Grammar}
+     * @return
+     */
+    public static Grammar removeRedundantNonterminal(Grammar g) {
+        Grammar res = redundantSet(g);
+        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
+
+    }
+
+    private static Grammar redundantSet(Grammar g) {
+        Grammar grammar = g;
+        for(Nonterminal nt1 : g.getNonterminals()) {
+            for(Nonterminal nt2 : g.getNonterminals()) {
+                if(!nt1.equals(nt2)) {
+                    boolean check = compareRules(g.getRules(),nt1,nt2);
+                    if(check) {
+                        return redundantSet(replaceNonterminal(grammar,nt1,nt2));
+                    }
+                }
+            }
+        }
+        return g;
+    }
+
+    private static boolean compareRules(Set<Rule> rules, Nonterminal one, Nonterminal two) {
+        Set<Rule> rules1 = rules.stream().filter(rule -> rule.getComingFrom().equals(one)).collect(Collectors.toSet());
+        Set<Rule> rules2 = rules.stream().filter(rule -> rule.getComingFrom().equals(two))
+                .map(rule -> new Rule(one,rule.getRightSide()))
+                .collect(Collectors.toSet());
+        boolean check = true;
+        check &= rules1.size() == rules2.size();
+        if(check) {
+            for(Rule r1 : rules1) {
+                check &= rules2.contains(r1);
+            }
+        }
+        return check;
+    }
+    /**
+     * replaces a Nonterminal through another
+     * @param g
+     * @param old
+     * @param replacedBy
+     * @return
+     */
+    public static Grammar replaceNonterminal(Grammar g, Nonterminal old, Nonterminal replacedBy) {
+        Set<Rule> rules1=g.getRules().stream()
+                .map(rule -> {
+                    if(rule.getComingFrom().equals(old)) {
+                        return new Rule(replacedBy,rule.getRightSide());
+                    } else {
+                        return rule;
+                    }
+                })
+                .map(rule -> {
+                    if(rule.getRightSide().contains(old)) {
+                        List<Symbol> list = rule.getRightSide().stream().map(symbol -> {
+                            if(symbol.equals(old)) {
+                                return replacedBy;
+                            } else {
+                                return symbol;
+                            }
+                        }).collect(Collectors.toList());
+                        return new Rule(rule.getComingFrom(),list);
+                    } else {
+                        return rule;
+                    }
+                }).collect(Collectors.toSet());
+        if(g.getStartSymbol().equals(old)) {
+            return new Grammar(replacedBy, rules1, g.getName(), g);
+        } else {
+            return new Grammar(g.getStartSymbol(), rules1, g.getName(), g);
+        }
+    }
+
 }
 
