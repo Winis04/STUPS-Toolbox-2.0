@@ -170,7 +170,7 @@ public class CLI {
                 System.out.println("'remove' or 'rmv' -- takes "+types+" as first parameter and a name as second. Removes the stored object at this position");
                 System.out.println("'swt' or 'switch' --  takes "+types+" as first parameter and a name as second. Sets the current objects of this type to the object at this position");
                 System.out.println("'show-all' -- takes "+types+" as a parameter. Prints all objects of this kind");
-                System.out.println("'e' or 'exit' -- Leaves the program. Doesn't take any parameters");
+                System.out.println("'e' or 'exit' -- Leaves the program and saved the current workspace. Doesn't take any parameters");
                 System.out.println("'a' or 'about' -- Shows the release information");
                 System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
                 break;
@@ -185,8 +185,8 @@ public class CLI {
                 System.exit(0);
             case "a":
             case "about":
-                System.out.println("STUPS-Toolbox Release 1 (22-09-2016)");
-                System.out.println("Written and developed by Fabian Ruhland.");
+                System.out.println("STUPS-Toolbox Release 2 (20-03-2017)");
+                System.out.println("Written and developed by Fabian Ruhland and Isabel Wingen.");
                 System.out.println("--------------------------------------------");
                 System.out.println("This program uses the JUNG2-library to display automatons.");
                 System.out.println("JUNG2 is licensed under the BSD open-source license.");
