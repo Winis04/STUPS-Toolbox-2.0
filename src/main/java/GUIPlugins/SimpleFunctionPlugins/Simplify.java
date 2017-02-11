@@ -14,8 +14,8 @@ public class Simplify extends SimpleFunctionPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-
-        return GrammarUtil.simplify(grammar);
+        Grammar res = GrammarUtil.simplify(GrammarUtil.removeDeadEnds(GrammarUtil.removeUnreachableNonterminals(grammar)));
+        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),grammar);
     }
 
     @Override

@@ -731,7 +731,7 @@ public class GrammarUtil {
     }
 
 
-    private static Grammar removeUnnecessaryEpsilons(Grammar g, Grammar original) {
+    public static Grammar removeUnnecessaryEpsilons(Grammar g, Grammar original) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
             if (rule.getRightSide().size() != 1) {
@@ -797,7 +797,7 @@ public class GrammarUtil {
 
         Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
         Grammar grammar4;
-        if(GrammarUtil.startSymbolPointsOnLambda(grammar)) { //todo should be language contains lambda
+        if(GrammarUtil.languageContainsLambda(grammar)) { //todo should be language contains lambda
             grammar4=specialRuleForEmptyWord(grammar3,grammar);
         } else {
             grammar4=grammar3;
@@ -821,6 +821,9 @@ public class GrammarUtil {
      * @return the modified grammar, that has no lambda-rules
      */
     public static Grammar removeLambdaRules(Grammar g) {
+        if(GrammarUtil.languageContainsLambda(g)) {
+            //do special Rule for empty word
+        }
         if(GrammarUtil.isLambdaFree(g)) {
             return g;
         } else {
@@ -830,7 +833,7 @@ public class GrammarUtil {
             Grammar grammar1 = removeLambdaRules_StepTwo(g, nullable, g);
             Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
             Grammar grammar3 = removeLambdaRules_StepThree(grammar2,true,g);
-            if(GrammarUtil.startSymbolPointsOnLambda(g)) {
+            if(GrammarUtil.languageContainsLambda(g)) {
                 return specialRuleForEmptyWord(grammar3,g);
             } else {
                 return grammar3;
@@ -1649,7 +1652,7 @@ public class GrammarUtil {
      * @return a grammar, where the special rule vor the empty word has been applied
      */
     private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
-        if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
+        if(GrammarUtil.languageContainsLambda(g)) {
 
             HashSet<Rule> freshRules = new HashSet<>();
             Nonterminal newNonterminal = new Nonterminal("S_0");
@@ -1693,6 +1696,22 @@ public class GrammarUtil {
         return g;
     }
 
+
+    public static Grammar renameNonterminals(Grammar g) {
+        Set<Nonterminal> nts = g.getNonterminals();
+        Grammar res = g;
+        for(Nonterminal nt : nts) {
+            res=replaceNonterminal(res,nt,new Nonterminal(nt.getName()+"_xxxxx"));
+        }
+        int i=0;
+        char a = 'a';
+       nts = res.getNonterminals();
+        for(Nonterminal nt: nts) {
+            res=replaceNonterminal(res,nt,new Nonterminal(Character.toString((char) (65+i))));
+            i++;
+        }
+        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
+    }
     /**
      * checks if the given grammar has unit rules
      * @param g the {@link Grammar}
@@ -1719,14 +1738,11 @@ public class GrammarUtil {
      * @return true, if the grammar is lambda-free
      */
     public static boolean isLambdaFree(Grammar g) {
-        //true, if there is a rule A -> lambda with A != S
+        //true, if there is no rule A -> lambda with A != S
         boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
                 .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
-        //true, if the language contains Lambda (startsymbol is nullable) and the startsymbol points on lambda and the startsymbol is not on any right Side
-        boolean check2 = GrammarUtil.languageContainsLambda(g) && GrammarUtil.startSymbolPointsOnLambda(g) && !GrammarUtil.startSymbolOnRightSide(g);
-        //true, if the language does not contain lambda
-        boolean check3 = !GrammarUtil.languageContainsLambda(g);
-        return check1 && (check2 || check3);
+
+        return check1;
     }
 
     /**
@@ -1752,6 +1768,8 @@ public class GrammarUtil {
     public static Grammar simplify(Grammar g) {
         return removeRedundantNonterminals(g);
     }
+
+
     /**
      * removes redudant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
      * @param g the {@link Grammar}
@@ -1831,9 +1849,24 @@ public class GrammarUtil {
             return new Grammar(g.getStartSymbol(), rules1, g.getName(), g);
         }
     }
+    public static Grammar removeUnreachableNonterminals(Grammar g) {
+        if(hasUnreachableNonterminals(g)) {
+            HashSet<Nonterminal> unreachable = new HashSet<>();
+            g.getNonterminals().stream().filter(nt -> isUnreachable(g,nt)).forEach(unreachable::add);
+            Set<Rule> rules;
+            rules = g.getRules().stream().filter(rule -> !unreachable.contains(rule.getComingFrom())).collect(Collectors.toSet());
+            return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
+        } else {
+            return g;
+        }
+    }
 
     public static boolean hasUnreachableNonterminals(Grammar g) {
        return g.getNonterminals().stream().anyMatch(nt -> g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)));
+    }
+
+    private static boolean isUnreachable(Grammar g, Nonterminal nt) {
+        return g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)) && !nt.equals(g.getStartSymbol());
     }
 
     /**

@@ -11,7 +11,7 @@ public class Dummy_Grammar extends SimpleFunctionPlugin {
     public Storable execute(Object object) {
         if(object != null) {
             Grammar grammar = (Grammar) object;
-            return GrammarUtil.removeDeadEnds(grammar);
+            return GrammarUtil.renameNonterminals(grammar);
         }
         return null;
     }
