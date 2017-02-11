@@ -797,7 +797,7 @@ public class GrammarUtil {
 
         Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
         Grammar grammar4;
-        if(GrammarUtil.startSymbolPointsOnLambda(grammar)) {
+        if(GrammarUtil.startSymbolPointsOnLambda(grammar)) { //todo should be language contains lambda
             grammar4=specialRuleForEmptyWord(grammar3,grammar);
         } else {
             grammar4=grammar3;
@@ -1719,9 +1719,12 @@ public class GrammarUtil {
      * @return true, if the grammar is lambda-free
      */
     public static boolean isLambdaFree(Grammar g) {
+        //true, if there is a rule A -> lambda with A != S
         boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
                 .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
+        //true, if the language contains Lambda (startsymbol is nullable) and the startsymbol points on lambda and the startsymbol is not on any right Side
         boolean check2 = GrammarUtil.languageContainsLambda(g) && GrammarUtil.startSymbolPointsOnLambda(g) && !GrammarUtil.startSymbolOnRightSide(g);
+        //true, if the language does not contain lambda
         boolean check3 = !GrammarUtil.languageContainsLambda(g);
         return check1 && (check2 || check3);
     }
@@ -1829,12 +1832,47 @@ public class GrammarUtil {
         }
     }
 
+    public static boolean hasUnreachableNonterminals(Grammar g) {
+       return g.getNonterminals().stream().anyMatch(nt -> g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)));
+    }
+
+    /**
+     * removes Nonterminals that don't point anywhere
+     * @param g
+     * @return
+     */
+    public static Grammar removeDeadEnds(Grammar g) {
+        Grammar res = g;
+
+       while(hasDeadEnds(res)) {
+           res=removeDeadEnds_helper(res);
+       }
+        return res;
+    }
+
+    /**
+     * checks if a Grammar has Nonterminals which don't point anywhere
+     * @param g
+     * @return
+     */
+    private static boolean hasDeadEnds(Grammar g) {
+        boolean check = g.getRules().stream()
+                .anyMatch(rule -> rule.getRightSide().stream()
+                .filter(sym -> sym instanceof Nonterminal)
+                .anyMatch(sym -> isDead(g, (Nonterminal) sym)));
+        return  check;
+    }
+
+    private static boolean isDead(Grammar g, Nonterminal nt) {
+        boolean check = g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
+        return check;
+    }
     /**
      * removes rules, which contain nonterminal that don't point anywhere
      * @param g
      * @return
      */
-    public static Grammar removeDeadEnds(Grammar g) {
+    private static Grammar removeDeadEnds_helper(Grammar g) {
         HashSet<Rule> rules = new HashSet<>();
         g.getRules().forEach(rule -> {
             if(rule.getRightSide().stream()

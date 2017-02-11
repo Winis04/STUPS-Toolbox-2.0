@@ -244,7 +244,7 @@ public class PushDownAutomatonUtil {
                    }
                }
            }
-           return new Grammar(startSymbol, rules, pda.getName() + "_Grammar", null);
+           return GrammarUtil.removeDeadEnds(new Grammar(startSymbol, rules, pda.getName() + "_Grammar", null));
        } else {
            return null;
        }
