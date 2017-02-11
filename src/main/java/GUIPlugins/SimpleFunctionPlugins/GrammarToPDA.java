@@ -5,11 +5,8 @@ import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 
-/**
- * @author Isabel
- * @since 03.12.2016
- */
-@SuppressWarnings("ALL")
+
+
 public class GrammarToPDA extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

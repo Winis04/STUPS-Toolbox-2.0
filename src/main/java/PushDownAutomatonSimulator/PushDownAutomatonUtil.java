@@ -17,10 +17,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-/**
- * @author Isabel
- * @since 29.10.2016
- */
+
 public class PushDownAutomatonUtil {
 
 

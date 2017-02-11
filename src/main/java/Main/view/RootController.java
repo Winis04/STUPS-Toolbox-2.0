@@ -24,11 +24,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 
-/**
- * @author Isabel
- * @since 28.11.2016
- */
-@SuppressWarnings("ALL")
+
 public class RootController {
 
 

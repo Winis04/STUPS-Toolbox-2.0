@@ -8,8 +8,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Isabel
+
  * @since 27.12.2016
  */
 @SuppressWarnings("ALL")

@@ -7,10 +7,7 @@ import PushDownAutomatonParser.node.*;
 import java.util.*;
 
 
-/**
- * @author Isabel
- * @since 09.12.2016
- */
+
 class Visitor extends DepthFirstAdapter {
     private PushDownAutomaton pushDownAutomaton;
     private State start_state;

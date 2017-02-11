@@ -9,11 +9,7 @@ import java.util.Optional;
 
 import static javafx.scene.control.Alert.AlertType;
 
-/**
- * @author Isabel
- * @since 05.12.2016
- */
-@SuppressWarnings("ALL")
+
 public class Rename extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

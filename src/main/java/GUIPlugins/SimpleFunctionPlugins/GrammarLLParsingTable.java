@@ -4,11 +4,8 @@ import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import Main.Storable;
 
-/**
- * @author Isabel
- * @since 03.12.2016
- */
-@SuppressWarnings("ALL")
+
+
 public class GrammarLLParsingTable extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

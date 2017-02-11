@@ -3,11 +3,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 import Main.Storable;
 import javafx.scene.control.TreeItem;
 
-/**
- * @author Isabel
- * @since 03.12.2016
- */
-@SuppressWarnings("ALL")
+
 public class Remove extends SimpleFunctionPlugin {
 
     @Override

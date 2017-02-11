@@ -11,11 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Isabel
- * @since 29.10.2016
- */
-@SuppressWarnings("ALL")
+
 public class PDARule implements Printable{
     /**
      * the state that rule comes from

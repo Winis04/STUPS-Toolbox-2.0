@@ -3,11 +3,7 @@ package GrammarSimulator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
-/**
- * @author Isabel
- * @since 24.10.2016
- */
-@SuppressWarnings("ALL")
+
 public class Node {
     /**
      * for the deep-search

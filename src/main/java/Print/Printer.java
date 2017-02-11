@@ -12,11 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-/**
- * @author Isabel
- * @since 18.11.2016
- */
-@SuppressWarnings("ALL")
+
 public class Printer {
     /**
      * the print mode

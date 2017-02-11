@@ -20,11 +20,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 
-/**
- * @author Isabel
- * @since 28.11.2016
- */
-@SuppressWarnings("ALL")
+
 public class OverviewController {
     @FXML
     TreeView<String> treeView;

@@ -5,11 +5,6 @@ import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import Print.Printer;
 
-/**
- * @author Isabel
- * @since 03.12.2016
- */
-@SuppressWarnings("ALL")
 public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

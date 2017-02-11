@@ -10,10 +10,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.joining;
 
-/**
- * @author Isabel
- * @since 29.10.2016
- */
+
 public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
