@@ -1829,5 +1829,21 @@ public class GrammarUtil {
         }
     }
 
+    /**
+     * removes rules, which contain nonterminal that don't point anywhere
+     * @param g
+     * @return
+     */
+    public static Grammar removeDeadEnds(Grammar g) {
+        HashSet<Rule> rules = new HashSet<>();
+        g.getRules().forEach(rule -> {
+            if(rule.getRightSide().stream()
+                    .filter(sym -> sym instanceof Nonterminal)
+                    .allMatch(symbol -> g.getRules().stream().filter(r -> r.getComingFrom().equals(symbol)).count()>0)) {
+                rules.add(rule);
+            }
+        });
+        return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
+    }
 }
 

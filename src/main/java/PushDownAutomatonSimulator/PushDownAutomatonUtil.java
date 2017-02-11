@@ -8,6 +8,9 @@ import PushDownAutomatonParser.lexer.LexerException;
 import PushDownAutomatonParser.node.Start;
 import PushDownAutomatonParser.parser.Parser;
 import PushDownAutomatonParser.parser.ParserException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 
 import java.io.*;
 import java.util.*;
@@ -45,7 +48,7 @@ public class PushDownAutomatonUtil {
         return pda;
 
     }
-    public static void save(PushDownAutomaton pda, File file) {
+     public static void save(PushDownAutomaton pda, File file) {
         save(pda,file.getAbsolutePath());
     }
     public static void save(PushDownAutomaton pda, String fileName) {
@@ -110,7 +113,7 @@ public class PushDownAutomatonUtil {
 
                 for(int i=list.size()-1;i>=0;i--) {
                     StackLetter stackLetter = list.get(i);
-                    if(stackLetter != StackLetter.NULLSYMBOL) {
+                    if(!stackLetter.equals(StackLetter.NULLSYMBOL)) {
                         stack.push(stackLetter);
                     }
                 }
@@ -131,7 +134,7 @@ public class PushDownAutomatonUtil {
 
                 for(int i=list.size()-1;i>=0;i--) {
                     StackLetter stackLetter = list.get(i);
-                    if(stackLetter != StackLetter.NULLSYMBOL) {
+                    if(!stackLetter.equals(StackLetter.NULLSYMBOL)) {
 
                         stack.push(stackLetter);
                     }
@@ -151,7 +154,7 @@ public class PushDownAutomatonUtil {
 
         for(int i=list.size()-1;i>=0;i--) {
             StackLetter stackLetter = list.get(i);
-            if(stackLetter != StackLetter.NULLSYMBOL) {
+            if(!stackLetter.equals(StackLetter.NULLSYMBOL)) {
 
                 stack.push(stackLetter);
             }
@@ -170,36 +173,81 @@ public class PushDownAutomatonUtil {
         return new RunThroughInfo(stack,input,currentState,null,pda);
     }
 
-    public static Grammar toGrammar(PushDownAutomaton pda2) {
-       PushDownAutomaton renamed = renameStates(pda2);
-        PushDownAutomaton rulesLengthLesser2 = splitRules(renamed);
-        PushDownAutomaton pda = renameStates(rulesLengthLesser2);
-        int currentIndex=0;
+    public static boolean checkIfLengthLesserThenTwo(PushDownAutomaton pda) {
+        return pda.getRules().stream().allMatch(rule -> rule.getNewToS().size() <= 2);
+    }
+
+    /**
+     * transforms a PDA to a Grammar
+     * @param pda the {@link PushDownAutomaton}
+     * @return a {@link Grammar}
+     */
+    public static Grammar toGrammar(PushDownAutomaton pda) {
+       if(checkIfLengthLesserThenTwo(pda)) {
 
 
-        HashSet<Rule> rules = new HashSet<>();
-        Nonterminal startSymbol = new Nonterminal("S");
-        //Step 1
-        for(State state : pda.getStates()) {
-            String name = toNameOfNonterminal(pda.getStartState(),pda.getInitialStackLetter(),state);
-            ArrayList<Symbol> rightSide = new ArrayList<>();
-            rightSide.add(new Nonterminal(name));
-            rules.add(new Rule(startSymbol, rightSide));
-        }
-        //Step 2
-        List<PDARule> step2 = pda.getRules()
-                .stream()
-                .filter(rule -> rule.getNewToS().size()==1 && rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
-                .collect(toList());
-        for(PDARule pdaRule : step2) {
-            String name = toNameOfNonterminal(pdaRule.getComingFrom(),pdaRule.getOldToS(),pdaRule.getGoingTo());
-            Nonterminal comingFrom = new Nonterminal(name);
-            ArrayList<Symbol> rightSide = new ArrayList<>();
-            rightSide.add(new Terminal(pdaRule.getReadIn().getName()));
-            rules.add(new Rule(comingFrom,rightSide));
-        }
-        return new Grammar(startSymbol,rules,pda.getName()+"_Grammar",null);
 
+           HashSet<Rule> rules = new HashSet<>();
+           Nonterminal startSymbol = new Nonterminal("S");
+           //Step 1
+           for (State state : pda.getStates()) {
+               String name = toNameOfNonterminal(pda.getStartState(), pda.getInitialStackLetter(), state);
+               ArrayList<Symbol> rightSide = new ArrayList<>();
+               rightSide.add(new Nonterminal(name));
+               rules.add(new Rule(startSymbol, rightSide));
+           }
+           //Step 2
+           List<PDARule> step2 = pda.getRules()
+                   .stream()
+                   .filter(rule -> rule.getNewToS().size() == 1 && rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
+                   .collect(toList());
+           for (PDARule pdaRule : step2) {
+               String name = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), pdaRule.getGoingTo());
+               Nonterminal comingFrom = new Nonterminal(name);
+               ArrayList<Symbol> rightSide = new ArrayList<>();
+               rightSide.add(new Terminal(pdaRule.getReadIn().getName()));
+               rules.add(new Rule(comingFrom, rightSide));
+           }
+
+           //Step 3
+           List<PDARule> step3 = pda.getRules()
+                   .stream()
+                   .filter(rule -> rule.getNewToS().size()==1 && !rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
+                   .collect(toList());
+           for(PDARule pdaRule : step3) {
+               for(State z : pda.getStates()) {
+                   String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z);
+                   String nameRight = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z);
+                   ArrayList<Symbol> rightSide = new ArrayList<>();
+                   rightSide.add(0, new Terminal(pdaRule.getReadIn().getName()));
+                   rightSide.add(1, new Nonterminal(nameRight));
+                   rules.add(new Rule(new Nonterminal(nameLeft), rightSide));
+               }
+           }
+
+           //Step 4
+           List<PDARule> step4 = pda.getRules()
+                   .stream()
+                   .filter(rule -> rule.getNewToS().size()==2)
+                   .collect(toList());
+           for(PDARule pdaRule : step4) {
+               for(State z1 : pda.getStates()) {
+                   for(State z2 : pda.getStates()) {
+                       String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z1);
+                       String nameFirst = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z2);
+                        String nameSecond = toNameOfNonterminal(z2,pdaRule.getNewToS().get(1),z1);
+                       ArrayList<Symbol> rightSide = new ArrayList<>();
+                       rightSide.add(0,new Terminal(pdaRule.getReadIn().getName()));
+                       rightSide.add(1,new Nonterminal(nameFirst));
+                       rightSide.add(2,new Nonterminal(nameSecond));
+                       rules.add(new Rule(new Nonterminal(nameLeft),rightSide));
+                   }
+               }
+           }
+           return new Grammar(startSymbol, rules, pda.getName() + "_Grammar", null);
+       } else {
+           return null;
+       }
     }
 
     private static String toNameOfNonterminal(State z, StackLetter A, State x) {
@@ -212,7 +260,7 @@ public class PushDownAutomatonUtil {
         int j=0;
         for(PDARule rule : old) {
             Set<PDARule> tmpSet = splitRule(rule,j);
-            j=tmpSet.size()-1;
+            j+=tmpSet.size()-1;
             res.addAll(tmpSet);
         }
         return new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),res,pda.getName(),pda);

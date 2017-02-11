@@ -3,16 +3,15 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
-import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
-public class Dummy extends SimpleFunctionPlugin {
+public class Dummy_Grammar extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         if(object != null) {
-            PushDownAutomaton pda = (PushDownAutomaton) object;
-            return PushDownAutomatonUtil.splitRules(pda);
+            Grammar grammar = (Grammar) object;
+            return GrammarUtil.removeDeadEnds(grammar);
         }
         return null;
     }
@@ -24,12 +23,12 @@ public class Dummy extends SimpleFunctionPlugin {
 
     @Override
     public Class inputType() {
-        return PushDownAutomaton.class;
+        return Grammar.class;
     }
 
     @Override
     Class outputType() {
-        return PushDownAutomaton.class;
+        return Grammar.class;
     }
 
     @Override
