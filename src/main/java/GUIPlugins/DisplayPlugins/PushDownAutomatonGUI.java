@@ -213,7 +213,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     list.add(rule);
                 }
             });
-            return new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitialStackLetter(),list,pda.getCurrentState(),pda.getName(),pda);
+            return new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),list,pda.getName(),pda);
         } else {
             return null;
         }

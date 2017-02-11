@@ -7,6 +7,7 @@ import Print.Printer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -51,8 +52,10 @@ public class PushDownAutomaton implements Printable, Storable{
 
 
 
-    public PushDownAutomaton(Set<State> states, State startState, StackLetter initialStackLetter, List<PDARule> rules, State currentState, String name, PushDownAutomaton previousPDA) {
-        this.states = new HashSet<>(states);
+    public PushDownAutomaton(State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
+        this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
+        states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
+        states.add(startState);
         this.inputAlphabet = new HashSet<>();
         rules.stream().map(PDARule::getReadIn).forEach(inputAlphabet::add);
         this.stackAlphabet = new HashSet<>();
@@ -66,7 +69,7 @@ public class PushDownAutomaton implements Printable, Storable{
         this.name = name;
         this.previousPDA = previousPDA;
         // mutable:
-        this.currentState=currentState;
+        this.currentState=startState;
 
 
     }
@@ -93,7 +96,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public Storable deep_copy() {
-        return new PushDownAutomaton(this.states, this.startState, this.initialStackLetter, this.rules, this.currentState, this.name, this.previousPDA);
+        return new PushDownAutomaton(this.startState, this.initialStackLetter, this.rules, this.name, this.previousPDA);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     @Override
     public Storable otherName(String name) {
-        return new PushDownAutomaton(this.states,this.startState,this.initialStackLetter,this.rules, this.currentState, name,this.previousPDA);
+        return new PushDownAutomaton(this.startState,this.initialStackLetter,this.rules, name,this.previousPDA);
     }
 
 

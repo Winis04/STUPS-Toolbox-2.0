@@ -1576,11 +1576,11 @@ public class GrammarUtil {
 
         start_state = onlyState;
         initialStackLetter = new StackLetter(g.getStartSymbol().getName());
-        PushDownAutomaton tmp = new PushDownAutomaton(states,start_state,initialStackLetter,new ArrayList<>(),start_state,"",null);
+        PushDownAutomaton tmp = new PushDownAutomaton(start_state,initialStackLetter,new ArrayList<>(),"",null);
         /* create the rules **/
         rules = createRules(g,tmp);
 
-        return new PushDownAutomaton(states,start_state,initialStackLetter,rules,start_state,"PDA_"+g.getName(),null);
+        return new PushDownAutomaton(start_state,initialStackLetter,rules,"PDA_"+g.getName(),null);
     }
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
         ArrayList<PDARule> rules = new ArrayList<>();

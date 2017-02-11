@@ -336,7 +336,7 @@ public class RootController {
     @FXML
     public void newPDA() {
         PushDownAutomaton pda = new PushDownAutomaton();
-        Storable storable = new PushDownAutomaton(pda.getStates(),pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),pda.getCurrentState(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
+        Storable storable = new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
         Class clazz = PushDownAutomaton.class;
         String name = storable.getName();
         gui.getContent().getObjects().put(clazz, storable);
