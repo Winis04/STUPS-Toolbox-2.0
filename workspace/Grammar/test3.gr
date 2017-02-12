@@ -1,4 +1,4 @@
-{'epsilon', '0', '1'; S, A, B, D, E, C; S}
+{'0', 'epsilon', '1'; S, A, B, D, E, C; S}
 
 S --> 'A','B','D'
 A --> 'E','D'

@@ -1,7 +1,0 @@
-{'a', 'b', 'epsilon';'A', 'a', 'B', 'b', 'S', 'epsilon';z; z; 'S'}
-
-'z', 'epsilon', 'A' --> 'z', 'a'
-'z', 'epsilon', 'B' --> 'z', 'b'
-'z', 'epsilon', 'S' --> 'z', 'A', 'B'
-'z', 'a', 'a' --> 'z', 'epsilon'
-'z', 'b', 'b' --> 'z', 'epsilon'

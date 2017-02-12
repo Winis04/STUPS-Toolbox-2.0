@@ -15,6 +15,8 @@ import java.util.stream.Stream;
  * @since 31.01.2017
  */
 public class StateController {
+
+    private boolean validWorkspace = true;
     
     Content content;
     GUI gui;
@@ -143,56 +145,58 @@ public class StateController {
                 }
             } else {
                 System.out.println("This directory is not a valid workspace!");
+                validWorkspace = false;
             }
         }
     }
 
     public void exitWorkspace() {
-        String name_tmp = "STUPS_TOOLBOX_WORKSPACE_TMP";
-        try {
-            //save copy
-            FileUtils.copyDirectory(new File(path_to_workspace),new File(name_tmp));
-            // now we can go on
+        if(validWorkspace) {
+            String name_tmp = "STUPS_TOOLBOX_WORKSPACE_TMP";
             try {
-                FileUtils.deleteDirectory(new File(path_to_workspace));
-                File workspace = new File(path_to_workspace);
+                //save copy
+                FileUtils.copyDirectory(new File(path_to_workspace), new File(name_tmp));
+                // now we can go on
+                try {
+                    FileUtils.deleteDirectory(new File(path_to_workspace));
+                    File workspace = new File(path_to_workspace);
 
-                workspace.mkdir();
-                content.getStore().keySet().forEach(key -> {
-                    if (!content.getStore().get(key).isEmpty()) {
-                        File subDir = new File(path_to_workspace + key.getSimpleName());
-                        if (!subDir.exists()) {
-                            subDir.mkdir();
-                        }
-                        content.getStore().get(key).values().forEach(storable -> {
-                            String name = storable.getName();
-                            try {
-                                storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    workspace.mkdir();
+                    content.getStore().keySet().forEach(key -> {
+                        if (!content.getStore().get(key).isEmpty()) {
+                            File subDir = new File(path_to_workspace + key.getSimpleName());
+                            if (!subDir.exists()) {
+                                subDir.mkdir();
                             }
-                        });
-                    }
-                });
+                            content.getStore().get(key).values().forEach(storable -> {
+                                String name = storable.getName();
+                                try {
+                                    storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+                    });
+                } catch (IOException e) {
+                    System.err.println("something went wrong with saving the current workspace! The old workspace is restored!");
+                    FileUtils.copyDirectory(new File(name_tmp), new File(path_to_workspace));
+                    FileUtils.deleteDirectory(new File(name_tmp));
+                }
+
             } catch (IOException e) {
-                System.err.println("something went wrong with saving the current workspace! The old workspace is restored!");
-                FileUtils.copyDirectory(new File(name_tmp),new File(path_to_workspace));
-                FileUtils.deleteDirectory(new File(name_tmp));
+                System.err.println("Can't save the current workspace!");
+            } finally {
+                try {
+                    FileUtils.deleteDirectory(new File(name_tmp));
+                } catch (IOException e) {
+                    System.err.println("something went wrong with restoring workspace!");
+                    //     e.printStackTrace();
+                }
             }
 
-        } catch (IOException e) {
-            System.err.println("Can't save the current workspace!");
-        } finally {
-            try {
-                FileUtils.deleteDirectory(new File(name_tmp));
-            } catch (IOException e) {
-                System.err.println("something went wrong with restoring workspace!");
-           //     e.printStackTrace();
-            }
+
         }
-
-
-
 
 
 
