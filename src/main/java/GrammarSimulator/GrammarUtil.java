@@ -784,32 +784,35 @@ public class GrammarUtil {
         //0. before Grammar
         Grammar grammar0= (Grammar) grammar.deep_copy();
 
+        Grammar grammar1;
+        //1. Special Rule for Empty Word
+        if(GrammarUtil.languageContainsLambda(grammar)) { //todo should be language contains lambda
+            grammar1=specialRuleForEmptyWord(grammar0,grammar);
+        } else {
+            grammar1=grammar0;
+        }
 
-        //1. Nullable Set
-        PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar0);
+        //2. Nullable Set
+        PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar1);
 
-        //2. step two && unnecessary epsilons
+        //3. step two && unnecessary epsilons
         Grammar grammar2;
-        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar0);
-        grammar2 = removeLambdaRules_StepTwo(grammar0,nullable,grammar);
+        HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar1);
+        grammar2 = removeLambdaRules_StepTwo(grammar1,nullable,grammar);
         grammar2 = removeUnnecessaryEpsilons(grammar2,grammar);
-        //3. step three
+        //4. step three
 
         Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
         Grammar grammar4;
-        if(GrammarUtil.languageContainsLambda(grammar)) { //todo should be language contains lambda
-            grammar4=specialRuleForEmptyWord(grammar3,grammar);
-        } else {
-            grammar4=grammar3;
-        }
+
         res.add(grammar0);
 
-
+        res.add(grammar1);
 
         res.add(nullable_and_printable);
         res.add(grammar2);
         res.add(grammar3);
-        res.add(grammar4);
+
 
         return res;
 
@@ -825,17 +828,24 @@ public class GrammarUtil {
         if(GrammarUtil.isLambdaFree(g)) {
             return g;
         } else {
+            Grammar gr;
+            if(GrammarUtil.languageContainsLambda(g)) {
+                gr=specialRuleForEmptyWord(g,g);
+            } else {
+                gr=g;
+            }
             /* change original grammar **/
             // Grammar grammar = specialRuleForEmptyWord(g);
-            HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(g);
-            Grammar grammar1 = removeLambdaRules_StepTwo(g, nullable, g);
+            HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(gr);
+            Grammar grammar1 = removeLambdaRules_StepTwo(gr, nullable, g);
             Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
             Grammar grammar3 = removeLambdaRules_StepThree(grammar2,true,g);
-            if(GrammarUtil.languageContainsLambda(g)) {
+           /** if(GrammarUtil.languageContainsLambda(g)) {
                 return specialRuleForEmptyWord(grammar3,g);
             } else {
                 return grammar3;
-            }
+            } **/
+           return grammar3;
         }
     }
 
@@ -851,7 +861,7 @@ public class GrammarUtil {
         // delete lambda-rules
         HashSet<Rule> tmp2 = new HashSet<>();
         g.getRules().stream()
-                .filter(rule -> !rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)))
+                .filter(rule -> !rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)) || rule.getComingFrom().equals(g.getStartSymbol()))
                 .forEach(tmp2::add);
         //  g.setRules(tmp2);
         HashSet<Nonterminal> toRemove = new HashSet<>();
@@ -1653,7 +1663,7 @@ public class GrammarUtil {
      * @return a grammar, where the special rule vor the empty word has been applied
      */
     private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
-        if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
+    //    if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
             HashSet<Rule> freshRules = new HashSet<>();
             Nonterminal newNonterminal = new Nonterminal("S_0");
@@ -1693,8 +1703,8 @@ public class GrammarUtil {
                 freshRules.add(new Rule(g.getStartSymbol(),t));
             }
             return new Grammar(g.getStartSymbol(),freshRules,g.getName(),original);
-        }
-        return g;
+   //     }
+     //   return g;
     }
 
 
