@@ -10,19 +10,22 @@ import java.io.IOException;
  * @author Isabel
  * @since 27.11.2016
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public interface Storable {
     /**
      * a deep-copy of the object.
      * Becomes redundant once automaton are immutable too
      * @return a instance of class Storable, which has the same subclass as the original
      */
+    @SuppressWarnings("unused")
     Storable deep_copy();
 
     /**
      * Getter-Method for the name of the object
      * @return the name of the storable object
      */
+    @SuppressWarnings("unused")
     String getName();
 
     /**
@@ -30,12 +33,14 @@ public interface Storable {
      * @param name the new name of the copied object
      * @return a copy of the original, but with a different name
      */
+    @SuppressWarnings("unused")
     Storable otherName(String name);
 
     /**
      * prints the object in a certain form, so it can be saved in a file
      * @param path the path to the save file
      */
+    @SuppressWarnings("unused")
     void printToSave(String path) throws IOException;
 
     /**
@@ -44,6 +49,7 @@ public interface Storable {
      * @return a Storable object
      * @throws Exception every Exception
      */
+    @SuppressWarnings("unused")
     Storable restoreFromFile(File file) throws Exception;
 
     /**
@@ -53,12 +59,14 @@ public interface Storable {
      * a change occurs.
      * @return a Storable of the same subclass as the original
      */
+    @SuppressWarnings("unused")
     Storable getPreviousVersion();
 
     /**
      * save a previous version manually.
      * becomes redundant once every storable is immutable
      */
+    @SuppressWarnings("unused")
     void savePreviousVersion();
 
 }

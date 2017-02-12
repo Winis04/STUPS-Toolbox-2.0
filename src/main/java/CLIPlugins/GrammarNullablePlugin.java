@@ -13,7 +13,8 @@ import java.util.Iterator;
  * @author fabian
  * @since 22.08.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarNullablePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

@@ -11,6 +11,8 @@ import java.io.IOException;
  * @author Isabel
  * @since 29.01.2017
  */
+
+@SuppressWarnings("unused")
 public class PDASavePlugin extends CLIPlugin{
 
         private boolean errorFlag = false;

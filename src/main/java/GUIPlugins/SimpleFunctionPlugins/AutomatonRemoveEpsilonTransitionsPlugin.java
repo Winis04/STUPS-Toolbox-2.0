@@ -8,7 +8,8 @@ import Main.Storable;
  * @author fabian
  * @since 18.06.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 
     @Override

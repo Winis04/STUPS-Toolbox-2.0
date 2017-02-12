@@ -11,12 +11,14 @@ import javafx.scene.control.MenuItem;
  * @since 18.06.16
  */
 
-@SuppressWarnings("ALL")
-public abstract class SimpleFunctionPlugin implements Comparable{
+
+@SuppressWarnings("unused")
+public abstract class SimpleFunctionPlugin {
 
     /**
      * reference to the gui
      */
+    @SuppressWarnings("unused")
     GUI gui = null;
 
     /**
@@ -28,6 +30,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      * @param object The object.
      * @return The changed object.
      */
+    @SuppressWarnings("unused")
     protected abstract Storable execute(Object object);
 
     /**
@@ -35,6 +38,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      *
      * @return The plugin's name.
      */
+    @SuppressWarnings("unused")
     public abstract String getName();
 
     /**
@@ -43,6 +47,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      *
      * @return The object-type.
      */
+    @SuppressWarnings("unused")
     public abstract Class inputType();
 
     /**
@@ -51,6 +56,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      *
      * @return The object-type.
      */
+    @SuppressWarnings("unused")
     abstract Class outputType();
 
 
@@ -58,6 +64,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      * must be called, if the plugin should have access to the gui. this is necessary, if the plugin does more than manipulation of one object
      * @param gui the GUI
      */
+    @SuppressWarnings("unused")
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
@@ -66,6 +73,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      * @param gui the GUI
      * @return the MenuItem
      */
+    @SuppressWarnings("unused")
     public MenuItem getMenuItem(GUI gui) {
         SimpleFunctionPlugin plugin= this;
         MenuItem item = new MenuItem(this.getName());
@@ -90,6 +98,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
 
     }
 
+    @SuppressWarnings("unused")
     boolean shouldBeDisabled() {
         return false;
     }
@@ -97,6 +106,7 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      * should be overwritten, if the plugin should be able to operate on more than one type of storables, e.g. {@link Copy}
      * @return default: false
      */
+    @SuppressWarnings("unused")
     public boolean operatesOnAllStorables() {
         return false;
     }
@@ -105,10 +115,12 @@ public abstract class SimpleFunctionPlugin implements Comparable{
      * states, if the plugin creates output. plugins with output are blue framed when in latex mode
      * @return default: false
      */
+    @SuppressWarnings("unused")
     public boolean createsOutput() {
         return false;
     }
 
+    /*
     @Override
     public int compareTo(Object o) {
         if(o instanceof SimpleFunctionPlugin) {
@@ -121,5 +133,5 @@ public abstract class SimpleFunctionPlugin implements Comparable{
         } else {
             return 0;
         }
-    }
+    } **/
 }

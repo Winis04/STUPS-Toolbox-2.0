@@ -9,7 +9,8 @@ import Main.Storable;
  * @author fabian
  * @since 13.07.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonConvertPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 06.08.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarUtil {
 
     /*
@@ -41,6 +42,7 @@ public class GrammarUtil {
      * @param visitedSymbols Keeps track of which nonterminals have already been visited. Should initially be empty.
      * @return The ArrayList.
      */
+    @SuppressWarnings("unused")
     private static ArrayList<Terminal> getTerminalsInOrder(Nonterminal comingFrom, ArrayList<Terminal> terminals, HashSet<Nonterminal> visitedSymbols, Grammar grammar) {
         if (!visitedSymbols.contains(comingFrom)) {
             HashSet<Nonterminal> nextSymbols = new HashSet<>();
@@ -76,6 +78,7 @@ public class GrammarUtil {
      * @param nonterminals Should be empty initially.
      * @return The ArrayList.
      */
+    @SuppressWarnings("unused")
     private static ArrayList<Nonterminal> getNonterminalsInOrder(Nonterminal comingFrom, ArrayList<Nonterminal> nonterminals, Grammar grammar) {
         HashSet<Nonterminal> nextSymbols = new HashSet<>();
 
@@ -114,6 +117,7 @@ public class GrammarUtil {
      * @param writer The BufferedWriter.
      * @param grammar The grammar.
      */
+    @SuppressWarnings("unused")
     private static void writeTerminals(boolean onGui, BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = getTerminalsInOrder(grammar);
@@ -138,6 +142,7 @@ public class GrammarUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     private static void writeNonterminals(BufferedWriter writer, Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
         Iterator<Nonterminal> it = nonterminals.iterator();
@@ -162,6 +167,7 @@ public class GrammarUtil {
      * @param writer The BufferedWriter.
      * @param grammar The grammar.
      */
+    @SuppressWarnings("unused")
     private static void writeRules(BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's nonterminal symbols in order of their appearance in the rules.
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
@@ -206,6 +212,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The first-set.
      */
+    @SuppressWarnings("unused")
     private static HashSet<Terminal> calculateFirstOfList(List<Symbol> symbolList, HashSet<Nonterminal> nullable, HashMap<Nonterminal, HashSet<Terminal>> firsts, Grammar grammar) {
         HashSet<Terminal> result = new HashSet<>();
 
@@ -253,6 +260,7 @@ public class GrammarUtil {
      * @throws LexerException {@link LexerException}.
      * @throws IOException {@link IOException}.
      */
+    @SuppressWarnings("unused")
     public static Grammar parse(String fileInput, String name) throws ParserException, LexerException, IOException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
@@ -274,6 +282,7 @@ public class GrammarUtil {
      * @throws LexerException {@link LexerException} an Exception with the {@link Lexer}
      * @throws ParserException {@link ParserException} an Exception with the {@link Parser}
      */
+    @SuppressWarnings("unused")
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
         Grammar grammar;
@@ -295,6 +304,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Terminal> getTerminalsInOrder(Grammar grammar) {
         ArrayList<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>(),grammar);
         HashSet<Terminal> missingTerminals = new HashSet<>(grammar.getTerminals());
@@ -309,6 +319,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Nonterminal> getNonterminalsInOrder(Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(),grammar);
         HashSet<Nonterminal> missingTerminals = new HashSet<>(grammar.getNonterminals());
@@ -324,6 +335,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @param onGUI true, if the grammar is printed on the GUI
      */
+    @SuppressWarnings("unused")
     public static void print(boolean onGUI, Grammar grammar) {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
@@ -352,6 +364,7 @@ public class GrammarUtil {
      * @param grammar the {@link Grammar} that should be saved
      * @param file the {@link File} in which the grammar is saved
      */
+    @SuppressWarnings("unused")
     public static void save(Grammar grammar, File file) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -379,6 +392,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @param fileName The filename.
      */
+    @SuppressWarnings("unused")
     public static void save(Grammar grammar, String fileName) throws IOException {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
@@ -402,14 +416,13 @@ public class GrammarUtil {
     /**
      * Writes either the grammar's terminals, nonterminals, or rules through a given BufferedWriter.
      * Only one of the three booleans is supposed to be set to true.
-     *
-     * @param writer The BufferedWriter.
+     *  @param writer The BufferedWriter.
      * @param grammar The grammar.
      * @param terminals If true, the grammar's terminals will be written.
      * @param nonterminals If true, the grammar's nonterminals will be written.
-     * @param rules If true, the grammar's rules will be written.
      */
-    public static void writePart(BufferedWriter writer, Grammar grammar, boolean terminals, boolean nonterminals, boolean rules) {
+    @SuppressWarnings("unused")
+    public static void writePart(BufferedWriter writer, Grammar grammar, boolean terminals, boolean nonterminals) {
         //Write terminals.
         if(terminals) {
             writeTerminals(true, writer, grammar);
@@ -429,18 +442,9 @@ public class GrammarUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return;
         }
 
         //Write rules.
-        if(rules) {
-            writeRules(writer, grammar);
-            try {
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -449,6 +453,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return A HashSet containing all nullable nonterminals,
      */
+    @SuppressWarnings("unused")
     private static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
         HashSet<Nonterminal> res = calculateNullable(grammar);
         PrintableSet result = new PrintableSet(res.size());
@@ -461,6 +466,7 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return A HashSet containing all nullable nonterminals,
      */
+    @SuppressWarnings("unused")
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
 
 
@@ -495,6 +501,7 @@ public class GrammarUtil {
      * @return A HashMap, that has an entry for every of the grammar's nonterminals,
      *         which is mapped to a HashSet containing its first-set.
      */
+    @SuppressWarnings("unused")
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFirst(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -548,6 +555,7 @@ public class GrammarUtil {
      * @return A HashMap, that has an entry for every of the grammar's nonterminals,
      *         which is mapped to a HashSet containing its follow-set.
      */
+    @SuppressWarnings("unused")
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFollow(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -663,6 +671,7 @@ public class GrammarUtil {
      *         An entry in the table can be read by calling result.get(nonterminal).get(terminal).
      *         This will return a set of strings that represent this entry's rules.
      */
+    @SuppressWarnings("unused")
     public static HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> llParsingTable(Grammar grammar) {
         HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -729,6 +738,7 @@ public class GrammarUtil {
     }
 
 
+    @SuppressWarnings("unused")
     public static Grammar removeUnnecessaryEpsilons(Grammar g, Grammar original) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -752,6 +762,7 @@ public class GrammarUtil {
 
     }
 
+    @SuppressWarnings("unused")
     private static Grammar replaceLambda(Grammar g) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -777,6 +788,7 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Printable> removeLambdaRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
@@ -801,7 +813,7 @@ public class GrammarUtil {
         //4. step three
 
         Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
-        Grammar grammar4;
+
 
         res.add(grammar0);
 
@@ -821,6 +833,7 @@ public class GrammarUtil {
      * @param g the grammar that should be modified
      * @return the modified grammar, that has no lambda-rules
      */
+    @SuppressWarnings("unused")
     public static Grammar removeLambdaRules(Grammar g) {
 
         if(GrammarUtil.isLambdaFree(g)) {
@@ -839,12 +852,7 @@ public class GrammarUtil {
             Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
             Grammar grammar3 = removeLambdaRules_StepThree(grammar2,true,g);
             grammar3 = removeUnreachableNonterminals(grammar3);
-           /** if(GrammarUtil.languageContainsLambda(g)) {
-                return specialRuleForEmptyWord(grammar3,g);
-            } else {
-                return grammar3;
-            } **/
-           return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),g);
+            return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),g);
         }
     }
 
@@ -856,6 +864,7 @@ public class GrammarUtil {
      * @param again first time calling: true. during the algorithm new lambda-rules can emerge, so that method
      *              has to be called again, but this time with "again" set to false
      */
+    @SuppressWarnings("unused")
     private static Grammar removeLambdaRules_StepThree(Grammar g, boolean again, Grammar original) {
         // delete lambda-rules
         HashSet<Rule> tmp2 = new HashSet<>();
@@ -900,6 +909,7 @@ public class GrammarUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     private static boolean containsNullable(Rule rule, HashSet<Nonterminal> nullable) {
         return rule.getRightSide().stream()
                 .anyMatch(symbol -> nullable.stream().anyMatch(elem -> elem.equals(symbol)));
@@ -911,6 +921,7 @@ public class GrammarUtil {
      * @param g The Grammar
      * @param nullable The set, which contains all the nullable terminals
      */
+    @SuppressWarnings("unused")
     private static Grammar removeLambdaRules_StepTwo(Grammar g, HashSet<Nonterminal> nullable, Grammar original) {
 
         Grammar grammar = GrammarUtil.removeUnnecessaryEpsilons(g, original);
@@ -973,6 +984,7 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Printable> eliminateUnitRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
@@ -997,6 +1009,7 @@ public class GrammarUtil {
      * @param grammar the {@link Grammar} to-be-modified grammar
      * @return {@link Grammar} a Grammar, that has the same language as before, but now without unit rules
      */
+    @SuppressWarnings("unused")
     public static Grammar eliminateUnitRules(Grammar grammar) {
         if(!GrammarUtil.hasUnitRules(grammar)) {
             return grammar;
@@ -1008,6 +1021,7 @@ public class GrammarUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     private static Grammar removeCircles(Grammar grammar) {
         Grammar res = grammar;
         Grammar loop = grammar;
@@ -1034,6 +1048,7 @@ public class GrammarUtil {
      * @param grammar the grammar that should be modified
      * @return the grammar, if there are circles. Null, if there are no circles anymore
      */
+    @SuppressWarnings("unused")
     private static Grammar removeOneCircle(Grammar grammar) {
         ArrayList<Node> tmp;
 
@@ -1078,6 +1093,7 @@ public class GrammarUtil {
      * @param g the grammar, that is searched for unit rules
      * @return a HashSet with the Nonterminals as Nodes connected in a graph
      */
+    @SuppressWarnings("unused")
     private static HashSet<Node> findUnitRules(Grammar g) {
         HashSet<Node> result=new HashSet<>();
         g.getNonterminals().stream().
@@ -1100,10 +1116,12 @@ public class GrammarUtil {
         }
         return result;
     }
+    @SuppressWarnings("unused")
     private static boolean isLeftSideOfUnitRule(Nonterminal nonterminal, Grammar grammar) {
         return grammar.getRules().stream()
                 .anyMatch(rule -> rule.getComingFrom().equals(nonterminal) && rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof  Nonterminal);
     }
+    @SuppressWarnings("unused")
     private static boolean isRightSideOfUnitRule(Nonterminal right, Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0).equals(right));
@@ -1114,6 +1132,7 @@ public class GrammarUtil {
      * @param unitRules a hashSet of nodes that represent the unit rules
      * @return an ArrayList with two objects that represent backwards edge in a dept-first-search //TODO
      */
+    @SuppressWarnings("unused")
     private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) {
         if(unitRules.stream().allMatch(rule -> rule.getDfe()!=0)) {
             for (Node node : unitRules) {
@@ -1132,6 +1151,7 @@ public class GrammarUtil {
     }
 
 
+    @SuppressWarnings("unused")
     private static void dfs(HashSet<Node> unitRules) {
         int[] df = new int[2];
         df[0]=1;
@@ -1147,9 +1167,10 @@ public class GrammarUtil {
 
 
 
+    @SuppressWarnings("unused")
     private static int[] dfs(Node node, int[] df) {
 
-        node.setVisited(true);
+        node.setVisited();
         node.setDfs(df[0]);
         df[0]++;
         for(Node child : node.getChildren()) {
@@ -1170,8 +1191,9 @@ public class GrammarUtil {
      * @param nodes the nonterminals as nodes. to obtain them, use
      * @param g the grammar g
      */
+    @SuppressWarnings("unused")
     private static Grammar removeUnitRules(HashSet<Node> nodes, Grammar g) {
-        ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
+        ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes);
 
         //add every rule of the child as a rule of the parent
 
@@ -1190,9 +1212,10 @@ public class GrammarUtil {
                 freshRules.add(rule);
             }
         });
-        return new Grammar(tmp.getStartSymbol(),freshRules,tmp.getName(), (Grammar) g);
+        return new Grammar(tmp.getStartSymbol(),freshRules,tmp.getName(), g);
     }
 
+    @SuppressWarnings("unused")
     private static Grammar removeOneUnitRule(Nonterminal parent, Nonterminal child, Grammar grammar) {
         HashSet<Rule> rules = new HashSet<>();
         grammar.getRules().stream()
@@ -1207,10 +1230,10 @@ public class GrammarUtil {
 
     /**
      * @param nodes a hashset of notes that represent the nonterminals in unit rules
-     * @param g the grammar
      * @return an arrayList of nodes in the right order
      */
-    private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
+    @SuppressWarnings("unused")
+    private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes) {
 
 
         ArrayList<Node> result = new ArrayList<>();
@@ -1227,7 +1250,7 @@ public class GrammarUtil {
 
 
        nodes.stream().sorted((x,y) -> Integer.compare(y.getNumber(),x.getNumber()))
-               .forEach(node -> result.add(node));
+               .forEach(result::add);
 
 
 
@@ -1238,6 +1261,7 @@ public class GrammarUtil {
      * numbers the parent node and all children nodes with a higher number
      * @param node the parent node
      */
+    @SuppressWarnings("unused")
     private static int number(Node node, int max) {
         node.setNumber(max+1);
         if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
@@ -1263,6 +1287,7 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Printable> chomskyNormalFormAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
 
@@ -1281,10 +1306,11 @@ public class GrammarUtil {
         return res;
     }
 
-    public static String chooseName(Grammar grammar, Set<String> excluded) {
+    @SuppressWarnings("unused")
+    private static String chooseName(Grammar grammar, Set<String> excluded) {
         int big = 65;
         String randomName = Character.toString((char) big);
-        Set<String> names = grammar.getNonterminals().stream().map(nt -> nt.getName()).collect(Collectors.toSet());
+        Set<String> names = grammar.getNonterminals().stream().map(Nonterminal::getName).collect(Collectors.toSet());
         int counter = 1;
         while(names.contains(randomName) || excluded.contains(randomName)) {
             while(big<90 && (names.contains(randomName) || excluded.contains(randomName))) {
@@ -1305,6 +1331,7 @@ public class GrammarUtil {
      * @param grammar the to-be-modified grammar
      * @return a {@link Grammar} in CNF
      */
+    @SuppressWarnings("unused")
     public static Grammar chomskyNormalForm(Grammar grammar) {
         if(!GrammarUtil.isLambdaFree(grammar)) {
             return grammar;
@@ -1319,9 +1346,10 @@ public class GrammarUtil {
     }
 
 
+    @SuppressWarnings("unused")
     private static Grammar chomskyNormalForm_StepOne(Grammar g, Grammar original) {
         String name;
-        if(g.getNonterminals().stream().map(nt -> nt.getName()).anyMatch(ntname -> ntname.startsWith("X"))) {
+        if(g.getNonterminals().stream().map(Nonterminal::getName).anyMatch(nt -> nt.startsWith("X"))) {
             name = chooseName(g, new HashSet<>()) + "_";
         } else {
             name = "X_";
@@ -1366,16 +1394,16 @@ public class GrammarUtil {
      * step 2: modify rules with more than two nonterminals so that they only have two
      * @param g the grammar
      */
+    @SuppressWarnings("unused")
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
         String name;
-        if(g.getNonterminals().stream().map(nt -> nt.getName()).anyMatch(ntname -> ntname.startsWith("P"))) {
+        if(g.getNonterminals().stream().map(Nonterminal::getName).anyMatch(nt-> nt.startsWith("P"))) {
             name = chooseName(g, new HashSet<>()) + "_";
         } else {
             name = "P_";
         }
 
-        HashSet<Rule> tmp = new HashSet<>();
-        tmp.addAll(g.getRules());
+
         final int[] counter = {0};
         Set<Rule> old = new HashSet<>(g.getRules());
         while(true) {
@@ -1394,8 +1422,8 @@ public class GrammarUtil {
                     List<Symbol> tmp2 = new ArrayList<>();
                     tmp2.add(first);
                     tmp2.add(mod);
-                    Rule rule1 = new Rule(mod,tmp1);
-                    Rule rule2 = new Rule(rule.getComingFrom(),tmp2);
+                    Rule rule1 = new Rule(mod, new ArrayList<>(tmp1));
+                    Rule rule2 = new Rule(rule.getComingFrom(), new ArrayList<>(tmp2));
                     x.add(rule1);
                     x.add(rule2);
                 }
@@ -1414,6 +1442,7 @@ public class GrammarUtil {
                 old.addAll(res);
             }
         }
+
         return new Grammar(g.getStartSymbol(),old,g.getName(),original);
     }
 
@@ -1422,6 +1451,7 @@ public class GrammarUtil {
      * @param grammar a {@link Grammar} the to-be-checked grammar
      * @return true, if the grammar is in CNF
      */
+    @SuppressWarnings("unused")
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream().allMatch(rule -> {
             if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
@@ -1442,6 +1472,7 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
 
+    @SuppressWarnings("unused")
     private static Matrix createMatrix(List<String> word) {
         return new Matrix(word.size(),word.size()+1, word);
     }
@@ -1452,6 +1483,7 @@ public class GrammarUtil {
      * @param word the word to be checked for the cyk
      * @return a cyk-{@link Matrix}
      */
+    @SuppressWarnings("unused")
     public static Matrix cyk(Grammar g, List<String> word) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
@@ -1498,6 +1530,7 @@ public class GrammarUtil {
         return m;
 
     }
+    @SuppressWarnings("unused")
     private static boolean languageContainsWordAsSymbolList(Grammar grammar, List<Symbol> word) {
         List<String> w = word.stream().map(Symbol::getName).collect(Collectors.toList());
         return languageContainsWord(grammar, w);
@@ -1509,27 +1542,27 @@ public class GrammarUtil {
      * @param word the word, that should be checked as a List of String (a string for a terminal)
      * @return true, if the language contains the given word
      */
+    @SuppressWarnings("unused")
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
         if(word.isEmpty() || (word.size()==1 && word.get(0).equals(""))) {
-            if(GrammarUtil.languageContainsLambda(grammar)) {
-                return true;
-            } else {
-                return false;
-            }
+            return GrammarUtil.languageContainsLambda(grammar);
         }
         Grammar grammar1 = removeLambdaRules(grammar);
         Grammar grammar2 = eliminateUnitRules(grammar1);
         Grammar grammar3 = chomskyNormalForm(grammar2);
         return checkMatrix(cyk(grammar3,word),grammar3);
     }
+    @SuppressWarnings("unused")
     private static boolean checkMatrix(Matrix matrix, Grammar grammar) {
         //    matrix.printConsole(new BufferedWriter(new OutputStreamWriter(System.out)));
         return matrix != null && matrix.getCell(1, matrix.getWord().size() - 1).contains(grammar.getStartSymbol());
     }
+    @SuppressWarnings("unused")
     private static boolean pointsOnCurrentChar(List<String> word, int i, List<Symbol> list) {
         return list.get(0).getName().equals(word.get(i-1));
     }
 
+    @SuppressWarnings("unused")
     private static Configuration getStartConfiguration(Grammar g) {
         List<Symbol> list = new ArrayList<>();
         list.add(g.getStartSymbol());
@@ -1543,6 +1576,7 @@ public class GrammarUtil {
      * @param bound upper bound for the breadth-first search
      * @return a derivation path as a list of {@link Configuration}s
      */
+    @SuppressWarnings("unused")
     public static List<Configuration> getPath(Grammar g, List<Symbol> word, long bound) {
         Configuration end = getEndConfig(g,word,bound);
         if(end == null) {
@@ -1557,6 +1591,7 @@ public class GrammarUtil {
         result.add(0,result.get(0).getPrevious());
         return result;
     }
+    @SuppressWarnings("unused")
     private static Configuration getEndConfig(Grammar g, List<Symbol> word, long bound) {
         if(!languageContainsWordAsSymbolList(g,word)) {
             return null;
@@ -1592,6 +1627,7 @@ public class GrammarUtil {
      * @param list2 List 2
      * @return true, if the lists are equal
      */
+    @SuppressWarnings("unused")
     @Deprecated
     public static boolean listEqual(List<Symbol> list1, List<Symbol> list2) {
         if(list1.size() != list2.size()) {
@@ -1614,18 +1650,16 @@ public class GrammarUtil {
      * @param g     the Grammar, from which a pda should be created
      * @return      the pda to the grammar
      */
+    @SuppressWarnings("unused")
     public static PushDownAutomaton toPDA(Grammar g) {
         State start_state;
         StackLetter initialStackLetter;
-        HashSet<State> states = new HashSet<>();
+
 
         ArrayList<PDARule> rules;
 
-        State onlyState=new State("z");
-        states.add(onlyState);
 
-
-        start_state = onlyState;
+        start_state = new State("z");
         initialStackLetter = new StackLetter(g.getStartSymbol().getName());
         PushDownAutomaton tmp = new PushDownAutomaton(start_state,initialStackLetter,new ArrayList<>(),"",null);
         /* create the rules **/
@@ -1633,6 +1667,7 @@ public class GrammarUtil {
 
         return new PushDownAutomaton(start_state,initialStackLetter,rules,"PDA_"+g.getName(),null);
     }
+    @SuppressWarnings("unused")
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
         ArrayList<PDARule> rules = new ArrayList<>();
 
@@ -1665,6 +1700,7 @@ public class GrammarUtil {
                 });
         return rules;
     }
+    @SuppressWarnings("unused")
     private static List<StackLetter> calculateNewTos(List<Symbol> list) {
         return list.stream().map(s -> new StackLetter(s.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
@@ -1674,6 +1710,7 @@ public class GrammarUtil {
      * -                                other things                                                                 -*
      * ---------------------------------------------------------------------------------------------------------------*
      ******************************************************************************************************************/
+    @SuppressWarnings("unused")
     static ArrayList<ArrayList<String>> getHeader(Grammar grammar) {
         ArrayList<ArrayList<String>> header= new ArrayList<>(3);
         header.add(0,getTerminalsAsStrings(grammar));
@@ -1684,12 +1721,14 @@ public class GrammarUtil {
         return header;
     }
 
+    @SuppressWarnings("unused")
     private static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
         return (ArrayList<String>) terminals.stream().map(Terminal::getName).collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unused")
     private static ArrayList<String> getNonterminalsAsStrings(Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
         return (ArrayList<String>) nonterminals.stream().map(Nonterminal::getName).collect(Collectors.toList());
@@ -1702,6 +1741,7 @@ public class GrammarUtil {
      * @param original the original grammar, which functions as the previous version of the newly created grammar
      * @return a grammar, where the special rule vor the empty word has been applied
      */
+    @SuppressWarnings("unused")
     private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
     //    if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
@@ -1748,13 +1788,14 @@ public class GrammarUtil {
     }
 
 
+    @SuppressWarnings("unused")
     public static Grammar renameNonterminals(Grammar g) {
         Set<Nonterminal> nts = g.getNonterminals();
         Grammar res = g;
         for(Nonterminal nt : nts) {
             res=replaceNonterminal(res,nt,new Nonterminal(nt.getName()+"_xxxxx"));
         }
-        char a = 'a';
+
         nts = res.getNonterminals();
         HashSet<String> excluded = new HashSet<>();
         for(Nonterminal nt: nts) {
@@ -1769,6 +1810,7 @@ public class GrammarUtil {
      * @param g the {@link Grammar}
      * @return true, if the grammar has unit rules
      */
+    @SuppressWarnings("unused")
     public static boolean hasUnitRules(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Nonterminal);
@@ -1778,6 +1820,7 @@ public class GrammarUtil {
      * @param g the grammar g
      * @return true, if it is on a right side
      */
+    @SuppressWarnings("unused")
     private static boolean startSymbolOnRightSide(Grammar g) {
         return g.getRules().stream().map(Rule::getRightSide)
                 .anyMatch(list -> list.stream().anyMatch(symbol -> symbol.equals(g.getStartSymbol())));
@@ -1789,11 +1832,12 @@ public class GrammarUtil {
      * @param g the grammar
      * @return true, if the grammar is lambda-free
      */
+    @SuppressWarnings("unused")
     public static boolean isLambdaFree(Grammar g) {
         //true, if there is a rule A -> lambda with A != S
         boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
                 .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
-        //true, if the language contains Lambda (startsymbol is nullable) and the startsymbol points on lambda and the startsymbol is not on any right Side
+        //true, if the language contains Lambda (start symbol is nullable) and the start symbol points on lambda and the start symbol is not on any right Side
         boolean check2 = GrammarUtil.languageContainsLambda(g) && GrammarUtil.startSymbolPointsOnLambda(g) && !GrammarUtil.startSymbolOnRightSide(g);
         //true, if the language does not contain lambda
         boolean check3 = !GrammarUtil.languageContainsLambda(g);
@@ -1805,6 +1849,7 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the language contains lambda
      */
+    @SuppressWarnings("unused")
     private static boolean languageContainsLambda(Grammar g) {
        return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
     }
@@ -1814,36 +1859,39 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the start symbol points on lambda
      */
+    @SuppressWarnings("unused")
     private static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
     }
 
 
+    @SuppressWarnings("unused")
     public static Grammar simplify(Grammar g) {
         return removeRedundantNonterminals(g);
     }
 
 
     /**
-     * removes redudant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
+     * removes redundant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
      * @param g the {@link Grammar}
-     * @return
+     * @return a {@link Grammar} without redundant rules
      */
+    @SuppressWarnings("unused")
     private static Grammar removeRedundantNonterminals(Grammar g) {
         Grammar res = redundantSet(g);
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
 
     }
 
+    @SuppressWarnings("unused")
     private static Grammar redundantSet(Grammar g) {
-        Grammar grammar = g;
         for(Nonterminal nt1 : g.getNonterminals()) {
             for(Nonterminal nt2 : g.getNonterminals()) {
                 if(!nt1.equals(nt2)) {
                     boolean check = compareRules(g.getRules(),nt1,nt2);
                     if(check) {
-                        return redundantSet(replaceNonterminal(grammar,nt1,nt2));
+                        return redundantSet(replaceNonterminal(g,nt1,nt2));
                     }
                 }
             }
@@ -1852,13 +1900,14 @@ public class GrammarUtil {
     }
 
 
+    @SuppressWarnings("unused")
     private static boolean compareRules(Set<Rule> rules, Nonterminal one, Nonterminal two) {
         Set<Rule> rules1 = rules.stream().filter(rule -> rule.getComingFrom().equals(one)).collect(Collectors.toSet());
         Set<Rule> rules2 = rules.stream().filter(rule -> rule.getComingFrom().equals(two))
                 .map(rule -> new Rule(one,rule.getRightSide()))
                 .collect(Collectors.toSet());
-        boolean check = true;
-        check &= rules1.size() == rules2.size();
+
+        boolean check = rules1.size() == rules2.size();
         if(check) {
             for(Rule r1 : rules1) {
                 check &= rules2.contains(r1);
@@ -1870,12 +1919,13 @@ public class GrammarUtil {
 
     /**
      * replaces a Nonterminal through another
-     * @param g
-     * @param old
-     * @param replacedBy
-     * @return
+     * @param g a {@link Grammar}
+     * @param old the {@link Nonterminal} that should be replaced
+     * @param replacedBy the {@link Nonterminal} that replaces the old Nonterminal
+     * @return a {@link Grammar} which is equivalent to to the old grammar
      */
-    public static Grammar replaceNonterminal(Grammar g, Nonterminal old, Nonterminal replacedBy) {
+    @SuppressWarnings("unused")
+    private static Grammar replaceNonterminal(Grammar g, Nonterminal old, Nonterminal replacedBy) {
         Set<Rule> rules1=g.getRules().stream()
                 .map(rule -> {
                     if(rule.getComingFrom().equals(old)) {
@@ -1904,6 +1954,7 @@ public class GrammarUtil {
             return new Grammar(g.getStartSymbol(), rules1, g.getName(), g);
         }
     }
+    @SuppressWarnings("unused")
     public static Grammar removeUnreachableNonterminals(Grammar g) {
         if(hasUnreachableNonterminals(g)) {
             HashSet<Nonterminal> unreachable = new HashSet<>();
@@ -1916,19 +1967,23 @@ public class GrammarUtil {
         }
     }
 
-    public static boolean hasUnreachableNonterminals(Grammar g) {
+    @SuppressWarnings("unused")
+    private static boolean hasUnreachableNonterminals(Grammar g) {
        return g.getNonterminals().stream().anyMatch(nt -> g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)));
     }
 
+    @SuppressWarnings("unused")
     private static boolean isUnreachable(Grammar g, Nonterminal nt) {
         return g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)) && !nt.equals(g.getStartSymbol());
     }
 
     /**
-     * removes Nonterminals that don't point anywhere
-     * @param g
-     * @return
+     * removes Nonterminals that don't point anywhere. Attention: Every Rule,
+     * that contains such Nonterminals is deleted
+     * @param g a {@link Grammar}
+     * @return a {@link Grammar} that does not have Nonterminal that point nowhere
      */
+    @SuppressWarnings("unused")
     public static Grammar removeDeadEnds(Grammar g) {
         Grammar res = g;
 
@@ -1940,26 +1995,27 @@ public class GrammarUtil {
 
     /**
      * checks if a Grammar has Nonterminals which don't point anywhere
-     * @param g
-     * @return
+     * @param g a {@link Grammar}
+     * @return true, if the grammar has nonterminals, which do not appear on any left side
      */
+    @SuppressWarnings("unused")
     private static boolean hasDeadEnds(Grammar g) {
-        boolean check = g.getRules().stream()
+        return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().stream()
                 .filter(sym -> sym instanceof Nonterminal)
                 .anyMatch(sym -> isDead(g, (Nonterminal) sym)));
-        return  check;
     }
 
+    @SuppressWarnings("unused")
     private static boolean isDead(Grammar g, Nonterminal nt) {
-        boolean check = g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
-        return check;
+        return g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
     }
     /**
-     * removes rules, which contain nonterminal that don't point anywhere
-     * @param g
-     * @return
+     * Helper-method for {@link #removeDeadEnds(Grammar)}. removes rules, which contain nonterminal that don't point anywhere
+     * @param g {@link Grammar}
+     * @return a {@link Grammar} with one some dead ends removed
      */
+    @SuppressWarnings("unused")
     private static Grammar removeDeadEnds_helper(Grammar g) {
         HashSet<Rule> rules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -1972,6 +2028,7 @@ public class GrammarUtil {
         return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
     }
 
+    @SuppressWarnings("unused")
     public static Grammar removeUnreachable(Grammar g) {
        HashSet<Nonterminal> reachable = new HashSet<>();
         reachable.add(g.getStartSymbol());
@@ -1981,15 +2038,13 @@ public class GrammarUtil {
             Nonterminal current = queue.poll();
             g.getRules().stream()
                     .filter(rule -> rule.getComingFrom().equals(current))
-                    .map(rule -> rule.getRightSide())
-                    .forEach(list -> {
-                        list.forEach(sym -> {
-                            if(sym instanceof Nonterminal && !queue.contains(sym) && !reachable.contains(sym)) {
-                                queue.add((Nonterminal) sym);
-                                reachable.add((Nonterminal) sym);
-                            }
-                        });
-                    });
+                    .map(Rule::getRightSide)
+                    .forEach(list -> list.forEach(sym -> {
+                        if(sym instanceof Nonterminal && !queue.contains(sym) && !reachable.contains(sym)) {
+                            queue.add((Nonterminal) sym);
+                            reachable.add((Nonterminal) sym);
+                        }
+                    }));
 
 
         }

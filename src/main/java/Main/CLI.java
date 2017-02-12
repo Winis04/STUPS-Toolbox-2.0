@@ -20,17 +20,22 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 15.06.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class CLI {
 
+    @SuppressWarnings("unused")
     private final GUI gui;
     
+    @SuppressWarnings("unused")
     private final Content content;
 
+    @SuppressWarnings("unused")
     private final StateController stateController;
     
 
-    String types="";
+    @SuppressWarnings("unused")
+    private String types="";
 
     /**
      * the constructor. Creates a new instance of cli.
@@ -38,17 +43,20 @@ public class CLI {
      * @param content the {@link Content}
      * @param stateController the {@link StateController}
      */
+    @SuppressWarnings("unused")
     public CLI(GUI gui, Content content, StateController stateController) {
         this.content = content;
         this.gui=gui;
         this.stateController=stateController;
     }
 
+    @SuppressWarnings("unused")
     private boolean isStoreFunction(String command) {
         String[] allCommands=new String[]{"str","store","switch","swt","remove","rmv","copy"};
         return Arrays.stream(allCommands).anyMatch(string -> string.equals(command));
     }
 
+    @SuppressWarnings("unused")
     private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
         switch (command) {
             case "gui":
@@ -107,7 +115,7 @@ public class CLI {
                             content.getStore().put(clazz,new HashMap<>());
                         }
                         if(content.getObjects().get(clazz) != null) {
-                            Storable storable = (Storable) content.getObjects().get(clazz);
+                            Storable storable = content.getObjects().get(clazz);
                             content.getStore().get(clazz).put(parameters[1], storable.otherName(parameters[1]));
                         } else {
                             System.out.print("no current object of type "+parameters[0]);
@@ -194,6 +202,7 @@ public class CLI {
         return true;
     }
 
+    @SuppressWarnings("unused")
     private boolean doStoreCommand(String command, String parameter1, String parameter2) {
         if(isStoreFunction(command)) {
                     // Integer i = Integer.parseInt(parameters[1]);
@@ -261,6 +270,7 @@ public class CLI {
      * @param type the class of the object
      * @return true, if the store contains the storable; false otherwise.
      */
+    @SuppressWarnings("unused")
     public boolean storeContains(Storable storable, Class type) {
         return content.getStore().get(type) != null && !content.getStore().get(type).values().isEmpty() && content.getStore().get(type).values().contains(storable);
     }
@@ -271,6 +281,7 @@ public class CLI {
     /**
      * This method starts the Main.CLI and enters an endless loop, listening for user input.
      */
+    @SuppressWarnings("unused")
     public void start() {
 
         List<String> list = content.getLookUpTable().keySet().stream().filter(x -> !x.equals("pda"))
@@ -366,6 +377,7 @@ public class CLI {
     }
 
 
+    @SuppressWarnings("unused")
     private String startAutoCompletion(String before) {
         if(before.equals("gu")) {
             return "gui";

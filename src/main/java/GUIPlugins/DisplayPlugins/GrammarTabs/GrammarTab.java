@@ -8,7 +8,8 @@ import javafx.scene.Node;
  * @author fabian
  * @since 15.08.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 interface GrammarTab {
 
     /**
@@ -20,6 +21,7 @@ interface GrammarTab {
      * @param grammar The grammar, that should be displayed.
      * @return The JavaFX-Node.
      */
+    @SuppressWarnings("unused")
     Node getFxNode(Grammar grammar);
 
     /**
@@ -27,5 +29,6 @@ interface GrammarTab {
      *
      * @return This tab's name.
      */
+    @SuppressWarnings("unused")
     String getName();
 }

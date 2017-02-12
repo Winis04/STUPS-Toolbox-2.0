@@ -3,9 +3,10 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
-import Print.Printer;
 
 
+
+@SuppressWarnings("unused")
 public class Simplify extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

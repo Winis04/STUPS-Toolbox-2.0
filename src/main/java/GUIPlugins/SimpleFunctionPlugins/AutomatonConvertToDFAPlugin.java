@@ -8,7 +8,8 @@ import Main.Storable;
  * @author fabian
  * @since 24.07.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonConvertToDFAPlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

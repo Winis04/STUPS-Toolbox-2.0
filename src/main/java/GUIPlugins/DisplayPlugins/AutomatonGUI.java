@@ -67,81 +67,100 @@ import java.util.*;
  * @author fabian
  * @since 18.06.16.
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonGUI implements DisplayPlugin {
 
     /**
      * The currently loaded automaton-object.
      */
+    @SuppressWarnings("unused")
     private Automaton automaton;
 
     /**
      * The number of edges, the graph has (Equals the number of rules, the automaton has).
      */
+    @SuppressWarnings("unused")
     private int edgeCount;
 
     /**
      * Maps a unique integer to any rule of the automaton,
      * so that the rules can be distinguished. This is needed for the JUNG-graph.
      */
+    @SuppressWarnings("unused")
     private HashMap<Integer, Rule> ruleMap;
 
     /**
      * Maps each state's name to its state. This is needed for the JUNG-graph.
      */
+    @SuppressWarnings("unused")
     private HashMap<String, State> stateMap;
 
     /**
      * The JUNG-graph representing the loaded {@link #automaton}.
      */
+    @SuppressWarnings("unused")
     private final Graph<String, Integer> graph = new SparseMultigraph<>();
 
     /**
      * Responsible for displaying the {@link #graph}.
      */
+    @SuppressWarnings("unused")
     private VisualizationViewer<String, Integer> visualizationViewer;
 
     /**
      * Can be set to a specific rule. This rule will then be highlighted in red in the graph.
      */
+    @SuppressWarnings("unused")
     private Rule activeRule;
 
     /**
      * Can be set to a specific state. This state will then be highlighted in red in the graph.
      */
+    @SuppressWarnings("unused")
     private State activeState;
 
     /**
      * The color, that is used to fill states.
      */
+    @SuppressWarnings("unused")
     private final Color stateColor = Color.YELLOW;
 
     /**
      * The color, that is used to fill the start state.
      */
+    @SuppressWarnings("unused")
     private final Color startStateColor = Color.GREEN;
 
     /**
      * The color, that is used to mark the active state/rule.
      */
+    @SuppressWarnings("unused")
     private final Color markingColor = Color.RED;
 
     /**
      * The color, that is used to draw the rule-arrows.
      */
+    @SuppressWarnings("unused")
     private final Color ruleColor = Color.BLACK;
 
+    @SuppressWarnings("unused")
     private CheckBox isEpsilonFreeBox;
 
+    @SuppressWarnings("unused")
     private CheckBox isDFABox;
 
+    @SuppressWarnings("unused")
     private CheckBox isCompleteBox;
 
+    @SuppressWarnings("unused")
     private CheckBox isMinimalBox;
 
+    @SuppressWarnings("unused")
     private GUI gui;
 
 
+    @SuppressWarnings("unused")
     @Override
     public Node clear() {
         return new AnchorPane();
@@ -168,6 +187,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
         //Tell visualizationViewer how to draw a state.
         visualizationViewer.getRenderContext().setVertexIconTransformer(name -> new Icon() {
+            @SuppressWarnings("unused")
             private int calculateDiameter(int standardDiameter) {
                 if(name != null && name.length() > 4) {
                     standardDiameter += 8 * (name.length() - 4);
@@ -176,6 +196,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 return  standardDiameter;
             }
 
+            @SuppressWarnings("unused")
             @Override
             public void paintIcon(Component c, Graphics g, int x, int y) {
                 int diameter = calculateDiameter(30);
@@ -202,11 +223,13 @@ public class AutomatonGUI implements DisplayPlugin {
                 g.fillOval(x + 1, y + 1, diameter - 1, diameter - 1);
             }
 
+            @SuppressWarnings("unused")
             @Override
             public int getIconWidth() {
                 return calculateDiameter(30);
             }
 
+            @SuppressWarnings("unused")
             @Override
             public int getIconHeight() {
                 return calculateDiameter(30);
@@ -275,18 +298,22 @@ public class AutomatonGUI implements DisplayPlugin {
 
         GridPane infoPane = new GridPane();
         isEpsilonFreeBox = new CheckBox("Epsilon Free") {
+            @SuppressWarnings("unused")
             @Override
             public void arm() {}
         };
         isDFABox = new CheckBox("DFA") {
+            @SuppressWarnings("unused")
             @Override
             public void arm() {}
         };
         isCompleteBox = new CheckBox("Complete") {
+            @SuppressWarnings("unused")
             @Override
             public void arm() {}
         };
         isMinimalBox = new CheckBox("Minimal") {
+            @SuppressWarnings("unused")
             @Override
             public void arm() {}
         };
@@ -312,6 +339,7 @@ public class AutomatonGUI implements DisplayPlugin {
         return pane;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Node refresh(Object object) {
         automaton = (Automaton) object;
@@ -322,22 +350,26 @@ public class AutomatonGUI implements DisplayPlugin {
         return this.display(object);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Object newObject() {
         return new Automaton();
     }
 
 
+    @SuppressWarnings("unused")
     @Override
     public String getName() {
         return "JUNG2 Automaton";
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Class displayType() {
         return Automaton.class;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;
@@ -346,6 +378,7 @@ public class AutomatonGUI implements DisplayPlugin {
     /**
      * Turns the loaded {@link #automaton} into a JUNG-graph that is saved into {@link #graph}.
      */
+    @SuppressWarnings("unused")
     private void parseAutomatonToGraph() {
         for(int i = 0; i < graph.getEdges().size(); i++) {
             graph.removeEdge(i);
@@ -374,6 +407,7 @@ public class AutomatonGUI implements DisplayPlugin {
     /**
      * Refresh the CheckBoxes, that display whether the loaded automaton is epsilon free, deterministic an minimal.
      */
+    @SuppressWarnings("unused")
     private void refreshCheckBoxes() {
         boolean isEpsilonFree = AutomatonUtil.isEpsilonFree(automaton);
         boolean isDFA = AutomatonUtil.isDFA(automaton);
@@ -394,6 +428,7 @@ public class AutomatonGUI implements DisplayPlugin {
      * It defines which options should be shown in the right-click menu and what to do,
      * when a option get clicked on.
      */
+    @SuppressWarnings("unused")
     private class MenuMousePlugin extends AbstractPopupGraphMousePlugin {
         @Override
         protected void handlePopup(MouseEvent mouseEvent) {
@@ -412,6 +447,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 menu.add(new AbstractAction("Rename State") {
                     //This entry allows the user to rename a state.
 
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Platform.runLater(() -> {
@@ -434,6 +470,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 menu.add(new AbstractAction("Remove State") {
                     //This entry allows the user to delete a state.
 
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
@@ -482,6 +519,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 //If the chosen state is not a start state, give the user the option to mark it as one.
                 if(!automaton.getStartState().getName().equals(state)) {
                     menu.add(new AbstractAction("Set as Start State") {
+                        @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             automaton.getStartState().setStart(false);
@@ -496,6 +534,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 //If the chosen state is not a final state, give the user the option to mark it as one.
                 if(!stateMap.get(state).isFinal()) {
                     menu.add(new AbstractAction("Set as Final State") {
+                        @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             stateMap.get(state).setFinal(true);
@@ -506,6 +545,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 } else {
                     //If the chosen state is a final state, give the user the option to mark it as not final.
                     menu.add(new AbstractAction("Set as Normal State") {
+                        @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             stateMap.get(state).setFinal(false);
@@ -517,6 +557,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                 //This entry allows the user to add a new rule to an existing state.
                 menu.add(new AbstractAction("Add Rule to State") {
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Open a dialog window, that asks the user to which state the new rule should point
@@ -582,6 +623,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                 //This entry allows the user to change the accepted inputs of the chosen rule
                 menu.add(new AbstractAction("Edit Rule") {
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Open a dialog, which asks the user for the new set of inputs,
@@ -610,6 +652,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                 //This entry allows the user to delete a rule.
                 menu.add(new AbstractAction("Remove Rule") {
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         for(State state : automaton.getStates()) {
@@ -627,6 +670,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                 //This entry allows the user to add a new state to the automaton.
                 menu.add(new AbstractAction("Add State") {
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Open a dialog, which asks the user for a name for the new state.
@@ -650,6 +694,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                 //This entry allows the user to add new rule to state.
                 menu.add(new AbstractAction("Add Rule") {
+                    @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Open a dialog window, that asks the user from which state the rule is coming from,
@@ -716,6 +761,7 @@ public class AutomatonGUI implements DisplayPlugin {
                 });
                 if(!gui.getCli().storeContains(automaton,Automaton.class)) {
                     menu.add(new AbstractAction("Store") {
+                        @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             Platform.runLater(() -> {
@@ -742,6 +788,7 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @return {@link #ruleMap}
      */
+    @SuppressWarnings("unused")
     public HashMap<Integer, Rule> getRuleMap() {
         return ruleMap;
     }
@@ -751,6 +798,7 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @return {@link #stateMap}
      */
+    @SuppressWarnings("unused")
     public HashMap<String, State> getStateMap() {
         return stateMap;
     }
@@ -760,6 +808,7 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @param activeRule The rule, that should be marked as active.
      */
+    @SuppressWarnings("unused")
     public void setActiveRule(Rule activeRule) {
         this.activeRule = activeRule;
         visualizationViewer.repaint();
@@ -770,6 +819,7 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @param activeState The state, that should be marked as active.
      */
+    @SuppressWarnings("unused")
     public void setActiveState(State activeState) {
         this.activeState = activeState;
         visualizationViewer.repaint();
@@ -780,6 +830,7 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @return {@link #graph}
      */
+    @SuppressWarnings("unused")
     public Graph<String, Integer> getGraph() {
         return graph;
     }
@@ -789,10 +840,12 @@ public class AutomatonGUI implements DisplayPlugin {
      *
      * @return {@link #visualizationViewer}
      */
+    @SuppressWarnings("unused")
     public VisualizationViewer<String, Integer> getVisualizationViewer() {
         return visualizationViewer;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public GUI getGUI() {
         return gui;

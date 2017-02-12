@@ -4,6 +4,8 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 
+
+@SuppressWarnings("unused")
 public class RenameNonterminals extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

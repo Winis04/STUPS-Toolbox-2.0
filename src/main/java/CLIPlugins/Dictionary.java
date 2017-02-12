@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 26.10.2016
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class Dictionary extends CLIPlugin {
 
     private final Map<String, String> dictionary = getDictionary();

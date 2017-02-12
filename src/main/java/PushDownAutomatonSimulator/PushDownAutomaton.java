@@ -13,46 +13,58 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 
 
+
+@SuppressWarnings("unused")
 public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
      */
+    @SuppressWarnings("unused")
     private final HashSet<State> states;
     /**
      * the input alphabet
      */
+    @SuppressWarnings("unused")
     private final HashSet<InputLetter> inputAlphabet;
     /**
      * the stack alphabet;
      */
+    @SuppressWarnings("unused")
     private final HashSet<StackLetter> stackAlphabet;
     /**
      * the PDA's start state
      */
+    @SuppressWarnings("unused")
     private final State startState;
     /**
      * the initial stack letter
      */
+    @SuppressWarnings("unused")
     private final StackLetter initialStackLetter;
 
     /**
      * the name of the pda
      */
+    @SuppressWarnings("unused")
     private final String name;
 
     /** the previous PDA **/
+    @SuppressWarnings("unused")
     private final PushDownAutomaton previousPDA;
 
     /** the rules **/
+    @SuppressWarnings("unused")
     private final List<PDARule> rules;
 
     /**
      * the current state of this automaton
      */
+    @SuppressWarnings("unused")
     private final State currentState;
 
 
 
+    @SuppressWarnings("unused")
     public PushDownAutomaton(State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
         states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
@@ -75,6 +87,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     }
 
+    @SuppressWarnings("unused")
     public PushDownAutomaton() {
         this.states=new HashSet<>();
         this.inputAlphabet=new HashSet<>();
@@ -95,16 +108,19 @@ public class PushDownAutomaton implements Printable, Storable{
 
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Storable deep_copy() {
         return new PushDownAutomaton(this.startState, this.initialStackLetter, this.rules, this.name, this.previousPDA);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public String getName() {
         return name;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Storable otherName(String name) {
         return new PushDownAutomaton(this.startState,this.initialStackLetter,this.rules, name,this.previousPDA);
@@ -112,11 +128,13 @@ public class PushDownAutomaton implements Printable, Storable{
 
 
 
+    @SuppressWarnings("unused")
     @Override
     public void printToSave(String path) throws IOException {
         PushDownAutomatonUtil.save(this,path);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public Storable restoreFromFile(File file) throws Exception {
 
@@ -125,16 +143,19 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
 
+    @SuppressWarnings("unused")
     @Override
     public Storable getPreviousVersion() {
         return previousPDA;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void savePreviousVersion() {
 
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(space+"\\begin{table}[h!]\n",writer);
@@ -180,6 +201,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void printConsole(BufferedWriter writer) {
         Printer.print(this.name+"\n",writer);
@@ -204,32 +226,39 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
 
+    @SuppressWarnings("unused")
     public Set<State> getStates() {
         return Collections.unmodifiableSet(new HashSet<>(states));
     }
 
+    @SuppressWarnings("unused")
     public Set<InputLetter> getInputAlphabet() {
         return Collections.unmodifiableSet(new HashSet<>(inputAlphabet));
     }
 
+    @SuppressWarnings("unused")
     public Set<StackLetter> getStackAlphabet() {
         return Collections.unmodifiableSet(new HashSet<>(stackAlphabet));
     }
 
+    @SuppressWarnings("unused")
     public State getStartState() {
         return startState;
     }
 
 
+    @SuppressWarnings("unused")
     public StackLetter getInitialStackLetter() {
         return initialStackLetter;
     }
 
+    @SuppressWarnings("unused")
     public List<PDARule> getRules() {
         return Collections.unmodifiableList(new ArrayList<>(rules));
     }
 
 
+    @SuppressWarnings("unused")
     public State getCurrentState() {
         return currentState;
     }

@@ -12,17 +12,14 @@ class Visitor extends DepthFirstAdapter {
     private PushDownAutomaton pushDownAutomaton;
     private State start_state;
     private StackLetter initialStackLetter;
-    private final HashSet<State> states = new HashSet<>();
+
    // private final HashSet<InputLetter> inputAlphabet = new HashSet<>();
   //  private final HashSet<StackLetter> stackAlphabet = new HashSet<>();
     private final ArrayList<PDARule> rules = new ArrayList<>();
     @Override
     public void inASymbols(ASymbols node) {
 
-        for(TIdentifier state : node.getStates()) {
-            String name = state.getText().replaceAll("'","");
-            states.add(new State(name));
-        }
+
         start_state = new State(node.getStartState().getText().replaceAll("'",""));
         initialStackLetter = new StackLetter(node.getBottom().getText().replaceAll("'",""));
 

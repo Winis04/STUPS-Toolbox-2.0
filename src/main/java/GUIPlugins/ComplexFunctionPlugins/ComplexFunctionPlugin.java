@@ -10,7 +10,8 @@ import javafx.scene.control.Tab;
  * @author fabian
  * @since 19.06.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public abstract class ComplexFunctionPlugin {
 
     /**
@@ -18,6 +19,7 @@ public abstract class ComplexFunctionPlugin {
      * @return the class of the object this ComplexFunctionPlugin processes
      */
     //TODO better javadoc
+    @SuppressWarnings("unused")
     public abstract Class getInputType();
 
     /**
@@ -28,6 +30,7 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI The currently loaded display-plugin. This can be used, to interact with the plugin.
      * @return The JavaFX-{@link Node}.
      */
+    @SuppressWarnings("unused")
     abstract Node getFxNode(Object object, DisplayPlugin GUI);
 
     /**
@@ -35,6 +38,7 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return This plugin's name.
      */
+    @SuppressWarnings("unused")
     protected abstract String getName();
 
     /**
@@ -43,6 +47,7 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI the {@link DisplayPlugin} which displays the class belonging to object
      * @return a {@link Tab} which contains the content of {@link #getFxNode}
      */
+    @SuppressWarnings("unused")
     public Tab getAsTab(Object object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
         tab.setContent(getFxNode(object,GUI));
@@ -55,12 +60,14 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return The object-type.
      */
+    @SuppressWarnings("unused")
     public abstract Class displayPluginType();
 
     /**
      * states, if the plugin creates output. plugins with output are blue framed when in latex mode
      * @return default: false. if true, this methods creates output
      */
+    @SuppressWarnings("unused")
     public boolean createsOutput() {
         return false;
     }

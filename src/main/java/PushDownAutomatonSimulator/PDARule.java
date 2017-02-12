@@ -12,29 +12,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+
+@SuppressWarnings("unused")
 public class PDARule implements Printable{
     /**
      * the state that rule comes from
      */
 
+    @SuppressWarnings("unused")
     private final State comingFrom;
     /**
      * the current Letter to be read in
      */
+    @SuppressWarnings("unused")
     private final InputLetter readIn;
     /**
      * the old top of stack
      */
+    @SuppressWarnings("unused")
     private final StackLetter oldToS;
     /**
      * the start this rule points to
      */
+    @SuppressWarnings("unused")
     private final State goingTo;
    /**
     * the new ToS. newTos[0] is the topmost element!
     */
+    @SuppressWarnings("unused")
     private final List<StackLetter> newToS;
 
+    @SuppressWarnings("unused")
     public PDARule(State comingFrom, State goingTo, InputLetter readIn, StackLetter oldToS, List<StackLetter> newToS) {
         this.comingFrom = comingFrom;
         this.goingTo = goingTo;
@@ -43,6 +51,7 @@ public class PDARule implements Printable{
         this.newToS = newToS;
     }
 
+    @SuppressWarnings("unused")
     public PDARule() {
         this.comingFrom = new State("z0");
         this.goingTo = new State("z0");
@@ -51,26 +60,32 @@ public class PDARule implements Printable{
         this.newToS = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     public State getGoingTo() {
         return goingTo;
     }
 
+    @SuppressWarnings("unused")
     public InputLetter getReadIn() {
         return readIn;
     }
 
+    @SuppressWarnings("unused")
     public StackLetter getOldToS() {
         return oldToS;
     }
 
+    @SuppressWarnings("unused")
     public List<StackLetter> getNewToS() {
         return Collections.unmodifiableList(new ArrayList<>(newToS));
     }
 
+    @SuppressWarnings("unused")
     public State getComingFrom() {
         return comingFrom;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(space+"$"+this.getComingFrom().getName(),writer);
@@ -81,6 +96,7 @@ public class PDARule implements Printable{
         Printer.print(this.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(Collectors.joining(""))+"$",writer);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void printConsole(BufferedWriter writer) {
         Printer.print(this.getComingFrom().getName(),writer);
@@ -91,28 +107,21 @@ public class PDARule implements Printable{
         Printer.print(this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""))+"\n",writer);
     }
 
-    public String asString(boolean onGUI) {
+    @SuppressWarnings("unused")
+    public String asString() {
         String s="";
-        if(onGUI) {
-            s += this.getComingFrom().getName();
-            s += " " + this.getReadIn().getDisplayName();
-            s+=" "+this.getOldToS().getDisplayName();
-            s+=" \u2192";
-            s+=" "+this.getGoingTo().getName();
-            s+=" "+this.getNewToS().stream().map(StackLetter::getDisplayName).collect(Collectors.joining(""));
-        } else {
-            s += this.getComingFrom().getName();
-            s += " " + this.getReadIn().getName();
-            s+=" "+this.getOldToS().getName();
-            s+=" \u2192";
-            s+=" "+this.getGoingTo().getName();
-            s+=" "+this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""));
-        }
+        s += this.getComingFrom().getName();
+        s += " " + this.getReadIn().getDisplayName();
+        s+=" "+this.getOldToS().getDisplayName();
+        s+=" \u2192";
+        s+=" "+this.getGoingTo().getName();
+        s+=" "+this.getNewToS().stream().map(StackLetter::getDisplayName).collect(Collectors.joining(""));
 
 
         return s;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean equals(Object obj) {
         if (obj == null) { return false; }
@@ -136,6 +145,7 @@ public class PDARule implements Printable{
     }
 
 
+    @SuppressWarnings("unused")
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder(17,31);

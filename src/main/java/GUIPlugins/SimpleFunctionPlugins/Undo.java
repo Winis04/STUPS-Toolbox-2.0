@@ -3,6 +3,8 @@ package GUIPlugins.SimpleFunctionPlugins;
 import Main.Storable;
 
 
+
+@SuppressWarnings("unused")
 public class Undo extends SimpleFunctionPlugin {
 
     @Override
@@ -46,7 +48,7 @@ public class Undo extends SimpleFunctionPlugin {
     public boolean shouldBeDisabled() {
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
         Class parentClazz = gui.getContent().getLookUpTable().get(parent);
-        Storable current = (Storable)gui.getContent().getObjects().get(parentClazz);
+        Storable current = gui.getContent().getObjects().get(parentClazz);
         return current.getPreviousVersion() == null;
     }
 }

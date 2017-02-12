@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  * @author isabel
  * @since 19.01.17
  */
-@SuppressWarnings("ALL")
+
 public class ConfigurationTest {
 
     /**

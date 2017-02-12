@@ -16,13 +16,19 @@ import static java.util.stream.Collectors.joining;
  * @author Isabel
  * @since 26.10.2016
  */
+@SuppressWarnings("unused")
 public class Matrix implements Printable{
+    @SuppressWarnings("unused")
     private final int rows;
+    @SuppressWarnings("unused")
     private final int columns;
+    @SuppressWarnings("unused")
     private final List<String> word;
 
+    @SuppressWarnings("unused")
     private final HashMap<Integer,HashMap<Integer,HashSet<Nonterminal>>> matrix;
 
+    @SuppressWarnings("unused")
     private int spacing;
 
     /**
@@ -31,6 +37,7 @@ public class Matrix implements Printable{
      * @param columns number of columns
      * @param word the word belonging to this matrix
      */
+    @SuppressWarnings("unused")
     Matrix(int rows, int columns, List<String> word) {
         this.word=word;
         matrix = new HashMap<>();
@@ -57,6 +64,7 @@ public class Matrix implements Printable{
      * @param r the row index of the cell
      * @param nt the {@link Nonterminal} which should be added
      */
+    @SuppressWarnings("unused")
     public void addToCell(int c, int r, Nonterminal nt) {
         if(c > 0) {
             matrix.get(r).get(c).add(nt);
@@ -76,6 +84,7 @@ public class Matrix implements Printable{
         }
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void printConsole(BufferedWriter writer) {
         horizontalLine(writer);
@@ -153,6 +162,7 @@ public class Matrix implements Printable{
     }
 
 
+    @SuppressWarnings("unused")
     private void horizontalLine(BufferedWriter writer) {
         if(columns >= 10) {
             Printer.print("+----", writer);
@@ -168,6 +178,7 @@ public class Matrix implements Printable{
         Printer.println("+",writer);
 
     }
+    @SuppressWarnings("unused")
     @Override
     public void printLatex(BufferedWriter writer, String space) {
       
@@ -213,6 +224,7 @@ public class Matrix implements Printable{
      * @param r the row index
      * @return a {@link HashSet} of {@link Nonterminal}s
      */
+    @SuppressWarnings("unused")
     public HashSet<Nonterminal> getCell(int c, int r) {
         return matrix.get(r).get(c);
     }
@@ -221,6 +233,7 @@ public class Matrix implements Printable{
      * Getter-Method for {@link #word}, the word of this matrix
      * @return the {@link #word}
      */
+    @SuppressWarnings("unused")
     public List<String> getWord() {
         return word;
     }
@@ -229,6 +242,7 @@ public class Matrix implements Printable{
      * Getter-method for {@link #rows}, the number of rows.
      * @return {@link #rows}
      */
+    @SuppressWarnings("unused")
     public int getNumberOfRows() {
         return rows;
     }
@@ -237,6 +251,7 @@ public class Matrix implements Printable{
      * Getter-method for {@link #columns}, the number of columns.
      * @return {@link #columns}
      */
+    @SuppressWarnings("unused")
     public int getNumberOfColumns() {
         return columns;
     }

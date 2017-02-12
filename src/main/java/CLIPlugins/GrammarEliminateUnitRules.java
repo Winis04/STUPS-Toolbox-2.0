@@ -9,7 +9,8 @@ import Print.Printer;
  * @author Isabel
  * @since 22.10.2016
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarEliminateUnitRules extends CLIPlugin {
     private boolean errorFlag = false;
 

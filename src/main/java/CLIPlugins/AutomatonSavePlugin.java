@@ -11,7 +11,8 @@ import java.io.IOException;
  * @author fabian
  * @since 15.06.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonSavePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

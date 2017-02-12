@@ -11,11 +11,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * rints the Follow-sets of the current {@link Grammar}.
+ * prints the Follow-sets of the current {@link Grammar}.
  * @author fabian
  * @since 23.08.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarFollowPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

@@ -6,6 +6,8 @@ import Main.Storable;
 
 
 
+
+@SuppressWarnings("unused")
 public class GrammarLLParsingTable extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  * @author Isabel
  * @since 01.12.2016
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class CYKGrammarPlugin extends ComplexFunctionPlugin {
 
     @Override
@@ -61,24 +62,22 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 alert.getButtonTypes().setAll(yes,no,cancel);
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == yes){
-                    Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
-                    Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
-                    Grammar grammar3 = GrammarUtil.chomskyNormalForm(grammar2);
-                    doCYKWith = grammar3;
-                    if(doCYKWith != null) {
-                        Class clazz = Grammar.class;
 
-                        GUI.getGUI().getContent().getObjects().put(clazz,doCYKWith); //add new object as the current object
-                        GUI.getGUI().getContent().getStore().get(clazz).put(doCYKWith.getName(),doCYKWith); //add object to the store
-                        GUI.getGUI().refresh(doCYKWith); //switch to new object
-                        GUI.getGUI().refresh(); //refresh the treeView
+                if(result.isPresent()) {
+                    if (result.get() == yes) {
+                        Grammar grammar1 = GrammarUtil.removeLambdaRules(grammar);
+                        Grammar grammar2 = GrammarUtil.eliminateUnitRules(grammar1);
+                        doCYKWith = GrammarUtil.chomskyNormalForm(grammar2);
+                        if (doCYKWith != null) {
+                            Class clazz = Grammar.class;
 
+                            GUI.getGUI().getContent().getObjects().put(clazz, doCYKWith); //add new object as the current object
+                            GUI.getGUI().getContent().getStore().get(clazz).put(doCYKWith.getName(), doCYKWith); //add object to the store
+                            GUI.getGUI().refresh(doCYKWith); //switch to new object
+                            GUI.getGUI().refresh(); //refresh the treeView
+
+                        }
                     }
-                } else if (result.get() == no) {
-
-                }  else {
-                    // ... user chose CANCEL or closed the dialog
                 }
             }
             if(GrammarUtil.isInChomskyNormalForm(doCYKWith)) {
@@ -131,9 +130,6 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                         grammarGUI.getRootPane().getSelectionModel().select(tab);
                     }
                 }
-            } else {
-
-
             }
 
 

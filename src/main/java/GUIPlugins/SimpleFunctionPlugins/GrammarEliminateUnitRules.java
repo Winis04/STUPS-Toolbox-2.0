@@ -7,6 +7,8 @@ import Print.Printer;
 
 
 
+
+@SuppressWarnings("unused")
 public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

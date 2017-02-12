@@ -14,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
  * @author fabian
  * @since 13.08.16
  */
-@SuppressWarnings("ALL")
+
 public class GrammarGUI implements DisplayPlugin {
 
     /**

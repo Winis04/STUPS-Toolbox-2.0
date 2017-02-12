@@ -129,12 +129,12 @@ public class EditTab implements GrammarTab {
     private void writeTopLabels(Grammar grammar) {
         try {
             StringWriter writer = new StringWriter();
-            GrammarUtil.writePart(new BufferedWriter(writer), grammar, true, false, false);
+            GrammarUtil.writePart(new BufferedWriter(writer), grammar, true, false);
             terminalsLabel.setText("Terminals: " + writer);
             writer.close();
 
             writer = new StringWriter();
-            GrammarUtil.writePart(new BufferedWriter(writer), grammar, false, true, false);
+            GrammarUtil.writePart(new BufferedWriter(writer), grammar, false, true);
             nonterminalsLabel.setText("Nonterminals: " + writer);
             writer.close();
         } catch(Exception e) {
@@ -262,21 +262,19 @@ public class EditTab implements GrammarTab {
                        deleteItem.setOnAction(event1 -> {
                            Grammar grammar1 = deleteRule(nonterminal, symbolString.toString(),grammar);
                            refresh(grammar1);
-                          /** gui.refresh(grammar1);
-                          gui.getContent().getObjects().put(Grammar.class,grammar1);
-                          gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1); **/
 
                        });
 
                        editItem.setOnAction(event1 -> {
                            String tmp = symbolString.toString().chars().mapToObj(c -> {
 
-                               if(Character.toString((char) c).equals(GUI.epsilon)) {
-                                   return "epsilon";
-                               } else if(Character.toString((char) c).equals(GUI.lambda)) {
-                                    return "lambda";
-                               } else {
-                                   return Character.toString((char) c);
+                               switch (Character.toString((char) c)) {
+                                   case GUI.epsilon:
+                                       return "epsilon";
+                                   case GUI.lambda:
+                                       return "lambda";
+                                   default:
+                                       return Character.toString((char) c);
                                }
                            }).collect(Collectors.joining(""));
                            TextField field = new TextField(tmp);
@@ -301,12 +299,13 @@ public class EditTab implements GrammarTab {
                        //If the user double-clicks the symbol list, replace the label with a TextField,
                        //so that the user can edit it.
                        String tmp = symbolString.toString().chars().mapToObj(c -> {
-                           if(Character.toString((char) c).equals(GUI.epsilon)) {
-                               return "epsilon";
-                           } else if(Character.toString((char) c).equals(GUI.lambda)) {
-                               return "lambda";
-                           } else {
-                               return Character.toString((char) c);
+                           switch (Character.toString((char) c)) {
+                               case GUI.epsilon:
+                                   return "epsilon";
+                               case GUI.lambda:
+                                   return "lambda";
+                               default:
+                                   return Character.toString((char) c);
                            }
                        }).collect(Collectors.joining(""));
                        TextField field = new TextField(tmp);

@@ -1,6 +1,7 @@
 package Print;
 
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public enum PrintMode {
     NO,
     CONSOLE,

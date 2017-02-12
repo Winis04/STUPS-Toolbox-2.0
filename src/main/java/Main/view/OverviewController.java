@@ -23,36 +23,50 @@ import java.util.stream.Collectors;
 
 
 
+
+@SuppressWarnings("unused")
 public class OverviewController {
+    @SuppressWarnings("unused")
     @FXML
     TreeView<String> treeView;
+    @SuppressWarnings("unused")
     @FXML
     TabPane tabPane;
+    @SuppressWarnings("unused")
     @FXML
     BorderPane contentPane;
+    @SuppressWarnings("unused")
     @FXML
     AnchorPane rightSide;
+    @SuppressWarnings("unused")
     @FXML
     AnchorPane overview;
 
 
+    @SuppressWarnings("unused")
     private final ContextMenu dynamicContextMenu=new ContextMenu();
 
+    @SuppressWarnings("unused")
     private Collection<SimpleFunctionPlugin> dynamicMenuContent;
 
-    Collator collator = Collator.getInstance(Locale.ENGLISH);
+    @SuppressWarnings("unused")
+    private final Collator collator = Collator.getInstance(Locale.ENGLISH);
 
-    private Comparator<SimpleFunctionPlugin> sfpComparator = (x,y) -> collator.compare(x.getName().replaceAll(" ",""),y.getName().replaceAll(" ",""));
+    @SuppressWarnings("unused")
+    private final Comparator<SimpleFunctionPlugin> sfpComparator = (x, y) -> collator.compare(x.getName().replaceAll(" ",""),y.getName().replaceAll(" ",""));
+    @SuppressWarnings("unused")
     private GUI gui;
 
     /**
      * The constructor.
      * The constructor is called before the initialize() method.
      */
+    @SuppressWarnings("unused")
     public OverviewController() {
 //
     }
 
+    @SuppressWarnings("unused")
     public void initialize(GUI gui, Collection<SimpleFunctionPlugin> dynamicMenuContent) {
         this.gui=gui;
         this.dynamicMenuContent=dynamicMenuContent.stream().sorted(sfpComparator).collect(Collectors.toSet());
@@ -63,18 +77,16 @@ public class OverviewController {
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
+    @SuppressWarnings("unused")
     @FXML
     private void initialize() {
 
     }
 
+    @SuppressWarnings("unused")
     public void updateTree() {
-        if(gui.getContent().getStore() == null) {
-            //
-        }
-        if(gui.getContent().getStore().isEmpty()) {
 
-        }
+       //TODO check if the store is empty?
         treeView.getRoot().getChildren().forEach(top -> top.getChildren().clear());
         treeView.getRoot().getChildren()
                 .forEach(top -> {
@@ -82,21 +94,22 @@ public class OverviewController {
                     HashMap<String, Storable> map = gui.getContent().getStore().get(clazz);
                     if(map != null && !map.isEmpty()) {
                         map.keySet().forEach(key -> {
-                            TreeItem<String> child = new TreeItem<String>(key);
+                            TreeItem<String> child = new TreeItem<>(key);
                             top.getChildren().add(child);
                         });
                     }
                 });
 
     }
-    public void makeTree() {
+    @SuppressWarnings("unused")
+    private void makeTree() {
         TreeItem<String> root=new TreeItem<>("Storables");
 
         gui.getContent().getLookUpTable().keySet().stream().filter(s -> !s.equals("pda"))
                 .sorted()
                 .forEach(type -> {
                     Class clazz = gui.getContent().getLookUpTable().get(type);
-                    TreeItem<String> top = new TreeItem<String>(clazz.getSimpleName());
+                    TreeItem<String> top = new TreeItem<>(clazz.getSimpleName());
                     top.setExpanded(true);
                     root.getChildren().add(top);
                 });
@@ -136,6 +149,7 @@ public class OverviewController {
 
     }
 
+    @SuppressWarnings("unused")
     public Class getSuperTypeOfSelectedItem(TreeItem<String> selectedItem) {
         // the String that belongs to the parent treeItem
         String parent = selectedItem.getParent().getValue().toLowerCase();
@@ -145,6 +159,7 @@ public class OverviewController {
     }
 
 
+    @SuppressWarnings("unused")
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
@@ -157,7 +172,7 @@ public class OverviewController {
                     return item;
                 }).collect(Collectors.toList()));
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables() )
+                .filter(SimpleFunctionPlugin::operatesOnAllStorables)
                 .map(sfp -> sfp.getMenuItem(gui)).collect(Collectors.toList()));
 
         //show menu
@@ -165,21 +180,25 @@ public class OverviewController {
     }
 
 
+    @SuppressWarnings("unused")
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
 
 
+    @SuppressWarnings("unused")
     public TabPane getTabPane() {
         return tabPane;
     }
 
+    @SuppressWarnings("unused")
     public BorderPane getContentPane() {
         return contentPane;
     }
 
 
+    @SuppressWarnings("unused")
     public TreeView<String> getTreeView() {
         return treeView;
     }

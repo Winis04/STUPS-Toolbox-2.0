@@ -12,7 +12,7 @@ import java.io.*;
  * @author Isabel
  * @since 18.11.2016
  */
-@SuppressWarnings("ALL")
+
 public class PrintModePlugin extends CLIPlugin {
     private boolean errorFlag;
     @Override

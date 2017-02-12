@@ -27,7 +27,6 @@ import org.reflections.Reflections;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -37,64 +36,82 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 17.06.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GUI extends Application{
     
+    @SuppressWarnings("unused")
     private Content content;
 
+    @SuppressWarnings("unused")
     private StateController stateController;
     /**
      * true, if the Main.GUI is visible. The Main.CLI will deactivate itself, if this is true.
      */
+    @SuppressWarnings("unused")
     public boolean IS_VISIBLE = false;
 
     /**
      * The main stage for JavaFX.
      */
+    @SuppressWarnings("unused")
     private Stage primaryStage;
 
 
     /**
      * The currently displayed display-plugin.
      */
+    @SuppressWarnings("unused")
     private DisplayPlugin currentDisplayPlugin;
 
     /**
      * Contains all complex plugins. The class-type of every plugin is mapped to a instance of the plugin.
      */
+    @SuppressWarnings("unused")
     private HashSet<ComplexFunctionPlugin> complexFunctionPlugins = new HashSet<>();
 
 
     /**
      * Displays all complex plugins that match the display-type of the currently loaded display-plugin.
      */
+    @SuppressWarnings("unused")
     private TabPane complexFunctionsPane;
 
     /**
      * the Controller for the root gui (the menu bar)
      */
+    @SuppressWarnings("unused")
     private RootController rootController;
     /**
      * the controller for the content
      */
+    @SuppressWarnings("unused")
     private OverviewController overviewController;
 
+    @SuppressWarnings("unused")
     private BorderPane root;
+    @SuppressWarnings("unused")
     private BorderPane functionsPane;
 
+    @SuppressWarnings("unused")
     private HashMap<Class, SimpleFunctionPlugin> simpleFunctionPlugins;
 
+    @SuppressWarnings("unused")
     private final HashMap<Class, DisplayPlugin> displayPlugins = new HashMap<>();
 
+    @SuppressWarnings("unused")
     private int textSize = 12;
 
     /**
      * name of the null symbol
      */
+    @SuppressWarnings("unused")
     public static String nameOfNullSymbol = "\u03BB";
 
-    public static String epsilon = "\u03B5";
-    public static String lambda = "\u03BB";
+    @SuppressWarnings("unused")
+    public static final String epsilon = "\u03B5";
+    @SuppressWarnings("unused")
+    public static final String lambda = "\u03BB";
 
 
 
@@ -104,6 +121,7 @@ public class GUI extends Application{
      *
      * @param args This program doesn't take any arguments, so this array will just be ignored
      */
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         if(args.length==0) {
             launch();
@@ -112,11 +130,13 @@ public class GUI extends Application{
         }
     }
 
+    @SuppressWarnings("unused")
     private CLI cli;
 
     /**
      * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
+    @SuppressWarnings("unused")
     void show() {
         Printer.printmode = PrintMode.NO;
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
@@ -138,10 +158,9 @@ public class GUI extends Application{
      * selected in the treeView and displayed in the middle.
      * Is called after a plugin's execution
      */
+    @SuppressWarnings("unused")
     public void refresh() {
-        Collection<SimpleFunctionPlugin> list=simpleFunctionPlugins.values().stream()
-                .sorted((x,y) -> x.compareTo(y))
-                .collect(Collectors.toList());
+
         overviewController.updateTree(); //makes the tree
 
         if(currentDisplayPlugin != null) {
@@ -166,9 +185,9 @@ public class GUI extends Application{
                     TreeItem<String> root = s.get();
                     Optional<TreeItem<String>> selected = root.getChildren().stream()
                             .reduce((x, y) -> {
-                                if (x != null && x.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                                if (x != null && x.getValue().equals(content.getObjects().get(currentDisplayPlugin.displayType()).getName())) {
                                     return x;
-                                } else if (y != null && y.getValue().equals(((Storable) content.getObjects().get(currentDisplayPlugin.displayType())).getName())) {
+                                } else if (y != null && y.getValue().equals(content.getObjects().get(currentDisplayPlugin.displayType()).getName())) {
                                     return y;
                                 } else {
                                     return null;
@@ -190,6 +209,7 @@ public class GUI extends Application{
      * @param clazz the {@link Class}
      * @param name name of the storable object. Functions as the key.
      */
+    @SuppressWarnings("unused")
     public void addToStore(Storable storable, Class clazz, String name) {
         Storable storable1 = storable.otherName(name);
         content.getStore().putIfAbsent(clazz, new HashMap<>());
@@ -201,6 +221,7 @@ public class GUI extends Application{
      * changes the object currently displayed depending on the selection of the user
      * @param selectedItem the currently selected TreeView cell
      */
+    @SuppressWarnings("unused")
     public void switchStorable(TreeItem<String> selectedItem) {
         String parent = selectedItem.getParent().getValue().toLowerCase();
         // we get the parents (and the child's class) by looking in the lookup table
@@ -220,10 +241,12 @@ public class GUI extends Application{
      * refreshes the complex plugins in the bottom. Is necessary when the type of the object changes.
      * There are different complex plugins for different types
      */
+    @SuppressWarnings("unused")
     public void refreshPlugins() {
         refreshComplexPlugins();
     }
 
+    @SuppressWarnings("unused")
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
         complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
@@ -242,6 +265,7 @@ public class GUI extends Application{
      *
      * @param stage The Main.GUI's main stage.
      */
+    @SuppressWarnings("unused")
     @Override
     public void start(Stage stage) {
         this.content = new Content();
@@ -332,6 +356,7 @@ public class GUI extends Application{
     /**
      * Initializes the root layout.
      */
+    @SuppressWarnings("unused")
     private void initRootLayout() {
 
         try {
@@ -359,6 +384,7 @@ public class GUI extends Application{
      * @param string the name of the dialog
      * @return a {@link File}
      */
+    @SuppressWarnings("unused")
     public File loadFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load "+string);
@@ -369,6 +395,7 @@ public class GUI extends Application{
      * returns the primary {@link Stage} of the GUI
      * @return the primary {@link Stage}
      */
+    @SuppressWarnings("unused")
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -378,6 +405,7 @@ public class GUI extends Application{
      * @param string the name of the dialog
      * @return a {@link File}
      */
+    @SuppressWarnings("unused")
     public File openFileToSave(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("save "+string);
@@ -386,6 +414,7 @@ public class GUI extends Application{
     /**
      * Shows the person overview inside the root layout.
      */
+    @SuppressWarnings("unused")
     private void showOverview() {
         try {
             // Load person overview.
@@ -424,6 +453,7 @@ public class GUI extends Application{
      * refreshes the GUI so that it shows the passed object and the matching {@link ComplexFunctionPlugin}s
      * @param object the object that is displayed
      */
+    @SuppressWarnings("unused")
     public void refresh(Object object) {
         switchDisplayGui(object.getClass());
         functionsPane.setCenter(currentDisplayPlugin.refresh(object));
@@ -434,6 +464,7 @@ public class GUI extends Application{
      * getter for {@link CLI}
      * @return the {@link CLI}
      */
+    @SuppressWarnings("unused")
     public CLI getCli() {
         return cli;
     }
@@ -443,6 +474,7 @@ public class GUI extends Application{
      * Getter-Method for the current {@link DisplayPlugin}
      * @return the current {@link DisplayPlugin}
      */
+    @SuppressWarnings("unused")
     public DisplayPlugin getCurrentDisplayPlugin() {
         return currentDisplayPlugin;
     }
@@ -452,6 +484,7 @@ public class GUI extends Application{
      * if the type of the current selected storable changes, the {@link DisplayPlugin} has to be changed
      * @param clazz the {@link Class} of the current selected object
      */
+    @SuppressWarnings("unused")
     public void switchDisplayGui(Class clazz) {
             if(clazz.equals(Grammar.class)) {
                 currentDisplayPlugin = displayPlugins.get(Grammar.class);
@@ -480,6 +513,7 @@ public class GUI extends Application{
      * @param header the header text
      * @param content the content text
      */
+    @SuppressWarnings("unused")
     public void dialog(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -491,6 +525,7 @@ public class GUI extends Application{
      * opens a error {@link Dialog}  with the forwarded string
      * @param string the title of the dialog
      */
+    @SuppressWarnings("unused")
     public void errorDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
@@ -501,6 +536,7 @@ public class GUI extends Application{
      * opens a info {@link Dialog}  with the forwarded string
      * @param string the title of the dialog
      */
+    @SuppressWarnings("unused")
     public void infoDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -515,6 +551,7 @@ public class GUI extends Application{
      * the controller for the content panel
      * @return an {@link OverviewController}
      */
+    @SuppressWarnings("unused")
     public OverviewController getOverviewController() {
         return overviewController;
     }
@@ -523,6 +560,7 @@ public class GUI extends Application{
      * the controller for the root elements (menus, etc)
      * @return a {@link RootController}
      */
+    @SuppressWarnings("unused")
     public RootController getRootController() {
         return rootController;
     }
@@ -531,11 +569,12 @@ public class GUI extends Application{
      * sets the style sheet.
      * @param path Path to to the stylesheet
      */
+    @SuppressWarnings("unused")
     public void setStyleSheet(String path) {
         if(this.getClass().getResource(path)==null) {
             setStyleSheetExternal(path);
         } else {
-            stateController.setPathToStyleSheet(path,false);
+            stateController.setPathToStyleSheet(path);
             primaryStage.getScene().getStylesheets().clear();
             String css = this.getClass().getResource(path).toExternalForm();
             // defaultStyle = css;
@@ -545,24 +584,28 @@ public class GUI extends Application{
 
     /**
      * set the style sheet to a external file
-     * @param file a File not located in the resources
+     * @param path a path to a {@link File} not located in the resources
      */
+    @SuppressWarnings("unused")
     private void setStyleSheetExternal(String path) {
-        stateController.setPathToStyleSheet(path,true);
+        stateController.setPathToStyleSheet(path);
         primaryStage.getScene().getStylesheets().clear();
         String css =  "file:///" + path.replace("\\", "/");
         //defaultStyle = css;
         primaryStage.getScene().getStylesheets().add(css);
     }
 
+    @SuppressWarnings("unused")
     public Content getContent() {
         return content;
     }
 
+    @SuppressWarnings("unused")
     public StateController getStateController() {
         return stateController;
     }
 
+    @SuppressWarnings("unused")
     public BorderPane getFunctionsPane() {
         return functionsPane;
     }

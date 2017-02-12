@@ -3,9 +3,9 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
-import PushDownAutomatonSimulator.PushDownAutomaton;
-import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
+
+@SuppressWarnings("unused")
 public class Dummy_Grammar extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

@@ -5,6 +5,8 @@ import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import Print.Printer;
 
+
+@SuppressWarnings("unused")
 public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

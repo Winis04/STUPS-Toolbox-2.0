@@ -18,8 +18,8 @@ public class StateController {
 
     private boolean validWorkspace = true;
     
-    Content content;
-    GUI gui;
+    private final Content content;
+    private final GUI gui;
 
     private String path_to_workspace;
     private String path_to_stylesheet;
@@ -120,7 +120,7 @@ public class StateController {
 
 
 
-    public void initWorkspace() {
+    private void initWorkspace() {
         File ret = new File(path_to_workspace);
 
         if(gui.getCurrentDisplayPlugin() != null) {
@@ -177,7 +177,7 @@ public class StateController {
         }
     }
 
-    public void exitWorkspace() {
+    private void exitWorkspace() {
         if(validWorkspace) {
             String name_tmp = "STUPS_TOOLBOX_WORKSPACE_TMP";
             try {
@@ -232,11 +232,11 @@ public class StateController {
 
 
 
-    public void setPathToStyleSheet(String path, boolean isExternal) {
+    public void setPathToStyleSheet(String path) {
         this.path_to_stylesheet = path;
     }
 
-    public void setPath_to_workspace(String path_to_workspace) {
+    private void setPath_to_workspace(String path_to_workspace) {
         this.path_to_workspace = path_to_workspace;
     }
 

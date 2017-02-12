@@ -13,7 +13,8 @@ import java.util.Arrays;
  * @author Isabel
  * @since 26.10.2016
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarCYK extends CLIPlugin {
     private boolean errorFlag;
 

@@ -9,7 +9,8 @@ import Print.Printer;
  * @author fabian
  * @since 11.08.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class GrammarPrintPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

@@ -9,7 +9,8 @@ import Main.Storable;
  * @author fabian
  * @since 24.07.16
  */
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("unused")
 public class AutomatonRenameStatesPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
