@@ -1,0 +1,7 @@
+{'a', 'b', 'epsilon';'a', 'b', 'C', 'D', 'epsilon', 'F';z; z; 'F'}
+
+'z', 'epsilon', 'F' --> 'z', 'C', 'D'
+'z', 'epsilon', 'D' --> 'z', 'b'
+'z', 'epsilon', 'C' --> 'z', 'a'
+'z', 'a', 'a' --> 'z', 'epsilon'
+'z', 'b', 'b' --> 'z', 'epsilon'

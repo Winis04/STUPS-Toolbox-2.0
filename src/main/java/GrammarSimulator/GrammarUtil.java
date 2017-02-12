@@ -1002,7 +1002,8 @@ public class GrammarUtil {
         } else {
             Grammar grammar1 = GrammarUtil.removeCircles(grammar);
             Grammar grammar2 = GrammarUtil.removeUnitRules(GrammarUtil.findUnitRules(grammar1),grammar1);
-            return new Grammar(grammar2.getStartSymbol(),grammar2.getRules(),grammar2.getName(),grammar);
+            Grammar grammar3 = GrammarUtil.removeUnreachableNonterminals(grammar2);
+            return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),grammar);
         }
     }
 
@@ -1172,27 +1173,35 @@ public class GrammarUtil {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes,g);
 
         //add every rule of the child as a rule of the parent
-        HashSet<Rule> copies = new HashSet<>();
+
+        Grammar tmp = g;
         for (Node current : sorted) {
             for (Node child : current.getChildren()) {
-                g.getRules().stream()
-                        .filter(rule -> rule.getComingFrom().equals(child.getValue()))
-                        .forEach(rule -> {
-                            Rule copy = new Rule(current.getValue(), rule.getRightSide());
-                            copies.add(copy);
-                        });
+               tmp = removeOneUnitRule(current.getValue(),child.getValue(),tmp);
             }
         }
-       copies.addAll(g.getRules());
+
 
         //remove unit rules
         HashSet<Rule> freshRules = new HashSet<>();
-        copies.forEach(rule -> {
+        tmp.getRules().forEach(rule -> {
             if(rule.getRightSide().size()>1 || rule.getRightSide().get(0) instanceof Terminal) {
                 freshRules.add(rule);
             }
         });
-        return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
+        return new Grammar(tmp.getStartSymbol(),freshRules,tmp.getName(), (Grammar) g);
+    }
+
+    private static Grammar removeOneUnitRule(Nonterminal parent, Nonterminal child, Grammar grammar) {
+        HashSet<Rule> rules = new HashSet<>();
+        grammar.getRules().stream()
+                .filter(rule -> rule.getComingFrom().equals(child))
+                .forEach(rule -> {
+                    Rule copy = new Rule(parent,rule.getRightSide());
+                    rules.add(copy);
+                });
+        rules.addAll(grammar.getRules());
+        return new Grammar(grammar.getStartSymbol(),rules,grammar.getName(), (Grammar) grammar.getPreviousVersion());
     }
 
     /**
@@ -1952,6 +1961,33 @@ public class GrammarUtil {
                 rules.add(rule);
             }
         });
+        return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
+    }
+
+    public static Grammar removeUnreachable(Grammar g) {
+       HashSet<Nonterminal> reachable = new HashSet<>();
+        reachable.add(g.getStartSymbol());
+        Queue<Nonterminal> queue = new LinkedList<>();
+        queue.add(g.getStartSymbol());
+        while(!queue.isEmpty()) {
+            Nonterminal current = queue.poll();
+            g.getRules().stream()
+                    .filter(rule -> rule.getComingFrom().equals(current))
+                    .map(rule -> rule.getRightSide())
+                    .forEach(list -> {
+                        list.forEach(sym -> {
+                            if(sym instanceof Nonterminal && !queue.contains(sym) && !reachable.contains(sym)) {
+                                queue.add((Nonterminal) sym);
+                                reachable.add((Nonterminal) sym);
+                            }
+                        });
+                    });
+
+
+        }
+        Set<Rule> rules = g.getRules().stream()
+                .filter(rule -> reachable.contains(rule.getComingFrom()))
+                .collect(Collectors.toSet());
         return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
     }
 }

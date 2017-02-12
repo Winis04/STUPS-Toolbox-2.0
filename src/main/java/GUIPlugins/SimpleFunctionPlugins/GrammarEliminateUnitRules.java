@@ -22,7 +22,7 @@ public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
                     "remove circles",
                     "number the nonterminals and remove unit rules beginning by the highest number."};
             String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
-        //    Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar),point_descriptions,texts,"Eliminate Unit Rules");
+            Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar),point_descriptions,texts,"Eliminate Unit Rules");
             return GrammarUtil.eliminateUnitRules(grammar);
         }
         return grammar;

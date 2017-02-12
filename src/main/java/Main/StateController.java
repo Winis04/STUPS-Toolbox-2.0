@@ -186,7 +186,7 @@ public class StateController {
             try {
                 FileUtils.deleteDirectory(new File(name_tmp));
             } catch (IOException e) {
-                System.err.println("hurrdurrdurr");
+                System.err.println("something went wrong with restoring workspace!");
            //     e.printStackTrace();
             }
         }
