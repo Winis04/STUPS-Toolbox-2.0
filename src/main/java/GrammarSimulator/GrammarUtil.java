@@ -838,12 +838,13 @@ public class GrammarUtil {
             Grammar grammar1 = removeLambdaRules_StepTwo(gr, nullable, g);
             Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
             Grammar grammar3 = removeLambdaRules_StepThree(grammar2,true,g);
+            grammar3 = removeUnreachableNonterminals(grammar3);
            /** if(GrammarUtil.languageContainsLambda(g)) {
                 return specialRuleForEmptyWord(grammar3,g);
             } else {
                 return grammar3;
             } **/
-           return grammar3;
+           return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),g);
         }
     }
 
