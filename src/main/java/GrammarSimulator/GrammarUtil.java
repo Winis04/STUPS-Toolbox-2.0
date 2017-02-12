@@ -1509,6 +1509,13 @@ public class GrammarUtil {
      * @return true, if the language contains the given word
      */
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
+        if(word.isEmpty() || (word.size()==1 && word.get(0).equals(""))) {
+            if(GrammarUtil.languageContainsLambda(grammar)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         Grammar grammar1 = removeLambdaRules(grammar);
         Grammar grammar2 = eliminateUnitRules(grammar1);
         Grammar grammar3 = chomskyNormalForm(grammar2);
