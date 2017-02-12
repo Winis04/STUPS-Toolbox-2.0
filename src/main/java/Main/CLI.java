@@ -377,14 +377,7 @@ public class CLI {
     }
 
 
-    @SuppressWarnings("unused")
-    private String startAutoCompletion(String before) {
-        if(before.equals("gu")) {
-            return "gui";
-        } else {
-            return "";
-        }
-    }
+
    
 
 

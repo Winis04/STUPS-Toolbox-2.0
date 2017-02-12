@@ -8,7 +8,7 @@ import Main.Storable;
  * @author fabian
  * @since 15.06.16
  */
-public abstract class CLIPlugin implements Comparable{
+public abstract class CLIPlugin {
 
     /**
      * Returns the commands that execute this plugin.
@@ -67,13 +67,5 @@ public abstract class CLIPlugin implements Comparable{
      */
     public abstract boolean errorFlag();
 
-    @Override
-    public int compareTo(Object o) {
-        if(o instanceof CLIPlugin) {
-            CLIPlugin x = (CLIPlugin) o;
-           return this.getNames()[0].compareTo(x.getNames()[0]);
-        } else {
-            return -100;
-        }
-    }
+
 }
