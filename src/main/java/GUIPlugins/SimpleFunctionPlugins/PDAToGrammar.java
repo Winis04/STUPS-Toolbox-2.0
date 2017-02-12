@@ -57,7 +57,7 @@ public class PDAToGrammar extends SimpleFunctionPlugin {
 
     @Override
    public String getName() {
-        return "PDA to Grammar";
+        return "To Grammar";
     }
 
     @Override

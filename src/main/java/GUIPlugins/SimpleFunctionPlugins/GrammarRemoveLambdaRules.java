@@ -47,7 +47,7 @@ public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
 
     @Override
     public String getName() {
-        return "remove "+ GUI.nameOfNullSymbol + "-Rules";
+        return "Remove "+ GUI.nameOfNullSymbol + "-Rules";
     }
 
     @Override

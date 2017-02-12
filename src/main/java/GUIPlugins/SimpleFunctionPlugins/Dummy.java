@@ -19,7 +19,7 @@ public class Dummy extends SimpleFunctionPlugin {
 
     @Override
    public String getName() {
-        return "dummy";
+        return "Dummy";
     }
 
     @Override

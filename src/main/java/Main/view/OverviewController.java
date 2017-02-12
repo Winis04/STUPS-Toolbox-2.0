@@ -14,9 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
+import java.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -38,9 +40,9 @@ public class OverviewController {
 
     private Collection<SimpleFunctionPlugin> dynamicMenuContent;
 
+    Collator collator = Collator.getInstance(Locale.ENGLISH);
 
-    public static Comparator<Class> classComparator = (c1,c2) -> c1.getSimpleName().compareTo(c2.getName());
-
+    private Comparator<SimpleFunctionPlugin> sfpComparator = (x,y) -> collator.compare(x.getName().replaceAll(" ",""),y.getName().replaceAll(" ",""));
     private GUI gui;
 
     /**
@@ -53,7 +55,8 @@ public class OverviewController {
 
     public void initialize(GUI gui, Collection<SimpleFunctionPlugin> dynamicMenuContent) {
         this.gui=gui;
-        this.dynamicMenuContent=dynamicMenuContent;
+        this.dynamicMenuContent=dynamicMenuContent.stream().sorted(sfpComparator).collect(Collectors.toSet());
+       // this.dynamicMenuContent=dynamicMenuContent;
         makeTree();
     }
     /**

@@ -34,7 +34,7 @@ public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
 
     @Override
    public String getName() {
-        return "chomsky normal form";
+        return "Chomsky Normal Form";
     }
 
     @Override

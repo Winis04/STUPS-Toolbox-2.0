@@ -15,12 +15,13 @@ public class Simplify extends SimpleFunctionPlugin {
         }
         Grammar grammar = (Grammar) object;
         Grammar res = GrammarUtil.simplify(GrammarUtil.removeDeadEnds(GrammarUtil.removeUnreachableNonterminals(grammar)));
+        res= GrammarUtil.simplify(GrammarUtil.removeDeadEnds(GrammarUtil.removeUnreachableNonterminals(res)));
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),grammar);
     }
 
     @Override
     public String getName() {
-        return "simplify";
+        return "Simplify";
     }
 
     @Override

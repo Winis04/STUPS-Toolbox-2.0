@@ -18,7 +18,7 @@ public class Dummy_Grammar extends SimpleFunctionPlugin {
 
     @Override
    public String getName() {
-        return "dummy";
+        return "Dummy";
     }
 
     @Override

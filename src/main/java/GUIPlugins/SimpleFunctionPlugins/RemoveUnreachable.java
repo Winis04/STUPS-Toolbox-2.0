@@ -16,7 +16,7 @@ public class RemoveUnreachable extends SimpleFunctionPlugin {
 
     @Override
    public String getName() {
-        return "remove unreachable";
+        return "Remove Unreachable";
     }
 
     @Override

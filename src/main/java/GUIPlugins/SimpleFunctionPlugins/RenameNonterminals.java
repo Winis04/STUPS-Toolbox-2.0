@@ -4,19 +4,19 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 
-public class GrammarRemoveUnnecessaryNonterminals extends SimpleFunctionPlugin {
+public class RenameNonterminals extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         if(object != null) {
             Grammar grammar = (Grammar) object;
-            return GrammarUtil.removeDeadEnds(grammar);
+            return GrammarUtil.renameNonterminals(grammar);
         }
         return null;
     }
 
     @Override
    public String getName() {
-        return "remove dead ends";
+        return "Rename Nonterminals";
     }
 
     @Override
