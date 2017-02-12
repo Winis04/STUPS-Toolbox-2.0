@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A Tab for editing {@link Grammar}.
@@ -268,7 +269,14 @@ public class EditTab implements GrammarTab {
                        });
 
                        editItem.setOnAction(event1 -> {
-                           TextField field = new TextField(symbolString.toString());
+                           String tmp = symbolString.toString().chars().mapToObj(c -> {
+                               if(Character.toString((char) c).equals(Terminal.NULLSYMBOL.getDisplayName())) {
+                                   return "epsilon";
+                               } else {
+                                   return Character.toString((char) c);
+                               }
+                           }).collect(Collectors.joining(""));
+                           TextField field = new TextField(tmp);
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
