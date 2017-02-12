@@ -89,15 +89,19 @@ public final class Nonterminal implements Symbol, Printable {
 
 
 
-    private String makeValid(String name) {
+    public static String makeValid(String name) {
         StringBuilder res = new StringBuilder();
         String start = Character.toString(name.charAt(0));
         if(start.matches("[a-zA-Z_]")) {
             res.append(start);
+        } else {
+            res.append((int)name.charAt(0));
         }
         name.substring(1).chars().forEach(c -> {
             if(c=='_' || Character.toString((char) c).matches("(\\w)")) {
                 res.append((char) c);
+            } else {
+                res.append(c);
             }
         });
         return res.toString();

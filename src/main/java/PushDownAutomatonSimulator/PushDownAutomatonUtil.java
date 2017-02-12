@@ -260,7 +260,7 @@ public class PushDownAutomatonUtil {
             b = "epsilon";
         }
         if(!Nonterminal.validName(b)) {
-            b = "hash";
+            b=Nonterminal.makeValid(b);
         }
         String c = x.getName();
         return a+"_"+b+"_"+c;
