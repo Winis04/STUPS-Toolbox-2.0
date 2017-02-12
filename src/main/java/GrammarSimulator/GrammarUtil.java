@@ -821,9 +821,7 @@ public class GrammarUtil {
      * @return the modified grammar, that has no lambda-rules
      */
     public static Grammar removeLambdaRules(Grammar g) {
-        if(GrammarUtil.languageContainsLambda(g)) {
-            //do special Rule for empty word
-        }
+
         if(GrammarUtil.isLambdaFree(g)) {
             return g;
         } else {
@@ -1652,7 +1650,7 @@ public class GrammarUtil {
      * @return a grammar, where the special rule vor the empty word has been applied
      */
     private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
-        if(GrammarUtil.languageContainsLambda(g)) {
+        if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
             HashSet<Rule> freshRules = new HashSet<>();
             Nonterminal newNonterminal = new Nonterminal("S_0");
@@ -1738,11 +1736,14 @@ public class GrammarUtil {
      * @return true, if the grammar is lambda-free
      */
     public static boolean isLambdaFree(Grammar g) {
-        //true, if there is no rule A -> lambda with A != S
+        //true, if there is a rule A -> lambda with A != S
         boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
                 .allMatch(rule -> rule.getRightSide().stream().allMatch(symbol -> !symbol.equals(Terminal.NULLSYMBOL)));
-
-        return check1;
+        //true, if the language contains Lambda (startsymbol is nullable) and the startsymbol points on lambda and the startsymbol is not on any right Side
+        boolean check2 = GrammarUtil.languageContainsLambda(g) && GrammarUtil.startSymbolPointsOnLambda(g) && !GrammarUtil.startSymbolOnRightSide(g);
+        //true, if the language does not contain lambda
+        boolean check3 = !GrammarUtil.languageContainsLambda(g);
+        return check1 && (check2 || check3);
     }
 
     /**
