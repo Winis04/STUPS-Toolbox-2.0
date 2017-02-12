@@ -1600,16 +1600,19 @@ public class GrammarUtil {
 
 
         });
-        grammar.getTerminals().forEach(a -> {
-            State comingFrom = help.getStartState();
-            State goingTo = help.getStartState();
-            InputLetter readIn = new InputLetter(a.getName());
-            StackLetter oldTos = new StackLetter(a.getName());
-            ArrayList<StackLetter> newTos=new ArrayList<>();
-            newTos.add(StackLetter.NULLSYMBOL);
-            rules.add(new PDARule(comingFrom,goingTo,readIn,oldTos,newTos));
+        //for every a add (z0, a, a) -> (z0, lambda)
+        grammar.getTerminals().stream()
+                .filter(t -> !t.equals(Terminal.NULLSYMBOL))
+                .forEach(a -> {
+                    State comingFrom = help.getStartState();
+                    State goingTo = help.getStartState();
+                    InputLetter readIn = new InputLetter(a.getName());
+                    StackLetter oldTos = new StackLetter(a.getName());
+                    ArrayList<StackLetter> newTos=new ArrayList<>();
+                    newTos.add(StackLetter.NULLSYMBOL);
+                    rules.add(new PDARule(comingFrom,goingTo,readIn,oldTos,newTos));
 
-        });
+                });
         return rules;
     }
     private static List<StackLetter> calculateNewTos(List<Symbol> list) {
