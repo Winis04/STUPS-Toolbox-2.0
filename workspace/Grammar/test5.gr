@@ -1,11 +1,11 @@
-{'epsilon', 'a', 'b'; S, A, B; S}
+{'epsilon', 'a', 'b'; S, A, B, D, E, C; S}
 
 S --> 'epsilon'
-S --> 'A','B'
 S --> 'a'
-A --> 'A','B'
+S --> 'A', 'B'
 A --> 'a'
-A --> 'A'
 A --> 'b'
-B --> 'S','S'
+A --> 'A', 'B'
+A --> 'A'
 B --> 'b'
+B --> 'S', 'S'

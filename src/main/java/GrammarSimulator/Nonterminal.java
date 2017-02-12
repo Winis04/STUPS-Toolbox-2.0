@@ -28,12 +28,18 @@ public final class Nonterminal implements Symbol, Printable {
      * @param name The nonterminal's name.
      */
     public Nonterminal(String name) {
-        this.name = name;
+        if(!validName(name)) {
+            this.name = makeValid(name);
+        } else {
+            this.name = name;
+        }
     }
 
 
     @Override
     public String getName() {
+
+
         return name;
     }
 
@@ -74,6 +80,27 @@ public final class Nonterminal implements Symbol, Printable {
                 // if deriving: appendSuper(super.hashCode()).
                         append(name).
                         toHashCode();
+    }
+
+    public static boolean validName(String name) {
+
+        return name.matches("[a-zA-Z_](\\w*)");
+    }
+
+
+
+    private String makeValid(String name) {
+        StringBuilder res = new StringBuilder();
+        String start = Character.toString(name.charAt(0));
+        if(start.matches("[a-zA-Z_]")) {
+            res.append(start);
+        }
+        name.substring(1).chars().forEach(c -> {
+            if(c=='_' || Character.toString((char) c).matches("(\\w)")) {
+                res.append((char) c);
+            }
+        });
+        return res.toString();
     }
 
 }

@@ -254,7 +254,16 @@ public class PushDownAutomatonUtil {
     }
 
     private static String toNameOfNonterminal(State z, StackLetter A, State x) {
-        return "("+z.getName()+", "+A.getName()+", "+x.getName()+")";
+        String a = z.getName();
+        String b = A.getName();
+        if(b.equals(StackLetter.NULLSYMBOL.getName())) {
+            b = "epsilon";
+        }
+        if(!Nonterminal.validName(b)) {
+            b = "hash";
+        }
+        String c = x.getName();
+        return a+"_"+b+"_"+c;
     }
 
    public static PushDownAutomaton splitRules(PushDownAutomaton pda) {
