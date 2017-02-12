@@ -1,0 +1,13 @@
+{'epsilon', 'b', 'a'; S, z_S_z, z_z0_S_z0_z, z_z2_S_z0_z, z_z0_a_z0_z, z_z1_S_z0_z, z_z0_b_z0_z, z_b_z, z_a_z; S}
+
+S --> 'z_S_z'
+z_S_z --> 'z_z0_S_z0_z'
+z_z0_S_z0_z --> 'z_z2_S_z0_z','z_z0_a_z0_z'
+z_z0_S_z0_z --> 'z_z1_S_z0_z','z_z0_b_z0_z'
+z_z0_S_z0_z --> 'epsilon'
+z_z2_S_z0_z --> 'z_z0_a_z0_z','z_z0_S_z0_z'
+z_z0_a_z0_z --> 'z_a_z'
+z_z1_S_z0_z --> 'z_z0_b_z0_z','z_z0_S_z0_z'
+z_z0_b_z0_z --> 'z_b_z'
+z_b_z --> 'b'
+z_a_z --> 'a'

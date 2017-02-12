@@ -174,7 +174,7 @@ public class StateController {
                         });
                     }
                 });
-            } catch (IOException e1) {
+            } catch (IOException e) {
                 System.err.println("something went wrong with saving the current workspace! The old workspace is restored!");
                 FileUtils.copyDirectory(new File(name_tmp),new File(path_to_workspace));
                 FileUtils.deleteDirectory(new File(name_tmp));
@@ -186,7 +186,8 @@ public class StateController {
             try {
                 FileUtils.deleteDirectory(new File(name_tmp));
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("hurrdurrdurr");
+           //     e.printStackTrace();
             }
         }
 

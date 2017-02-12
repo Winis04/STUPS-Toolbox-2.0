@@ -1,0 +1,9 @@
+{'a', 'b', 'epsilon';'a', 'b', 'S', 'epsilon';z0, z1, z2; z0; 'S'}
+
+'z0', 'epsilon', 'S' --> 'z1', 'S', 'b'
+'z1', 'epsilon', 'S' --> 'z0', 'b', 'S'
+'z0', 'epsilon', 'S' --> 'z0', 'epsilon'
+'z0', 'epsilon', 'S' --> 'z2', 'S', 'a'
+'z2', 'epsilon', 'S' --> 'z0', 'a', 'S'
+'z0', 'a', 'a' --> 'z0', 'epsilon'
+'z0', 'b', 'b' --> 'z0', 'epsilon'
