@@ -37,8 +37,10 @@ public interface Storable {
     Storable otherName(String name);
 
     /**
+     *
      * prints the object in a certain form, so it can be saved in a file
      * @param path the path to the save file
+     * @throws IOException input/output Exception
      */
     @SuppressWarnings("unused")
     void printToSave(String path) throws IOException;

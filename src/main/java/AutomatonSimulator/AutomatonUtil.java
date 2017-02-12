@@ -508,6 +508,7 @@ public class AutomatonUtil {
      *
      * @param automaton The automaton.
      * @param fileName The filename.
+     * @throws IOException input/output Exception
      */
     public static void save(Automaton automaton, String fileName) throws IOException {
 

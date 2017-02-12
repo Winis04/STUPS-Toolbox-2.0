@@ -391,6 +391,7 @@ public class GrammarUtil {
      *
      * @param grammar The grammar.
      * @param fileName The filename.
+     * @throws IOException input/output Exception
      */
     @SuppressWarnings("unused")
     public static void save(Grammar grammar, String fileName) throws IOException {
