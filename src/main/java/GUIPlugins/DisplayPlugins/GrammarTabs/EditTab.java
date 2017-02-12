@@ -2,6 +2,7 @@ package GUIPlugins.DisplayPlugins.GrammarTabs;
 
 import GrammarSimulator.*;
 import Main.GUI;
+import Main.Storable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -90,11 +91,8 @@ public class EditTab implements GrammarTab {
 
                     addItem.setOnAction(event1 -> {
                         Grammar grammar1 = addRule(grammar);
-                        gui.refresh(grammar1);
-                       gui.getContent().getObjects().put(Grammar.class,grammar1);
-                       gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                        writeTopLabels(grammar1);
-                        writeRules(grammar1, editPane);
+                       refresh(grammar1);
+
                     });
 
                     mouseMenu.getItems().clear();
@@ -143,6 +141,18 @@ public class EditTab implements GrammarTab {
         }
     }
 
+    private void refresh(Storable storable) {
+        if(storable != null) {
+            Class clazz = storable.getClass();
+
+            gui.getContent().getObjects().put(clazz,storable); //add new object as the current object
+            gui.getContent().getStore().get(clazz).put(storable.getName(),storable); //add object to the store
+            gui.refresh(storable); //switch to new object
+            gui.refresh(); //refresh the treeView
+
+
+        }
+    }
     /**
      * Writes the grammar's rules on the editPane (which is positioned in the {@link #rootPane}'s center
      * and creates all EventHandlers, so the user can interact with the GUI.
@@ -190,11 +200,8 @@ public class EditTab implements GrammarTab {
 
                        deleteItem.setOnAction(event1 -> {
                            Grammar grammar1 = deleteNonTerminal(grammar, nonterminal);
-                           gui.refresh(grammar1);
-                          gui.getContent().getObjects().put(Grammar.class,grammar1);
-                          gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                           writeTopLabels(grammar1);
-                           writeRules(grammar1, editPane);
+                           refresh(grammar1);
+
                        });
 
                        editItem.setOnAction(event1 -> {
@@ -203,11 +210,8 @@ public class EditTab implements GrammarTab {
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
                                    Grammar grammar1= editSymbol(grammar, nonterminal.getName(), field.getText());
-                                   gui.refresh(grammar1);
-                                  gui.getContent().getObjects().put(Grammar.class,grammar1);
-                                  gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                                   writeTopLabels(grammar1);
-                                   writeRules(grammar1, editPane);
+                                   refresh(grammar1);
+
                                }
                            });
 
@@ -217,11 +221,8 @@ public class EditTab implements GrammarTab {
 
                        setAsStartSymbolItem.setOnAction(event1 -> {
                             Grammar grammar1 = new Grammar(nonterminal,grammar.getRules(),grammar.getName(), grammar);
-                           gui.refresh(grammar1);
-                          gui.getContent().getObjects().put(Grammar.class,grammar1);
-                          gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                           writeTopLabels(grammar1);
-                           writeRules(grammar1, editPane);
+                          refresh(grammar1);
+
                        });
 
                        mouseMenu.getItems().clear();
@@ -239,12 +240,9 @@ public class EditTab implements GrammarTab {
                                Grammar grammar1=grammar;
                                if(!field.getText().isEmpty()) {
                                   grammar1= editSymbol(grammar, oldName, field.getText());
-                                   gui.refresh(grammar1);
-                                  gui.getContent().getObjects().put(Grammar.class,grammar1);
-                                  gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
+                                 refresh(grammar1);
                                }
-                               writeTopLabels(grammar1);
-                               writeRules(grammar1, editPane);
+
                            }
                        });
 
@@ -262,11 +260,11 @@ public class EditTab implements GrammarTab {
 
                        deleteItem.setOnAction(event1 -> {
                            Grammar grammar1 = deleteRule(nonterminal, symbolString.toString(),grammar);
-                           gui.refresh(grammar1);
+                           refresh(grammar1);
+                          /** gui.refresh(grammar1);
                           gui.getContent().getObjects().put(Grammar.class,grammar1);
-                          gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                           writeTopLabels(grammar1);
-                           writeRules(grammar1, editPane);
+                          gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1); **/
+
                        });
 
                        editItem.setOnAction(event1 -> {
@@ -275,11 +273,8 @@ public class EditTab implements GrammarTab {
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
                                    Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
-                                   gui.refresh(grammar1);
-                                  gui.getContent().getObjects().put(Grammar.class,grammar1);
-                                  gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                                   writeTopLabels(grammar1);
-                                   writeRules(grammar1, editPane);
+                                  refresh(grammar1);
+
                                }
                            });
 
@@ -299,11 +294,9 @@ public class EditTab implements GrammarTab {
                        field.setOnKeyPressed(event1 -> {
                            if (event1.getCode().equals(KeyCode.ENTER)) {
                                Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
-                               gui.refresh(grammar1);
-                              gui.getContent().getObjects().put(Grammar.class,grammar1);
-                              gui.getContent().getStore().get(Grammar.class).put(grammar1.getName(),grammar1);
-                               writeTopLabels(grammar1);
-                               writeRules(grammar1, editPane);
+                             refresh(grammar1);
+
+
                            }
                        });
 
