@@ -91,7 +91,12 @@ public class GUI extends Application{
     /**
      * name of the null symbol
      */
-    public static String nameOfNullSymbol = "\u03B5";
+    public static String nameOfNullSymbol = "\u03BB";
+
+    public static String epsilon = "\u03B5";
+    public static String lambda = "\u03BB";
+
+
 
     // ArrayList<MenuItem> dynamicMenu = new ArrayList<>();
     /**

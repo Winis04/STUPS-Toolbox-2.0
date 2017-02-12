@@ -270,8 +270,11 @@ public class EditTab implements GrammarTab {
 
                        editItem.setOnAction(event1 -> {
                            String tmp = symbolString.toString().chars().mapToObj(c -> {
-                               if(Character.toString((char) c).equals(Terminal.NULLSYMBOL.getDisplayName())) {
+
+                               if(Character.toString((char) c).equals(GUI.epsilon)) {
                                    return "epsilon";
+                               } else if(Character.toString((char) c).equals(GUI.lambda)) {
+                                    return "lambda";
                                } else {
                                    return Character.toString((char) c);
                                }
@@ -297,7 +300,16 @@ public class EditTab implements GrammarTab {
                    } else if (event.getClickCount() == 2) {
                        //If the user double-clicks the symbol list, replace the label with a TextField,
                        //so that the user can edit it.
-                       TextField field = new TextField(symbolString.toString());
+                       String tmp = symbolString.toString().chars().mapToObj(c -> {
+                           if(Character.toString((char) c).equals(GUI.epsilon)) {
+                               return "epsilon";
+                           } else if(Character.toString((char) c).equals(GUI.lambda)) {
+                               return "lambda";
+                           } else {
+                               return Character.toString((char) c);
+                           }
+                       }).collect(Collectors.joining(""));
+                       TextField field = new TextField(tmp);
 
                        field.setOnKeyPressed(event1 -> {
                            if (event1.getCode().equals(KeyCode.ENTER)) {
@@ -535,12 +547,19 @@ public class EditTab implements GrammarTab {
                 String currentString = symbolsTokenizer.nextToken().trim();
                 if (!currentString.isEmpty()) {
                     if (grammar.getTerminals().contains(new Terminal(currentString))) {
-                        newList.add(new Terminal(currentString));
+                        if(currentString.equals("epsilon") || currentString.equals("lambda")) {
+                            newList.add(Terminal.NULLSYMBOL);
+                        } else {
+                            newList.add(new Terminal(currentString));
+                        }
                     } else if (grammar.getNonterminals().contains(new Nonterminal(currentString))) {
                         newList.add(new Nonterminal(currentString));
                     } else {
-                        Terminal newTerminal = new Terminal(currentString);
-                        newList.add(newTerminal);
+                        if(currentString.equals("epsilon") || currentString.equals("lambda")) {
+                            newList.add(Terminal.NULLSYMBOL);
+                        } else {
+                            newList.add(new Terminal(currentString));
+                        }
                     }
                 }
             }
