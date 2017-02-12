@@ -4,6 +4,8 @@ import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
 import Main.Storable;
 
+import java.io.IOException;
+
 /**
  * Saved an {@link Automaton} to a file, which can later be reloaded by this program.
  * @author fabian
@@ -42,7 +44,11 @@ public class AutomatonSavePlugin extends CLIPlugin {
             return null;
         }
         Automaton automaton = (Automaton) object;
-        AutomatonUtil.save(automaton, parameters[0]);
+        try {
+            AutomatonUtil.save(automaton, parameters[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

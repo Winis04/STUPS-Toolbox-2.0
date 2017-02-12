@@ -21,6 +21,7 @@ dependencies{
 	compile 'net.sf.jung:jung-api:2.1.1'
 	compile "junit:junit:4.12"
 	compile 'jline:jline:2.14.2'
+	compile 'org.apache.commons:commons-io:1.3.2'
 
 	
 	compile 'org.reflections:reflections:0.9.10'

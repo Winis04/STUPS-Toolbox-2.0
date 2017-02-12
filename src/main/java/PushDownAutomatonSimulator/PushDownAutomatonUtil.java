@@ -48,11 +48,11 @@ public class PushDownAutomatonUtil {
         return pda;
 
     }
-     public static void save(PushDownAutomaton pda, File file) {
+     public static void save(PushDownAutomaton pda, File file) throws IOException {
         save(pda,file.getAbsolutePath());
     }
-    public static void save(PushDownAutomaton pda, String fileName) {
-        try {
+    public static void save(PushDownAutomaton pda, String fileName) throws IOException {
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
             writer.write("{'");
@@ -82,9 +82,7 @@ public class PushDownAutomatonUtil {
             writer.close();
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 

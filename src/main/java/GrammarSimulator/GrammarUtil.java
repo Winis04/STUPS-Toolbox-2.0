@@ -379,8 +379,8 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @param fileName The filename.
      */
-    public static void save(Grammar grammar, String fileName) {
-        try {
+    public static void save(Grammar grammar, String fileName) throws IOException {
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
             writer.write("{");
@@ -396,9 +396,7 @@ public class GrammarUtil {
             writer.write("}\n\n");
 
             writeRules(writer, grammar);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**

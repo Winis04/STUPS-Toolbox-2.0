@@ -1,6 +1,7 @@
 package Main;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * An Interface, which has to be implemented by the classes that should be displayed and handled by this ToolBox.
@@ -35,7 +36,7 @@ public interface Storable {
      * prints the object in a certain form, so it can be saved in a file
      * @param path the path to the save file
      */
-    void printToSave(String path);
+    void printToSave(String path) throws IOException;
 
     /**
      * restores a Storable from a file

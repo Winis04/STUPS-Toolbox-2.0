@@ -6,6 +6,7 @@ import Print.Printer;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -112,7 +113,7 @@ public class PushDownAutomaton implements Printable, Storable{
 
 
     @Override
-    public void printToSave(String path) {
+    public void printToSave(String path) throws IOException {
         PushDownAutomatonUtil.save(this,path);
     }
 

@@ -7,6 +7,7 @@ import Print.Printer;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static java.util.stream.Collectors.joining;
@@ -206,8 +207,7 @@ public final class Grammar implements Printable, Storable {
     }
 
     @Override
-    public void printToSave(String path) {
-
+    public void printToSave(String path) throws IOException {
         GrammarUtil.save(this,path);
     }
 

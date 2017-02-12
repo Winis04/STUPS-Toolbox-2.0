@@ -4,6 +4,8 @@ import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
+import java.io.IOException;
+
 /**
  * Saves a {@link PushDownAutomaton} to a file.
  * @author Isabel
@@ -41,7 +43,11 @@ public class PDASavePlugin extends CLIPlugin{
                 return null;
             }
             PushDownAutomaton pda = (PushDownAutomaton) object;
-            PushDownAutomatonUtil.save(pda, parameters[0]);
+            try {
+                PushDownAutomatonUtil.save(pda, parameters[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 

@@ -280,7 +280,11 @@ public class RootController {
             PushDownAutomaton pda= (PushDownAutomaton) object;
             File file = gui.openFileToSave("PDA");
             if(file!=null) {
-                PushDownAutomatonUtil.save(pda, file);
+                try {
+                    PushDownAutomatonUtil.save(pda, file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

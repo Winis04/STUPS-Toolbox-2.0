@@ -4,6 +4,8 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 
+import java.io.IOException;
+
 /**
  * saves the current {@link Grammar} into a file.
  * @author fabian
@@ -42,7 +44,11 @@ public class GrammarSavePlugin extends CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        GrammarUtil.save(grammar, parameters[0]);
+        try {
+            GrammarUtil.save(grammar, parameters[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

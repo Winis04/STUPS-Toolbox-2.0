@@ -1,5 +1,7 @@
 package Main;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -134,10 +136,9 @@ public class StateController {
                         e.printStackTrace();
                     } catch (Exception e) {
                         System.err.println("error while restoring the workspace. A " + child.getName() + " is corrupt");
-                        e.printStackTrace();
+                     //   e.printStackTrace();
 
-                        File ptw = new File("path_to_workspace");
-                        ptw.delete();
+
                     }
                 }
             } else {
@@ -147,29 +148,45 @@ public class StateController {
     }
 
     public void exitWorkspace() {
-        deleteDirectory(new File(path_to_workspace));
 
-        File workspace= new File(path_to_workspace);
-        workspace.mkdir();
-        content.getStore().keySet().forEach(key -> {
-            if (!content.getStore().get(key).isEmpty()) {
-                File subDir = new File(path_to_workspace + key.getSimpleName());
-                if (!subDir.exists()) {
-                    subDir.mkdir();
+        try {
+            FileUtils.deleteDirectory(new File(path_to_workspace));
+            File workspace = new File(path_to_workspace);
+
+            workspace.mkdir();
+            content.getStore().keySet().forEach(key -> {
+                if (!content.getStore().get(key).isEmpty()) {
+                    File subDir = new File(path_to_workspace + key.getSimpleName());
+                    if (!subDir.exists()) {
+                        subDir.mkdir();
+                    }
+                    content.getStore().get(key).values().forEach(storable -> {
+                        String name = storable.getName();
+                        try {
+                            storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-                content.getStore().get(key).values().forEach(storable -> {
-                    String name = storable.getName();
-                    storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
-                });
-            }
-        });
+            });
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+
+
+
 
     }
+
+
     /**
      * deletes a directory and all files in it
      * @param file the directory, that should be deleted
      */
     private boolean deleteDirectory(File file) {
+
         boolean check = true;
         if(file.exists() && file.isDirectory()) {
             File[] list = file.listFiles();

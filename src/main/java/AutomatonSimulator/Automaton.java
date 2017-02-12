@@ -6,6 +6,7 @@ import Print.Printer;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -336,7 +337,7 @@ public class Automaton implements Printable, Storable {
 
 
     @Override
-    public void printToSave(String path) {
+    public void printToSave(String path) throws IOException {
         AutomatonUtil.save(this,path);
     }
 

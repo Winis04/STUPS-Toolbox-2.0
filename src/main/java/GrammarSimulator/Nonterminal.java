@@ -84,12 +84,13 @@ public final class Nonterminal implements Symbol, Printable {
 
     public static boolean validName(String name) {
 
-        return name.matches("[a-zA-Z_](\\w*)");
+       return name.matches("[a-zA-Z_](\\w*)");
     }
 
 
 
     public static String makeValid(String name) {
+
         StringBuilder res = new StringBuilder();
         String start = Character.toString(name.charAt(0));
         if(start.matches("[a-zA-Z_]")) {
@@ -105,6 +106,7 @@ public final class Nonterminal implements Symbol, Printable {
             }
         });
         return res.toString();
+
     }
 
 }

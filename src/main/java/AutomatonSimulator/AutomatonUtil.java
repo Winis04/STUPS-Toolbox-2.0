@@ -509,8 +509,8 @@ public class AutomatonUtil {
      * @param automaton The automaton.
      * @param fileName The filename.
      */
-    public static void save(Automaton automaton, String fileName) {
-        try {
+    public static void save(Automaton automaton, String fileName) throws IOException {
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
             writer.write("{");
@@ -527,9 +527,7 @@ public class AutomatonUtil {
             writeRules(writer, automaton);
 
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
     /**
      * Saves a given automaton to a .dot-file.
