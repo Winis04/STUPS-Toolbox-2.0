@@ -1277,16 +1277,19 @@ public class GrammarUtil {
         int big = 65;
         String randomName = Character.toString((char) big);
         Set<String> names = grammar.getNonterminals().stream().map(nt -> nt.getName()).collect(Collectors.toSet());
-
-        while(big < 90 && (names.contains(randomName) || excluded.contains(randomName))) {
-            big++;
-            randomName = Character.toString((char) big);
+        int counter = 1;
+        while(names.contains(randomName) || excluded.contains(randomName)) {
+            while(big<90 && (names.contains(randomName) || excluded.contains(randomName))) {
+                big++;
+                randomName = "";
+                for(int i=0;i<counter;i++) {
+                    randomName += Character.toString((char) big);
+                }
+            }
+            counter++;
+            big=64;
         }
-        if(big==90 && (names.contains(randomName) || excluded.contains(randomName))) {
-            return "CANTFINDAVALIDNAME";
-        } else {
-            return randomName;
-        }
+        return randomName;
     }
 
     /**
@@ -1362,7 +1365,7 @@ public class GrammarUtil {
         } else {
             name = "P_";
         }
-  
+
         HashSet<Rule> tmp = new HashSet<>();
         tmp.addAll(g.getRules());
         final int[] counter = {0};
@@ -1736,12 +1739,13 @@ public class GrammarUtil {
         for(Nonterminal nt : nts) {
             res=replaceNonterminal(res,nt,new Nonterminal(nt.getName()+"_xxxxx"));
         }
-        int i=0;
         char a = 'a';
-       nts = res.getNonterminals();
+        nts = res.getNonterminals();
+        HashSet<String> excluded = new HashSet<>();
         for(Nonterminal nt: nts) {
-            res=replaceNonterminal(res,nt,new Nonterminal(Character.toString((char) (65+i))));
-            i++;
+            String name = GrammarUtil.chooseName(res,excluded);
+            excluded.add(name);
+            res=replaceNonterminal(res,nt,new Nonterminal(name));
         }
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
     }
