@@ -9,9 +9,6 @@ import java.util.Stack;
 import static org.junit.Assert.assertEquals;
 
 
- * @since 14.01.2017
- */
-@SuppressWarnings("ALL")
 public class RunThroughInfoTest {
 
     @Test

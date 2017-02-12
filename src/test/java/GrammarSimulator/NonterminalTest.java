@@ -5,9 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
- * @since 14.01.2017
- */
-@SuppressWarnings("ALL")
 public class NonterminalTest {
     @Test
     public void equal() {

@@ -9,9 +9,7 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.assertTrue;
 
 
- * @since 27.12.2016
- */
-@SuppressWarnings("ALL")
+
 public class RuleTest {
     @Test
     public void copy() throws Exception {

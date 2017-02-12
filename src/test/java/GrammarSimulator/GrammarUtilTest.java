@@ -18,9 +18,6 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.*;
 
 
- * @since 14.01.2017
- */
-@SuppressWarnings("ALL")
 public class GrammarUtilTest {
 
     private List<File> files;
@@ -40,6 +37,14 @@ public class GrammarUtilTest {
             }
         });
 
+    }
+
+    @Test
+    public void randomName() {
+
+        int big = (int) ((90-65) * Math.random()+65);
+
+        System.out.println((char) big);
     }
 
     @Test

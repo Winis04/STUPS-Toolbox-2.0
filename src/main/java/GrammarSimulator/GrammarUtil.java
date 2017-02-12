@@ -1203,32 +1203,26 @@ public class GrammarUtil {
      * @return an arrayList of nodes in the right order
      */
     private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes, Grammar g) {
-        //find start node
-        Node start=null;
-        ArrayList<Node> result=new ArrayList<>();
-        for(Node node : nodes) {
-            if(node.getValue().equals(g.getStartSymbol())) {
-                start=node;
-            }
-        }
-
-        if(start!=null) {
-            // as long as some nodes have children with higher numbers, do the number-method
-            while(nodes.stream().
-                    anyMatch(node -> node.getChildren().stream().
-                            anyMatch(child -> child.getNumber()<=node.getNumber()))) {
-                GrammarUtil.number(start);
-            }
-        }
 
 
-        for(int i=nodes.size()-1;i>=0;i--) {
+        ArrayList<Node> result = new ArrayList<>();
+
+        // as long as some nodes have children with higher numbers, do the number-method
+        while(nodes.stream().
+                anyMatch(node -> node.getChildren().stream().
+                        anyMatch(child -> child.getNumber()<=node.getNumber()))) {
+            int j=0;
             for(Node node : nodes) {
-                if(node.getNumber()==i) {
-                    result.add(node);
-                }
+                   j=GrammarUtil.number(node,j);
             }
         }
+
+
+       nodes.stream().sorted((x,y) -> Integer.compare(y.getNumber(),x.getNumber()))
+               .forEach(node -> result.add(node));
+
+
+
         return result;
     }
 
@@ -1236,11 +1230,18 @@ public class GrammarUtil {
      * numbers the parent node and all children nodes with a higher number
      * @param node the parent node
      */
-    private static void number(Node node) {
+    private static int number(Node node, int max) {
+        node.setNumber(max+1);
         if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
+
             node.getChildren().forEach(child -> child.setNumber(node.getNumber() + 1));
         }
-        node.getChildren().forEach(GrammarUtil::number);
+        OptionalInt res=node.getChildren().stream().mapToInt(child -> number(child,max+2)).max();
+        if(res.isPresent()) {
+            return res.getAsInt();
+        } else {
+            return max+2;
+        }
     }
 
     /*
@@ -1270,6 +1271,10 @@ public class GrammarUtil {
         res.add(grammar1);
         res.add(grammar2);
         return res;
+    }
+
+    public static Grammar chooseRandomName(Grammar grammar) {
+        return null;
     }
 
     /**
