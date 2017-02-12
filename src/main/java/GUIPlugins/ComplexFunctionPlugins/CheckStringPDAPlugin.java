@@ -3,7 +3,12 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
-import PushDownAutomatonSimulator.*;
+import PushDownAutomatonSimulator.InputLetter;
+import PushDownAutomatonSimulator.PDARule;
+import PushDownAutomatonSimulator.PushDownAutomaton;
+import PushDownAutomatonSimulator.PushDownAutomatonUtil;
+import PushDownAutomatonSimulator.RunThroughInfo;
+import PushDownAutomatonSimulator.StackLetter;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,7 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 import static java.util.stream.Collectors.joining;
 

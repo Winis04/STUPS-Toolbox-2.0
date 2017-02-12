@@ -5,20 +5,25 @@ import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
 import Main.GUI;
-
-import edu.uci.ics.jung.algorithms.layout.*;
+import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
+import edu.uci.ics.jung.algorithms.layout.KKLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.control.*;
+import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse.Mode;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-
+import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -169,15 +174,15 @@ public class AutomatonGUI implements DisplayPlugin {
     @Override
     public Node display(Object object) {
         //Cast object to an automaton and create the JUNG-graph.
-        automaton = (Automaton) object;
-        parseAutomatonToGraph();
+        this.automaton = (Automaton) object;
+        this.parseAutomatonToGraph();
 
         //Create a new layout and initialize visualizationViewer.
-        Layout<String, Integer> layout = new KKLayout<>(graph);
-        visualizationViewer = new VisualizationViewer<>(layout);
+        Layout<String, Integer> layout = new KKLayout<>(this.graph);
+        this.visualizationViewer = new VisualizationViewer<>(layout);
 
         //Set the shape of states to a circle with a radius of 30 pixels.
-        visualizationViewer.getRenderContext().setVertexShapeTransformer(s -> {
+        this.visualizationViewer.getRenderContext().setVertexShapeTransformer(s -> {
             int diameter = 30;
             if(s!=null && s.length() > 4) {
                 diameter += 8 * (s.length() - 4);
@@ -186,7 +191,7 @@ public class AutomatonGUI implements DisplayPlugin {
         });
 
         //Tell visualizationViewer how to draw a state.
-        visualizationViewer.getRenderContext().setVertexIconTransformer(name -> new Icon() {
+        this.visualizationViewer.getRenderContext().setVertexIconTransformer(name -> new Icon() {
             @SuppressWarnings("unused")
             private int calculateDiameter(int standardDiameter) {
                 if(name != null && name.length() > 4) {
@@ -199,23 +204,23 @@ public class AutomatonGUI implements DisplayPlugin {
             @SuppressWarnings("unused")
             @Override
             public void paintIcon(Component c, Graphics g, int x, int y) {
-                int diameter = calculateDiameter(30);
+                int diameter = this.calculateDiameter(30);
 
                 g.setColor(Color.black);
                 g.drawOval(x, y, diameter, diameter);
 
                 //If it is a final state, draw a circle with a 10 pixels wider diameter around the first circle.
-                if (stateMap.get(name).isFinal()) {
+                if (AutomatonGUI.this.stateMap.get(name).isFinal()) {
                     g.drawOval(x - 5, y - 5, diameter + 10, diameter + 10);
                 }
 
                 //Set the fill color.
-                Color color = stateColor;
-                if(stateMap.get(name).isStart()) {
-                    color = startStateColor;
+                Color color = AutomatonGUI.this.stateColor;
+                if(AutomatonGUI.this.stateMap.get(name).isStart()) {
+                    color = AutomatonGUI.this.startStateColor;
                 }
-                if(stateMap.get(name).equals(activeState)) {
-                    color = markingColor;
+                if(AutomatonGUI.this.stateMap.get(name).equals(AutomatonGUI.this.activeState)) {
+                    color = AutomatonGUI.this.markingColor;
                 }
 
                 //Fill the circle.
@@ -226,26 +231,26 @@ public class AutomatonGUI implements DisplayPlugin {
             @SuppressWarnings("unused")
             @Override
             public int getIconWidth() {
-                return calculateDiameter(30);
+                return this.calculateDiameter(30);
             }
 
             @SuppressWarnings("unused")
             @Override
             public int getIconHeight() {
-                return calculateDiameter(30);
+                return this.calculateDiameter(30);
             }
         });
 
         //Tell visualizationViewer how to label the states.
         //In this case, the graph's vertices are just the states' names, so it should just printEnumeration strings.
         //This is automatically handled by a ToStringLabeller.
-        visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+        this.visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 
         //Tell visualizationViewer how to label the rules.
-        visualizationViewer.getRenderContext().setEdgeLabelTransformer(integer -> {
+        this.visualizationViewer.getRenderContext().setEdgeLabelTransformer(integer -> {
             //Go through all input, that the rule accepts and concatenate them to a string.
             String label = "";
-            for (String string : ruleMap.get(integer).getAcceptedInputs()) {
+            for (String string : this.ruleMap.get(integer).getAcceptedInputs()) {
                 label += string + ",";
             }
 
@@ -255,21 +260,21 @@ public class AutomatonGUI implements DisplayPlugin {
 
         //Tell visualizationViewer where to draw the states' names.
         //In this case, they will be positioned in the center of the circles, that represent the states.
-        visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position.CNTR);
+        this.visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
 
         //Tell visualizationViewer which color to use to draw the rules.
-        visualizationViewer.getRenderContext().setEdgeDrawPaintTransformer(number -> {
-            if(ruleMap.get(number).equals(activeRule)) {
-                return markingColor;
+        this.visualizationViewer.getRenderContext().setEdgeDrawPaintTransformer(number -> {
+            if(this.ruleMap.get(number).equals(this.activeRule)) {
+                return this.markingColor;
             }
-            return ruleColor;
+            return this.ruleColor;
         });
 
         //Initialize the mouse and set it to be used by the visualizationViewer.
         AbstractModalGraphMouse mouse = new DefaultModalGraphMouse();
-        mouse.setMode(ModalGraphMouse.Mode.PICKING);
+        mouse.setMode(Mode.PICKING);
         mouse.add(new MenuMousePlugin());
-        visualizationViewer.setGraphMouse(mouse);
+        this.visualizationViewer.setGraphMouse(mouse);
 
         //Build the GUI
         BorderPane pane = new BorderPane();
@@ -281,13 +286,13 @@ public class AutomatonGUI implements DisplayPlugin {
         pickingButton.setStyle("-fx-underline: true");
 
         pickingButton.setOnAction(event -> {
-            mouse.setMode(ModalGraphMouse.Mode.PICKING);
+            mouse.setMode(Mode.PICKING);
             pickingButton.setStyle("-fx-underline: true");
             transformingButton.setStyle("-fx-underline: false");
         });
 
         transformingButton.setOnAction(event -> {
-            mouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+            mouse.setMode(Mode.TRANSFORMING);
             pickingButton.setStyle("-fx-underline: false");
             transformingButton.setStyle("-fx-underline: true");
         });
@@ -297,33 +302,17 @@ public class AutomatonGUI implements DisplayPlugin {
         buttonPane.getChildren().addAll(mouseLabel, pickingButton, transformingButton);
 
         GridPane infoPane = new GridPane();
-        isEpsilonFreeBox = new CheckBox("Epsilon Free") {
-            @SuppressWarnings("unused")
-            @Override
-            public void arm() {}
-        };
-        isDFABox = new CheckBox("DFA") {
-            @SuppressWarnings("unused")
-            @Override
-            public void arm() {}
-        };
-        isCompleteBox = new CheckBox("Complete") {
-            @SuppressWarnings("unused")
-            @Override
-            public void arm() {}
-        };
-        isMinimalBox = new CheckBox("Minimal") {
-            @SuppressWarnings("unused")
-            @Override
-            public void arm() {}
-        };
+        isEpsilonFreeBox = new MyCheckBox();
+        isDFABox = new MyCheckBox();
+        isCompleteBox = new MyCheckBox();
+        isMinimalBox = new MyCheckBox();
 
-        refreshCheckBoxes();
+        this.refreshCheckBoxes();
 
-        infoPane.addColumn(0, isEpsilonFreeBox);
-        infoPane.addColumn(1, isDFABox);
-        infoPane.addColumn(2, isCompleteBox);
-        infoPane.addColumn(3, isMinimalBox);
+        infoPane.addColumn(0, this.isEpsilonFreeBox);
+        infoPane.addColumn(1, this.isDFABox);
+        infoPane.addColumn(2, this.isCompleteBox);
+        infoPane.addColumn(3, this.isMinimalBox);
         infoPane.setHgap(20);
 
         GridPane bottomPane = new GridPane();
@@ -331,7 +320,7 @@ public class AutomatonGUI implements DisplayPlugin {
         bottomPane.addColumn(1, infoPane);
 
         SwingNode swingNode = new SwingNode();
-        swingNode.setContent(visualizationViewer);
+        swingNode.setContent(this.visualizationViewer);
 
         pane.setCenter(swingNode);
         pane.setBottom(bottomPane);
@@ -342,12 +331,12 @@ public class AutomatonGUI implements DisplayPlugin {
     @SuppressWarnings("unused")
     @Override
     public Node refresh(Object object) {
-        automaton = (Automaton) object;
-        this.display(automaton);
-        parseAutomatonToGraph();
-        visualizationViewer.repaint();
-        refreshCheckBoxes();
-        return this.display(object);
+        this.automaton = (Automaton) object;
+        display(this.automaton);
+        this.parseAutomatonToGraph();
+        this.visualizationViewer.repaint();
+        this.refreshCheckBoxes();
+        return display(object);
     }
 
     @SuppressWarnings("unused")
@@ -380,26 +369,26 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     private void parseAutomatonToGraph() {
-        for(int i = 0; i < graph.getEdges().size(); i++) {
-            graph.removeEdge(i);
-            edgeCount = 0;
+        for(int i = 0; i < this.graph.getEdges().size(); i++) {
+            this.graph.removeEdge(i);
+            this.edgeCount = 0;
         }
-        Object array[] = graph.getVertices().toArray();
+        Object array[] = this.graph.getVertices().toArray();
         for(Object s : array) {
-            graph.removeVertex((String)s);
+            this.graph.removeVertex((String)s);
         }
 
-        ruleMap = new HashMap<>();
-        stateMap = new HashMap<>();
-        for (State state : automaton.getStates()) {
-            graph.addVertex(state.getName());
+        this.ruleMap = new HashMap<>();
+        this.stateMap = new HashMap<>();
+        for (State state : this.automaton.getStates()) {
+            this.graph.addVertex(state.getName());
         }
-        for (State state : automaton.getStates()) {
-            stateMap.put(state.getName(), state);
+        for (State state : this.automaton.getStates()) {
+            this.stateMap.put(state.getName(), state);
             for (Rule rule : state.getRules()) {
-                ruleMap.put(edgeCount, rule);
-                graph.addEdge(edgeCount, state.getName(), rule.getGoingTo().getName(), EdgeType.DIRECTED);
-                edgeCount++;
+                this.ruleMap.put(this.edgeCount, rule);
+                this.graph.addEdge(this.edgeCount, state.getName(), rule.getGoingTo().getName(), EdgeType.DIRECTED);
+                this.edgeCount++;
             }
         }
     }
@@ -409,18 +398,28 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     private void refreshCheckBoxes() {
-        boolean isEpsilonFree = AutomatonUtil.isEpsilonFree(automaton);
-        boolean isDFA = AutomatonUtil.isDFA(automaton);
-        boolean isComplete = AutomatonUtil.isComplete(automaton);
+        boolean isEpsilonFree = AutomatonUtil.isEpsilonFree(this.automaton);
+        boolean isDFA = AutomatonUtil.isDFA(this.automaton);
+        boolean isComplete = AutomatonUtil.isComplete(this.automaton);
         boolean isMinimal = false;
         if(isComplete) {
-            isMinimal = AutomatonUtil.isMinimal(automaton);
+            isMinimal = AutomatonUtil.isMinimal(this.automaton);
         }
 
-        isEpsilonFreeBox.setSelected(isEpsilonFree);
-        isDFABox.setSelected(isDFA);
-        isCompleteBox.setSelected(isComplete);
-        isMinimalBox.setSelected(isMinimal);
+        this.isEpsilonFreeBox.setSelected(isEpsilonFree);
+        this.isDFABox.setSelected(isDFA);
+        this.isCompleteBox.setSelected(isComplete);
+        this.isMinimalBox.setSelected(isMinimal);
+    }
+
+    private static class MyCheckBox extends CheckBox {
+        public MyCheckBox() {
+            super("Epsilon Free");
+        }
+
+        @SuppressWarnings("unused")
+        @Override
+        public void arm() {}
     }
 
     /**
@@ -460,8 +459,8 @@ public class AutomatonGUI implements DisplayPlugin {
 
                             //If the user entered a name, change the state's name and repaint the graph.
                             if(result.isPresent()) {
-                                stateMap.get(state).setName(result.get());
-                                parseAutomatonToGraph();
+                                AutomatonGUI.this.stateMap.get(state).setName(result.get());
+                                AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
                             }
                         });
@@ -475,7 +474,7 @@ public class AutomatonGUI implements DisplayPlugin {
                     public void actionPerformed(ActionEvent e) {
 
                         //If the chosen state is a start state, open a dialog, which forces the user to choose a new start state.
-                        if(stateMap.get(state).isStart()) {
+                        if(AutomatonGUI.this.stateMap.get(state).isStart()) {
                             Platform.runLater(() -> {
                                 Dialog<String> dialog = new Dialog<>();
                                 dialog.setTitle("STUPS-Toolbox");
@@ -484,7 +483,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
                                 FlowPane pane = new FlowPane();
                                 ComboBox<String> comboBox = new ComboBox<>();
-                                comboBox.getItems().addAll(stateMap.keySet());
+                                comboBox.getItems().addAll(AutomatonGUI.this.stateMap.keySet());
                                 comboBox.getItems().remove(state);
                                 comboBox.getSelectionModel().select(0);
 
@@ -496,50 +495,50 @@ public class AutomatonGUI implements DisplayPlugin {
 
                                 Optional<String> result = dialog.showAndWait();
                                 if(result.isPresent()) {
-                                    stateMap.get(result.get()).setStart(true);
-                                    automaton.setStartState(stateMap.get(result.get()));
+                                    AutomatonGUI.this.stateMap.get(result.get()).setStart(true);
+                                    AutomatonGUI.this.automaton.setStartState(AutomatonGUI.this.stateMap.get(result.get()));
                                 }
                             });
                         }
 
                         //Delete all rules, that point to the state, that should be deleted.
-                        for(State state1 : automaton.getStates()) {
+                        for(State state1 : AutomatonGUI.this.automaton.getStates()) {
                             ArrayList<Rule> copyRules = new ArrayList<>(state1.getRules());
                             copyRules.stream().filter(rule1 -> rule1.getGoingTo().getName().equals(state)).forEachOrdered(rule1 -> state1.getRules().remove(rule1));
                         }
 
                         //Delete the chosen state and repaint the graph.
-                        automaton.getStates().remove(stateMap.get(state));
-                        parseAutomatonToGraph();
+                        AutomatonGUI.this.automaton.getStates().remove(AutomatonGUI.this.stateMap.get(state));
+                        AutomatonGUI.this.parseAutomatonToGraph();
                         visualizationViewer.repaint();
-                        refreshCheckBoxes();
+                        AutomatonGUI.this.refreshCheckBoxes();
                     }
                 });
 
                 //If the chosen state is not a start state, give the user the option to mark it as one.
-                if(!automaton.getStartState().getName().equals(state)) {
+                if(!AutomatonGUI.this.automaton.getStartState().getName().equals(state)) {
                     menu.add(new AbstractAction("Set as Start State") {
                         @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            automaton.getStartState().setStart(false);
-                            stateMap.get(state).setStart(true);
-                            automaton.setStartState(stateMap.get(state));
+                            AutomatonGUI.this.automaton.getStartState().setStart(false);
+                            AutomatonGUI.this.stateMap.get(state).setStart(true);
+                            AutomatonGUI.this.automaton.setStartState(AutomatonGUI.this.stateMap.get(state));
                             visualizationViewer.repaint();
-                            refreshCheckBoxes();
+                            AutomatonGUI.this.refreshCheckBoxes();
                         }
                     });
                 }
 
                 //If the chosen state is not a final state, give the user the option to mark it as one.
-                if(!stateMap.get(state).isFinal()) {
+                if(!AutomatonGUI.this.stateMap.get(state).isFinal()) {
                     menu.add(new AbstractAction("Set as Final State") {
                         @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            stateMap.get(state).setFinal(true);
+                            AutomatonGUI.this.stateMap.get(state).setFinal(true);
                             visualizationViewer.repaint();
-                            refreshCheckBoxes();
+                            AutomatonGUI.this.refreshCheckBoxes();
                         }
                     });
                 } else {
@@ -548,9 +547,9 @@ public class AutomatonGUI implements DisplayPlugin {
                         @SuppressWarnings("unused")
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            stateMap.get(state).setFinal(false);
+                            AutomatonGUI.this.stateMap.get(state).setFinal(false);
                             visualizationViewer.repaint();
-                            refreshCheckBoxes();
+                            AutomatonGUI.this.refreshCheckBoxes();
                         }
                     });
                 }
@@ -593,22 +592,22 @@ public class AutomatonGUI implements DisplayPlugin {
                             //If the user entered something in every TextField, check if the entered state exists,
                             //add the rule to the selected state and repaint the graph.
                             if(result.isPresent() && result.get()[0].length() > 0 && result.get()[1].length() > 0) {
-                                if(!stateMap.containsKey(result.get()[0])) {
+                                if(!AutomatonGUI.this.stateMap.containsKey(result.get()[0])) {
                                     State newState = new State(result.get()[0], false, false, new HashSet<>());
-                                    automaton.getStates().add(newState);
-                                    stateMap.put(result.get()[0], newState);
+                                    AutomatonGUI.this.automaton.getStates().add(newState);
+                                    AutomatonGUI.this.stateMap.put(result.get()[0], newState);
                                 }
                                 HashSet<String> acceptedInputs = new HashSet<>();
                                 StringTokenizer tokenizer = new StringTokenizer(result.get()[1], ",");
                                 while(tokenizer.hasMoreElements()) {
                                     acceptedInputs.add(tokenizer.nextToken().replaceAll(" ", ""));
                                 }
-                                stateMap.get(state).getRules().add(new Rule(stateMap.get(result.get()[0]), acceptedInputs));
-                                parseAutomatonToGraph();
+                                AutomatonGUI.this.stateMap.get(state).getRules().add(new Rule(AutomatonGUI.this.stateMap.get(result.get()[0]), acceptedInputs));
+                                AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
-                                refreshCheckBoxes();
+                                AutomatonGUI.this.refreshCheckBoxes();
                             } else {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("STUPS-Toolbox");
                                 alert.setHeaderText("Please fill in all fields!");
                                 alert.showAndWait();
@@ -629,7 +628,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         //Open a dialog, which asks the user for the new set of inputs,
                         //change the the inputs of the rule to those and repaint the graph.
                         Platform.runLater(() -> {
-                            TextInputDialog dialog = new TextInputDialog(ruleMap.get(rule).getAcceptedInputs().toString().replace("[", "").replace("]", ""));
+                            TextInputDialog dialog = new TextInputDialog(AutomatonGUI.this.ruleMap.get(rule).getAcceptedInputs().toString().replace("[", "").replace("]", ""));
                             dialog.setTitle("STUPS-Toolbox");
                             dialog.setHeaderText("Please enter the new inputs for the selected rule!");
                             dialog.setContentText("Inputs: ");
@@ -640,11 +639,11 @@ public class AutomatonGUI implements DisplayPlugin {
                                 while(tokenizer.hasMoreElements()) {
                                     acceptedInputs.add(tokenizer.nextToken().replaceAll(" ", ""));
                                 }
-                                ruleMap.get(rule).getAcceptedInputs().clear();
-                                ruleMap.get(rule).getAcceptedInputs().addAll(acceptedInputs);
-                                parseAutomatonToGraph();
+                                AutomatonGUI.this.ruleMap.get(rule).getAcceptedInputs().clear();
+                                AutomatonGUI.this.ruleMap.get(rule).getAcceptedInputs().addAll(acceptedInputs);
+                                AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
-                                refreshCheckBoxes();
+                                AutomatonGUI.this.refreshCheckBoxes();
                             }
                         });
                     }
@@ -655,12 +654,12 @@ public class AutomatonGUI implements DisplayPlugin {
                     @SuppressWarnings("unused")
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        for(State state : automaton.getStates()) {
-                            state.getRules().remove(ruleMap.get(rule));
+                        for(State state : AutomatonGUI.this.automaton.getStates()) {
+                            state.getRules().remove(AutomatonGUI.this.ruleMap.get(rule));
                         }
-                        parseAutomatonToGraph();
+                        AutomatonGUI.this.parseAutomatonToGraph();
                         visualizationViewer.repaint();
-                        refreshCheckBoxes();
+                        AutomatonGUI.this.refreshCheckBoxes();
                     }
                 });
             }
@@ -683,8 +682,8 @@ public class AutomatonGUI implements DisplayPlugin {
 
                             //If the user has entered something, create the new state and repaint the graph.
                             if(result.isPresent()) {
-                                automaton.getStates().add(new State(result.get(), false, false, new HashSet<>()));
-                                parseAutomatonToGraph();
+                                AutomatonGUI.this.automaton.getStates().add(new State(result.get(), false, false, new HashSet<>()));
+                                AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
                             }
                         });
@@ -731,27 +730,27 @@ public class AutomatonGUI implements DisplayPlugin {
                             //add the rule to the given state and repaint the graph.
                             Optional<String[]> result = dialog.showAndWait();
                             if(result.isPresent() && result.get()[0].length() > 0 && result.get()[1].length() > 0 && result.get()[2].length() > 0) {
-                                if(!stateMap.containsKey(result.get()[0])) {
+                                if(!AutomatonGUI.this.stateMap.containsKey(result.get()[0])) {
                                     State newState = new State(result.get()[0], false, false, new HashSet<>());
-                                    automaton.getStates().add(newState);
-                                    stateMap.put(result.get()[0], newState);
+                                    AutomatonGUI.this.automaton.getStates().add(newState);
+                                    AutomatonGUI.this.stateMap.put(result.get()[0], newState);
                                 }
-                                if(!stateMap.containsKey(result.get()[1])) {
+                                if(!AutomatonGUI.this.stateMap.containsKey(result.get()[1])) {
                                     State newState = new State(result.get()[1], false, false, new HashSet<>());
-                                    automaton.getStates().add(newState);
-                                    stateMap.put(result.get()[1], newState);
+                                    AutomatonGUI.this.automaton.getStates().add(newState);
+                                    AutomatonGUI.this.stateMap.put(result.get()[1], newState);
                                 }
                                 HashSet<String> acceptedInputs = new HashSet<>();
                                 StringTokenizer tokenizer = new StringTokenizer(result.get()[2], ",");
                                 while(tokenizer.hasMoreElements()) {
                                     acceptedInputs.add(tokenizer.nextToken().replaceAll(" ", ""));
                                 }
-                                stateMap.get(result.get()[0]).getRules().add(new Rule(stateMap.get(result.get()[1]), acceptedInputs));
-                                parseAutomatonToGraph();
+                                AutomatonGUI.this.stateMap.get(result.get()[0]).getRules().add(new Rule(AutomatonGUI.this.stateMap.get(result.get()[1]), acceptedInputs));
+                                AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
-                                refreshCheckBoxes();
+                                AutomatonGUI.this.refreshCheckBoxes();
                             } else {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("STUPS-Toolbox");
                                 alert.setHeaderText("Please fill in all fields!");
                                 alert.showAndWait();
@@ -759,7 +758,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         });
                     }
                 });
-                if(!gui.getCli().storeContains(automaton,Automaton.class)) {
+                if(!AutomatonGUI.this.gui.getCli().storeContains(AutomatonGUI.this.automaton,Automaton.class)) {
                     menu.add(new AbstractAction("Store") {
                         @SuppressWarnings("unused")
                         @Override
@@ -771,7 +770,7 @@ public class AutomatonGUI implements DisplayPlugin {
                                 Optional<String> result = dialog.showAndWait();
                                 result.ifPresent(name -> {
                                     // gui.getContentController().getObjects().put(Grammar.class,grammar);
-                                    gui.addToStore(automaton, Automaton.class, name);
+                                    AutomatonGUI.this.gui.addToStore(AutomatonGUI.this.automaton, Automaton.class, name);
                                 });
                             });
 
@@ -790,7 +789,7 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     public HashMap<Integer, Rule> getRuleMap() {
-        return ruleMap;
+        return this.ruleMap;
     }
 
     /**
@@ -800,7 +799,7 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     public HashMap<String, State> getStateMap() {
-        return stateMap;
+        return this.stateMap;
     }
 
     /**
@@ -811,7 +810,7 @@ public class AutomatonGUI implements DisplayPlugin {
     @SuppressWarnings("unused")
     public void setActiveRule(Rule activeRule) {
         this.activeRule = activeRule;
-        visualizationViewer.repaint();
+        this.visualizationViewer.repaint();
     }
 
     /**
@@ -822,7 +821,7 @@ public class AutomatonGUI implements DisplayPlugin {
     @SuppressWarnings("unused")
     public void setActiveState(State activeState) {
         this.activeState = activeState;
-        visualizationViewer.repaint();
+        this.visualizationViewer.repaint();
     }
 
     /**
@@ -832,7 +831,7 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     public Graph<String, Integer> getGraph() {
-        return graph;
+        return this.graph;
     }
 
     /**
@@ -842,12 +841,12 @@ public class AutomatonGUI implements DisplayPlugin {
      */
     @SuppressWarnings("unused")
     public VisualizationViewer<String, Integer> getVisualizationViewer() {
-        return visualizationViewer;
+        return this.visualizationViewer;
     }
 
     @SuppressWarnings("unused")
     @Override
     public GUI getGUI() {
-        return gui;
+        return this.gui;
     }
 }

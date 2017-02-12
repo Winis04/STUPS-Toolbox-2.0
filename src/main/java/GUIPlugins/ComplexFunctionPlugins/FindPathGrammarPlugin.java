@@ -3,7 +3,11 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
-import GrammarSimulator.*;
+import GrammarSimulator.Configuration;
+import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
+import GrammarSimulator.Symbol;
+import GrammarSimulator.Terminal;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
