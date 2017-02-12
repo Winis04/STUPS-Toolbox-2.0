@@ -66,6 +66,21 @@ public class StateController {
         }
     }
 
+    public boolean switchWorkspace(File newWorkspace) {
+        if (newWorkspace != null && isValidWorkspace(newWorkspace)) {
+            gui.getStateController().exitWorkspace();
+            String path = newWorkspace.getAbsolutePath();
+            if (!path.endsWith("/") && !path.endsWith("\\")) {
+                path += "/";
+            }
+            gui.getStateController().setPath_to_workspace(path);
+            gui.getStateController().initWorkspace();
+            gui.refresh();
+            return true;
+        } else {
+            return false;
+        }
+    }
     private void initContent() {
         content.init();
     }
@@ -94,6 +109,17 @@ public class StateController {
 
 
     }
+
+    private boolean isValidWorkspace(File file) {
+        File[] directoryListing = file.listFiles();
+        return directoryListing!=null && Arrays.stream(directoryListing).allMatch(x -> content.getLookUpTable().keySet().contains(x.getName().toLowerCase()));
+    }
+
+
+
+
+
+
     public void initWorkspace() {
         File ret = new File(path_to_workspace);
 
@@ -101,6 +127,7 @@ public class StateController {
             gui.getFunctionsPane().setCenter(gui.getCurrentDisplayPlugin().clear());
         }
         content.getLookUpTable().values().forEach(clazz -> content.getStore().get(clazz).clear());
+
         File[] directoryListing = ret.listFiles();
         if(directoryListing != null) {
             if (Arrays.stream(directoryListing).allMatch(x -> content.getLookUpTable().keySet().contains(x.getName().toLowerCase()))) {
