@@ -1273,8 +1273,20 @@ public class GrammarUtil {
         return res;
     }
 
-    public static Grammar chooseRandomName(Grammar grammar) {
-        return null;
+    public static String chooseName(Grammar grammar, Set<String> excluded) {
+        int big = 65;
+        String randomName = Character.toString((char) big);
+        Set<String> names = grammar.getNonterminals().stream().map(nt -> nt.getName()).collect(Collectors.toSet());
+
+        while(big < 90 && (names.contains(randomName) || excluded.contains(randomName))) {
+            big++;
+            randomName = Character.toString((char) big);
+        }
+        if(big==90 && (names.contains(randomName) || excluded.contains(randomName))) {
+            return "CANTFINDAVALIDNAME";
+        } else {
+            return randomName;
+        }
     }
 
     /**
@@ -1297,16 +1309,14 @@ public class GrammarUtil {
 
 
     private static Grammar chomskyNormalForm_StepOne(Grammar g, Grammar original) {
-        String nonterminal_prefix = "X_";
-        int numberOfNonterminals = (int) g.getNonterminals().stream().filter(x -> x.getName().startsWith("X")).count();
-        boolean newName = g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getName().startsWith("X_"));
-        if(newName) {
-            for(int i=0;i<numberOfNonterminals;i++) {
-                nonterminal_prefix = "X"+nonterminal_prefix;
-            }
+        String name;
+        if(g.getNonterminals().stream().map(nt -> nt.getName()).anyMatch(ntname -> ntname.startsWith("X"))) {
+            name = chooseName(g, new HashSet<>()) + "_";
+        } else {
+            name = "X_";
         }
-        final String name = nonterminal_prefix;
 
+        HashSet<String> excluded = new HashSet<>();
         //replace every occurrences of a Terminal through a new Nonterminal
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -1314,10 +1324,20 @@ public class GrammarUtil {
                 List<Symbol> list = new ArrayList<>();
                 rule.getRightSide().forEach(sym -> {
                     if (sym instanceof Terminal) {
-                        list.add(new Nonterminal(name + sym.getName()));
+                        Nonterminal newNT;
+                        if(Nonterminal.validName(name+sym.getName())) {
+                            newNT =new Nonterminal(name+sym.getName());
+                            list.add(newNT);
+                        } else {
+                            String randomName = chooseName(g, excluded);
+                            newNT = new Nonterminal(randomName);
+                            excluded.add(randomName);
+                            list.add(newNT);
+                        }
+
                         List<Symbol> tmp = new ArrayList<>();
                         tmp.add(sym);
-                        freshRules.add(new Rule(new Nonterminal(name + sym.getName()), tmp));
+                        freshRules.add(new Rule(newNT, tmp));
                     } else {
                         list.add(sym);
                     }
@@ -1336,16 +1356,13 @@ public class GrammarUtil {
      * @param g the grammar
      */
     private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
-        String nonterminal_prefix = "P_";
-        int numberOfNonterminals = (int) g.getNonterminals().stream().filter(x -> x.getName().startsWith("P")).count();
-        boolean newName = g.getNonterminals().stream().anyMatch(nonterminal -> nonterminal.getName().startsWith("P_"));
-        if(newName) {
-            for(int i=0;i<numberOfNonterminals;i++) {
-                nonterminal_prefix = "P"+nonterminal_prefix;
-            }
+        String name;
+        if(g.getNonterminals().stream().map(nt -> nt.getName()).anyMatch(ntname -> ntname.startsWith("P"))) {
+            name = chooseName(g, new HashSet<>()) + "_";
+        } else {
+            name = "P_";
         }
-        final String name = nonterminal_prefix;
-        //noinspection MismatchedQueryAndUpdateOfCollection
+  
         HashSet<Rule> tmp = new HashSet<>();
         tmp.addAll(g.getRules());
         final int[] counter = {0};
