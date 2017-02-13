@@ -796,10 +796,13 @@ public class GrammarUtil {
         Grammar grammar0= (Grammar) grammar.deep_copy();
 
         Grammar grammar1;
+        boolean specialrule;
         //1. Special Rule for Empty Word
         if(GrammarUtil.languageContainsLambda(grammar)) { //todo should be language contains lambda
             grammar1=specialRuleForEmptyWord(grammar0,grammar);
+            specialrule=true;
         } else {
+            specialrule = false;
             grammar1=grammar0;
         }
 
@@ -807,9 +810,9 @@ public class GrammarUtil {
         PrintableSet nullable_and_printable=GrammarUtil.calculateNullableAsPrintable(grammar1);
 
         //3. step two && unnecessary epsilons
-        Grammar grammar2;
+
         HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar1);
-        grammar2 = removeLambdaRules_StepTwo(grammar1,nullable,grammar);
+        Grammar grammar2 = removeLambdaRules_StepTwo(grammar1,nullable,grammar);
         grammar2 = removeUnnecessaryEpsilons(grammar2,grammar);
         //4. step three
 
@@ -817,9 +820,9 @@ public class GrammarUtil {
 
 
         res.add(grammar0);
-
-        res.add(grammar1);
-
+        if(specialrule) {
+            res.add(grammar1);
+        }
         res.add(nullable_and_printable);
         res.add(grammar2);
         res.add(grammar3);
@@ -851,10 +854,20 @@ public class GrammarUtil {
             HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(gr);
             Grammar grammar1 = removeLambdaRules_StepTwo(gr, nullable, g);
             Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
-            Grammar grammar3 = removeLambdaRules_StepThree(grammar2,true,g);
-            grammar3 = removeUnreachableNonterminals(grammar3);
+            Grammar grammar3 = removeLambdaRules_StepThree(grammar2);
             return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),g);
         }
+    }
+
+    /**
+     *
+     * @param g
+     * @return
+     */
+    private static Grammar removeLambdaRules_StepThree(Grammar g) {
+        Grammar res = removeLambdaRules_StepThree(g,true,g);
+        res = removeUnreachableNonterminals(res);
+        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
     }
 
     /**

@@ -33,11 +33,17 @@ public class GrammarRemoveLambdaRules extends SimpleFunctionPlugin {
         String point_descriptions[];
         if(printables.size()==4) {
             point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3"};
-            texts=new String[]{"","nullables","",
-                    "All lambda-rules are removed and all nonterminals, that do not appear on any right side."};
+            texts=new String[]{"",
+                    "calculate the nullable set",
+                    "for every rule that contains a nullable nonterminal, add that rule without this nonterminal",
+                    "remove lambda-rules"};
         } else if(printables.size()==5) {
-            point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3","Special Rule for Empty Word"};
-            texts=new String[]{"","add new Symbol","nullables","All lambda-rules are removed and all nonterminals, that do not appear on any right side.",""};
+            point_descriptions=new String[]{"Before","Special Rule for Empty Word","Step 1","Step 2","Step 3"};
+            texts=new String[]{"",
+                    "add a nonterminal according to the special rule for empty word",
+                    "calculate the nullable set",
+                    "for every rule that contains a nullable nonterminal, add that rule without this nonterminal",
+                    "remove lambda-rules"};
         } else {
             point_descriptions=new String[]{""};
             texts=new String[]{""};
