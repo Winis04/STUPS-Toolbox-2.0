@@ -1695,7 +1695,13 @@ public class GrammarUtil {
         return new PushDownAutomaton(tmp.getStartState(),tmp.getInitialStackLetter(),rules,"PDA_"+g.getName(),null);
     }
     private  static PushDownAutomaton helper(Grammar g) {
-        return new PushDownAutomaton(new State("z"),new StackLetter(g.getStartSymbol().getName()),new ArrayList<>(),"",null);
+        Set<InputLetter> input = g.getTerminals().stream()
+                .map(t -> new InputLetter(t.getName())).collect(Collectors.toSet());
+        Set<StackLetter> stack = g.getTerminals()
+                .stream()
+                .map(t -> new StackLetter(t.getName())).collect(Collectors.toSet());
+        stack.addAll(g.getNonterminals().stream().map(t-> new StackLetter(t.getName())).collect(Collectors.toSet()));
+        return new PushDownAutomaton(input,stack,new State("z"),new StackLetter(g.getStartSymbol().getName()),new ArrayList<>(),"PDA_"+g.getName(),null);
     }
 
     public static ArrayList<Printable> toPDAAsPrintables(Grammar g) {
@@ -1704,11 +1710,11 @@ public class GrammarUtil {
         PushDownAutomaton obj1 = helper(g);
         ArrayList<PDARule> rules1 = new ArrayList<>();
         rules1.addAll(createRules_StepOne(g,obj1));
-        PushDownAutomaton obj2 = new PushDownAutomaton(obj1.getStartState(),obj1.getInitialStackLetter(),rules1,obj1.getName(),null);
+        PushDownAutomaton obj2 = new PushDownAutomaton(obj1.getInputAlphabet(),obj1.getStackAlphabet(),obj1.getStartState(),obj1.getInitialStackLetter(),rules1,obj1.getName(),null);
         ArrayList<PDARule> rules2 = new ArrayList<>();
         rules2.addAll(createRules_StepOne(g,obj1));
         rules2.addAll(createRules_StepTwo(g,obj1));
-        PushDownAutomaton obj3 = new PushDownAutomaton(obj1.getStartState(),obj1.getInitialStackLetter(),rules2,obj1.getName(),null);
+        PushDownAutomaton obj3 = new PushDownAutomaton(obj1.getInputAlphabet(),obj1.getStackAlphabet(),obj1.getStartState(),obj1.getInitialStackLetter(),rules2,obj1.getName(),null);
         res.add(obj0);
         res.add(obj1);
         res.add(obj2);
@@ -1786,7 +1792,7 @@ public class GrammarUtil {
     private static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
-        return (ArrayList<String>) terminals.stream().map(Terminal::getName).collect(Collectors.toList());
+        return (ArrayList<String>) terminals.stream().filter(terminal -> !terminal.equals(Terminal.NULLSYMBOL)).map(Terminal::getName).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unused")

@@ -86,6 +86,27 @@ public class PushDownAutomaton implements Printable, Storable{
 
 
     }
+    public PushDownAutomaton(Set<InputLetter> input, Set<StackLetter> stack,State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
+        this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
+        states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
+        states.add(startState);
+        this.inputAlphabet = new HashSet<>(input);
+        rules.stream().map(PDARule::getReadIn).forEach(inputAlphabet::add);
+        this.stackAlphabet = new HashSet<>(stack);
+        rules.stream().map(PDARule::getOldToS).forEach(stackAlphabet::add);
+        rules.stream().map(PDARule::getNewToS).forEach(list -> list.forEach(stackAlphabet::add));
+        this.startState = startState;
+        this.initialStackLetter = initialStackLetter;
+        //unnecessary
+        stackAlphabet.add(initialStackLetter);
+        this.rules = rules;
+        this.name = name;
+        this.previousPDA = previousPDA;
+        // mutable:
+        this.currentState=startState;
+
+
+    }
 
     @SuppressWarnings("unused")
     public PushDownAutomaton() {
@@ -158,46 +179,64 @@ public class PushDownAutomaton implements Printable, Storable{
     @SuppressWarnings("unused")
     @Override
     public void printLatex(BufferedWriter writer, String space) {
-        Printer.print(space+"\\begin{table}[h!]\n",writer);
-        Printer.print(space+"\t\\centering\n",writer);
-        Printer.print(space+"\t\\caption{PDA}\n",writer);
-        String s="|lcl|lcl|";
-        Printer.print(space+"\t\\begin{tabular}{"+s+"}\n",writer);
-        //1 & 2 & 3\\
-        //\hline
-        int ruleNumber=this.rules.size();
+        String in = "\\{ "+inputAlphabet.stream()
+                .filter(ia -> !ia.equals(InputLetter.NULLSYMBOL))
+                .map(InputLetter::getName)
+                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
+        String stack = "\\{ "+stackAlphabet.stream()
+                .filter(sa -> !sa.equals(StackLetter.NULLSYMBOL))
+                .map(StackLetter::getName)
+                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
+        String statenames = "\\{ "+states.stream()
+                .map(State::getName)
+                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
+        String start = Printer.checkIfLatexSpecial(startState.getName());
+        String init = Printer.checkIfLatexSpecial(initialStackLetter.getName());
+        Printer.print(space+"$"+this.getName()+"=\\left( "+in+", "+stack+", "+ statenames +", \\delta , "+start+", "+init+" \\right)$ ",writer);
 
-        PDARule current;
-        for(int i=0;i<ruleNumber;i+=2) {
-            Printer.print(space+"\t\t\\hline\n",writer);
-            current = this.rules.get(i);
-            Printer.print(space+"\t\t $",writer);
-            Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()),writer);
-            Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()),writer);
-            Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()),writer);
-            Printer.print("$ & $ \\rightarrow $ & $",writer);
-            Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()),writer);
-            Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining("")),writer);
+        if(!this.rules.isEmpty()) {
+            Printer.print(space+"with \n");
+            Printer.print(space + "\\begin{table}[h!]\n", writer);
+            Printer.print(space + "\t\\centering\n", writer);
+            Printer.print(space + "\t\\caption{$\\delta$}\n", writer);
+            String s = "|lcl|lcl|";
+            Printer.print(space + "\t\\begin{tabular}{" + s + "}\n", writer);
+            //1 & 2 & 3\\
+            //\hline
+            int ruleNumber = this.rules.size();
 
-            if(i+1<ruleNumber) {
-                Printer.print("$ & $",writer);
-                current = this.rules.get(i + 1);
-                Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()), writer);
-                Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()), writer);
-                Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()), writer);
+            PDARule current;
+            for (int i = 0; i < ruleNumber; i += 2) {
+                Printer.print(space + "\t\t\\hline\n", writer);
+                current = this.rules.get(i);
+                Printer.print(space + "\t\t $", writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()) + " ", writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()) + " ", writer);
+                Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()) + " ", writer);
                 Printer.print("$ & $ \\rightarrow $ & $", writer);
-                Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()), writer);
-                Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining("")), writer);
-                Printer.print("$ \\\\\n",writer);
-            } else {
-                Printer.print("$ & & &\\\\\n");
+                Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()) + " ", writer);
+                Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining(" ")), writer);
+
+                if (i + 1 < ruleNumber) {
+                    Printer.print("$ & $", writer);
+                    current = this.rules.get(i + 1);
+                    Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()) + " ", writer);
+                    Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()) + " ", writer);
+                    Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()) + " ", writer);
+                    Printer.print("$ & $ \\rightarrow $ & $", writer);
+                    Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()) + " ", writer);
+                    Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining(" ")), writer);
+                    Printer.print("$ \\\\\n", writer);
+                } else {
+                    Printer.print("$ & & &\\\\\n");
+                }
             }
-        }
-        Printer.print(space+"\t\t\\hline\n",writer);
+            Printer.print(space + "\t\t\\hline\n", writer);
         /* begin table **/
 
-        Printer.print(space+"\t\\end{tabular}\n",writer);
-        Printer.print(space+"\\end{table}\n\n",writer);
+            Printer.print(space + "\t\\end{tabular}\n", writer);
+            Printer.print(space + "\\end{table}\n\n", writer);
+        }
 
     }
 

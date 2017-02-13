@@ -43,7 +43,7 @@ public class StringLiterals {
     public static final String RENAME_TITLE = "Rename Nonterminals";
 
     //toPDA
-    public static final String[] TOPDA_POINT_DESCRIPTIONS = new String[]{"Grammar", "Inital","Step 1","Step 2"};
+    public static final String[] TOPDA_POINT_DESCRIPTIONS = new String[]{"Grammar", "Initial","Step 1","Step 2"};
     public static final String[] TOPDA_TEXTS = new String[]{"","","",""};
     public static final String TOPDA_TITLE = "Grammar to PDA";
 }
