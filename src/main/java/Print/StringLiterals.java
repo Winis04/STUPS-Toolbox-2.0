@@ -19,8 +19,9 @@ public class StringLiterals {
     //Literals for eliminate unit rules
     public static final String[] EUR_TEXTS=new String[]{"",
             "remove circles",
-            "number the nonterminals and remove unit rules beginning by the highest number."};
-    public static final String[]  EUR_POINT_DESCRIPTIONS=new String[]{"Before","Step 1","Step 2"};
+            "number the nonterminals",
+            "remove unit rules beginning by the highest number."};
+    public static final String[]  EUR_POINT_DESCRIPTIONS=new String[]{"Before","Step 1","Step 2","Step 3"};
     public static final String EUR_TITLE = "Eliminate Unit Rules";
 
     //Literals for chomsky normal form

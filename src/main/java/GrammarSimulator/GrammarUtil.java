@@ -1002,16 +1002,28 @@ public class GrammarUtil {
     public static ArrayList<Printable> eliminateUnitRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
+        //Before
         Grammar grammar0= (Grammar) grammar.deep_copy();
+        //Step 1
         Grammar grammar1=GrammarUtil.removeCircles(grammar0);
 
 
-
+        //Step 2
         HashSet<Node> unitRules=findUnitRules(grammar1);
+
+        ArrayList<Node> tmp = GrammarUtil.bringNonterminalsInOrder(unitRules);
+        StringBuilder stb = new StringBuilder();
+        for(int i=0;i<tmp.size();i++) {
+            stb.append(tmp.get(i).getValue().getName()).append("=");
+            stb.append(Integer.toString(tmp.size()-i)).append(" ");
+        }
+        Dummy dummy = new Dummy(stb.toString()+"\n");
+        //Step 3
         Grammar grammar2=GrammarUtil.removeUnitRules(unitRules,grammar1);
 
         res.add(grammar0);
         res.add(grammar1);
+        res.add(dummy);
         res.add(grammar2);
 
         return res;
