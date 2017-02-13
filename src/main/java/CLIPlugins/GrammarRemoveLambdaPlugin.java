@@ -4,6 +4,7 @@ import GrammarSimulator.*;
 import Main.Storable;
 import Print.Printable;
 import Print.Printer;
+import Print.StringLiterals;
 
 import java.util.*;
 
@@ -52,25 +53,12 @@ public class GrammarRemoveLambdaPlugin extends CLIPlugin {
         String texts[];
         String point_descriptions[];
         if(printables.size()==4) {
-            point_descriptions=new String[]{"Before","Step 1","Step 2","Step 3"};
-            texts=new String[]{"",
-                    "calculate the nullable set",
-                    "for every rule that contains a nullable nonterminal, add that rule without this nonterminal",
-                    "remove lambda-rules"};
+            Printer.printEnumeration(printables, StringLiterals.RLR_POINT_DESCRIPTIONS_SHORT,StringLiterals.RLR_TEXTS_SHORT,StringLiterals.RLR_TITLE);
         } else if(printables.size()==5) {
-            point_descriptions=new String[]{"Before","Special Rule for Empty Word","Step 1","Step 2","Step 3"};
-            texts=new String[]{"",
-                    "add a nonterminal according to the special rule for empty word",
-                    "calculate the nullable set",
-                    "for every rule that contains a nullable nonterminal, add that rule without this nonterminal",
-                    "remove lambda-rules"};
+            Printer.printEnumeration(printables, StringLiterals.RLR_POINT_DESCRIPTIONS_LONG,StringLiterals.RLR_TEXTS_LONG,StringLiterals.RLR_TITLE);
         } else {
-            point_descriptions=new String[]{""};
-            texts=new String[]{""};
+            System.err.println("an error has occurred");
         }
-        Printer.printEnumeration(printables,point_descriptions,texts,"Remove Lambda-Rules");
-
-
         return GrammarUtil.removeLambdaRules(grammar);
     }
 

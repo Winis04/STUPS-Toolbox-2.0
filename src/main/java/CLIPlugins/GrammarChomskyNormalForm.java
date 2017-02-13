@@ -4,6 +4,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import Print.Printer;
+import Print.StringLiterals;
 
 /**
  * Calculates the chomsky normal form of the current {@link Grammar}.
@@ -57,13 +58,9 @@ public class GrammarChomskyNormalForm extends CLIPlugin {
             return null;
         }
 
-        String[] texts=new String[]{"","rules, that point only on one terminal are already in chomsky normal form and we keep them",
-                "in all other rules replace every appearance of Terminal a through a new Nonterminal",
-                "in all rules that contain more than two nonterminals, add a new nonterminal that points to the end of the rule."};
 
-        String[] point_descriptions=new String[]{"Before","Step 1", "Step 2", "Step 3"};
 
-        Printer.printEnumeration(GrammarUtil.chomskyNormalFormAsPrintables(grammar),point_descriptions,texts,"Chomsky - Normal - Form");
+        Printer.printEnumeration(GrammarUtil.chomskyNormalFormAsPrintables(grammar), StringLiterals.CNF_POINT_DESCRIPTIONS,StringLiterals.CNF_TEXTS,StringLiterals.CNF_TITLE);
         return GrammarUtil.chomskyNormalForm(grammar);
 
     }

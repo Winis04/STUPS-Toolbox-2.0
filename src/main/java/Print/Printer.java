@@ -143,7 +143,7 @@ public class Printer {
     /** LATEX **/
     @SuppressWarnings("unused")
     private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
-        if(printables.size()!=texts.length) {
+        if(printables.size()!=texts.length || printables.size()!=point_descriptions.length) {
             return;
         }
         Printer.print("\\section{"+title+"}\n\n",writer);
@@ -214,7 +214,7 @@ public class Printer {
 
     @SuppressWarnings("unused")
     private static void printEnumerationConsole(ArrayList<Printable> printables, String[] point_description, String[] texts) {
-        if(printables.size()!=texts.length) {
+        if(printables.size()!=texts.length || printables.size()!=point_description.length) {
             return;
         }
 

@@ -160,7 +160,7 @@ public class CLI {
             case "h":
             case "help":
 
-                plugins.stream().sorted().forEach(plugin -> {
+                plugins.stream().sorted((x,y) -> x.getNames()[0].compareTo(y.getNames()[0])).forEach(plugin -> {
                     System.out.print("'" + plugin.getNames()[0] + "'");
                     for (int i = 1; i < plugin.getNames().length; i++) {
                         if (i < plugin.getNames().length - 1) {

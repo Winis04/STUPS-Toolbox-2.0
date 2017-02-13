@@ -4,8 +4,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import Print.Printer;
-
-
+import Print.StringLiterals;
 
 
 @SuppressWarnings("unused")
@@ -20,11 +19,8 @@ public class GrammarEliminateUnitRules extends SimpleFunctionPlugin {
         if(!GrammarUtil.hasUnitRules(grammar)) {
             gui.infoDialog("this grammar has no unit rules!");
         } else {
-            String texts[]=new String[]{"",
-                    "remove circles",
-                    "number the nonterminals and remove unit rules beginning by the highest number."};
-            String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
-            Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar),point_descriptions,texts,"Eliminate Unit Rules");
+
+            Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar), StringLiterals.EUR_POINT_DESCRIPTIONS,StringLiterals.EUR_TEXTS,StringLiterals.EUR_TITLE);
             return GrammarUtil.eliminateUnitRules(grammar);
         }
         return grammar;

@@ -1278,10 +1278,6 @@ public class GrammarUtil {
     @SuppressWarnings("unused")
     private static int number(Node node, int max) {
         node.setNumber(max+1);
-        if(node.getChildren().stream().anyMatch(child -> child.getNumber()<=node.getNumber())) {
-
-            node.getChildren().forEach(child -> child.setNumber(node.getNumber() + 1));
-        }
         OptionalInt res=node.getChildren().stream().mapToInt(child -> number(child,max+2)).max();
         if(res.isPresent()) {
             return res.getAsInt();

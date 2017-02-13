@@ -3,6 +3,8 @@ package CLIPlugins;
 import GrammarSimulator.*;
 import Main.Storable;
 import Print.Printer;
+import Print.StringLiterals;
+import javassist.compiler.ast.StringL;
 
 /**
  * Eliminates unit {@link Rule}s of the current {@link Grammar}.
@@ -45,11 +47,8 @@ public class GrammarEliminateUnitRules extends CLIPlugin {
             System.out.println("This grammar is already without unit rules");
             return null;
         }
-        String texts[]=new String[]{"",
-                "remove circles",
-                "number the nonterminals and remove unit rules beginning by the highest number."};
-        String[] point_descriptions=new String[]{"Before","Step 1","Step 2"};
-        Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar),point_descriptions,texts,"Eliminate Unit Rules");
+
+        Printer.printEnumeration(GrammarUtil.eliminateUnitRulesAsPrintables(grammar), StringLiterals.EUR_POINT_DESCRIPTIONS, StringLiterals.EUR_TEXTS,StringLiterals.EUR_TITLE);
 
         return GrammarUtil.eliminateUnitRules(grammar);
     }
