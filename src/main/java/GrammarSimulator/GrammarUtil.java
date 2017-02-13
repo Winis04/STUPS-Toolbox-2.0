@@ -243,6 +243,39 @@ public class GrammarUtil {
         return result;
     }
 
+    /**
+     * Calculates the nullable-set of a given grammar.
+     *
+     * @param grammar The grammar.
+     * @return A HashSet containing all nullable nonterminals,
+     */
+    @SuppressWarnings("unused")
+    private static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
+        HashSet<Nonterminal> res = calculateNullable(grammar);
+        PrintableSet result = new PrintableSet(res.size());
+        res.forEach(result::add);
+        return  result;
+    }
+
+    /**
+     * replaces every nullsymbol through the same object
+     */
+    private static Grammar replaceLambda(Grammar g) {
+        HashSet<Rule> freshRules = new HashSet<>();
+        g.getRules().forEach(rule -> {
+            List<Symbol> list = new ArrayList<>();
+            rule.getRightSide().forEach(sym -> {
+                if(sym.getName().equals("epsilon")||sym.getName().equals("lambda")) {
+                    list.add(Terminal.NULLSYMBOL);
+                } else {
+                    list.add(sym);
+                }
+            });
+            freshRules.add(new Rule(rule.getComingFrom(),list));
+        });
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
+    }
+
     /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                The public methods follow after this comment.                                -*
@@ -448,19 +481,7 @@ public class GrammarUtil {
         //Write rules.
     }
 
-    /**
-     * Calculates the nullable-set of a given grammar.
-     *
-     * @param grammar The grammar.
-     * @return A HashSet containing all nullable nonterminals,
-     */
-    @SuppressWarnings("unused")
-    private static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
-        HashSet<Nonterminal> res = calculateNullable(grammar);
-        PrintableSet result = new PrintableSet(res.size());
-        res.forEach(result::add);
-        return  result;
-    }
+
     /**
      * Calculates the nullable-set of a given grammar.
      *
@@ -739,8 +760,12 @@ public class GrammarUtil {
     }
 
 
-    @SuppressWarnings("unused")
-    public static Grammar removeUnnecessaryEpsilons(Grammar g, Grammar original) {
+    /**
+     * removes unnecessary epsilons in a {@link Grammar}s {@link Rule}s
+     * @param g the {@link Grammar}
+     * @return a {@link Grammar} without unnecessary nullsymbols
+     */
+    public static Grammar removeUnnecessaryEpsilons(Grammar g) {
         HashSet<Rule> freshRules = new HashSet<>();
         g.getRules().forEach(rule -> {
             if (rule.getRightSide().size() != 1) {
@@ -759,26 +784,12 @@ public class GrammarUtil {
                 freshRules.add(rule);
             }
         });
-        return new Grammar(g.getStartSymbol(),freshRules,g.getName(),original);
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(),g);
 
     }
 
     @SuppressWarnings("unused")
-    private static Grammar replaceLambda(Grammar g) {
-        HashSet<Rule> freshRules = new HashSet<>();
-        g.getRules().forEach(rule -> {
-            List<Symbol> list = new ArrayList<>();
-            rule.getRightSide().forEach(sym -> {
-                if(sym.getName().equals("epsilon")||sym.getName().equals("lambda")) {
-                    list.add(Terminal.NULLSYMBOL);
-                } else {
-                    list.add(sym);
-                }
-            });
-            freshRules.add(new Rule(rule.getComingFrom(),list));
-        });
-        return new Grammar(g.getStartSymbol(),freshRules,g.getName(), (Grammar) g.getPreviousVersion());
-    }
+
     /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                Remove Lambda Rules                                                          -*
@@ -789,7 +800,6 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
-    @SuppressWarnings("unused")
     public static ArrayList<Printable> removeLambdaRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
         //0. before Grammar
@@ -813,10 +823,10 @@ public class GrammarUtil {
 
         HashSet<Nonterminal> nullable=GrammarUtil.calculateNullable(grammar1);
         Grammar grammar2 = removeLambdaRules_StepTwo(grammar1,nullable,grammar);
-        grammar2 = removeUnnecessaryEpsilons(grammar2,grammar);
+        grammar2 = removeUnnecessaryEpsilons(grammar2);
         //4. step three
 
-        Grammar grammar3= removeLambdaRules_StepThree(grammar2,true,grammar);
+        Grammar grammar3= removeLambdaRules_StepThree(grammar2,true);
 
 
         res.add(grammar0);
@@ -853,7 +863,7 @@ public class GrammarUtil {
             // Grammar grammar = specialRuleForEmptyWord(g);
             HashSet<Nonterminal> nullable = GrammarUtil.calculateNullable(gr);
             Grammar grammar1 = removeLambdaRules_StepTwo(gr, nullable, g);
-            Grammar grammar2 = removeUnnecessaryEpsilons(grammar1, g);
+            Grammar grammar2 = removeUnnecessaryEpsilons(grammar1);
             Grammar grammar3 = removeLambdaRules_StepThree(grammar2);
             return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),g);
         }
@@ -865,7 +875,7 @@ public class GrammarUtil {
      * @return
      */
     private static Grammar removeLambdaRules_StepThree(Grammar g) {
-        Grammar res = removeLambdaRules_StepThree(g,true,g);
+        Grammar res = removeLambdaRules_StepThree(g,true);
         res = removeUnreachableNonterminals(res);
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
     }
@@ -879,7 +889,7 @@ public class GrammarUtil {
      *              has to be called again, but this time with "again" set to false
      */
     @SuppressWarnings("unused")
-    private static Grammar removeLambdaRules_StepThree(Grammar g, boolean again, Grammar original) {
+    private static Grammar removeLambdaRules_StepThree(Grammar g, boolean again) {
         // delete lambda-rules
         HashSet<Rule> tmp2 = new HashSet<>();
         g.getRules().stream()
@@ -911,13 +921,13 @@ public class GrammarUtil {
             }
             freshRules.add(new Rule(rule.getComingFrom(),tmpList));
         });
-        Grammar res = new Grammar(g.getStartSymbol(),freshRules,g.getName(),original);
+        Grammar res = new Grammar(g.getStartSymbol(),freshRules,g.getName(),g);
 
         // to find any new lambdas and lambda-rules
         if(again) {
-            Grammar res1 = GrammarUtil.removeUnnecessaryEpsilons(res, original);
+            Grammar res1 = GrammarUtil.removeUnnecessaryEpsilons(res);
 
-            return GrammarUtil.removeLambdaRules_StepThree(res1,false,original);
+            return GrammarUtil.removeLambdaRules_StepThree(res1,false);
         } else {
             return res;
         }
@@ -938,7 +948,7 @@ public class GrammarUtil {
     @SuppressWarnings("unused")
     private static Grammar removeLambdaRules_StepTwo(Grammar g, HashSet<Nonterminal> nullable, Grammar original) {
 
-        Grammar grammar = GrammarUtil.removeUnnecessaryEpsilons(g, original);
+        Grammar grammar = GrammarUtil.removeUnnecessaryEpsilons(g);
         Queue<Rule> queue = new LinkedList<>();
         HashSet<Rule> alreadySeen = new HashSet<>();
         Grammar res=g;
@@ -1315,10 +1325,10 @@ public class GrammarUtil {
 
         Grammar grammar0 = (Grammar) grammar.deep_copy();
 
-        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(grammar,grammar);
+        Grammar grammar1=GrammarUtil.chomskyNormalForm_StepOne(grammar);
 
         //step 2: remove more than two Nonterminals
-        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(grammar1,grammar);
+        Grammar grammar2=GrammarUtil.chomskyNormalForm_StepTwo(grammar1);
 
 
         res.add(grammar0);
@@ -1362,14 +1372,15 @@ public class GrammarUtil {
         } else if(GrammarUtil.isInChomskyNormalForm(grammar)) {
             return grammar;
         } else {
-            Grammar res1 = chomskyNormalForm_StepOne(grammar, grammar);
-            return chomskyNormalForm_StepTwo(res1, grammar);
+            Grammar res1 = chomskyNormalForm_StepOne(grammar);
+            Grammar res2 = chomskyNormalForm_StepTwo(res1);
+            return new Grammar(res2.getStartSymbol(), res2.getRules(), res2.getName(), grammar);
         }
     }
 
 
     @SuppressWarnings("unused")
-    private static Grammar chomskyNormalForm_StepOne(Grammar g, Grammar original) {
+    private static Grammar chomskyNormalForm_StepOne(Grammar g) {
         String name;
         if(g.getNonterminals().stream().map(Nonterminal::getName).anyMatch(nt -> nt.startsWith("X"))) {
             name = chooseName(g, new HashSet<>()) + "_";
@@ -1409,7 +1420,7 @@ public class GrammarUtil {
                 freshRules.add(rule);
             }
         });
-        return new Grammar(g.getStartSymbol(),freshRules,g.getName(),original);
+        return new Grammar(g.getStartSymbol(),freshRules,g.getName(),g);
     }
 
     /**
@@ -1417,7 +1428,7 @@ public class GrammarUtil {
      * @param g the grammar
      */
     @SuppressWarnings("unused")
-    private static Grammar chomskyNormalForm_StepTwo(Grammar g, Grammar original) {
+    private static Grammar chomskyNormalForm_StepTwo(Grammar g) {
         String name;
         if(g.getNonterminals().stream().map(Nonterminal::getName).anyMatch(nt-> nt.startsWith("P"))) {
             name = chooseName(g, new HashSet<>()) + "_";
@@ -1465,7 +1476,7 @@ public class GrammarUtil {
             }
         }
 
-        return new Grammar(g.getStartSymbol(),old,g.getName(),original);
+        return new Grammar(g.getStartSymbol(),old,g.getName(),g);
     }
 
     /**
@@ -1488,11 +1499,11 @@ public class GrammarUtil {
             }
         });
     }
-    /******************************************************************************************************************
+    /*
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                           CYK                                                               -*
      * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+     */
 
     @SuppressWarnings("unused")
     private static Matrix createMatrix(List<String> word) {
@@ -1727,11 +1738,11 @@ public class GrammarUtil {
         return list.stream().map(s -> new StackLetter(s.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    /******************************************************************************************************************
+    /*
      * ---------------------------------------------------------------------------------------------------------------*
      * -                                other things                                                                 -*
      * ---------------------------------------------------------------------------------------------------------------*
-     ******************************************************************************************************************/
+     */
     @SuppressWarnings("unused")
     static ArrayList<ArrayList<String>> getHeader(Grammar grammar) {
         ArrayList<ArrayList<String>> header= new ArrayList<>(3);
@@ -1827,6 +1838,10 @@ public class GrammarUtil {
         }
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
     }
+
+    /*
+    Some boolean method that check a grammar for certain traits
+     */
     /**
      * checks if the given grammar has unit rules
      * @param g the {@link Grammar}
@@ -1888,19 +1903,70 @@ public class GrammarUtil {
     }
 
 
-    @SuppressWarnings("unused")
-    public static Grammar simplify(Grammar g) {
-        return removeRedundantNonterminals(g);
+    private static boolean hasUnreachableNonterminals(Grammar g) {
+        return g.getNonterminals().stream().anyMatch(nt -> g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)));
     }
 
 
+    private static boolean isUnreachable(Grammar g, Nonterminal nt) {
+        return g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)) && !nt.equals(g.getStartSymbol());
+    }
+
+    /**
+     * checks if a Grammar has Nonterminals which don't point anywhere
+     * @param g a {@link Grammar}
+     * @return true, if the grammar has nonterminals, which do not appear on any left side
+     */
+
+    private static boolean hasDeadEnds(Grammar g) {
+        return g.getRules().stream()
+                .anyMatch(rule -> rule.getRightSide().stream()
+                        .filter(sym -> sym instanceof Nonterminal)
+                        .anyMatch(sym -> isDead(g, (Nonterminal) sym)));
+    }
+
+    private static boolean isDead(Grammar g, Nonterminal nt) {
+        return g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
+    }
+
+
+
+    private static boolean hasRedundantNonterminals(Grammar g) {
+        for(Nonterminal nt1 : g.getNonterminals()) {
+            for(Nonterminal nt2 : g.getNonterminals()) {
+                if(!nt1.equals(nt2)) {
+                    boolean check = compareRules(g.getRules(),nt1,nt2);
+                    if(check) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+        Simplification of grammar
+     */
+
+
+    public static ArrayList<Printable> simplifyAsPrintable(Grammar g) {
+        ArrayList<Printable> res = new ArrayList<>();
+        res.add(0,g);
+        res.add(1,simplify(g));
+        return res;
+    }
+    public static Grammar simplify(Grammar g) {
+        Grammar res = removeRedundantNonterminals(removeDeadEnds(removeUnreachableNonterminals(g)));
+        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
+    }
     /**
      * removes redundant nonterminal that can occur when using {@link #chomskyNormalForm(Grammar)}
      * @param g the {@link Grammar}
      * @return a {@link Grammar} without redundant rules
      */
     @SuppressWarnings("unused")
-    private static Grammar removeRedundantNonterminals(Grammar g) {
+    public static Grammar removeRedundantNonterminals(Grammar g) {
         Grammar res = redundantSet(g);
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
 
@@ -1920,6 +1986,7 @@ public class GrammarUtil {
         }
         return g;
     }
+
 
 
     @SuppressWarnings("unused")
@@ -1976,7 +2043,12 @@ public class GrammarUtil {
             return new Grammar(g.getStartSymbol(), rules1, g.getName(), g);
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * removes nonterminals, that can be reached
+     * @param g the Grammar g
+     * @return a Grammar without unreachable Nonterminals
+     */
     public static Grammar removeUnreachableNonterminals(Grammar g) {
         if(hasUnreachableNonterminals(g)) {
             HashSet<Nonterminal> unreachable = new HashSet<>();
@@ -1989,15 +2061,7 @@ public class GrammarUtil {
         }
     }
 
-    @SuppressWarnings("unused")
-    private static boolean hasUnreachableNonterminals(Grammar g) {
-       return g.getNonterminals().stream().anyMatch(nt -> g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)));
-    }
 
-    @SuppressWarnings("unused")
-    private static boolean isUnreachable(Grammar g, Nonterminal nt) {
-        return g.getRules().stream().noneMatch(rule -> rule.getRightSide().contains(nt)) && !nt.equals(g.getStartSymbol());
-    }
 
     /**
      * removes Nonterminals that don't point anywhere. Attention: Every Rule,
@@ -2016,23 +2080,6 @@ public class GrammarUtil {
     }
 
     /**
-     * checks if a Grammar has Nonterminals which don't point anywhere
-     * @param g a {@link Grammar}
-     * @return true, if the grammar has nonterminals, which do not appear on any left side
-     */
-    @SuppressWarnings("unused")
-    private static boolean hasDeadEnds(Grammar g) {
-        return g.getRules().stream()
-                .anyMatch(rule -> rule.getRightSide().stream()
-                .filter(sym -> sym instanceof Nonterminal)
-                .anyMatch(sym -> isDead(g, (Nonterminal) sym)));
-    }
-
-    @SuppressWarnings("unused")
-    private static boolean isDead(Grammar g, Nonterminal nt) {
-        return g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
-    }
-    /**
      * Helper-method for {@link #removeDeadEnds(Grammar)}. removes rules, which contain nonterminal that don't point anywhere
      * @param g {@link Grammar}
      * @return a {@link Grammar} with one some dead ends removed
@@ -2050,30 +2097,6 @@ public class GrammarUtil {
         return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
     }
 
-    @SuppressWarnings("unused")
-    public static Grammar removeUnreachable(Grammar g) {
-       HashSet<Nonterminal> reachable = new HashSet<>();
-        reachable.add(g.getStartSymbol());
-        Queue<Nonterminal> queue = new LinkedList<>();
-        queue.add(g.getStartSymbol());
-        while(!queue.isEmpty()) {
-            Nonterminal current = queue.poll();
-            g.getRules().stream()
-                    .filter(rule -> rule.getComingFrom().equals(current))
-                    .map(Rule::getRightSide)
-                    .forEach(list -> list.forEach(sym -> {
-                        if(sym instanceof Nonterminal && !queue.contains(sym) && !reachable.contains(sym)) {
-                            queue.add((Nonterminal) sym);
-                            reachable.add((Nonterminal) sym);
-                        }
-                    }));
 
-
-        }
-        Set<Rule> rules = g.getRules().stream()
-                .filter(rule -> reachable.contains(rule.getComingFrom()))
-                .collect(Collectors.toSet());
-        return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
-    }
 }
 

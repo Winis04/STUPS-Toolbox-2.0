@@ -3,7 +3,8 @@ package GUIPlugins.SimpleFunctionPlugins;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
-
+import Print.Printer;
+import Print.StringLiterals;
 
 
 @SuppressWarnings("unused")
@@ -15,14 +16,13 @@ public class Simplify extends SimpleFunctionPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        Grammar res = GrammarUtil.simplify(GrammarUtil.removeDeadEnds(GrammarUtil.removeUnreachableNonterminals(grammar)));
-        res= GrammarUtil.simplify(GrammarUtil.removeDeadEnds(GrammarUtil.removeUnreachableNonterminals(res)));
-        return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),grammar);
+        Printer.printEnumeration(GrammarUtil.simplifyAsPrintable(grammar), StringLiterals.SIMPLIFY_POINT_DESCRIPTIONS,StringLiterals.SIMPLIFY_TEXTS,StringLiterals.SIMPLIFY_TITLE);
+        return GrammarUtil.simplify(grammar);
     }
 
     @Override
     public String getName() {
-        return "Simplify";
+        return "Simplify2";
     }
 
     @Override

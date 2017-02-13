@@ -31,4 +31,9 @@ public class StringLiterals {
 
     public static final String[] CNF_POINT_DESCRIPTIONS=new String[]{"Before","Step 1", "Step 2", "Step 3"};
     public static final String CNF_TITLE = "Chomsky - Normal - Form";
+
+    //Literals for Simplify
+    public static final String[] SIMPLIFY_POINT_DESCRIPTIONS = new String[]{"Before", "After"};
+    public static final String[] SIMPLIFY_TEXTS = new String[]{"","Remove redundant and unreachable nonterminals"};
+    public static final String SIMPLIFY_TITLE = "simplify";
 }

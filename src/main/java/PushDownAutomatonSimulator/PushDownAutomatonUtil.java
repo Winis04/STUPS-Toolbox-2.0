@@ -240,7 +240,7 @@ public class PushDownAutomatonUtil {
                }
            }
            Grammar grammar1 = GrammarUtil.removeDeadEnds(new Grammar(startSymbol, rules, pda.getName() + "_Grammar", null));
-           Grammar grammar2 = GrammarUtil.removeUnnecessaryEpsilons(grammar1,null);
+           Grammar grammar2 = GrammarUtil.removeUnnecessaryEpsilons(grammar1);
            Grammar grammar3= GrammarUtil.removeUnreachableNonterminals(grammar2);
            return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),null);
        } else {
