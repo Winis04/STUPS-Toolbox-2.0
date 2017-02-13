@@ -22,7 +22,7 @@ public class Simplify extends SimpleFunctionPlugin {
 
     @Override
     public String getName() {
-        return "Simplify2";
+        return "Simplify";
     }
 
     @Override

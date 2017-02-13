@@ -1687,21 +1687,45 @@ public class GrammarUtil {
     public static PushDownAutomaton toPDA(Grammar g) {
         State start_state;
         StackLetter initialStackLetter;
-
-
         ArrayList<PDARule> rules;
-
-
-        start_state = new State("z");
-        initialStackLetter = new StackLetter(g.getStartSymbol().getName());
-        PushDownAutomaton tmp = new PushDownAutomaton(start_state,initialStackLetter,new ArrayList<>(),"",null);
+        PushDownAutomaton tmp = helper(g);
         /* create the rules **/
         rules = createRules(g,tmp);
 
-        return new PushDownAutomaton(start_state,initialStackLetter,rules,"PDA_"+g.getName(),null);
+        return new PushDownAutomaton(tmp.getStartState(),tmp.getInitialStackLetter(),rules,"PDA_"+g.getName(),null);
+    }
+    private  static PushDownAutomaton helper(Grammar g) {
+        return new PushDownAutomaton(new State("z"),new StackLetter(g.getStartSymbol().getName()),new ArrayList<>(),"",null);
+    }
+
+    public static ArrayList<Printable> toPDAAsPrintables(Grammar g) {
+        ArrayList<Printable> res = new ArrayList<>();
+        Grammar obj0 = g;
+        PushDownAutomaton obj1 = helper(g);
+        ArrayList<PDARule> rules1 = new ArrayList<>();
+        rules1.addAll(createRules_StepOne(g,obj1));
+        PushDownAutomaton obj2 = new PushDownAutomaton(obj1.getStartState(),obj1.getInitialStackLetter(),rules1,obj1.getName(),null);
+        ArrayList<PDARule> rules2 = new ArrayList<>();
+        rules2.addAll(createRules_StepOne(g,obj1));
+        rules2.addAll(createRules_StepTwo(g,obj1));
+        PushDownAutomaton obj3 = new PushDownAutomaton(obj1.getStartState(),obj1.getInitialStackLetter(),rules2,obj1.getName(),null);
+        res.add(obj0);
+        res.add(obj1);
+        res.add(obj2);
+        res.add(obj3);
+        return res;
     }
     @SuppressWarnings("unused")
+
+
     private static ArrayList<PDARule> createRules(Grammar grammar, PushDownAutomaton help) {
+        ArrayList<PDARule> rules = new ArrayList<>();
+
+        rules.addAll(createRules_StepOne(grammar,help));
+        rules.addAll(createRules_StepTwo(grammar,help));
+        return rules;
+    }
+    private static ArrayList<PDARule> createRules_StepOne(Grammar grammar, PushDownAutomaton help) {
         ArrayList<PDARule> rules = new ArrayList<>();
 
         // for every Rule A --> q add (z0,lambda,A) -> (z0,q). The first element of q is the new ToS
@@ -1718,6 +1742,10 @@ public class GrammarUtil {
 
 
         });
+        return rules;
+    }
+    private static ArrayList<PDARule> createRules_StepTwo(Grammar grammar, PushDownAutomaton help) {
+        ArrayList<PDARule> rules = new ArrayList<>();
         //for every a add (z0, a, a) -> (z0, lambda)
         grammar.getTerminals().stream()
                 .filter(t -> !t.equals(Terminal.NULLSYMBOL))
@@ -1820,7 +1848,12 @@ public class GrammarUtil {
      //   return g;
     }
 
-
+    public static ArrayList<Printable> renameNonterminalsAsPrintables(Grammar g) {
+        ArrayList<Printable> res = new ArrayList<>();
+        res.add(0,g);
+        res.add(1,renameNonterminals(g));
+        return res;
+    }
     @SuppressWarnings("unused")
     public static Grammar renameNonterminals(Grammar g) {
         Set<Nonterminal> nts = g.getNonterminals();

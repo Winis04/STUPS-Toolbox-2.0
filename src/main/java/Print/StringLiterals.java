@@ -35,5 +35,15 @@ public class StringLiterals {
     //Literals for Simplify
     public static final String[] SIMPLIFY_POINT_DESCRIPTIONS = new String[]{"Before", "After"};
     public static final String[] SIMPLIFY_TEXTS = new String[]{"","Remove redundant and unreachable nonterminals"};
-    public static final String SIMPLIFY_TITLE = "simplify";
+    public static final String SIMPLIFY_TITLE = "Simplify";
+
+    //Literals for Rename Nonterminals
+    public static final String[] RENAME_POINT_DESCRIPTIONS = new String[]{"Before", "After"};
+    public static final String[] RENAME_TEXTS = new String[]{"","rename nonterminals to short, easy names"};
+    public static final String RENAME_TITLE = "Rename Nonterminals";
+
+    //toPDA
+    public static final String[] TOPDA_POINT_DESCRIPTIONS = new String[]{"Grammar", "Inital","Step 1","Step 2"};
+    public static final String[] TOPDA_TEXTS = new String[]{"","","",""};
+    public static final String TOPDA_TITLE = "Grammar to PDA";
 }
