@@ -42,6 +42,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private final ScrollPane scrollPane = new ScrollPane();
 
+    private boolean checkStringIsActive = false;
+
 
     public PushDownAutomatonGUI() {
 
@@ -91,7 +93,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                  //   cellLabel.setDisable(true);
                     cellLabel.setOnMouseClicked(event -> {
-                        if (event.getButton().equals(MouseButton.SECONDARY)) {
+                        if ((event.getButton().equals(MouseButton.SECONDARY) || event.getClickCount() == 2) && !checkStringIsActive) {
                             PushDownAutomaton freshPDA = editRule(pda,rule);
                             if(freshPDA != null) {
                                 gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
@@ -183,17 +185,25 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         dialog.setTitle("edit rule "+ oldRule.asString());
         dialog.setHeaderText("enter the information for the new rule");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
-        FlowPane flowPane = new FlowPane();
+        GridPane gridPane = new GridPane();
+
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
         TextField state = new TextField(oldRule.getComingFrom().getName());
         TextField input = new TextField(oldRule.getReadIn().getName());
         TextField oldTos = new TextField(oldRule.getOldToS().getName());
 
         TextField goingTo = new TextField(oldRule.getGoingTo().getName());
-        TextField newTos = new TextField(oldRule.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining("")));
+        TextField newTos = new TextField(oldRule.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
 
+        gridPane.addRow(0,new Label("coming from"),state);
+        gridPane.addRow(1,new Label("input"),input);
+        gridPane.addRow(2,new Label("ToS"),oldTos);
+        gridPane.addRow(3,new Label("going to"),goingTo);
+        gridPane.addRow(4,new Label("new ToS"),newTos);
 
-        flowPane.getChildren().addAll(newTos,goingTo,oldTos,input,state);
-        dialog.getDialogPane().setContent(flowPane);
+        dialog.getDialogPane().setContent(gridPane);
         dialog.setResultConverter(param -> {
             if (param == ButtonType.OK) {
                 List<StackLetter> list = Arrays.stream(newTos.getText().split(", ")).map(StackLetter::new).collect(Collectors.toList());
@@ -244,6 +254,10 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         })
                 .collect(Collectors.joining(divider+"\u22A2"));
        return "   "+res;
+    }
+
+    public void setCheckStringIsActive(boolean r) {
+        this.checkStringIsActive=r;
     }
 
 

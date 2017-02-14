@@ -68,6 +68,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         undo.setDisable(true);
         undo.setStyle("-fx-background-color: lightgray;");
         start.setOnAction(event -> {
+            pdaGUI.setCheckStringIsActive(true);
             String input = field.getText();
             field.setDisable(true);
             List<String> list = Arrays.asList(input.split(" "));
@@ -128,6 +129,8 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
         field.setDisable(false);
         start.setDisable(false);
         start.setVisible(true);
+        pdaGUI.setCheckStringIsActive(false);
+        pdaGUI.getRulesAsButtons().forEach(b -> b.setDisable(false));
       //  path.setText("");
         pdaGUI.getFlow().setText("");
         undo.setDisable(true);

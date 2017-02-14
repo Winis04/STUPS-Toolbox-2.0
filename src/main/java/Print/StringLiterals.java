@@ -31,7 +31,6 @@ public class StringLiterals {
             "in all other rules replace every appearance of a terminal a through a new nonterminal",
             "in all rules that contain more than two nonterminals, add a new nonterminal that points to the " +
                     "end of the rule."};
-
     public static final String[] CNF_POINT_DESCRIPTIONS=new String[]{"Before","Step 1", "Step 2", "Step 3"};
     public static final String CNF_TITLE = "Chomsky - Normal - Form";
 
