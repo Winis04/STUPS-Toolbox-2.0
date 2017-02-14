@@ -56,14 +56,15 @@ public class StateController {
                     }
                 });
 
-                initContent();
-                initWorkspace();
-                initStyle();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        initContent();
+        initWorkspace();
+        initStyle();
     }
 
     public boolean switchWorkspace(File newWorkspace) {
