@@ -80,6 +80,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     @Override
     public Node display(Object object) {
         if(object != null) {
+
+            //init
             CheckStringPDAPlugin.start.setVisible(true);
             rulesAsButtons = new ArrayList<>();
             PushDownAutomaton pda = (PushDownAutomaton) object;
@@ -113,6 +115,31 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     refresh(PushDownAutomatonUtil.replaceState(pda,pda.getStartState(),new State(start.getText())));
                 }
             });
+            ContextMenu mouseMenu = new ContextMenu();
+            root.setOnMouseClicked(event -> {
+                if(event.getTarget().equals(root)) {
+                    mouseMenu.hide();
+                    if (event.getButton().equals(MouseButton.SECONDARY)) {
+                        //If the user right-clicks the pane, show a context-menu,
+                        //that gives him the opportunity to create a new rule.
+                        MenuItem addItem = new MenuItem("Add Rule");
+
+                        addItem.setOnAction(event1 -> {
+                           refresh(addRule(pda));
+
+
+                        });
+
+                        mouseMenu.getItems().clear();
+                        mouseMenu.getItems().add(addItem);
+                        mouseMenu.show(splitPane, event.getScreenX(), event.getScreenY());
+                    }
+                } else if(event.getButton().equals(MouseButton.PRIMARY)) {
+                    mouseMenu.hide();
+                }
+            });
+
+
 
             root.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
 
@@ -215,14 +242,92 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                     }
                 }
             }
+
         }
         root.setAlignment(Pos.CENTER);
         root.setHgap(5);
         root.setVgap(10);
 
+
+
+
+
         return splitPane;
 
 
+    }
+
+    private PushDownAutomaton addRule(PushDownAutomaton pda) {
+        Dialog<PDARule> dialog = new Dialog<>();
+        dialog.setTitle("add Rule");
+        dialog.setHeaderText("enter the information for the new rule");
+        dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
+        GridPane gridPane = new GridPane();
+
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        TextField state = new TextField();
+        TextField input = new TextField();
+        TextField oldTos = new TextField();
+
+        TextField goingTo = new TextField();
+        TextField newTos = new TextField();
+
+        gridPane.addRow(0,new Label("coming from"),state);
+        gridPane.addRow(1,new Label("input"),input);
+        gridPane.addRow(2,new Label("ToS"),oldTos);
+        gridPane.addRow(3,new Label("going to"),goingTo);
+        gridPane.addRow(4,new Label("new ToS"),newTos);
+
+        dialog.getDialogPane().setContent(gridPane);
+        dialog.setResultConverter(param -> {
+            if (param == ButtonType.OK) {
+                if(state.getText().isEmpty() || goingTo.getText().isEmpty()) {
+                    return null;
+                }
+                InputLetter inputLetter;
+                if(input.getText().isEmpty() || input.getText().equals("epsilon") || input.getText().equals("lambda")) {
+                    inputLetter= InputLetter.NULLSYMBOL;
+                } else {
+                    inputLetter = new InputLetter(input.getText());
+                }
+                List<StackLetter> list;
+                if(newTos.getText().isEmpty()  || newTos.getText().equals("epsilon") || newTos.getText().equals("lambda")) {
+                    list = new ArrayList<StackLetter>();
+                    list.add(StackLetter.NULLSYMBOL);
+                } else {
+                    list = Arrays.stream(newTos.getText().split(", ")).
+                            map(text -> {
+                                if(text.isEmpty()  || text.equals("epsilon") || text.equals("lambda")) {
+                                    return StackLetter.NULLSYMBOL;
+                                } else {
+                                    return new StackLetter(text);
+                                }
+                            })
+                            .collect(Collectors.toList());
+                }
+                StackLetter oldtos;
+                if(oldTos.getText().isEmpty()  || oldTos.getText().equals("epsilon") || oldTos.getText().equals("lambda")) {
+                    oldtos = StackLetter.NULLSYMBOL;
+                } else {
+                    oldtos = new StackLetter(oldTos.getText());
+                }
+                return new PDARule(new State(state.getText()),new State(goingTo.getText()),inputLetter,oldtos,list);
+            }
+            return null;
+        });
+
+
+        Optional<PDARule> result = dialog.showAndWait();
+        if(result.isPresent()) {
+            List<PDARule> list = new ArrayList<>();
+           list.addAll(pda.getRules());
+            list.add(result.get());
+            return new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),list,pda.getName(),pda);
+        } else {
+            return null;
+        }
     }
 
     private PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
