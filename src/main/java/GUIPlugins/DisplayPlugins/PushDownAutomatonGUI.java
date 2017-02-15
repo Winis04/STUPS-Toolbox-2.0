@@ -2,6 +2,7 @@ package GUIPlugins.DisplayPlugins;
 
 import GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin;
 import Main.GUI;
+import Main.Storable;
 import PushDownAutomatonSimulator.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,16 +11,19 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
+import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.start;
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
@@ -42,6 +46,12 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private final ScrollPane scrollPane = new ScrollPane();
 
+    private final GridPane infos = new GridPane();
+
+    private final TextField bottom = new TextField();
+
+    private final TextField start = new TextField();
+
     private boolean checkStringIsActive = false;
 
 
@@ -54,120 +64,155 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         return new AnchorPane();
     }
 
+    private void refresh(Storable storable) {
+        if(storable != null) {
+            Class clazz = storable.getClass();
+
+            gui.getContent().getObjects().put(clazz,storable); //add new object as the current object
+            gui.getContent().getStore().get(clazz).put(storable.getName(),storable); //add object to the store
+            gui.refresh(storable); //switch to new object
+            gui.refresh(); //refresh the treeView
+
+
+        }
+    }
+
     @Override
     public Node display(Object object) {
-        CheckStringPDAPlugin.start.setVisible(true);
-        rulesAsButtons = new ArrayList<>();
-        PushDownAutomaton pda = (PushDownAutomaton) object;
-        int ruleNumber = pda.getRules().size();
-        int half = ruleNumber/2;
-        if(2*half < ruleNumber) {
-            half++;
-        }
-        root.getChildren().clear();
+        if(object != null) {
+            CheckStringPDAPlugin.start.setVisible(true);
+            rulesAsButtons = new ArrayList<>();
+            PushDownAutomaton pda = (PushDownAutomaton) object;
+            int ruleNumber = pda.getRules().size();
+            int half = ruleNumber / 2;
+            if (2 * half < ruleNumber) {
+                half++;
+            }
+            root.getChildren().clear();
+            infos.getChildren().clear();
 
-        flow.setText("");
-        path.setText("");
-        anchorPane.getChildren().clear();
+            flow.setText("");
+            path.setText("");
+            anchorPane.getChildren().clear();
+
+            bottom.setText(pda.getInitialStackLetter().getDisplayName());
+            start.setText(pda.getStartState().getName());
+            infos.addRow(0, new Label("bottom symbol"), bottom);
+            infos.addRow(1, new Label("start state"), start);
+
+            infos.setHgap(5);
+            infos.setVgap(10);
+            bottom.setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    refresh(PushDownAutomatonUtil.replaceStackSymbol(pda,pda.getInitialStackLetter(),new StackLetter(bottom.getText())));
+                }
+            });
+
+            start.setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    refresh(PushDownAutomatonUtil.replaceState(pda,pda.getStartState(),new State(start.getText())));
+                }
+            });
+
+            root.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
 
 
-         root.getChildren().forEach(node -> GridPane.setMargin(node, new Insets(5, 10, 5, 10)));
-
-
-        scrollPane.setContent(root);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        anchorPane.setCenter(flow);
-        anchorPane.setStyle("-fx-padding: 30 30 30 30;");
-        splitPane.setCenter(scrollPane);
-        splitPane.setBottom(anchorPane);
-        BorderPane.setAlignment(anchorPane,Pos.CENTER);
-     //   splitPane.getItems().addAll(scrollPane,anchorPane);
+            scrollPane.setContent(root);
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
+            anchorPane.setCenter(flow);
+            anchorPane.setStyle("-fx-padding: 30 30 30 30;");
+            splitPane.setCenter(scrollPane);
+            splitPane.setBottom(anchorPane);
+            splitPane.setTop(infos);
+            BorderPane.setAlignment(anchorPane, Pos.CENTER);
+            //   splitPane.getItems().addAll(scrollPane,anchorPane);
 
         /* fill with content **/
-        for(int c=0;c<=1;c++) {
-            for(int r=0;r<half;r++) {
-                if(c*half+r<ruleNumber) {
-                    PDARule rule = pda.getRules().get(c * half + r);
-                    Button cellLabel = new Button(rule.asString());
-                    cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                 //   cellLabel.setDisable(true);
-                    cellLabel.setOnMouseClicked(event -> {
-                        if ((event.getButton().equals(MouseButton.SECONDARY) || event.getClickCount() == 2) && !checkStringIsActive) {
-                            PushDownAutomaton freshPDA = editRule(pda,rule);
-                            if(freshPDA != null) {
-                                gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
-                                gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
-                                gui.refresh(freshPDA); //switch to new object
-                                gui.refresh(); //refresh the treeView
-                            }
-
-                        }
-                    });
-                  //  cellLabel.setStyle("-fx-background-color: gray");
-                    cellLabel.setOnAction(event -> {
-                        if(runThroughInfo!=null) {
-                            this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule,runThroughInfo));
-                            CheckStringPDAPlugin.path.setText(path(runThroughInfo," "));
-                            if(this.getRunThroughInfo().getPrevious() == null) {
-                                undo.setDisable(true);
-                                //     undo.setStyle("-fx-background-color: lightgray;");
-                            } else {
-                                undo.setDisable(false);
-                                //    undo.setStyle("");
-                            }
-                            //  CheckStringPDAPlugin.undo.setDisable(false);
-                            CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(" ")));
-                            flow.setText(runThroughInfo.getStack().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
-                            if(CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-
-                                Alert alert = new Alert(AlertType.CONFIRMATION);
-                                alert.setTitle("Success");
-                                alert.setHeaderText("you found a path that accepts the input");
-                                alert.setContentText(path(runThroughInfo,"\n")+"\n\ncopy the result?");
-                                alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-                                Optional<ButtonType> result = alert.showAndWait();
-                                if (result.isPresent() && result.get() == ButtonType.YES){
-                                    Clipboard clipboard = Clipboard.getSystemClipboard();
-                                    ClipboardContent content = new ClipboardContent();
-                                    content.putString(path(runThroughInfo,"\n"));
-                                    clipboard.setContent(content);
-                                } else {
-                                    Clipboard clipboard = Clipboard.getSystemClipboard();
-                                    ClipboardContent content = new ClipboardContent();
-                                    content.putString("");
-                                    clipboard.setContent(content);
+            for (int c = 0; c <= 1; c++) {
+                for (int r = 0; r < half; r++) {
+                    if (c * half + r < ruleNumber) {
+                        PDARule rule = pda.getRules().get(c * half + r);
+                        Button cellLabel = new Button(rule.asString());
+                        cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        //   cellLabel.setDisable(true);
+                        cellLabel.setOnMouseClicked(event -> {
+                            if ((event.getButton().equals(MouseButton.SECONDARY) || event.getClickCount() == 2) && !checkStringIsActive) {
+                                PushDownAutomaton freshPDA = editRule(pda, rule);
+                                if (freshPDA != null) {
+                                    gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
+                                    gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
+                                    gui.refresh(freshPDA); //switch to new object
+                                    gui.refresh(); //refresh the treeView
                                 }
 
-                                CheckStringPDAPlugin.startnew(this);
-
-                            } else if(noValidRules(runThroughInfo)) {
-                                Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setTitle("Failure");
-                                alert.setHeaderText(null);
-                                alert.setContentText("no more valid rules, but input and/or stack not empty");
-
-                                alert.showAndWait();
-                                CheckStringPDAPlugin.startnew(this);
-                            } else if(!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                                Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setTitle("Failure");
-                                alert.setHeaderText(null);
-                                alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
-
-                                alert.showAndWait();
-                                CheckStringPDAPlugin.startnew(this);
                             }
-                        }
+                        });
+                        //  cellLabel.setStyle("-fx-background-color: gray");
+                        cellLabel.setOnAction(event -> {
+                            if (runThroughInfo != null) {
+                                this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule, runThroughInfo));
+                                CheckStringPDAPlugin.path.setText(path(runThroughInfo, " "));
+                                if (this.getRunThroughInfo().getPrevious() == null) {
+                                    undo.setDisable(true);
+                                    //     undo.setStyle("-fx-background-color: lightgray;");
+                                } else {
+                                    undo.setDisable(false);
+                                    //    undo.setStyle("");
+                                }
+                                //  CheckStringPDAPlugin.undo.setDisable(false);
+                                CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(" ")));
+                                flow.setText(runThroughInfo.getStack().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
+                                if (CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
 
-                    });
-                    rulesAsButtons.add(cellLabel);
-                    rulesAndButtons.put(rule,cellLabel);
+                                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                                    alert.setTitle("Success");
+                                    alert.setHeaderText("you found a path that accepts the input");
+                                    alert.setContentText(path(runThroughInfo, "\n") + "\n\ncopy the result?");
+                                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.isPresent() && result.get() == ButtonType.YES) {
+                                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                                        ClipboardContent content = new ClipboardContent();
+                                        content.putString(path(runThroughInfo, "\n"));
+                                        clipboard.setContent(content);
+                                    } else {
+                                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                                        ClipboardContent content = new ClipboardContent();
+                                        content.putString("");
+                                        clipboard.setContent(content);
+                                    }
 
-                    root.add(cellLabel, c, r);
-                //    GridPane.setFillWidth(cellLabel, true);
-                  //  GridPane.setFillHeight(cellLabel, true);
+                                    CheckStringPDAPlugin.startnew(this);
 
+                                } else if (noValidRules(runThroughInfo)) {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Failure");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("no more valid rules, but input and/or stack not empty");
+
+                                    alert.showAndWait();
+                                    CheckStringPDAPlugin.startnew(this);
+                                } else if (!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Failure");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
+
+                                    alert.showAndWait();
+                                    CheckStringPDAPlugin.startnew(this);
+                                }
+                            }
+
+                        });
+                        rulesAsButtons.add(cellLabel);
+                        rulesAndButtons.put(rule, cellLabel);
+
+                        root.add(cellLabel, c, r);
+                        //    GridPane.setFillWidth(cellLabel, true);
+                        //  GridPane.setFillHeight(cellLabel, true);
+
+                    }
                 }
             }
         }
