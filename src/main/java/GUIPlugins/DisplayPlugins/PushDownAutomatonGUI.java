@@ -206,8 +206,37 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         dialog.getDialogPane().setContent(gridPane);
         dialog.setResultConverter(param -> {
             if (param == ButtonType.OK) {
-                List<StackLetter> list = Arrays.stream(newTos.getText().split(", ")).map(StackLetter::new).collect(Collectors.toList());
-                return new PDARule(new State(state.getText()),new State(goingTo.getText()),new InputLetter(input.getText()),new StackLetter(oldTos.getText()),list);
+                if(state.getText().isEmpty() || goingTo.getText().isEmpty()) {
+                    return null;
+                }
+                InputLetter inputLetter;
+                if(input.getText().isEmpty() || input.getText().equals("epsilon") || input.getText().equals("lambda")) {
+                    inputLetter= InputLetter.NULLSYMBOL;
+                } else {
+                    inputLetter = new InputLetter(input.getText());
+                }
+                List<StackLetter> list;
+                if(newTos.getText().isEmpty()  || newTos.getText().equals("epsilon") || newTos.getText().equals("lambda")) {
+                    list = new ArrayList<StackLetter>();
+                    list.add(StackLetter.NULLSYMBOL);
+                } else {
+                    list = Arrays.stream(newTos.getText().split(", ")).
+                            map(text -> {
+                                if(text.isEmpty()  || text.equals("epsilon") || text.equals("lambda")) {
+                                    return StackLetter.NULLSYMBOL;
+                                } else {
+                                    return new StackLetter(text);
+                                }
+                            })
+                            .collect(Collectors.toList());
+                }
+                StackLetter oldtos;
+                if(oldTos.getText().isEmpty()  || oldTos.getText().equals("epsilon") || oldTos.getText().equals("lambda")) {
+                    oldtos = StackLetter.NULLSYMBOL;
+                } else {
+                    oldtos = new StackLetter(oldTos.getText());
+                }
+                return new PDARule(new State(state.getText()),new State(goingTo.getText()),inputLetter,oldtos,list);
             }
             return null;
         });
