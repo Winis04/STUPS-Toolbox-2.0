@@ -126,9 +126,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
                         addItem.setOnAction(event1 -> {
                            refresh(addRule(pda));
-
-
                         });
+
+
 
                         mouseMenu.getItems().clear();
                         mouseMenu.getItems().add(addItem);
