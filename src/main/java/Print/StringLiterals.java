@@ -26,7 +26,7 @@ public class StringLiterals {
     public static final String EUR_TITLE = "Eliminate Unit Rules";
 
     //Literals for chomsky normal form
-    public static final String[] CNF_TEXTS=new String[]{"","rules, that point only on one terminal are " +
+    public static final String[] CNF_TEXTS=new String[]{"","rules in form A -> a are " +
             "already in chomsky normal form and we keep them",
             "in all other rules replace every appearance of a terminal a through a new nonterminal",
             "in all rules that contain more than two nonterminals, add a new nonterminal that points to the " +

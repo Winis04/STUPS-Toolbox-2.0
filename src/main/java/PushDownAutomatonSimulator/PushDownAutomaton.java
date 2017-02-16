@@ -192,7 +192,20 @@ public class PushDownAutomaton implements Printable, Storable{
                 .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
         String start = Printer.checkIfLatexSpecial(startState.getName());
         String init = Printer.checkIfLatexSpecial(initialStackLetter.getName());
-        Printer.print(space+"$"+this.getName()+"=\\left( "+in+", "+stack+", "+ statenames +", \\delta , "+start+", "+init+" \\right)$ ",writer);
+        String modName;
+        if(this.getName().contains("_")) {
+            String[] splitted = this.getName().split("_");
+            String[] subarray = new String[splitted.length-1];
+            System.arraycopy(splitted, 1, subarray, 0, splitted.length - 1);
+            modName=splitted[0]+"_";
+            modName+= Arrays.stream(subarray).map(s -> "{"+s).collect(joining("_"));
+            for(int i=0;i<subarray.length;i++) {
+                modName += "}";
+            }
+        } else {
+            modName = this.getName();
+        }
+        Printer.print(space+"$"+modName+"=\\left( "+in+", "+stack+", "+ statenames +", \\delta , "+start+", "+init+" \\right)$ ",writer);
 
         if(!this.rules.isEmpty()) {
             Printer.print(space+"with \n");

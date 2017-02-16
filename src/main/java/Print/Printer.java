@@ -10,8 +10,9 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
+import static java.util.stream.Collectors.joining;
 
 
 @SuppressWarnings("unused")
@@ -87,9 +88,36 @@ public class Printer {
                 printEnumerationConsole(printables,point_descriptions,texts);
                 break;
             case LATEX:
-                printEnumerationLatex(printables,point_descriptions,texts,title);
+                printEnumerationLatex(printables,toLatex(point_descriptions),toLatex(texts),toLatex(title));
                 break;
         }
+    }
+
+    public static String[] toLatex(String[] arr) {
+        String[] res = new String[arr.length];
+        for(int i=0;i<arr.length;i++) {
+            res[i] = toLatex(arr[i]);
+        }
+        return res;
+    }
+
+    public static String toLatex(String string) {
+        String res = Arrays.stream(string.split("->")).collect(joining(" $\\rightarrow$ "));
+        String[] tmp = res.split("_");
+        if(tmp.length > 1) {
+            String[] arr = new String[tmp.length - 1];
+            System.arraycopy(tmp, 1, arr, 0, tmp.length - 1);
+            res = tmp[0] + "_" + Arrays.stream(arr).collect(joining("-"));
+        }
+        tmp = res.split("_");
+        if(tmp.length > 1) {
+            String[] tmp2 = tmp[1].split(" ");
+            String[] arr = new String[tmp2.length - 1];
+            System.arraycopy(tmp2, 1, arr, 0, tmp2.length - 1);
+            res = tmp[0]+"_{"+tmp2[0]+"} "+Arrays.stream(arr).collect(joining(" "));
+        }
+        return makeToGreek(res);
+
     }
 
     @SuppressWarnings("unused")
@@ -98,10 +126,10 @@ public class Printer {
             case NO:
                 break;
             case CONSOLE:
-                printWithTitleLatex(title,printable);
+                printWithTitleConsole(title,printable);
                 break;
             case LATEX:
-                printWithTitleConsole(title, printable);
+                printWithTitleLatex(toLatex(title), printable);
                 break;
         }
 
@@ -109,7 +137,7 @@ public class Printer {
 
     @SuppressWarnings("unused")
     private static void printWithTitleLatex(String title, Printable printable) {
-        Printer.print("\\section{"+title+"}\n\n",writer);
+        Printer.print("\\section{$"+title+"$}\n\n",writer);
         printable.printLatex(writer,getSpace(deepness));
 
     }

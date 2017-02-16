@@ -116,8 +116,8 @@ public final class Grammar implements Printable, Storable {
 
     @Override
     public void printLatex(BufferedWriter writer, String space) {
-        ArrayList<ArrayList<String>> header= GrammarUtil.getHeader(this);
-        Printer.print(space+"$"+this.getName()+"=\\left(\\{",writer);
+        ArrayList<ArrayList<String>> header= GrammarUtil.getHeader(this,true);
+        Printer.print(space+"$"+Printer.toLatex(this.getName())+"=(\\{",writer);
         Printer.print(space+header.get(0).stream().map(Printer::makeToGreek).collect(joining(", ")),writer);
 
         Printer.print("\\},\\;\\{ ",writer);
@@ -127,7 +127,7 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print(header.get(2).get(0),writer);
 
-        Printer.print(",\\;"+"R"+"\\right)",writer);
+        Printer.print(",\\;"+"R)",writer);
         Printer.print("$ with\n",writer);
         Printer.print(space+"\\begin{align*}\n",writer);
 
@@ -136,12 +136,12 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print(GrammarUtil.getNonterminalsInOrder(this).stream().
                 map(nonterminal -> {
-                    String start="\t"+nonterminal.getName() + " &\\rightarrow ";
+                    String start="\t"+Printer.toLatex(nonterminal.getName()) + " &\\rightarrow ";
                     start += getRules().stream().filter(rule -> rule.getComingFrom().equals(nonterminal))
                             .map(Rule::getRightSide)
                             .map(list -> list.stream()
                                     .map(Symbol::getName)
-                                    .map(Printer::makeToGreek)
+                                    .map(Printer::toLatex)
                                     .collect(joining("")))
                             .collect(joining("\\;|\\;"));
                     return start;
@@ -157,7 +157,7 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print(this.getName()+"\n",writer);
 
-        ArrayList<ArrayList<String>> header=GrammarUtil.getHeader(this);
+        ArrayList<ArrayList<String>> header=GrammarUtil.getHeader(this,false);
 
         Printer.print("{",writer);
         Printer.print(header.get(0).stream().collect(joining(", ")),writer);

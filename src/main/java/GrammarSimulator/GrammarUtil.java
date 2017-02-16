@@ -8,6 +8,7 @@ import GrammarParser.parser.ParserException;
 import Print.Dummy;
 import Print.Printable;
 import Print.PrintableSet;
+import Print.Printer;
 import PushDownAutomatonSimulator.*;
 
 
@@ -1029,7 +1030,7 @@ public class GrammarUtil {
         }
         Dummy dummy = new Dummy(stb.toString()+"\n");
         //Step 3
-        Grammar grammar2=GrammarUtil.removeUnitRules(unitRules,grammar1);
+        Grammar grammar2=removeUnreachableNonterminals(GrammarUtil.removeUnitRules(unitRules,grammar1));
 
         res.add(grammar0);
         res.add(grammar1);
@@ -1778,12 +1779,16 @@ public class GrammarUtil {
      * ---------------------------------------------------------------------------------------------------------------*
      */
     @SuppressWarnings("unused")
-    static ArrayList<ArrayList<String>> getHeader(Grammar grammar) {
+    static ArrayList<ArrayList<String>> getHeader(Grammar grammar, boolean latex) {
         ArrayList<ArrayList<String>> header= new ArrayList<>(3);
         header.add(0,getTerminalsAsStrings(grammar));
-        header.add(1,getNonterminalsAsStrings(grammar));
+        header.add(1,getNonterminalsAsStrings(grammar,latex));
         ArrayList<String> tmp=new ArrayList<>();
-        tmp.add(grammar.getStartSymbol().getName());
+        if(latex) {
+            tmp.add(Printer.toLatex(grammar.getStartSymbol().getName()));
+        } else {
+            tmp.add(grammar.getStartSymbol().getName());
+        }
         header.add(2,tmp);
         return header;
     }
@@ -1796,9 +1801,14 @@ public class GrammarUtil {
     }
 
     @SuppressWarnings("unused")
-    private static ArrayList<String> getNonterminalsAsStrings(Grammar grammar) {
+    private static ArrayList<String> getNonterminalsAsStrings(Grammar grammar, boolean latex) {
         ArrayList<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
-        return (ArrayList<String>) nonterminals.stream().map(Nonterminal::getName).collect(Collectors.toList());
+        if (latex) {
+            return (ArrayList<String>) nonterminals.stream().map(Nonterminal::nameToLatex).collect(Collectors.toList());
+        } else {
+            return (ArrayList<String>) nonterminals.stream().map(Nonterminal::getName).collect(Collectors.toList());
+        }
+
     }
 
     /**

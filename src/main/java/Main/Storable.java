@@ -1,5 +1,8 @@
 package Main;
 
+import Print.Printable;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
@@ -12,7 +15,7 @@ import java.io.IOException;
  */
 
 @SuppressWarnings("unused")
-public interface Storable {
+public interface Storable extends Printable {
     /**
      * a deep-copy of the object.
      * Becomes redundant once automaton are immutable too
@@ -71,4 +74,9 @@ public interface Storable {
     @SuppressWarnings("unused")
     void savePreviousVersion();
 
+    @Override
+    void printLatex(BufferedWriter writer, String space);
+
+    @Override
+    void printConsole(BufferedWriter writer);
 }
