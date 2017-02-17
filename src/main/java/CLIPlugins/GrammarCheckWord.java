@@ -43,7 +43,7 @@ public class GrammarCheckWord extends CLIPlugin {
         if(contains) {
             Printer.print("the grammar "+grammar.getName()+ " contains the word "+parameters[0] + ".");
         } else {
-            Printer.print("the grammar "+grammar.getName()+ " doesn't contains the word "+parameters[0] + ".");
+            Printer.print("the grammar "+grammar.getName()+ " doesn't contain the word "+parameters[0] + ".");
         }
         return null;
     }
