@@ -582,6 +582,9 @@ public class GUI extends Application{
         }
     }
 
+    public void setNullsymbol(String string) {
+        stateController.setNullsymbol(string);
+    }
     /**
      * set the style sheet to a external file
      * @param path a path to a {@link File} not located in the resources

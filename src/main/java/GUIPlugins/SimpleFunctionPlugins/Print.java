@@ -2,6 +2,7 @@ package GUIPlugins.SimpleFunctionPlugins;
 
 import Main.Storable;
 import Print.Printer;
+import Print.PrintMode;
 
 
 @SuppressWarnings("unused")
@@ -42,6 +43,11 @@ public class Print extends SimpleFunctionPlugin {
     @Override
     public boolean createsOutput() {
         return true;
+    }
+
+    @Override
+    public boolean shouldBeDisabled() {
+        return Printer.printmode != PrintMode.LATEX;
     }
 
 }

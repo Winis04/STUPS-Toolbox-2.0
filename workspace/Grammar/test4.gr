@@ -1,4 +1,4 @@
-{'b', 'epsilon', 'a'; S; S}
+{'b', 'a'; S; S}
 
 S --> 'b','S','b'
 S --> 'epsilon'

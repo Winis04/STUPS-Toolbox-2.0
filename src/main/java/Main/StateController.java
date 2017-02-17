@@ -23,6 +23,7 @@ public class StateController {
 
     private String path_to_workspace;
     private String path_to_stylesheet;
+    private String nullsymbol;
 
     public StateController(Content content, GUI gui) {
         this.content=content;
@@ -33,6 +34,7 @@ public class StateController {
     public void init() {
         path_to_stylesheet = "/blue.css";
         path_to_workspace = "workspace/";
+        nullsymbol = "lambda";
         String fileName = "config";
 
         //read file into stream, try-with-resources
@@ -44,13 +46,22 @@ public class StateController {
                     if (parts.length == 2) {
                         switch (parts[0]) {
                             case "WORKSPACE":
-                                path_to_workspace = parts[1];
-                                if (!path_to_workspace.endsWith("/") && !path_to_workspace.endsWith("\\")) {
-                                    path_to_workspace += "/";
+                                if(isValidWorkspace(new File(parts[1]))) {
+                                    path_to_workspace = parts[1];
+                                    if (!path_to_workspace.endsWith("/") && !path_to_workspace.endsWith("\\")) {
+                                        path_to_workspace += "/";
+                                    }
                                 }
                                 break;
                             case "STYLESHEET":
-                                path_to_stylesheet = parts[1];
+                                if(new File(parts[1]).exists()) {
+                                    path_to_stylesheet = parts[1];
+                                }
+                                break;
+                            case "NULLSYMBOL":
+                                if(parts[1].equals("epsilon") || parts[1].equals("lambda")) {
+                                    nullsymbol = parts[1];
+                                }
                                 break;
                         }
                     }
@@ -65,6 +76,11 @@ public class StateController {
         initContent();
         initWorkspace();
         initStyle();
+        if(nullsymbol.equals("lambda")) {
+            GUI.nameOfNullSymbol = GUI.lambda;
+        } else if (nullsymbol.equals("epsilon")) {
+            GUI.nameOfNullSymbol = GUI.epsilon;
+        }
     }
 
     public boolean switchWorkspace(File newWorkspace) {
@@ -82,6 +98,10 @@ public class StateController {
             return false;
         }
     }
+
+    public void switchNullsymbol(String string) {
+        this.nullsymbol = string;
+    }
     private void initContent() {
         content.init();
     }
@@ -96,6 +116,7 @@ public class StateController {
             BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
             writer.write("WORKSPACE = "+path_to_workspace+"\n");
             writer.write("STYLESHEET = "+path_to_stylesheet+"\n");
+            writer.write("NULLSYMBOL = "+ nullsymbol );
             writer.close();
 
             exitWorkspace();
@@ -231,7 +252,9 @@ public class StateController {
     }
 
 
-
+    public void setNullsymbol(String nullsymbol) {
+        this.nullsymbol = nullsymbol;
+    }
 
     public void setPathToStyleSheet(String path) {
         this.path_to_stylesheet = path;

@@ -128,13 +128,15 @@ public class GrammarUtil {
         try {
             while(it.hasNext()) {
                 Terminal currentTerminal = it.next();
-                if(onGui) {
-                    writer.write("'" + currentTerminal.getDisplayName() + "'");
-                } else {
-                    writer.write("'" + currentTerminal.getName() + "'");
-                }
-                if(it.hasNext()) {
-                    writer.write(", ");
+                if(!currentTerminal.equals(Terminal.NULLSYMBOL)) {
+                    if (onGui) {
+                        writer.write("'" + currentTerminal.getDisplayName() + "'");
+                    } else {
+                        writer.write("'" + currentTerminal.getName() + "'");
+                    }
+                    if (it.hasNext()) {
+                        writer.write(", ");
+                    }
                 }
             }
             writer.flush();

@@ -64,9 +64,9 @@ class Visitor extends DepthFirstAdapter {
             }
             else if((nonterminals.containsKey(symbol.getText().replaceAll("'", "")))) {
                 rightSide.add(new Nonterminal(symbol.getText().replaceAll("'", "")));
-            }
-            else {
-                //TODO: fix this. if it is an epsilon, add it to the set
+            } else if(symbol.getText().replaceAll("'","").equals("epsilon") || symbol.getText().replaceAll("'","").equals("lambda")  ) {
+                rightSide.add(Terminal.NULLSYMBOL);
+            } else {
                 System.out.println("Symbol " + symbol.getText() + " has not been defined!");
                 System.exit(1);
             }

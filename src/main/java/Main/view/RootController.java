@@ -139,10 +139,11 @@ public class RootController {
         if(result.isPresent()) {
             if (result.get() == epsilon) {
                 GUI.nameOfNullSymbol = "\u03B5";
-
+                gui.setNullsymbol("epsilon");
 
             } else if (result.get() == lambda) {
                 GUI.nameOfNullSymbol = "\u03BB";
+                gui.setNullsymbol("lambda");
 
 
             }
@@ -150,18 +151,20 @@ public class RootController {
 
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
 
-        String parent = selectedItem.getParent().getValue().toLowerCase();
-        // we get the parents (and the child's class) by looking in the lookup table
-        Class parentClass = gui.getContent().getLookUpTable().get(parent);
+        if(selectedItem != null) {
+            String parent = selectedItem.getParent().getValue().toLowerCase();
+            // we get the parents (and the child's class) by looking in the lookup table
+            Class parentClass = gui.getContent().getLookUpTable().get(parent);
 
 
-        // now we can get the matching storable object
-        Storable selectedStorable =  gui.getContent().getStore().get(parentClass).get(selectedItem.getValue());
-        // put it as the current grammar/automaton/..
+            // now we can get the matching storable object
+            Storable selectedStorable = gui.getContent().getStore().get(parentClass).get(selectedItem.getValue());
+            // put it as the current grammar/automaton/..
 
-        gui.getContent().getObjects().put(parentClass, selectedStorable);
-        gui.switchDisplayGui(parentClass);
-        gui.refresh(selectedStorable);
+            gui.getContent().getObjects().put(parentClass, selectedStorable);
+            gui.switchDisplayGui(parentClass);
+            gui.refresh(selectedStorable);
+        }
 
     }
 

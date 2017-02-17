@@ -163,7 +163,8 @@ public class OverviewController {
     private void openContextMenu(Class parent, Collection<SimpleFunctionPlugin> list, double x, double y) {
         dynamicContextMenu.getItems().clear();
         dynamicContextMenu.getItems().addAll(list.stream()
-                .filter(sfp -> sfp.operatesOnAllStorables() || sfp.inputType().equals(parent)  )
+                .sorted((s,t) -> s.getName().compareTo(t.getName()))
+                .filter(sfp -> !sfp.operatesOnAllStorables() && sfp.inputType().equals(parent)  )
                 .map(sfp -> {
                     MenuItem item = sfp.getMenuItem(gui);
                     if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
@@ -171,8 +172,21 @@ public class OverviewController {
                     }
                     return item;
                 }).collect(Collectors.toList()));
+        dynamicContextMenu.getItems().add(new SeparatorMenuItem());
 
+
+        dynamicContextMenu.getItems().addAll(list.stream()
+                .sorted((s,t) -> s.getName().compareTo(t.getName()))
+                .filter(SimpleFunctionPlugin::operatesOnAllStorables)
+                .map(sfp -> {
+                    MenuItem item = sfp.getMenuItem(gui);
+                    if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
+                        item.setStyle("-fx-border-color: blue");
+                    }
+                    return item;
+                }).collect(Collectors.toList()));
         //show menu
+
         dynamicContextMenu.show(treeView, x, y);
     }
 
