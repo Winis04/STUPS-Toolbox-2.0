@@ -9,12 +9,7 @@ import org.reflections.Reflections;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -159,29 +154,48 @@ public class CLI {
                 break;
             case "h":
             case "help":
+                Map<String, String> texts = new HashMap<>();
 
-                plugins.stream().sorted((x,y) -> x.getNames()[0].compareTo(y.getNames()[0])).forEach(plugin -> {
-                    System.out.print("'" + plugin.getNames()[0] + "'");
+
+
+                plugins.stream().forEach(plugin -> {
+                    String s = "'" + plugin.getNames()[0] + "'";
                     for (int i = 1; i < plugin.getNames().length; i++) {
                         if (i < plugin.getNames().length - 1) {
-                            System.out.print(", ");
+                            s+=", ";
                         } else {
-                            System.out.print(" or ");
+                            s+=" or ";
                         }
-                        System.out.print("'" + plugin.getNames()[i] + "'");
+                        s+="'" + plugin.getNames()[i] + "'";
                     }
-                    System.out.println("  --  " + plugin.getHelpText());
+                    String t=plugin.getHelpText();
+                    texts.put(s,t);
                 });
 
-                System.out.println("'gui' -- Opens a graphical user interface. Doesn't take any parameters");
-                System.out.println("'clear_store' -- deletes every stored item");
-                System.out.println("'str' or 'store' -- takes "+types+" as first parameter and a name as second. Stores the current object of this type");
-                System.out.println("'remove' or 'rmv' -- takes "+types+" as first parameter and a name as second. Removes the stored object at this position");
-                System.out.println("'swt' or 'switch' --  takes "+types+" as first parameter and a name as second. Sets the current objects of this type to the object at this position");
-                System.out.println("'show-all' -- takes "+types+" as a parameter. Prints all objects of this kind");
-                System.out.println("'e' or 'exit' -- Leaves the program and saved the current workspace. Doesn't take any parameters");
-                System.out.println("'a' or 'about' -- Shows the release information");
-                System.out.println("'h' or 'help' -- Shows this help message. Doesn't take any parameters");
+
+                texts.put("'gui'","Opens a graphical user interface. Doesn't take any parameters");
+                texts.put("'clear_store'","deletes every stored item");
+                texts.put("'str' or 'store'","takes "+types+" as first parameter and a name as second. Stores the current object of this type");
+                texts.put("'remove' or 'rmv'","takes "+types+" as first parameter and a name as second. Removes the stored object at this position");
+                texts.put("'swt' or 'switch'","takes "+types+" as first parameter and a name as second. Sets the current objects of this type to the object at this position");
+                texts.put("'show-all'","takes "+types+" as a parameter. Prints all objects of this kind");
+                texts.put("'e' or 'exit'","Leaves the program and saved the current workspace. Doesn't take any parameters");
+                texts.put("'a' or 'about'","Shows the release information");
+                texts.put("'h' or 'help'","Shows this help message. Doesn't take any parameters");
+
+                HashMap<String, String> toPrint = new HashMap<>();
+
+                OptionalInt max = texts.keySet().stream().mapToInt(String::length).max();
+                if(max.isPresent()) {
+                    texts.keySet().forEach(key -> {
+                        String freshKey = fill(key,max.getAsInt());
+                        toPrint.put(freshKey,linebreak2(texts.get(key),max.getAsInt()+6,75-max.getAsInt()));
+                    });
+                }
+
+                toPrint.keySet().stream().sorted(String::compareTo).
+                        forEach(key -> System.out.println(key+"  --  "+toPrint.get(key)));
+
                 break;
             case "e":
             case "exit":
@@ -205,6 +219,56 @@ public class CLI {
                 return false;
         }
         return true;
+    }
+
+    private String fill(String s, int n) {
+        String res=s;
+        if(n > s.length()) {
+            int k = n-s.length();
+            for(int i=0;i<k;i++) {
+                res+=" ";
+            }
+        }
+        return res;
+    }
+
+    private String linebreak(String s, int n, int length) {
+        String space = fill("",n);
+        String res = "";
+        int i=0;
+        int times = (int)(s.length()/length);
+        for(int j=0;j<times;j++) {
+            res += s.substring(i,i+length)+"\n"+space;
+            i+=length;
+        }
+        res += s.substring(i,s.length());
+        return res;
+    }
+
+    private String linebreak2(String s, int n, int length) {
+        String space = fill("",n);
+        String[] array = s.split(" ");
+        List<String> lines = new ArrayList<>();
+        String tmp="";
+        int i=0;
+        while (i < array.length) {
+            tmp="";
+            while (i < array.length && tmp.length() < length) {
+                String t = tmp + array[i] + " ";
+                if(t.length() < length) {
+                    tmp += array[i] + " ";
+                    i++;
+                } else {
+                    break;
+                }
+
+            }
+            lines.add(tmp);
+        }
+        String tmp0 = lines.get(0);
+        lines=lines.stream().map(sx -> "\n"+space+sx).collect(Collectors.toList());
+        lines.set(0,tmp0);
+        return lines.stream().collect(Collectors.joining(""));
     }
 
     @SuppressWarnings("unused")
