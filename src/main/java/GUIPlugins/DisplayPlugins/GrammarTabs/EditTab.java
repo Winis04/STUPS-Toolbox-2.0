@@ -553,6 +553,20 @@ public class EditTab implements GrammarTab {
         return grammar;
     }
 
+    private StringTokenizer assumeSymbols(String string) {
+        return new StringTokenizer(assumeSymbolsAsString(string),",");
+    }
+
+    private String assumeSymbolsAsString(String string) {
+        List<String> splitted = new ArrayList<>();
+        for(int i=0;i<string.length();i++) {
+            splitted.add(string.substring(i,i+1));
+        }
+        return splitted.stream().collect(Collectors.joining(","));
+    }
+
+
+
     /**
      * Edits a nonterminal's symbol list.
      *  @param grammar The grammar.
@@ -567,6 +581,24 @@ public class EditTab implements GrammarTab {
         if(newSymbols.isEmpty()) {
             newList.add(Terminal.NULLSYMBOL);
         } else {
+            if(symbolsTokenizer.countTokens()==1) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog");
+                alert.setContentText("Did you mean "+assumeSymbolsAsString(newSymbols)+"?");
+
+                ButtonType yes = new ButtonType("Yes");
+                ButtonType no = new ButtonType("No");
+                ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(yes,no,cancel);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == yes){
+                    symbolsTokenizer = assumeSymbols(newSymbols);
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+
+            }
             while (symbolsTokenizer.hasMoreElements()) {
                 String currentString = symbolsTokenizer.nextToken().trim();
                 if (!currentString.isEmpty()) {
