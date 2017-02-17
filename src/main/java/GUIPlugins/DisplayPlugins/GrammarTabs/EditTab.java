@@ -61,9 +61,16 @@ public class EditTab implements GrammarTab {
 
 
         GridPane topPane = new GridPane();
+        CheckBox lambdaFree = new CheckBox();
+        lambdaFree.setDisable(true);
+        CheckBox unitRuleFree = new CheckBox();
+        unitRuleFree.setDisable(true);
+        CheckBox cnf = new CheckBox();
+        cnf.setDisable(true);
 
         topPane.addRow(0, terminalsLabel);
         topPane.addRow(1, nonterminalsLabel);
+
 
 
         topPane.setHgap(5);
@@ -80,8 +87,21 @@ public class EditTab implements GrammarTab {
         writeRules(grammar, editPane);
 
 
-
-
+        if(GrammarUtil.isLambdaFree(grammar)) {
+            lambdaFree.setSelected(true);
+        } else {
+            lambdaFree.setSelected(false);
+        }
+        if(GrammarUtil.hasUnitRules(grammar)) {
+            unitRuleFree.setSelected(false);
+        } else {
+            unitRuleFree.setSelected(true);
+        }
+        if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            cnf.setSelected(true);
+        } else {
+            cnf.setSelected(false);
+        }
         editPane.setOnMouseClicked(event -> {
             if(event.getTarget().equals(editPane)) {
                 mouseMenu.hide();
@@ -108,6 +128,10 @@ public class EditTab implements GrammarTab {
         rootPane.setTop(topPane);
 
         rootPane.setCenter(editPane);
+
+        GridPane bottom = new GridPane();
+        bottom.addRow(0, new Label(""),new Label("lambda-free"), lambdaFree, new Label("unit rule free"), unitRuleFree, new Label("in cnf"), cnf);
+        rootPane.setBottom(bottom);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(rootPane);

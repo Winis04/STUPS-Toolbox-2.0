@@ -248,6 +248,55 @@ public class PushDownAutomatonUtil {
        }
     }
 
+    public static PushDownAutomaton replaceStackSymbol(PushDownAutomaton pda, StackLetter toBeReplaced, StackLetter replacement) {
+        List<PDARule> rules = pda.getRules().stream().map(rule -> {
+            StackLetter oldTos;
+            if(rule.getOldToS().equals(toBeReplaced)) {
+                oldTos = replacement;
+            } else {
+                oldTos = rule.getOldToS();
+            }
+            List<StackLetter> list = rule.getNewToS().stream()
+                    .map(sym -> {
+                        if(sym.equals(toBeReplaced)) {
+                            return replacement;
+                        } else {
+                            return sym;
+                        }
+                    }).collect(toList());
+            return new PDARule(rule.getComingFrom(),rule.getGoingTo(),rule.getReadIn(),oldTos,list);
+        }).collect(Collectors.toList());
+        if(pda.getInitialStackLetter().equals(toBeReplaced)) {
+            return new PushDownAutomaton(pda.getStartState(),replacement,rules,pda.getName(),pda);
+        } else {
+            return new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),rules,pda.getName(),pda);
+        }
+    }
+
+    public static PushDownAutomaton replaceState(PushDownAutomaton pda, State toBeReplaced, State replacement) {
+        List<PDARule> rules = pda.getRules().stream().
+                map(rule -> {
+                    State comingFrom;
+                    State goingTo;
+                    if(rule.getComingFrom().equals(toBeReplaced)) {
+                        comingFrom = replacement;
+                    } else {
+                        comingFrom = rule.getComingFrom();
+                    }
+                    if(rule.getGoingTo().equals(toBeReplaced)) {
+                        goingTo = replacement;
+                    } else {
+                        goingTo = rule.getGoingTo();
+                    }
+                    return new PDARule(comingFrom,goingTo,rule.getReadIn(),rule.getOldToS(),rule.getNewToS());
+                }).collect(toList());
+        if(pda.getStartState().equals(toBeReplaced)) {
+            return new PushDownAutomaton(replacement,pda.getInitialStackLetter(),rules,pda.getName(),pda);
+        } else {
+            return new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),rules,pda.getName(),pda);
+        }
+    }
+
     private static String toNameOfNonterminal(State z, StackLetter A, State x) {
         String a = z.getName();
         String b = A.getName();
