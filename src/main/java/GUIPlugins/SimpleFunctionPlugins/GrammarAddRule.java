@@ -1,6 +1,5 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
 import Main.Storable;
 import javafx.scene.control.*;

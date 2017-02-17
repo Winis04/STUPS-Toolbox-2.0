@@ -767,7 +767,7 @@ public class GrammarUtil {
     /**
      * removes unnecessary epsilons in a {@link Grammar}s {@link Rule}s
      * @param g the {@link Grammar}
-     * @return a {@link Grammar} without unnecessary nullsymbols
+     * @return a {@link Grammar} without unnecessary null symbols
      */
     public static Grammar removeUnnecessaryEpsilons(Grammar g) {
         HashSet<Rule> freshRules = new HashSet<>();
@@ -810,13 +810,13 @@ public class GrammarUtil {
         Grammar grammar0= (Grammar) grammar.deep_copy();
 
         Grammar grammar1;
-        boolean specialrule;
+        boolean specialRule;
         //1. Special Rule for Empty Word
         if(GrammarUtil.languageContainsLambda(grammar)) { //todo should be language contains lambda
             grammar1=specialRuleForEmptyWord(grammar0,grammar);
-            specialrule=true;
+            specialRule=true;
         } else {
-            specialrule = false;
+            specialRule = false;
             grammar1=grammar0;
         }
 
@@ -834,7 +834,7 @@ public class GrammarUtil {
 
 
         res.add(grammar0);
-        if(specialrule) {
+        if(specialRule) {
             res.add(grammar1);
         }
         res.add(nullable_and_printable);
@@ -1689,8 +1689,6 @@ public class GrammarUtil {
      */
     @SuppressWarnings("unused")
     public static PushDownAutomaton toPDA(Grammar g) {
-        State start_state;
-        StackLetter initialStackLetter;
         ArrayList<PDARule> rules;
         PushDownAutomaton tmp = helper(g);
         /* create the rules **/
@@ -1710,7 +1708,6 @@ public class GrammarUtil {
 
     public static ArrayList<Printable> toPDAAsPrintables(Grammar g) {
         ArrayList<Printable> res = new ArrayList<>();
-        Grammar obj0 = g;
         PushDownAutomaton obj1 = helper(g);
         ArrayList<PDARule> rules1 = new ArrayList<>();
         rules1.addAll(createRules_StepOne(g,obj1));
@@ -1719,7 +1716,7 @@ public class GrammarUtil {
         rules2.addAll(createRules_StepOne(g,obj1));
         rules2.addAll(createRules_StepTwo(g,obj1));
         PushDownAutomaton obj3 = new PushDownAutomaton(obj1.getInputAlphabet(),obj1.getStackAlphabet(),obj1.getStartState(),obj1.getInitialStackLetter(),rules2,obj1.getName(),null);
-        res.add(obj0);
+        res.add(g);
         res.add(obj1);
         res.add(obj2);
         res.add(obj3);

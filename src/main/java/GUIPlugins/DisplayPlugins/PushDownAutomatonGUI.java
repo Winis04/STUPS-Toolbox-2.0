@@ -15,15 +15,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.path;
-import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.start;
 import static GUIPlugins.ComplexFunctionPlugins.CheckStringPDAPlugin.undo;
 
 /**
@@ -46,7 +43,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private final ScrollPane scrollPane = new ScrollPane();
 
-    private final GridPane infos = new GridPane();
+    private final GridPane info = new GridPane();
 
     private final TextField bottom = new TextField();
 
@@ -91,7 +88,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 half++;
             }
             root.getChildren().clear();
-            infos.getChildren().clear();
+            info.getChildren().clear();
 
             flow.setText("");
             path.setText("");
@@ -99,11 +96,11 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
             bottom.setText(pda.getInitialStackLetter().getDisplayName());
             start.setText(pda.getStartState().getName());
-            infos.addRow(0, new Label("bottom symbol"), bottom);
-            infos.addRow(1, new Label("start state"), start);
+            info.addRow(0, new Label("bottom symbol"), bottom);
+            info.addRow(1, new Label("start state"), start);
 
-            infos.setHgap(5);
-            infos.setVgap(10);
+            info.setHgap(5);
+            info.setVgap(10);
             bottom.setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     refresh(PushDownAutomatonUtil.replaceStackSymbol(pda,pda.getInitialStackLetter(),new StackLetter(bottom.getText())));
@@ -124,9 +121,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         //that gives him the opportunity to create a new rule.
                         MenuItem addItem = new MenuItem("Add Rule");
 
-                        addItem.setOnAction(event1 -> {
-                           refresh(addRule(pda));
-                        });
+                        addItem.setOnAction(event1 -> refresh(addRule(pda)));
 
 
 
@@ -151,7 +146,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             anchorPane.setStyle("-fx-padding: 30 30 30 30;");
             splitPane.setCenter(scrollPane);
             splitPane.setBottom(anchorPane);
-            splitPane.setTop(infos);
+            splitPane.setTop(info);
             BorderPane.setAlignment(anchorPane, Pos.CENTER);
             //   splitPane.getItems().addAll(scrollPane,anchorPane);
 
@@ -294,7 +289,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 }
                 List<StackLetter> list;
                 if(newTos.getText().isEmpty()  || newTos.getText().equals("epsilon") || newTos.getText().equals("lambda")) {
-                    list = new ArrayList<StackLetter>();
+                    list = new ArrayList<>();
                     list.add(StackLetter.NULLSYMBOL);
                 } else {
                     list = Arrays.stream(newTos.getText().split(", ")).
@@ -367,7 +362,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 }
                 List<StackLetter> list;
                 if(newTos.getText().isEmpty()  || newTos.getText().equals("epsilon") || newTos.getText().equals("lambda")) {
-                    list = new ArrayList<StackLetter>();
+                    list = new ArrayList<>();
                     list.add(StackLetter.NULLSYMBOL);
                 } else {
                     list = Arrays.stream(newTos.getText().split(", ")).

@@ -99,9 +99,7 @@ public class StateController {
         }
     }
 
-    public void switchNullsymbol(String string) {
-        this.nullsymbol = string;
-    }
+
     private void initContent() {
         content.init();
     }

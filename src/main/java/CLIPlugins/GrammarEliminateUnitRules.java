@@ -4,7 +4,6 @@ import GrammarSimulator.*;
 import Main.Storable;
 import Print.Printer;
 import Print.StringLiterals;
-import javassist.compiler.ast.StringL;
 
 /**
  * Eliminates unit {@link Rule}s of the current {@link Grammar}.

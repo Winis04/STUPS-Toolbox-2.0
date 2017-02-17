@@ -102,7 +102,7 @@ public class EditTab implements GrammarTab {
         } else {
             cnf.setSelected(false);
         }
-        /**
+        /*
         editPane.setOnMouseClicked(event -> {
             if(event.getTarget().equals(editPane)) {
                 mouseMenu.hide();
@@ -124,7 +124,8 @@ public class EditTab implements GrammarTab {
             } else if(event.getButton().equals(MouseButton.PRIMARY)) {
                 mouseMenu.hide();
             }
-        }); **/
+        });
+        **/
 
         rootPane.setTop(topPane);
 
@@ -306,7 +307,7 @@ public class EditTab implements GrammarTab {
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                   Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
+                                   Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText());
                                   refresh(grammar1);
 
                                }
@@ -337,7 +338,7 @@ public class EditTab implements GrammarTab {
 
                        field.setOnKeyPressed(event1 -> {
                            if (event1.getCode().equals(KeyCode.ENTER)) {
-                               Grammar grammar1= editRule(grammar, nonterminal, symbols, field.getText());
+                               Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText());
                              refresh(grammar1);
 
 
@@ -353,12 +354,8 @@ public class EditTab implements GrammarTab {
                     });
         }
     }
+    /*
 
-    /**
-     * Adds a rule to the grammar.
-     *
-     * @param grammar The grammar.
-     */
     private Grammar addRule(Grammar grammar) {
 
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
@@ -454,6 +451,8 @@ public class EditTab implements GrammarTab {
         }
         return grammar;
     }
+    */
+
 
     /**
      * Deletes a nonterminal from grammar.
@@ -569,12 +568,12 @@ public class EditTab implements GrammarTab {
 
     /**
      * Edits a nonterminal's symbol list.
-     *  @param grammar The grammar.
-     * @param nonterminal The nonterminal.
-     * @param oldSymbols An ArrayList, representing the old symbol list.
+     * @param grammar The grammar.
+     * @param rule the to be edited {@link Rule}
      * @param newSymbols A string, containing the new symbol list.
+     * @return  returns a {@link Grammar} with the edited {@link Rule}
      */
-    private Grammar editRule(Grammar grammar, Nonterminal nonterminal, List<Symbol> oldSymbols, String newSymbols) {
+    private Grammar editRule(Grammar grammar, Rule rule, String newSymbols) {
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
         HashSet<Rule> freshRules = new HashSet<>();
@@ -592,10 +591,10 @@ public class EditTab implements GrammarTab {
 
                 alert.getButtonTypes().setAll(yes,no,cancel);
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == yes){
-                    symbolsTokenizer = assumeSymbols(newSymbols);
-                } else {
-                    // ... user chose CANCEL or closed the dialog
+                if(result.isPresent()) {
+                    if (result.get() == yes) {
+                        symbolsTokenizer = assumeSymbols(newSymbols);
+                    }
                 }
 
             }
@@ -622,11 +621,11 @@ public class EditTab implements GrammarTab {
 
 
         }
-        grammar.getRules().forEach(rule -> {
-            if (rule.getComingFrom().equals(nonterminal) && rule.getRightSide().equals(oldSymbols)) {
-                freshRules.add(new Rule(rule.getComingFrom(), newList));
+        grammar.getRules().forEach(r -> {
+            if (r.getComingFrom().equals(rule.getComingFrom()) && r.getRightSide().equals(rule.getRightSide())) {
+                freshRules.add(new Rule(r.getComingFrom(), newList));
             } else {
-                freshRules.add(rule);
+                freshRules.add(r);
             }
         });
         return new Grammar(grammar.getStartSymbol(), freshRules, grammar.getName(), grammar);

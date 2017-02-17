@@ -119,9 +119,9 @@ public final class Nonterminal implements Symbol, Printable {
             res += "{" + splitted[1] + "}";
             if(splitted.length > 2) {
                 res += "\\_";
-                String[] subarray = new String[splitted.length - 2];
-                System.arraycopy(splitted, 2, subarray, 0, splitted.length - 2);
-                res+= Arrays.stream(subarray).collect(Collectors.joining("\\_"));
+                String[] subArray = new String[splitted.length - 2];
+                System.arraycopy(splitted, 2, subArray, 0, splitted.length - 2);
+                res+= Arrays.stream(subArray).collect(Collectors.joining("\\_"));
             }
 
         } else {

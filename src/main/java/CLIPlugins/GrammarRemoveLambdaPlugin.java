@@ -50,8 +50,8 @@ public class GrammarRemoveLambdaPlugin extends CLIPlugin {
             return null;
         }
        ArrayList<Printable> printables=GrammarUtil.removeLambdaRulesAsPrintables(grammar);
-        String texts[];
-        String point_descriptions[];
+
+
         if(printables.size()==4) {
             Printer.printEnumeration(printables, StringLiterals.RLR_POINT_DESCRIPTIONS_SHORT,StringLiterals.RLR_TEXTS_SHORT,StringLiterals.RLR_TITLE);
         } else if(printables.size()==5) {

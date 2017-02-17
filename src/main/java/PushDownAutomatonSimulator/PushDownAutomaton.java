@@ -187,7 +187,7 @@ public class PushDownAutomaton implements Printable, Storable{
                 .filter(sa -> !sa.equals(StackLetter.NULLSYMBOL))
                 .map(StackLetter::getName)
                 .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
-        String statenames = "\\{ "+states.stream()
+        String stateNames = "\\{ "+states.stream()
                 .map(State::getName)
                 .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
         String start = Printer.checkIfLatexSpecial(startState.getName());
@@ -195,17 +195,17 @@ public class PushDownAutomaton implements Printable, Storable{
         String modName;
         if(this.getName().contains("_")) {
             String[] splitted = this.getName().split("_");
-            String[] subarray = new String[splitted.length-1];
-            System.arraycopy(splitted, 1, subarray, 0, splitted.length - 1);
+            String[] subArray = new String[splitted.length-1];
+            System.arraycopy(splitted, 1, subArray, 0, splitted.length - 1);
             modName=splitted[0]+"_";
-            modName+= Arrays.stream(subarray).map(s -> "{"+s).collect(joining("_"));
-            for(int i=0;i<subarray.length;i++) {
+            modName+= Arrays.stream(subArray).map(s -> "{"+s).collect(joining("_"));
+            for (String aSubarray : subArray) {
                 modName += "}";
             }
         } else {
             modName = this.getName();
         }
-        Printer.print(space+"$"+modName+"=\\left( "+in+", "+stack+", "+ statenames +", \\delta , "+start+", "+init+" \\right)$ ",writer);
+        Printer.print(space+"$"+modName+"=\\left( "+in+", "+stack+", "+ stateNames +", \\delta , "+start+", "+init+" \\right)$ ",writer);
 
         if(!this.rules.isEmpty()) {
             Printer.print(space+"with \n");

@@ -2,7 +2,6 @@ package Main;
 
 import CLIPlugins.CLIPlugin;
 import Print.PrintMode;
-import Print.Printable;
 import Print.Printer;
 import javafx.application.Platform;
 import org.reflections.Reflections;
@@ -78,7 +77,7 @@ public class CLI {
                         if (correctMap == null || correctMap.isEmpty()) {
                             System.out.println("no objects of type " + parameters[0] + " stored!");
                         } else {
-                            correctMap.keySet().forEach(key -> Printer.print((Printable) correctMap.get(key)));
+                            correctMap.keySet().forEach(key -> Printer.print(correctMap.get(key)));
                         }
                     }
                 } else {
@@ -158,18 +157,18 @@ public class CLI {
 
 
 
-                plugins.stream().forEach(plugin -> {
+                plugins.forEach(plugin -> {
                     String s = "'" + plugin.getNames()[0] + "'";
                     for (int i = 1; i < plugin.getNames().length; i++) {
                         if (i < plugin.getNames().length - 1) {
-                            s+=", ";
+                            s += ", ";
                         } else {
-                            s+=" or ";
+                            s += " or ";
                         }
-                        s+="'" + plugin.getNames()[i] + "'";
+                        s += "'" + plugin.getNames()[i] + "'";
                     }
-                    String t=plugin.getHelpText();
-                    texts.put(s,t);
+                    String t = plugin.getHelpText();
+                    texts.put(s, t);
                 });
 
 
@@ -236,7 +235,7 @@ public class CLI {
         String space = fill("",n);
         String res = "";
         int i=0;
-        int times = (int)(s.length()/length);
+        int times = s.length()/length;
         for(int j=0;j<times;j++) {
             res += s.substring(i,i+length)+"\n"+space;
             i+=length;
@@ -249,7 +248,7 @@ public class CLI {
         String space = fill("",n);
         String[] array = s.split(" ");
         List<String> lines = new ArrayList<>();
-        String tmp="";
+        String tmp;
         int i=0;
         while (i < array.length) {
             tmp="";
