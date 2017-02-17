@@ -93,10 +93,12 @@ public class OverviewController {
                     Class clazz = gui.getContent().getLookUpTable().get(top.getValue().toLowerCase());
                     HashMap<String, Storable> map = gui.getContent().getStore().get(clazz);
                     if(map != null && !map.isEmpty()) {
-                        map.keySet().forEach(key -> {
-                            TreeItem<String> child = new TreeItem<>(key);
-                            top.getChildren().add(child);
-                        });
+                        map.keySet().stream()
+                                .sorted(String::compareTo)
+                                .forEach(key -> {
+                                    TreeItem<String> child = new TreeItem<>(key);
+                                    top.getChildren().add(child);
+                                });
                     }
                 });
 

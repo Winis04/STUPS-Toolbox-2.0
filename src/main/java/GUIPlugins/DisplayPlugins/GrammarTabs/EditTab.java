@@ -102,6 +102,7 @@ public class EditTab implements GrammarTab {
         } else {
             cnf.setSelected(false);
         }
+        /**
         editPane.setOnMouseClicked(event -> {
             if(event.getTarget().equals(editPane)) {
                 mouseMenu.hide();
@@ -123,7 +124,7 @@ public class EditTab implements GrammarTab {
             } else if(event.getButton().equals(MouseButton.PRIMARY)) {
                 mouseMenu.hide();
             }
-        });
+        }); **/
 
         rootPane.setTop(topPane);
 

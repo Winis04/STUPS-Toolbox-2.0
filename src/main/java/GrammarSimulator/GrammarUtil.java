@@ -145,6 +145,7 @@ public class GrammarUtil {
         }
     }
 
+
     @SuppressWarnings("unused")
     private static void writeNonterminals(BufferedWriter writer, Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
@@ -2148,6 +2149,12 @@ public class GrammarUtil {
         return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
     }
 
+    public Grammar addRule(Grammar g, Rule rule) {
+        HashSet<Rule> rules = new HashSet<>();
+        rules.addAll(g.getRules());
+        rules.add(rule);
+        return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
+    }
 
 }
 
