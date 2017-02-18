@@ -1066,7 +1066,7 @@ public class GrammarUtil {
         Grammar res = grammar;
         Grammar loop = grammar;
         while(loop!=null) {
-            loop = removeOneCircle(res); //removes one circle
+            loop = removeOneBackwardsEdge(res); //removes one circle
             if(loop!=null) { //if there is no circle anymore, loop equals null and we are ready
                 res=loop;
             }
@@ -1084,12 +1084,12 @@ public class GrammarUtil {
         return new Grammar(res.getStartSymbol(),freshRules,res.getName(), (Grammar) res.getPreviousVersion());
     }
     /**
-     * removes circles in the grammar rules
+     * removes one edge of a circle
      * @param grammar the grammar that should be modified
      * @return the grammar, if there are circles. Null, if there are no circles anymore
      */
     @SuppressWarnings("unused")
-    private static Grammar removeOneCircle(Grammar grammar) {
+    private static Grammar removeOneBackwardsEdge(Grammar grammar) {
         ArrayList<Node> tmp;
 
         HashSet<Node> unitRules= GrammarUtil.findUnitRules(grammar); //ok no changes
@@ -1173,7 +1173,7 @@ public class GrammarUtil {
      * @return an ArrayList with two objects that represent backwards edge in a dept-first-search //TODO
      */
     @SuppressWarnings("unused")
-    private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) {
+    private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) { //TODO guck Auf Weikipedia, wie da die Zykelerkennung gemacht wurde. Besser?
         if(unitRules.stream().allMatch(rule -> rule.getDfe()!=0)) {
             for (Node node : unitRules) {
                 for (Node child : node.getChildren()) {
@@ -1227,7 +1227,6 @@ public class GrammarUtil {
 
     /**
      * removes the unit rules in a Grammar, only possible if there are no circles
-     * TODO What does this do? why does it return a list? is nowhere used
      * @param nodes the nonterminals as nodes. to obtain them, use
      * @param g the grammar g
      */
@@ -1819,9 +1818,10 @@ public class GrammarUtil {
      * @return a grammar, where the special rule vor the empty word has been applied
      */
     @SuppressWarnings("unused")
-    private static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
+    public static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
     //    if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
+            //replace S on every right side through S_0
             HashSet<Rule> freshRules = new HashSet<>();
             Nonterminal newNonterminal = new Nonterminal("S_0");
             g.getRules().stream()
@@ -1837,6 +1837,7 @@ public class GrammarUtil {
                         });
                         freshRules.add(new Rule(g.getStartSymbol(),tmp));
                     });
+            //Add every rule of S as a Rule of S_0
             g.getRules().forEach(rule -> {
                 Nonterminal start;
                 if(rule.getComingFrom().equals(g.getStartSymbol())) {
@@ -1854,6 +1855,7 @@ public class GrammarUtil {
                 });
                 freshRules.add(new Rule(start,tmp));
             });
+
             if(GrammarUtil.startSymbolPointsOnLambda(original)) {
                 ArrayList<Symbol> t = new ArrayList<>();
                 t.add(Terminal.NULLSYMBOL);
@@ -1936,7 +1938,7 @@ public class GrammarUtil {
      * @return true, if the language contains lambda
      */
     @SuppressWarnings("unused")
-    private static boolean languageContainsLambda(Grammar g) {
+    public static boolean languageContainsLambda(Grammar g) {
        return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
     }
 
