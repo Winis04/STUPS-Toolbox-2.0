@@ -10,7 +10,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
 
 
 
-@SuppressWarnings("unused")
+
 public class GrammarToPDA extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

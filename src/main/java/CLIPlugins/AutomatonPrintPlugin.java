@@ -10,7 +10,7 @@ import Print.Printer;
  * @since 20.06.16
  */
 
-@SuppressWarnings("unused")
+
 public class AutomatonPrintPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

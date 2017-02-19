@@ -12,7 +12,7 @@ import java.io.IOException;
  * @since 12.08.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarSavePlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

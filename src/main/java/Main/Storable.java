@@ -14,21 +14,21 @@ import java.io.IOException;
  * @since 27.11.2016
  */
 
-@SuppressWarnings("unused")
+
 public interface Storable extends Printable {
     /**
      * a deep-copy of the object.
      * Becomes redundant once automaton are immutable too
      * @return a instance of class Storable, which has the same subclass as the original
      */
-    @SuppressWarnings("unused")
+
     Storable deep_copy();
 
     /**
      * Getter-Method for the name of the object
      * @return the name of the storable object
      */
-    @SuppressWarnings("unused")
+
     String getName();
 
     /**
@@ -36,7 +36,7 @@ public interface Storable extends Printable {
      * @param name the new name of the copied object
      * @return a copy of the original, but with a different name
      */
-    @SuppressWarnings("unused")
+
     Storable otherName(String name);
 
     /**
@@ -45,7 +45,7 @@ public interface Storable extends Printable {
      * @param path the path to the save file
      * @throws IOException input/output Exception
      */
-    @SuppressWarnings("unused")
+
     void printToSave(String path) throws IOException;
 
     /**
@@ -54,7 +54,7 @@ public interface Storable extends Printable {
      * @return a Storable object
      * @throws Exception every Exception
      */
-    @SuppressWarnings("unused")
+
     Storable restoreFromFile(File file) throws Exception;
 
     /**
@@ -64,14 +64,14 @@ public interface Storable extends Printable {
      * a change occurs.
      * @return a Storable of the same subclass as the original
      */
-    @SuppressWarnings("unused")
+
     Storable getPreviousVersion();
 
     /**
      * save a previous version manually.
      * becomes redundant once every storable is immutable
      */
-    @SuppressWarnings("unused")
+
     void savePreviousVersion();
 
     @Override

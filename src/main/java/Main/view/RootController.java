@@ -26,28 +26,28 @@ import java.util.Optional;
 
 
 
-@SuppressWarnings("unused")
+
 public class RootController {
 
 
-    @SuppressWarnings("unused")
+
     private GUI gui;
-    @SuppressWarnings("unused")
+
     @FXML
     BorderPane borderPane;
-    @SuppressWarnings("unused")
+
     @FXML
     MenuBar menuBar;
-    @SuppressWarnings("unused")
+
     @FXML
     Menu Help;
-    @SuppressWarnings("unused")
+
     @FXML
     Menu Export;
-    @SuppressWarnings("unused")
+
     @FXML
     MenuItem latexModeOn;
-    @SuppressWarnings("unused")
+
     @FXML
     MenuItem latexModeOff;
 
@@ -55,7 +55,7 @@ public class RootController {
      * The constructor.
      * The constructor is called before the initialize() method.
      */
-    @SuppressWarnings("unused")
+
     public RootController() {
     }
     /**
@@ -66,7 +66,7 @@ public class RootController {
     @FXML
     private void initialize() {
     }
-    @SuppressWarnings("unused")
+
     @FXML
     private void latexModeOn() {
 
@@ -94,7 +94,7 @@ public class RootController {
             }
         }
     }
-    @SuppressWarnings("unused")
+
     @FXML
     private void latexModeOff() {
         latexModeOn.setDisable(false);
@@ -109,19 +109,19 @@ public class RootController {
     }
 
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void about() {
 
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void save() {
 
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void changeNullSymbol() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -168,7 +168,7 @@ public class RootController {
 
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     private void changeStyle() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -206,7 +206,7 @@ public class RootController {
         } //TODO else case
     }
 
-    @SuppressWarnings("unused")
+
     private void loadStorable(Class clazz) {
         File file = gui.loadFile(clazz.getSimpleName());
         if(file != null) {
@@ -253,25 +253,25 @@ public class RootController {
         }
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void loadGrammar() {
        loadStorable(Grammar.class);
 
     }
-    @SuppressWarnings("unused")
+
     @FXML
     public void loadAutomaton() {
        loadStorable(Automaton.class);
 
     }
-    @SuppressWarnings("unused")
+
     @FXML
     public void loadPushDownAutomaton() {
         loadStorable(PushDownAutomaton.class);
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void saveCurrentGrammar() {
         Object object = gui.getContent().getObjects().get(Grammar.class);
@@ -284,7 +284,7 @@ public class RootController {
         }
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void saveCurrentAutomaton() {
         Object object = gui.getContent().getObjects().get(Automaton.class);
@@ -297,7 +297,7 @@ public class RootController {
         }
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void saveCurrentPushDownAutomaton() {
         Object object = gui.getContent().getObjects().get(PushDownAutomaton.class);
@@ -314,7 +314,7 @@ public class RootController {
         }
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void toGraphViz() {
         Object object = gui.getContent().getObjects().get(Automaton.class);
@@ -327,7 +327,7 @@ public class RootController {
         }
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void switchWorkspace() {
         DirectoryChooser chooser = new DirectoryChooser();
@@ -343,7 +343,7 @@ public class RootController {
 
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void newGrammar() {
         Grammar grammar = new Grammar();
@@ -356,7 +356,7 @@ public class RootController {
         gui.refresh();
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void newPDA() {
         PushDownAutomaton pda = new PushDownAutomaton();
@@ -369,7 +369,7 @@ public class RootController {
         gui.refresh();
     }
 
-    @SuppressWarnings("unused")
+
     @FXML
     public void newAutomaton() {
         Storable storable = new Automaton();
@@ -384,7 +384,7 @@ public class RootController {
 
 
 
-    @SuppressWarnings("unused")
+
     public void setGui(GUI gui) {
         this.gui = gui;
     }

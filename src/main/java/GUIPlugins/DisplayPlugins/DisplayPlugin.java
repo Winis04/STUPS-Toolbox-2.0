@@ -10,7 +10,7 @@ import javafx.scene.Node;
  * @since 18.06.16
  */
 
-@SuppressWarnings("unused")
+
 public interface DisplayPlugin {
 
     /**
@@ -22,11 +22,11 @@ public interface DisplayPlugin {
      * @param object The object, that should be displayed.
      * @return The JavaFX-{@link Node}.
      */
-    @SuppressWarnings("unused")
+
     Node display(Object object);
 
 
-    @SuppressWarnings("unused")
+
     Node clear();
     /**
      * This method is called by the main program, when the object has changed,
@@ -35,7 +35,7 @@ public interface DisplayPlugin {
      * @param object The object, that is being displayed.
      * @return Node the Node that contains the object
      */
-    @SuppressWarnings("unused")
+
     Node refresh(Object object);
 
 
@@ -46,7 +46,7 @@ public interface DisplayPlugin {
      * @return The newly created object.
      */
 
-    @SuppressWarnings("unused")
+
     Object newObject();
 
     /**
@@ -54,7 +54,7 @@ public interface DisplayPlugin {
      *
      * @return This plugin's name.
      */
-    @SuppressWarnings("unused")
+
     String getName();
 
     /**
@@ -62,21 +62,21 @@ public interface DisplayPlugin {
      * For example: If this plugin displays an automaton, this method returns {@link AutomatonSimulator.Automaton}.class
      * @return The object-type.
      */
-    @SuppressWarnings("unused")
+
     Class displayType();
 
     /**
      * setter for the gui
      * @param gui The {@link GUI}
      */
-    @SuppressWarnings("unused")
+
     void setGUI(GUI gui);
 
     /**
      * getter for the gui
      * @return the {@link GUI}
      */
-    @SuppressWarnings("unused")
+
     GUI getGUI();
 
 }

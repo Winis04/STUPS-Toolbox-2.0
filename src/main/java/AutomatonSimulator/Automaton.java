@@ -271,6 +271,7 @@ public class Automaton implements Printable, Storable {
     /**
      * Prints a given automaton to stdout.
      */
+    @Override
     public void printConsole(BufferedWriter writer) {
         ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
         Printer.print("{",writer);

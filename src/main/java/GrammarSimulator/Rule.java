@@ -15,11 +15,11 @@ import java.util.List;
  * @since 22.12.16
  */
 
-@SuppressWarnings("unused")
+
 public final class Rule {
-    @SuppressWarnings("unused")
+
     private final Nonterminal comingFrom;
-    @SuppressWarnings("unused")
+
     private final List<Symbol> rightSide;
 
     /**
@@ -27,7 +27,7 @@ public final class Rule {
      * @param comingFrom the left side of the rule
      * @param rightSide the right side of the rule
      */
-    @SuppressWarnings("unused")
+
     public Rule(Nonterminal comingFrom, List<Symbol> rightSide) {
         this.comingFrom = comingFrom;
 
@@ -40,7 +40,7 @@ public final class Rule {
      * Getter-Method for {@link #comingFrom}
      * @return a {@link Nonterminal}, the left side of the rule
      */
-    @SuppressWarnings("unused")
+
     public Nonterminal getComingFrom() {
         return comingFrom;
     }
@@ -50,7 +50,7 @@ public final class Rule {
      * Getter-Method for {@link #rightSide}
      * @return a {@link List} of {@link Symbol}s, the right side of the rule.
      */
-    @SuppressWarnings("unused")
+
     public List<Symbol> getRightSide() {
         return Collections.unmodifiableList(new ArrayList<>(rightSide));
     }
@@ -60,12 +60,12 @@ public final class Rule {
      * copy-method
      * @return a copy of this rule
      */
-    @SuppressWarnings("unused")
+
     public Rule copy() {
         return new Rule(this.comingFrom,this.rightSide);
     }
 
-    @SuppressWarnings("unused")
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) { return false; }
@@ -86,7 +86,7 @@ public final class Rule {
     }
 
 
-    @SuppressWarnings("unused")
+
     @Override
     public int hashCode() {
         HashCodeBuilder builder = new HashCodeBuilder(17,31);

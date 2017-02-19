@@ -10,7 +10,7 @@ import Print.Printer;
  * @since 11.08.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarPrintPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

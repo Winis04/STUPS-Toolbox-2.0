@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @since 01.12.2016
  */
 
-@SuppressWarnings("unused")
+
 public class CYKGrammarPlugin extends ComplexFunctionPlugin {
 
     @Override

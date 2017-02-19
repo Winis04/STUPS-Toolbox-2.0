@@ -9,7 +9,7 @@ import Main.Storable;
  * @since 28.07.16
  */
 
-@SuppressWarnings("unused")
+
 public class AutomatonCompletePlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

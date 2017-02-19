@@ -15,7 +15,7 @@ import java.util.*;
  * @since 20.10.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarRemoveLambdaPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @since 12.12.2016
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarCheckWord extends CLIPlugin {
     private boolean errorFlag=false;
     @Override

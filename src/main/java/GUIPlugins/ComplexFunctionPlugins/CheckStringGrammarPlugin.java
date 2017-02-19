@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @since 19.06.16
  */
 
-@SuppressWarnings("unused")
+
 public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
     private final TextField field = new TextField();
 

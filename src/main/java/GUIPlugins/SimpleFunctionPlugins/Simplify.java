@@ -7,7 +7,7 @@ import Print.Printer;
 import Print.StringLiterals;
 
 
-@SuppressWarnings("unused")
+
 public class Simplify extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

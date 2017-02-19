@@ -9,7 +9,7 @@ import Main.Storable;
  * @since 19.11.2016
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarNamePlugin extends CLIPlugin {
     private boolean errorFlag;
     @Override
