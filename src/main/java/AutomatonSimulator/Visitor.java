@@ -43,7 +43,8 @@ class Visitor extends DepthFirstAdapter {
                 allInputs.add(acceptedInput);
             }
         }
-        states.get(node.getComingFrom().getText()).getRules().add(new Rule(states.get(node.getGoingTo().getText()), acceptedInputs));
+        State state = states.get(node.getComingFrom().getText());
+        state.getRules().add(new Rule(state,states.get(node.getGoingTo().getText()), acceptedInputs));
     }
 
     @Override

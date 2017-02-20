@@ -440,7 +440,7 @@ public class AutomatonUtil {
         Start start = parser.parse();
         Visitor visitor = new Visitor();
         start.apply(visitor);
-        return setIsLoop(visitor.getAutomaton(name));
+        return visitor.getAutomaton(name);
     }
 
     /**
@@ -464,16 +464,7 @@ public class AutomatonUtil {
 
     }
 
-    private static Automaton setIsLoop(Automaton automaton) {
-        automaton.getStates().forEach(state -> state.getRules().forEach(rule -> {
-            if (rule.getGoingTo().getName().equals(state.getName())) {
-                rule.setLoop(true);
-            } else {
-                rule.setLoop(false);
-            }
-        }));
-        return automaton;
-    }
+
     /**
      * Returns an ArrayList that contains all states in order of their appearance in the automaton's rules.
      *
@@ -743,7 +734,7 @@ public class AutomatonUtil {
 
                     //Add a new rule to newState if necessary.
                     if(newRule) {
-                        state.getRules().add(new Rule(newState, new HashSet<>(Collections.singletonList(input))));
+                        state.getRules().add(new Rule(state, newState, new HashSet<>(Collections.singletonList(input))));
                     }
                 }
             }
@@ -821,7 +812,8 @@ public class AutomatonUtil {
                             if (!containsGoingTo) {
                                 newStates.put(goingToName, new State(goingToName, false, isFinal, new HashSet<>()));
                             }
-                            newStates.get(comingFromName).getRules().add(new Rule(newStates.get(goingToName), new HashSet<>(Collections.singletonList(input))));
+                            State comingFrom = newStates.get(comingFromName);
+                            comingFrom.getRules().add(new Rule(comingFrom,newStates.get(goingToName), new HashSet<>(Collections.singletonList(input))));
 
 
 
@@ -853,7 +845,7 @@ public class AutomatonUtil {
 
         //Initialize the trash state and let it point to itself for all inputs.
         State trashState = new State("zt", false, false, new HashSet<>());
-        trashState.getRules().add(new Rule(trashState, dfa.getAllInputs()));
+        trashState.getRules().add(new Rule(trashState,trashState, dfa.getAllInputs()));
 
         boolean addedRule = false;
 
@@ -861,7 +853,7 @@ public class AutomatonUtil {
         //and add a transition to the trashState with these inputs.
         for(State state : dfa.getStates()) {
             //This rule will point from the current state to the trash state.
-            Rule toTrashRule = new Rule(trashState, new HashSet<>());
+            Rule toTrashRule = new Rule(state,trashState, new HashSet<>());
 
             //Go through every possible input, and check if the current state has a rule, that accepts the current input.
             for(String input : dfa.getAllInputs()) {

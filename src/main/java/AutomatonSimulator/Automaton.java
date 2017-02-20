@@ -95,7 +95,7 @@ public class Automaton implements Printable, Storable {
         // have references to the new states.
         oldAutomaton.states.forEach(oldState -> {
             State newState = this.getState(oldState.getName());
-            oldState.getRules().forEach(rule -> newState.getRules().add(new Rule(this.getState(rule.getGoingTo().getName()), rule.getAcceptedInputs())));
+            oldState.getRules().forEach(rule -> newState.getRules().add(new Rule(newState,this.getState(rule.getGoingTo().getName()), rule.getAcceptedInputs())));
         });
         this.allInputs=oldAutomaton.allInputs;
         this.previousAutomaton = (Automaton) oldAutomaton.getPreviousVersion();

@@ -20,15 +20,13 @@ public class Rule implements Printable{
      */
     private State goingTo;
 
+    private State comingFrom;
+
     /**
      * The input-strings, that are valid for this rule.
      */
     private final HashSet<String> acceptedInputs;
 
-    /**
-     * is this rule a loop?
-     */
-    private boolean isLoop;
 
     /**
      * the automaton is printed from left to right in alphanumeric order and length give the length of the edge
@@ -43,7 +41,8 @@ public class Rule implements Printable{
      * @param goingTo The state, to which the rule is pointing.
      * @param acceptedInputs The inputs, which this rule accepts.
      */
-    public Rule(State goingTo, HashSet<String> acceptedInputs) {
+    public Rule(State comingFrom, State goingTo, HashSet<String> acceptedInputs) {
+        this.comingFrom = comingFrom;
         this.goingTo = goingTo;
         this.acceptedInputs = acceptedInputs;
         this.length=1;
@@ -85,7 +84,7 @@ public class Rule implements Printable{
     @Override
     public void printLatex(BufferedWriter writer, String space) {
         Printer.print(" edge ",writer);
-        if(isLoop) {
+        if(this.isLoop()) {
             Printer.print("[loop below] ",writer);
         } else {
             int arc;
@@ -107,10 +106,6 @@ public class Rule implements Printable{
         Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ",writer);
         Printer.print(goingTo);
 
-    }
-
-    void setLoop(boolean loop) {
-        isLoop = loop;
     }
 
     /**
@@ -135,5 +130,9 @@ public class Rule implements Printable{
      */
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    private boolean isLoop() {
+        return comingFrom.getName().equals(goingTo.getName());
     }
 }

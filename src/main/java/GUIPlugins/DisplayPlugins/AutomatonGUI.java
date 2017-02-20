@@ -602,7 +602,8 @@ public class AutomatonGUI implements DisplayPlugin {
                                 while(tokenizer.hasMoreElements()) {
                                     acceptedInputs.add(tokenizer.nextToken().replaceAll(" ", ""));
                                 }
-                                AutomatonGUI.this.stateMap.get(state).getRules().add(new Rule(AutomatonGUI.this.stateMap.get(result.get()[0]), acceptedInputs));
+                                State comingFrom = AutomatonGUI.this.stateMap.get(state);
+                                comingFrom.getRules().add(new Rule(comingFrom,AutomatonGUI.this.stateMap.get(result.get()[0]), acceptedInputs));
                                 AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
                                 AutomatonGUI.this.refreshCheckBoxes();
@@ -745,7 +746,8 @@ public class AutomatonGUI implements DisplayPlugin {
                                 while(tokenizer.hasMoreElements()) {
                                     acceptedInputs.add(tokenizer.nextToken().replaceAll(" ", ""));
                                 }
-                                AutomatonGUI.this.stateMap.get(result.get()[0]).getRules().add(new Rule(AutomatonGUI.this.stateMap.get(result.get()[1]), acceptedInputs));
+                                State comingFrom = AutomatonGUI.this.stateMap.get(result.get()[0]);
+                                comingFrom.getRules().add(new Rule(comingFrom,AutomatonGUI.this.stateMap.get(result.get()[1]), acceptedInputs));
                                 AutomatonGUI.this.parseAutomatonToGraph();
                                 visualizationViewer.repaint();
                                 AutomatonGUI.this.refreshCheckBoxes();
