@@ -5,7 +5,7 @@ import Print.Printer;
 import Print.PrintMode;
 
 
-@SuppressWarnings("unused")
+
 public class Print extends SimpleFunctionPlugin {
 
     @Override

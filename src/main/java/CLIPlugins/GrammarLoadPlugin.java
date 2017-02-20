@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since 11.08.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarLoadPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

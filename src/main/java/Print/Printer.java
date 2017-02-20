@@ -15,26 +15,34 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 
 
-@SuppressWarnings("unused")
+/**
+ * A class used for Printing on the console and in latex files.
+ */
 public class Printer {
     /**
-     * the print mode
+     * the current print mode. Is an Instance of enum {@link PrintMode}
      */
-    @SuppressWarnings("unused")
     public static PrintMode printmode=PrintMode.CONSOLE;
     /**
      * the current file that should be used
      */
-    @SuppressWarnings("unused")
     public static String currentFile;
     //BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 
-    @SuppressWarnings("unused")
+    /**
+     * the indentation of the latex file
+     */
     private static int deepness =0;
-    @SuppressWarnings("unused")
+
+    /**
+     * current writer
+     */
     private static BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
 
-    @SuppressWarnings("unused")
+    /**
+     * Prints a {@link Printable} object.
+     * @param printable the {@link Printable} that should be printed
+     */
     public static void print(Printable printable) {
         switch (printmode) {
             case NO:
@@ -47,11 +55,20 @@ public class Printer {
                 break;
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * prints a String using the current {@link #writer}
+     * @param string the {@link String} which should be printed
+     */
     public static void print(String string) {
         print(string,Printer.writer);
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * prints a String using the given writer
+     * @param string the {@link String} which should be printed
+     * @param writer the writer that prints the string
+     */
     public static void print(String string, BufferedWriter writer) {
         try {
             writer.write(string);
@@ -60,7 +77,12 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * same as {@link #print(String, BufferedWriter)}, but with a line break
+     * @param string the string that should be printed
+     * @param writer the writer that prints the string
+     */
     public static void println(String string, BufferedWriter writer) {
         try {
             writer.write(string+"\n");
@@ -69,7 +91,12 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * like {@link #print(String, BufferedWriter)} but prints an integer
+     * @param i
+     * @param writer
+     */
     public static void print(int i, BufferedWriter writer) {
         try {
             writer.write(i+"");
@@ -79,7 +106,13 @@ public class Printer {
         }
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * Used for printing an enumeration of text and {@link Printable}s.
+     * @param printables the {@link Printable}s that should be printed
+     * @param point_descriptions the titles of the different items of the enumeration
+     * @param texts the texts printed before the printable object
+     * @param title the title of the enumeration
+     */
     public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         switch(printmode) {
             case NO:
@@ -93,7 +126,12 @@ public class Printer {
         }
     }
 
-    public static String[] toLatex(String[] arr) {
+    /**
+     * transforms the Strings of an Array such that it is conform with latex
+     * @param arr the array with string which need to be transformed
+     * @return an Array with transformed strings
+     */
+    private static String[] toLatex(String[] arr) {
         String[] res = new String[arr.length];
         for(int i=0;i<arr.length;i++) {
             res[i] = toLatex(arr[i]);
@@ -101,6 +139,11 @@ public class Printer {
         return res;
     }
 
+    /**
+     * transforms a String such that it can be used in latex
+     * @param string the String that should be transformed
+     * @return the transformed string
+     */
     public static String toLatex(String string) {
         String res = Arrays.stream(string.split("->")).collect(joining(" $\\rightarrow$ "));
         String[] tmp = res.split("_");
@@ -120,7 +163,11 @@ public class Printer {
 
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * prints a {@link Printable} with a title
+     * @param title the title
+     * @param printable the {@link Printable}
+     */
     public static void printWithTitle(String title, Printable printable) {
         switch(printmode) {
             case NO:
@@ -134,6 +181,7 @@ public class Printer {
         }
 
     }
+
 
     public static void printWithTitle(String title, String string) {
         switch(printmode) {
@@ -150,7 +198,7 @@ public class Printer {
     }
 
 
-    @SuppressWarnings("unused")
+
     private static void printWithTitleLatex(String title, Printable printable) {
         Printer.print("\\section{"+title+"}\n\n",writer);
         printable.printLatex(writer,getSpace(deepness));
@@ -163,7 +211,7 @@ public class Printer {
 
     }
 
-    @SuppressWarnings("unused")
+
     private static void printWithTitleConsole(String title, Printable printable) {
         Printer.print(title+"\n\n",writer);
         printable.printConsole(writer);
@@ -175,12 +223,17 @@ public class Printer {
     }
 
 
-    @SuppressWarnings("unused")
+    /**
+     * sets the {@link #writer} of this class
+     * @param writer the given writer
+     */
     public static void setWriter(BufferedWriter writer) {
         Printer.writer = writer;
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * closes te current {@link #writer}
+     */
     public static void closeWriter() {
         try {
             Printer.writer.close();
@@ -188,14 +241,18 @@ public class Printer {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * checks if the writer is not null
+     * @return true, if the writer is not null
+     */
     public static boolean writerIsNotNull() {
         return writer != null;
     }
 
 
     /** LATEX **/
-    @SuppressWarnings("unused")
+
     private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         if(printables.size()!=texts.length || printables.size()!=point_descriptions.length) {
             return;
@@ -212,7 +269,10 @@ public class Printer {
         Printer.print("\\end{description}\n\n",writer);
 
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * prints the beginning of a latex document
+     */
     public static void printStartOfLatex() {
         Printer.println("%this document was generated by the STUPS Toolbox 2.0",writer);
         Printer.print("\\documentclass{article}\n\\" +
@@ -223,7 +283,10 @@ public class Printer {
                 "usetikzlibrary{automata,positioning}\n\n\\" +
                 "begin{document}\n\n",writer);
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * prints the end of a latex document
+     */
     public static void printEndOfLatex() {
         if(printmode==PrintMode.LATEX) {
             print("\\end{document}",writer);
@@ -234,7 +297,12 @@ public class Printer {
             }
         }
     }
-    @SuppressWarnings("unused")
+
+    /**
+     * transforms "epsilon" and "lambda" to greek letters in LaTex
+     * @param string a String
+     * @return a greek letter in LaTex
+     */
     public static String makeToGreek(String string) {
         if(string.equals("epsilon")||string.equals("lambda")) {
             return "\\"+string;
@@ -248,7 +316,7 @@ public class Printer {
     }
 
 
-    @SuppressWarnings("unused")
+
     private static void writeItem(String title, String subtitle) {
         String s="";
         for(int i = 0; i<Printer.deepness; i++) {
@@ -266,7 +334,7 @@ public class Printer {
     /** CONSOLE **/
 
 
-    @SuppressWarnings("unused")
+
     private static void printEnumerationConsole(ArrayList<Printable> printables, String[] point_description, String[] texts) {
         if(printables.size()!=texts.length || printables.size()!=point_description.length) {
             return;
@@ -283,7 +351,7 @@ public class Printer {
 
 
     /** PRIVATE **/
-    @SuppressWarnings("unused")
+
     private static String getSpace(int x) {
         String res="";
         for(int i=0;i<x;i++) {
@@ -292,7 +360,12 @@ public class Printer {
         return res;
     }
 
-    @SuppressWarnings("unused")
+
+    /**
+     * checks if a string is a special character in latex
+     * @param string the string that should be checked
+     * @return a string that is ok in LaTex
+     */
     public static String checkIfLatexSpecial(String string) {
         String[] special = new String[]{"#","epsilon","lambda","alpha","beta","$","%","{","}","&","_",""};
         List<String> list = Arrays.asList(special);

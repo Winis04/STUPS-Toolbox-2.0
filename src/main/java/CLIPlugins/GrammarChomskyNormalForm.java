@@ -12,7 +12,7 @@ import Print.StringLiterals;
  * @since 25.10.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarChomskyNormalForm extends CLIPlugin {
     private boolean errorFlag;
 

@@ -16,15 +16,15 @@ import static java.util.stream.Collectors.joining;
  * @author isabel
  * @since 19.01.17
  */
-@SuppressWarnings("unused")
+
 public class Configuration {
-    @SuppressWarnings("unused")
+
     private final List<Symbol> config;
-    @SuppressWarnings("unused")
+
     private final Configuration previous;
-    @SuppressWarnings("unused")
+
     private final Grammar grammar;
-    @SuppressWarnings("unused")
+
     Configuration(List<Symbol> config, Configuration previous, Grammar grammar) {
         this.previous = previous;
         this.config = config;
@@ -37,12 +37,12 @@ public class Configuration {
      * returns a list with the symbols of this configuration
      * @return a {@link List}. This list contains every symbol of this configuration
      */
-    @SuppressWarnings("unused")
+
     public List<Symbol> getConfig() {
         return Collections.unmodifiableList(new ArrayList<>(config));
     }
 
-    @SuppressWarnings("unused")
+
     Configuration getPrevious() {
         return previous;
     }
@@ -52,7 +52,7 @@ public class Configuration {
     }
 
 
-    @SuppressWarnings("unused")
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) { return false; }
@@ -72,7 +72,7 @@ public class Configuration {
     }
 
 
-    @SuppressWarnings("unused")
+
     @Override
     public int hashCode() {
         HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(17,31);
@@ -85,7 +85,7 @@ public class Configuration {
      * derive the first nonterminal
      * @return a {@link HashSet} of Configuration
      */
-    @SuppressWarnings("unused")
+
     public HashSet<Configuration> getChildren() {
         HashSet<Configuration> result = new HashSet<>();
         int j=0;

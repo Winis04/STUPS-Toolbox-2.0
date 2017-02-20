@@ -5,7 +5,7 @@ import javafx.scene.control.TreeItem;
 
 
 
-@SuppressWarnings("unused")
+
 public class Remove extends SimpleFunctionPlugin {
 
     @Override

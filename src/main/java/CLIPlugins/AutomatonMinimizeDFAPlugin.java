@@ -10,7 +10,7 @@ import Main.Storable;
  * @since 27.07.16
  */
 
-@SuppressWarnings("unused")
+
 public class AutomatonMinimizeDFAPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

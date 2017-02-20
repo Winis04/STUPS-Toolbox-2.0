@@ -4,10 +4,9 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import Print.Printer;
-import Print.StringLiterals;
 
 
-@SuppressWarnings("unused")
+
 public class SpecialRuleForEmptyWord extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

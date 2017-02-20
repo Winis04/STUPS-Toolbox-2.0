@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 import java.util.*;
 
 
-@SuppressWarnings("unused")
+
 public class GrammarAddRule extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

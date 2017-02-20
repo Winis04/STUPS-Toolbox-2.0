@@ -9,7 +9,7 @@ import Main.Storable;
  * @since 18.06.16
  */
 
-@SuppressWarnings("unused")
+
 public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 
     @Override

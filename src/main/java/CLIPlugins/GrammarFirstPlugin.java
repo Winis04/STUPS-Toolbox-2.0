@@ -16,7 +16,7 @@ import java.util.Iterator;
  * @since 20.08.16
  */
 
-@SuppressWarnings("unused")
+
 public class GrammarFirstPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;

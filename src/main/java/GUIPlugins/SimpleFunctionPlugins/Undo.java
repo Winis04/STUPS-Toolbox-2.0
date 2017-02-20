@@ -4,7 +4,7 @@ import Main.Storable;
 
 
 
-@SuppressWarnings("unused")
+
 public class Undo extends SimpleFunctionPlugin {
 
     @Override

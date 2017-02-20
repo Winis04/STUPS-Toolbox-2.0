@@ -12,7 +12,7 @@ import java.io.IOException;
  * @since 29.01.2017
  */
 
-@SuppressWarnings("unused")
+
 public class PDASavePlugin extends CLIPlugin{
 
         private boolean errorFlag = false;

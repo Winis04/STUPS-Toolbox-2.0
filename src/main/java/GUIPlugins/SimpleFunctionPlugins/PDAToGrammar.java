@@ -11,7 +11,7 @@ import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
 
-@SuppressWarnings("unused")
+
 public class PDAToGrammar extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {

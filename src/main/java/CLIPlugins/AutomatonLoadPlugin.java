@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since 15.06.16
  */
 
-@SuppressWarnings("unused")
+
 public class AutomatonLoadPlugin extends CLIPlugin {
 
     private boolean errorFlag = false;
