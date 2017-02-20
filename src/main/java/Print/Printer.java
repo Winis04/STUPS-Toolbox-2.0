@@ -2,6 +2,7 @@ package Print;
 
 
 
+import GUIPlugins.SimpleFunctionPlugins.Print;
 import Main.GUI;
 
 import java.io.BufferedWriter;
@@ -134,10 +135,31 @@ public class Printer {
 
     }
 
+    public static void printWithTitle(String title, String string) {
+        switch(printmode) {
+            case NO:
+                break;
+            case CONSOLE:
+                printWithTitleConsole(title,string);
+                break;
+            case LATEX:
+                printWithTitleLatex(toLatex(title), string);
+                break;
+        }
+
+    }
+
+
     @SuppressWarnings("unused")
     private static void printWithTitleLatex(String title, Printable printable) {
-        Printer.print("\\section{$"+title+"$}\n\n",writer);
+        Printer.print("\\section{"+title+"}\n\n",writer);
         printable.printLatex(writer,getSpace(deepness));
+
+    }
+
+    private static void printWithTitleLatex(String title, String string) {
+        Printer.print("\\section{"+title+"}\n\n",writer);
+        Printer.print(getSpace(deepness)+string);
 
     }
 
@@ -145,6 +167,11 @@ public class Printer {
     private static void printWithTitleConsole(String title, Printable printable) {
         Printer.print(title+"\n\n",writer);
         printable.printConsole(writer);
+    }
+
+    private static void printWithTitleConsole(String title, String string) {
+        Printer.print(title+"\n\n",writer);
+        Printer.print(string);
     }
 
 

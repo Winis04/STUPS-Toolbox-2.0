@@ -8,6 +8,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Matrix;
 import GrammarSimulator.Nonterminal;
+import Print.Printer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -91,9 +92,10 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
                 Matrix matrix = GrammarUtil.cyk(doCYKWith, word);
+                Printer.print(matrix);
                 if(matrix != null) {
-                    CLIPlugin cykConsole = new GrammarCYK();
-                    cykConsole.execute(doCYKWith, new String[]{input});
+                  //  CLIPlugin cykConsole = new GrammarCYK();
+                //   cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();
                     grid.setAlignment(Pos.CENTER);
                     for (int c = 1; c < matrix.getNumberOfColumns(); c++) {

@@ -8,6 +8,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Symbol;
 import GrammarSimulator.Terminal;
+import Print.Printer;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,6 +20,8 @@ import javafx.scene.layout.GridPane;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * finds a derivation path of a given word and a current {@link Grammar}.
@@ -72,17 +75,27 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
             if(res) {
                 List<Configuration> configs = GrammarUtil.getPath(grammar,symList,b);
                 if(configs==null || configs.isEmpty()) {
-                    grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","takes too long","Can't find result for "+list.stream().collect(Collectors.joining(" ")));
+                    grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","takes too long","Can't find result for "+list.stream().collect(joining(" ")));
 
                 } else {
                     String s = configs.stream().map(config -> config.getConfig().stream()
                             .map(Symbol::getName)
-                            .collect(Collectors.joining(" ")))
-                            .collect(Collectors.joining("\n\u22A2 "));
+                            .collect(joining(" ")))
+                            .collect(joining("\n\u22A2 "));
+
+                    String latex = "\\begin{align*}\n";
+                    latex += configs.get(0).getConfigAsString()+" &\\vdash "+configs.get(1).getConfigAsString()+"\\ \n &\\vdash ";
+
+                    latex +=configs.subList(2,configs.size()).stream().map(config -> config.getConfig().stream()
+                            .map(Symbol::getName)
+                            .collect(joining(" ")))
+                            .collect(joining(" \\\\ \n &\\vdash "));
+                    latex += "\n \\end{align*} \n";
+                    Printer.printWithTitle("Path",latex);
                     grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION, "", s, "");
                 }
             } else {
-                grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","false","this grammar does not contain the word "+list.stream().collect(Collectors.joining(" ")));
+                grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","false","this grammar does not contain the word "+list.stream().collect(joining(" ")));
             }
         });
 

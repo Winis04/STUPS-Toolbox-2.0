@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
+
 /**
  * A "Configuration" is one step in a derivation of a {@link Grammar}.
  * @author isabel
@@ -45,6 +47,9 @@ public class Configuration {
         return previous;
     }
 
+    public String getConfigAsString() {
+        return config.stream().map(Symbol::getName).collect(joining(" "));
+    }
 
 
     @SuppressWarnings("unused")

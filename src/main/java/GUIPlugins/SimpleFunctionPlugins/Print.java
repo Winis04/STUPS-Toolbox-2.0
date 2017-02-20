@@ -17,7 +17,7 @@ public class Print extends SimpleFunctionPlugin {
 
         Storable storable = (Storable) object;
 
-        Printer.printWithTitle(storable.getName(),storable);
+        Printer.printWithTitle("$"+storable.getName()+"$",storable);
         return storable;
     }
 

@@ -5,6 +5,7 @@ import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Print.Printer;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -53,8 +54,10 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
             boolean res = GrammarUtil.languageContainsWord(grammar,list);
             if(res) {
                 grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","true","this grammar contains the word "+list.stream().collect(Collectors.joining(" ")));
+                Printer.print("The grammar "+grammar.getName()+" contains the word "+list.stream().collect(Collectors.joining(" ")));
             } else {
                 grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","false","this grammar does not contain the word "+list.stream().collect(Collectors.joining(" ")));
+                Printer.print("The grammar "+grammar.getName()+" does not contain the word "+list.stream().collect(Collectors.joining(" ")));
             }
         });
 
