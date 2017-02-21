@@ -4,10 +4,7 @@ import CLIPlugins.CLIPlugin;
 import CLIPlugins.GrammarCYK;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
-import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Matrix;
-import GrammarSimulator.Nonterminal;
+import GrammarSimulator.*;
 import Print.Printer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -96,6 +93,10 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 Printer.print(matrix);
 
                 if(matrix != null) {
+                   List<Rule> rules = GrammarUtil.findCYKPath(doCYKWith,matrix);
+                    rules.forEach(rule -> {
+                        System.out.println(rule.getComingFrom().getName()+" -> "+rule.getRightSide().stream().map(Symbol::getName).collect(Collectors.joining(" ")));
+                    });
                   //  CLIPlugin cykConsole = new GrammarCYK();
                 //   cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();

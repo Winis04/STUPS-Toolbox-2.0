@@ -15,6 +15,7 @@ import PushDownAutomatonSimulator.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -1567,6 +1568,143 @@ public class GrammarUtil {
 
     }
 
+    public static List<Rule> findCYKPath(Grammar grammar, Matrix matrix) {
+        int i = 1;
+        int j= matrix.getWord().size() - 1;
+        return nextRule(grammar,matrix,grammar.getStartSymbol(),i,j);
+
+
+
+
+    }
+
+    private static List<Rule> nextRule(Grammar grammar, Matrix matrix, Nonterminal nt,  int i, int j) {
+        Set<Rule> rules = grammar.getRules().stream()
+                .filter(rule -> rule.getComingFrom().equals(nt))
+                .filter(rule -> rule.getRightSide().size()==2)
+                .collect(Collectors.toSet());
+        if(j==0) {
+            List<Symbol> tmp = new ArrayList<>();
+            tmp.add(new Terminal(matrix.getWord().get(i-1)));
+            List<Rule> res = new ArrayList<>();
+            res.add(new Rule(nt,tmp));
+            return res;
+        }
+        for(int k=0;k<j;k++) {
+            for(Rule rule : rules) {
+                if(ruleIsHit(matrix,rule,i,j,k)) { //rule A -> BC found
+                   int i_B = i;
+                    int j_B = k;
+                    int i_C = i+k+1;
+                    int j_C = j-k-1;
+                    List<Rule> res = new ArrayList<>();
+                    res.add(rule);
+                    res.addAll(nextRule(grammar,matrix, (Nonterminal) rule.getRightSide().get(0),i_B,j_B));
+                    res.addAll(nextRule(grammar,matrix, (Nonterminal) rule.getRightSide().get(1),i_C,j_C));
+                    return res;
+
+                }
+            }
+
+        }
+        return new ArrayList<>();
+
+    }
+    public static String findPathAsString(Grammar grammar, Matrix matrix) {
+        return findPath(grammar,matrix).stream().map(Configuration::getConfigAsString).
+                collect(Collectors.joining(" |- "));
+    }
+    private static List<Configuration> findPath(Grammar grammar,Matrix matrix) {
+
+        int i = 1;
+        int j= matrix.getWord().size() - 1;
+        List<Symbol> tmp = new ArrayList<>();
+        tmp.add(grammar.getStartSymbol());
+        Configuration startConfig = new Configuration(tmp,null,grammar);
+        Configuration endConfig = findPath(grammar,matrix,grammar.getStartSymbol(),startConfig,i,j);
+        List<Configuration> result = new ArrayList<>();
+        result.add(endConfig);
+        Configuration current = endConfig;
+        while(current.getPrevious() != null) {
+            current = current.getPrevious();
+            result.add(current);
+        }
+        Collections.reverse(result);
+        return result;
+    }
+
+    private static Configuration findPath(Grammar grammar, Matrix matrix, Nonterminal nt, Configuration old, int i, int j) {
+        Set<Rule> rules = grammar.getRules().stream()
+                .filter(rule -> rule.getComingFrom().equals(nt))
+                .filter(rule -> rule.getRightSide().size()==2)
+                .collect(Collectors.toSet());
+        if(j==0) {
+            List<Symbol> tmp = new ArrayList<>();
+            tmp.add(new Terminal(matrix.getWord().get(i-1)));
+            return new Configuration(tmp,old,grammar);
+        }
+        for(int k=0;k<j;k++) {
+            for(Rule rule : rules) {
+                if(ruleIsHit(matrix,rule,i,j,k)) { //rule A -> BC found
+                    Configuration configRule = new Configuration(rule.getRightSide(),old,grammar);
+                    Configuration start1 = new Configuration(configRule.getConfig().subList(0,1),null,grammar);
+                    Configuration start2 = new Configuration(configRule.getConfig().subList(1,2),null,grammar);
+                    Configuration conf1 = findPath(grammar,matrix, (Nonterminal) rule.getRightSide().get(0),start1,i,k); //derivate first nonterminal
+                    Configuration conf2 = findPath(grammar,matrix, (Nonterminal) rule.getRightSide().get(1),start2,i+k+1,j-k-1); //derivate second nonterminal
+                    append(conf1,old.getConfig().subList(1,2),grammar,configRule);
+
+
+                 //   return res2;
+
+
+                }
+            }
+
+        }
+        return new Configuration(new ArrayList<>(),null,grammar);
+
+    }
+    private static Configuration append(Configuration front, List<Symbol> back, Grammar grammar, Configuration start) {
+        if(front == null) {
+            return start;
+        }
+        List<Symbol> tmp = new ArrayList<>();
+        tmp.addAll(front.getConfig());
+        tmp.addAll(back);
+        return new Configuration(tmp,append(front.getPrevious(),back,grammar,start),grammar);
+
+    }
+
+    private static List<Configuration> getPath(Configuration end) {
+        List<Configuration> res = new ArrayList<>();
+        res.add(end);
+        Configuration current = end;
+        while(current.getPrevious() != null) {
+            current = current.getPrevious();
+            res.add(current);
+        }
+        Collections.reverse(res);
+        return res;
+    }
+
+
+    private static Configuration changeBack(Configuration config, List<Symbol> back, Grammar grammar) {
+        if(config == null) {
+            return null;
+        }
+        List<Symbol> tmp = new ArrayList<>();
+
+        tmp.addAll(config.getConfig());
+        tmp.addAll(back);
+        return new Configuration(tmp,changeBack(config.getPrevious(),back,grammar),grammar);
+
+    }
+
+    private static boolean ruleIsHit(Matrix matrix, Rule rule, int i, int j, int k) {
+        Set<Nonterminal> bs = matrix.getCell(i,k);
+        Set<Nonterminal> cs = matrix.getCell(i+k+1,j-k-1);
+        return rule.getRightSide().size()==2 && bs.contains(rule.getRightSide().get(0)) && cs.contains(rule.getRightSide().get(1));
+    }
     private static boolean languageContainsWordAsSymbolList(Grammar grammar, List<Symbol> word) {
         List<String> w = word.stream().map(Symbol::getName).collect(Collectors.toList());
         return languageContainsWord(grammar, w);
