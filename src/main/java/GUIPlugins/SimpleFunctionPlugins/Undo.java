@@ -17,8 +17,9 @@ public class Undo extends SimpleFunctionPlugin {
 
         String parent = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem().getParent().getValue().toLowerCase();
         Class parentClazz = gui.getContent().getLookUpTable().get(parent);
-       gui.getContent().getObjects().put(parentClazz,prev);
-       gui.getContent().getStore().get(parentClazz).put(storable.getName(),prev);
+        gui.getContent().getObjects().put(parentClazz,prev);
+        gui.getContent().getStore().get(parentClazz).remove(storable.getName());
+        gui.getContent().getStore().get(parentClazz).put(prev.getName(),prev);
         return prev;
     }
 

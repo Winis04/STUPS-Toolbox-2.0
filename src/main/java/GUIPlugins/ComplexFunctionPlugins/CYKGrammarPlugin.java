@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
+
 /**
  * executed the cyk with a by the user given word.
  * @author Isabel
@@ -91,8 +93,18 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
                 Matrix matrix = GrammarUtil.cyk(doCYKWith, word);
+                List<Configuration> configs = GrammarUtil.findCYKPath(doCYKWith,matrix);
                 Printer.printWithTitle("CYK",doCYKWith);
                 Printer.print(matrix);
+                String latex = "\\begin{align*}\n";
+                latex += configs.get(0).getConfigAsString()+" &\\vdash "+configs.get(1).getConfigAsString()+"\\\\ \n &\\vdash ";
+
+                latex +=configs.subList(2,configs.size()).stream().map(config -> config.getConfig().stream()
+                        .map(Symbol::getName)
+                        .collect(joining(" ")))
+                        .collect(joining(" \\\\ \n &\\vdash "));
+                latex += "\n \\end{align*} \n";
+                Printer.print(latex);
 
                 if(matrix != null) {
                   //  CLIPlugin cykConsole = new GrammarCYK();
