@@ -6,6 +6,7 @@ import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
 import Print.Printer;
+import Print.StringLiterals;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -94,8 +95,6 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 Printer.print(matrix);
 
                 if(matrix != null) {
-                   List<Configuration> configurations = GrammarUtil.findCYKPath(doCYKWith,matrix);
-                   System.out.println(configurations.stream().map(Configuration::getConfigAsString).collect(Collectors.joining(" |- ")));
                   //  CLIPlugin cykConsole = new GrammarCYK();
                 //   cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();
@@ -169,5 +168,10 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
     @Override
     public boolean createsOutput() {
         return true;
+    }
+
+    @Override
+    public String tooltip() {
+        return StringLiterals.TOOLTIP_CYK;
     }
 }

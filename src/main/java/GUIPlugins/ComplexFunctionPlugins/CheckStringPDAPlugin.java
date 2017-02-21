@@ -3,6 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
+import Print.StringLiterals;
 import PushDownAutomatonSimulator.InputLetter;
 import PushDownAutomatonSimulator.PDARule;
 import PushDownAutomatonSimulator.PushDownAutomaton;
@@ -144,6 +145,11 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     @Override
     public Class displayPluginType() {
         return AutomatonGUI.class;
+    }
+
+    @Override
+    public String tooltip() {
+        return StringLiterals.TOOLTIP_CHECKSTRING_PDA;
     }
 
 }

@@ -3,6 +3,7 @@ package GUIPlugins.DisplayPlugins.GrammarTabs;
 import GrammarSimulator.*;
 import Main.GUI;
 import Main.Storable;
+import Print.StringLiterals;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -139,6 +140,11 @@ public class EditTab implements GrammarTab {
         scrollPane.setContent(rootPane);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
+        if(gui.getStateController().isTooltips()) {
+            scrollPane.setTooltip(new Tooltip(StringLiterals.TOOLTIP_GRAMMAR));
+        } else {
+            scrollPane.setTooltip(null);
+        }
         return scrollPane;
     }
 

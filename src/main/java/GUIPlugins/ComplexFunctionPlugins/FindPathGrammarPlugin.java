@@ -9,11 +9,9 @@ import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Symbol;
 import GrammarSimulator.Terminal;
 import Print.Printer;
+import Print.StringLiterals;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
@@ -60,7 +58,13 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
         field.setDisable(false);
         Label wordLabel = new Label();
         wordLabel.setStyle("-fx-font-weight: bold");
-
+        if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+            start.setTooltip(new Tooltip(StringLiterals.TOOLTIP_FINDPATH_BUTTON));
+            bound.setDisable(true);
+        } else {
+            start.setTooltip(null);
+            bound.setDisable(false);
+        }
 
         start.setOnAction(event -> {
             List<String> list = Arrays.asList(field.getText().split(" "));
@@ -73,7 +77,14 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
             List<Symbol> symList = list.stream().map(Terminal::new).collect(Collectors.toList());
             boolean res = GrammarUtil.languageContainsWord(grammar,list);
             if(res) {
-                List<Configuration> configs = GrammarUtil.getPath(grammar,symList,b);
+                List<Configuration> configs;
+                if(GrammarUtil.isInChomskyNormalForm(grammar)) {
+
+                    configs = GrammarUtil.findCYKPath(grammar,list);
+                } else {
+
+                    configs = GrammarUtil.getPath(grammar, symList, b);
+                }
                 if(configs==null || configs.isEmpty()) {
                     grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","takes too long","Can't find result for "+list.stream().collect(joining(" ")));
 
@@ -124,6 +135,16 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
     @Override
     public Class displayPluginType() {
         return Grammar.class;
+    }
+
+    @Override
+    public String tooltip() {
+        return StringLiterals.TOOLTIP_FINDPATH;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 
 }

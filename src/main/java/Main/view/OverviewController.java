@@ -7,6 +7,7 @@ import Main.GUI;
 import Main.Storable;
 import Print.PrintMode;
 import Print.Printer;
+import Print.StringLiterals;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -87,6 +88,11 @@ public class OverviewController {
     public void updateTree() {
 
        //TODO check if the store is empty?
+        if(gui.getStateController().isTooltips()) {
+            treeView.setTooltip(new Tooltip(StringLiterals.TOOLTIP_TREEVIEW));
+        } else {
+            treeView.setTooltip(null);
+        }
         treeView.getRoot().getChildren().forEach(top -> top.getChildren().clear());
         treeView.getRoot().getChildren()
                 .forEach(top -> {
@@ -105,6 +111,11 @@ public class OverviewController {
     }
 
     private void makeTree() {
+        if(gui.getStateController().isTooltips()) {
+            treeView.setTooltip(new Tooltip(StringLiterals.TOOLTIP_TREEVIEW));
+        } else {
+            treeView.setTooltip(null);
+        }
         TreeItem<String> root=new TreeItem<>("Storables");
 
         gui.getContent().getLookUpTable().keySet().stream().filter(s -> !s.equals("pda"))

@@ -6,6 +6,7 @@ import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Print.Printer;
+import Print.StringLiterals;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -82,6 +83,17 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
     public Class displayPluginType() {
         return Grammar.class;
     }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
+    }
+
+    @Override
+    public String tooltip() {
+        return StringLiterals.TOOlTIP_CHECKSTRING_GRAMMAR;
+    }
+
 
 
 }

@@ -24,6 +24,7 @@ public class StateController {
     private String path_to_workspace;
     private String path_to_stylesheet;
     private String nullsymbol;
+    private boolean tooltips;
 
     public StateController(Content content, GUI gui) {
         this.content=content;
@@ -35,6 +36,7 @@ public class StateController {
         path_to_stylesheet = "/blue.css";
         path_to_workspace = "workspace/";
         nullsymbol = "lambda";
+        tooltips = true;
         String fileName = "config";
 
         //read file into stream, try-with-resources
@@ -63,6 +65,12 @@ public class StateController {
                                     nullsymbol = parts[1];
                                 }
                                 break;
+                            case "TOOLTIPS":
+                                if(parts[1].equals("true")) {
+                                    tooltips = true;
+                                } else {
+                                    tooltips = false;
+                                }
                         }
                     }
                 });
@@ -114,7 +122,8 @@ public class StateController {
             BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
             writer.write("WORKSPACE = "+path_to_workspace+"\n");
             writer.write("STYLESHEET = "+path_to_stylesheet+"\n");
-            writer.write("NULLSYMBOL = "+ nullsymbol );
+            writer.write("NULLSYMBOL = "+ nullsymbol+"\n");
+            writer.write("TOOLTIPS = "+tooltips+"\n");
             writer.close();
 
             exitWorkspace();
@@ -254,7 +263,7 @@ public class StateController {
         this.nullsymbol = nullsymbol;
     }
 
-    public void setPathToStyleSheet(String path) {
+    void setPathToStyleSheet(String path) {
         this.path_to_stylesheet = path;
     }
 
@@ -264,5 +273,9 @@ public class StateController {
 
     public String getPath_to_workspace() {
         return path_to_workspace;
+    }
+
+    public boolean isTooltips() {
+        return tooltips;
     }
 }

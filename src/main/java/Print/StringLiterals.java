@@ -48,4 +48,14 @@ public class StringLiterals {
     public static final String[] TOPDA_POINT_DESCRIPTIONS = new String[]{"Grammar", "Initial","Step 1","Step 2"};
     public static final String[] TOPDA_TEXTS = new String[]{"","","",""};
     public static final String TOPDA_TITLE = "Grammar to PDA";
+
+ //GUI
+   public static final String TOOLTIP_FINDPATH_BUTTON = "grammar is in cyk. So the path is calculated via the cyk algorithm";
+   public static final String TOOLTIP_FINDPATH = "Calculates a Path using breadth-first search. Use Space to separate the terminals ";
+   public static final String TOOLTIP_CYK = "CYK Algorithm. Use Space to separate the terminals";
+   public static final String TOOlTIP_CHECKSTRING_GRAMMAR = "Checks, if the language of the grammar contains the given word. Separate with space";
+   public static final String TOOLTIP_CHECKSTRING_PDA = "Checks interactive, if the language of the pda contains the given word. Separate with space";
+   public static final String TOOLTIP_CHECKSTRING_AUTOMATON = "Checks interactive, if the language of the automaton contains the given word. Separate with space";
+   public static final String TOOLTIP_TREEVIEW = "This is your workspace. Open functions via right click on an element";
+   public static final String TOOLTIP_GRAMMAR = "edit rules by right clicking on them";
 }

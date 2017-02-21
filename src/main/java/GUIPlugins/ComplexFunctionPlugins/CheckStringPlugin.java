@@ -6,6 +6,7 @@ import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
+import Print.StringLiterals;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -136,5 +137,10 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
     @Override
     public Class displayPluginType() {
         return AutomatonGUI.class;
+    }
+
+    @Override
+    public String tooltip() {
+       return StringLiterals.TOOLTIP_CHECKSTRING_AUTOMATON;
     }
 }

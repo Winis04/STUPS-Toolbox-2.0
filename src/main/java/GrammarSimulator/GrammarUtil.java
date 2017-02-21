@@ -1567,6 +1567,13 @@ public class GrammarUtil {
 
     }
 
+    public static List<Configuration> findCYKPath(Grammar grammar, List<String> word ) {
+        if(isInChomskyNormalForm(grammar)) {
+            return findCYKPath(grammar,cyk(grammar,word));
+        } else {
+            return new ArrayList<>();
+        }
+    }
     public static List<Configuration> findCYKPath(Grammar grammar, Matrix matrix) {
         int i = 1;
         int j= matrix.getWord().size() - 1;
