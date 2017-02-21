@@ -115,4 +115,8 @@ public class Configuration {
                 });
         return result;
     }
+
+    public Grammar getGrammar() {
+        return grammar;
+    }
 }

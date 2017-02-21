@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
@@ -93,10 +94,8 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 Printer.print(matrix);
 
                 if(matrix != null) {
-                   List<Rule> rules = GrammarUtil.findCYKPath(doCYKWith,matrix);
-                    rules.forEach(rule -> {
-                        System.out.println(rule.getComingFrom().getName()+" -> "+rule.getRightSide().stream().map(Symbol::getName).collect(Collectors.joining(" ")));
-                    });
+                   List<Configuration> configurations = GrammarUtil.findCYKPath(doCYKWith,matrix);
+                   System.out.println(configurations.stream().map(Configuration::getConfigAsString).collect(Collectors.joining(" |- ")));
                   //  CLIPlugin cykConsole = new GrammarCYK();
                 //   cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();

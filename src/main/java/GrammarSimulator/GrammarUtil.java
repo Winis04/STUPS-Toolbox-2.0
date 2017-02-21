@@ -15,7 +15,6 @@ import PushDownAutomatonSimulator.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -1568,17 +1567,39 @@ public class GrammarUtil {
 
     }
 
-    public static List<Rule> findCYKPath(Grammar grammar, Matrix matrix) {
+    public static List<Configuration> findCYKPath(Grammar grammar, Matrix matrix) {
         int i = 1;
         int j= matrix.getWord().size() - 1;
-        return nextRule(grammar,matrix,grammar.getStartSymbol(),i,j);
-
+        List<Rule> rules = leftDerivationRules(grammar,matrix,grammar.getStartSymbol(),i,j);
+        List<Configuration> configs = new ArrayList<>();
+        Configuration start = new Configuration(Collections.singletonList(grammar.getStartSymbol()),null,grammar);
+        configs.add(start);
+        Configuration current = start;
+        for(Rule rule : rules) {
+            current = doLeftDerivationRule(current,rule);
+            configs.add(current);
+        }
+        return configs;
 
 
 
     }
 
-    private static List<Rule> nextRule(Grammar grammar, Matrix matrix, Nonterminal nt,  int i, int j) {
+    public static Configuration doLeftDerivationRule(Configuration before, Rule rule) {
+        List<Symbol> list = new ArrayList<>();
+        boolean firstDone = false;
+        for(Symbol s : before.getConfig()) {
+            if(s.equals(rule.getComingFrom()) && !firstDone) {
+                list.addAll(rule.getRightSide());
+                firstDone = true;
+            } else {
+                list.add(s);
+            }
+        }
+        return new Configuration(list,before,before.getGrammar());
+    }
+
+    private static List<Rule> leftDerivationRules(Grammar grammar, Matrix matrix, Nonterminal nt, int i, int j) {
         Set<Rule> rules = grammar.getRules().stream()
                 .filter(rule -> rule.getComingFrom().equals(nt))
                 .filter(rule -> rule.getRightSide().size()==2)
@@ -1599,8 +1620,8 @@ public class GrammarUtil {
                     int j_C = j-k-1;
                     List<Rule> res = new ArrayList<>();
                     res.add(rule);
-                    res.addAll(nextRule(grammar,matrix, (Nonterminal) rule.getRightSide().get(0),i_B,j_B));
-                    res.addAll(nextRule(grammar,matrix, (Nonterminal) rule.getRightSide().get(1),i_C,j_C));
+                    res.addAll(leftDerivationRules(grammar,matrix, (Nonterminal) rule.getRightSide().get(0),i_B,j_B));
+                    res.addAll(leftDerivationRules(grammar,matrix, (Nonterminal) rule.getRightSide().get(1),i_C,j_C));
                     return res;
 
                 }
