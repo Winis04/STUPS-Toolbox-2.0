@@ -68,6 +68,11 @@ public class RootController {
     }
 
     @FXML
+    private void setTooltips() {
+        gui.getStateController().setTooltips(!gui.getStateController().isTooltips());
+        gui.refresh();
+    }
+    @FXML
     private void latexModeOn() {
 
 

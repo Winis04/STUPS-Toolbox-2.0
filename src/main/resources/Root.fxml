@@ -51,13 +51,13 @@
            </Menu>
            <Menu mnemonicParsing="false" text="View">
                <items>
-                   <MenuItem mnemonicParsing="false" onAction="#changeNullSymbol" text="change Nullsymbol" />
-                   <MenuItem mnemonicParsing="false" onAction="#changeStyle" text="change style" />
+                   <MenuItem mnemonicParsing="false" onAction="#changeNullSymbol" text="Change Nullsymbol" />
+                   <MenuItem mnemonicParsing="false" onAction="#changeStyle" text="Change Style" />
                </items>
            </Menu>
            <Menu fx:id="Help" mnemonicParsing="false" text="Help">
                <items>
-                   <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
+                   <MenuItem mnemonicParsing="false" onAction="#setTooltips" text="Tooltips On/Off" />
                </items>
            </Menu>
        </MenuBar>

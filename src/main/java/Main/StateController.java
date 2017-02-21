@@ -278,4 +278,8 @@ public class StateController {
     public boolean isTooltips() {
         return tooltips;
     }
+
+    public void setTooltips(boolean tooltips) {
+        this.tooltips = tooltips;
+    }
 }
