@@ -1656,26 +1656,9 @@ public class GrammarUtil {
         }
         return result;
     }
+    
 
-    /**
-     * checks if two lists are equal
-     * @param list1 List 1
-     * @param list2 List 2
-     * @return true, if the lists are equal
-     */
 
-    @Deprecated
-    public static boolean listEqual(List<Symbol> list1, List<Symbol> list2) {
-        if(list1.size() != list2.size()) {
-            return false;
-        } else {
-            boolean res = true;
-            for(int i=0;i<list1.size();i++) {
-                res&=list1.get(i).equals(list2.get(i));
-            }
-            return res;
-        }
-    }
     /*
      ---------------------------------------------------------------------------------------------------------------*
      -                                           PDA                                                               -*

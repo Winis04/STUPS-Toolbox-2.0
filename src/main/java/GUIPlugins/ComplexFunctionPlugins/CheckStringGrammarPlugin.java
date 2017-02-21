@@ -54,10 +54,10 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
             boolean res = GrammarUtil.languageContainsWord(grammar,list);
             if(res) {
                 grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","true","this grammar contains the word "+list.stream().collect(Collectors.joining(" ")));
-                Printer.print("The grammar "+grammar.getName()+" contains the word "+list.stream().collect(Collectors.joining(" ")));
+                Printer.print("The grammar "+grammar.getName()+" contains the word "+list.stream().collect(Collectors.joining(" "))+"\n");
             } else {
                 grammarGUI.getGUI().dialog(Alert.AlertType.INFORMATION,"Check String Result","false","this grammar does not contain the word "+list.stream().collect(Collectors.joining(" ")));
-                Printer.print("The grammar "+grammar.getName()+" does not contain the word "+list.stream().collect(Collectors.joining(" ")));
+                Printer.print("The grammar "+grammar.getName()+" does not contain the word "+list.stream().collect(Collectors.joining(" "))+"\n");
             }
         });
 

@@ -84,7 +84,7 @@ public class FindPathGrammarPlugin extends ComplexFunctionPlugin {
                             .collect(joining("\n\u22A2 "));
 
                     String latex = "\\begin{align*}\n";
-                    latex += configs.get(0).getConfigAsString()+" &\\vdash "+configs.get(1).getConfigAsString()+"\\ \n &\\vdash ";
+                    latex += configs.get(0).getConfigAsString()+" &\\vdash "+configs.get(1).getConfigAsString()+"\\\\ \n &\\vdash ";
 
                     latex +=configs.subList(2,configs.size()).stream().map(config -> config.getConfig().stream()
                             .map(Symbol::getName)

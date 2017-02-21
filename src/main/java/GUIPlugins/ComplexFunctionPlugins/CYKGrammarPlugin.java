@@ -92,7 +92,9 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
                 Matrix matrix = GrammarUtil.cyk(doCYKWith, word);
+                Printer.printWithTitle("CYK",doCYKWith);
                 Printer.print(matrix);
+
                 if(matrix != null) {
                   //  CLIPlugin cykConsole = new GrammarCYK();
                 //   cykConsole.execute(doCYKWith, new String[]{input});
