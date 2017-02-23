@@ -71,6 +71,7 @@ public class RootController {
     private void setTooltips() {
         gui.getStateController().setTooltips(!gui.getStateController().isTooltips());
         gui.refresh();
+        gui.refresh();
     }
     @FXML
     private void latexModeOn() {
@@ -348,42 +349,75 @@ public class RootController {
 
     }
 
+   private String chooseName(Class clazz) {
+       TextInputDialog dialog = new TextInputDialog("new"+clazz.getSimpleName());
+       dialog.setTitle("Choose name");
+       dialog.setHeaderText("Please choose a name for the new "+clazz.getSimpleName());
+       dialog.setContentText("Please enter the name:");
+
+       Alert alert = new Alert(Alert.AlertType.ERROR);
+       alert.setTitle("error");
+       alert.setHeaderText("Name already taken!");
+
+
+// Traditional way to get the response value.
+       Optional<String> result = dialog.showAndWait();
+       if(result.isPresent()) {
+           while(result.isPresent() && gui.getContent().getStore().get(clazz).get(result.get()) != null) {
+               //name already taken
+               alert.showAndWait();
+               result = dialog.showAndWait();
+           }
+           if(result.isPresent()) {
+               return result.get();
+           }
+       }
+       return null;
+   }
+
 
     @FXML
     public void newGrammar() {
         Grammar grammar = new Grammar();
-        Storable storable = new Grammar(grammar.getStartSymbol(),grammar.getRules(),"newGrammar", (Grammar) grammar.getPreviousVersion());
         Class clazz = Grammar.class;
-        String name = storable.getName();
-        gui.getContent().getObjects().put(clazz, storable);
-        gui.getContent().getStore().get(clazz).put(name,storable);
-        gui.refresh(storable);
-        gui.refresh();
+        String name = chooseName(clazz);
+        if(name != null) {
+            Storable storable = new Grammar(grammar.getStartSymbol(), grammar.getRules(), name, (Grammar) grammar.getPreviousVersion());
+            gui.getContent().getObjects().put(clazz, storable);
+            gui.getContent().getStore().get(clazz).put(name, storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
     }
 
 
     @FXML
     public void newPDA() {
         PushDownAutomaton pda = new PushDownAutomaton();
-        Storable storable = new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),pda.getRules(),"newPDA", (PushDownAutomaton) pda.getPreviousVersion());
         Class clazz = PushDownAutomaton.class;
-        String name = storable.getName();
-        gui.getContent().getObjects().put(clazz, storable);
-        gui.getContent().getStore().get(clazz).put(name,storable);
-        gui.refresh(storable);
-        gui.refresh();
+        String name = chooseName(clazz);
+        if(name != null) {
+            Storable storable = new PushDownAutomaton(pda.getStartState(), pda.getInitialStackLetter(), pda.getRules(), name, (PushDownAutomaton) pda.getPreviousVersion());
+            gui.getContent().getObjects().put(clazz, storable);
+            gui.getContent().getStore().get(clazz).put(name, storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
     }
 
 
     @FXML
     public void newAutomaton() {
-        Storable storable = new Automaton();
+        Automaton automaton = new Automaton();
         Class clazz = Automaton.class;
-        String name = storable.getName();
-        gui.getContent().getObjects().put(clazz, storable);
-        gui.getContent().getStore().get(clazz).put(name,storable);
-        gui.refresh(storable);
-        gui.refresh();
+        String name = chooseName(clazz);
+        if(name != null) {
+            Storable storable = new Automaton(automaton.getStates(), automaton.getStartState(), automaton.getAllInputs(), name);
+            gui.getContent().getObjects().put(clazz, storable);
+            gui.getContent().getStore().get(clazz).put(name, storable);
+            gui.refresh(storable);
+            gui.refresh();
+        }
     }
 
 

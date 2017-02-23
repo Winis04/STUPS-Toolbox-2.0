@@ -424,7 +424,7 @@ public class AutomatonGUI implements DisplayPlugin {
         this.isCompleteBox.setSelected(isComplete);
         this.isMinimalBox.setSelected(isMinimal);
     }
-    
+
 
     /**
      * An {@link AbstractPopupGraphMousePlugin} mouse-plugin for the {@link #visualizationViewer}.
