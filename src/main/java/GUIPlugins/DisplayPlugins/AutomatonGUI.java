@@ -302,10 +302,23 @@ public class AutomatonGUI implements DisplayPlugin {
         buttonPane.getChildren().addAll(mouseLabel, pickingButton, transformingButton);
 
         GridPane infoPane = new GridPane();
-        isEpsilonFreeBox = new MyCheckBox();
-        isDFABox = new MyCheckBox();
-        isCompleteBox = new MyCheckBox();
-        isMinimalBox = new MyCheckBox();
+        isEpsilonFreeBox = new CheckBox("Epsilon Free") {
+            @Override
+            public void arm() {}
+        };
+        isDFABox = new CheckBox("DFA") {
+            @Override
+            public void arm() {}
+        };
+        isCompleteBox = new CheckBox("Complete") {
+            @Override
+            public void arm() {}
+        };
+        isMinimalBox = new CheckBox("Minimal") {
+            @Override
+            public void arm() {}
+        };
+
 
         this.refreshCheckBoxes();
 
@@ -411,16 +424,7 @@ public class AutomatonGUI implements DisplayPlugin {
         this.isCompleteBox.setSelected(isComplete);
         this.isMinimalBox.setSelected(isMinimal);
     }
-
-    private static class MyCheckBox extends CheckBox {
-        public MyCheckBox() {
-            super("Epsilon Free");
-        }
-
-
-        @Override
-        public void arm() {}
-    }
+    
 
     /**
      * An {@link AbstractPopupGraphMousePlugin} mouse-plugin for the {@link #visualizationViewer}.
