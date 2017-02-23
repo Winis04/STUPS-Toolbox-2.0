@@ -107,9 +107,20 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 }
             });
 
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem edit = new MenuItem("Edit Rule");
+            MenuItem remove = new MenuItem("Remove Rule");
+            contextMenu.getItems().add(edit);
+            contextMenu.getItems().add(remove);
+
             start.setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
-                    refresh(PushDownAutomatonUtil.replaceState(pda,pda.getStartState(),new State(start.getText())));
+                    if(pda.getStates().contains(new State(start.getText()))) {
+                        //the states exists already
+                        refresh(new PushDownAutomaton(new State(start.getText()),pda.getInitialStackLetter(),pda.getRules(),pda.getName(),pda));
+                    } else {
+                        refresh(PushDownAutomatonUtil.replaceState(pda, pda.getStartState(), new State(start.getText())));
+                    }
                 }
             });
             ContextMenu mouseMenu = new ContextMenu();
@@ -122,6 +133,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         MenuItem addItem = new MenuItem("Add Rule");
 
                         addItem.setOnAction(event1 -> refresh(addRule(pda)));
+                        contextMenu.hide();
 
 
 
@@ -154,19 +166,38 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             for (int c = 0; c <= 1; c++) {
                 for (int r = 0; r < half; r++) {
                     if (c * half + r < ruleNumber) {
+
                         PDARule rule = pda.getRules().get(c * half + r);
                         Button cellLabel = new Button(rule.asString());
                         cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        edit.setOnAction(event -> {
+
+                            PushDownAutomaton freshPDA = editRule(pda, rule);
+                            if (freshPDA != null) {
+                                gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
+                                gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
+                                gui.refresh(freshPDA); //switch to new object
+                                gui.refresh(); //refresh the treeView
+                            }
+                        });
+
+                        remove.setOnAction(event -> {
+                            List<PDARule> rules = new ArrayList<>();
+                            rules.addAll(pda.getRules());
+                            rules.remove(rule);
+                            PushDownAutomaton freshPDA = new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),rules,pda.getName(),pda);
+                            gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
+                            gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
+                            gui.refresh(freshPDA); //switch to new object
+                            gui.refresh(); //refresh the treeView
+                        });
                         //   cellLabel.setDisable(true);
                         cellLabel.setOnMouseClicked(event -> {
+                            mouseMenu.hide();
                             if ((event.getButton().equals(MouseButton.SECONDARY) || event.getClickCount() == 2) && !checkStringIsActive) {
-                                PushDownAutomaton freshPDA = editRule(pda, rule);
-                                if (freshPDA != null) {
-                                    gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
-                                    gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
-                                    gui.refresh(freshPDA); //switch to new object
-                                    gui.refresh(); //refresh the treeView
-                                }
+
+                                contextMenu.show(splitPane, event.getScreenX(), event.getScreenY());
+
 
                             }
                         });
@@ -412,16 +443,16 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         Collections.reverse(runs);
         String res = runs.stream().map(run -> {
             String state = run.getCurrentState().getName();
-            String input="\u03B5";
-            if(!run.getInput().isEmpty()) {
-                input = run.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(""));
+            String input=GUI.nameOfNullSymbol;
+            if(!run.getInput().isEmpty() && !run.getInput().stream().allMatch(il -> il.equals(new InputLetter("")))) {
+                input = run.getInput().stream().map(InputLetter::getDisplayName).collect(Collectors.joining(""));
             }
-           String st="\u03B5";
-            if(!run.getStack().isEmpty()) {
+           String st=GUI.nameOfNullSymbol;
+            if(!run.getStack().isEmpty() &&  !run.getStack().stream().allMatch(il -> il.equals(new StackLetter("")))) {
                 ArrayList<StackLetter> stack = new ArrayList<>();
                 stack.addAll(run.getStack());
                 Collections.reverse(stack);
-                st = stack.stream().map(StackLetter::getName).collect(Collectors.joining(""));
+                st = stack.stream().map(StackLetter::getDisplayName).collect(Collectors.joining(""));
             }
 
             return "("+state+", "+input+", "+st+")";
