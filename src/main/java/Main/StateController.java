@@ -26,13 +26,13 @@ public class StateController {
     private String nullsymbol;
     private boolean tooltips;
 
-    public StateController(Content content, GUI gui) {
+    StateController(Content content, GUI gui) {
         this.content=content;
         this.gui = gui;
     }
 
 
-    public void init() {
+    void init() {
         path_to_stylesheet = "/blue.css";
         path_to_workspace = "workspace/";
         nullsymbol = "lambda";
@@ -116,8 +116,7 @@ public class StateController {
     /**
      * saves the current workspace
      */
-
-    public void exit() {
+    void exit() {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
             writer.write("WORKSPACE = "+path_to_workspace+"\n");
@@ -133,10 +132,7 @@ public class StateController {
     }
 
     private void initStyle() {
-
         gui.setStyleSheet(path_to_stylesheet);
-
-
     }
 
     private boolean isValidWorkspace(File file) {
