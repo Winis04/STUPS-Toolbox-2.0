@@ -34,7 +34,11 @@ public class Configuration {
     public Configuration(List<Symbol> config, Configuration previous) {
         this.previous = previous;
         this.config = config;
-        this.grammar = previous.getGrammar();
+        if(previous != null) {
+            this.grammar = previous.getGrammar();
+        } else {
+            this.grammar = null;
+        }
     }
 
     /**
@@ -56,6 +60,21 @@ public class Configuration {
     }
 
 
+    public String getPath(String delimiter, String endOfLine) {
+        if(previous == null) {
+            return this.getConfigAsString()+" "+delimiter;
+        } else {
+            return previous.getPathMiddle(delimiter, endOfLine)+this.getConfigAsString();
+        }
+    }
+
+    private String getPathMiddle(String delimiter, String endOfLine) {
+        if(previous == null) {
+            return this.getConfigAsString()+" "+delimiter;
+        } else {
+            return previous.getPathMiddle(delimiter, endOfLine)+this.getConfigAsString()+endOfLine+"\n"+delimiter;
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {

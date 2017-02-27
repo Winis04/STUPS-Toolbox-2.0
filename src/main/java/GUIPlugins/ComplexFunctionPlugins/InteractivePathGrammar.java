@@ -34,6 +34,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
     Button newstart;
     FlowPane pane;
     List<Configuration> path;
+    Grammar g;
 
     @Override
     public Class getInputType() {
@@ -52,7 +53,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
         newstart = new Button("new");
         pane.getChildren().add(newstart);
         path = new ArrayList<>();
-        Grammar g = (Grammar) object;
+        g = (Grammar) object;
         if(g != null) {
             Configuration start = new Configuration(Collections.singletonList(g.getStartSymbol()),null,g);
             path.add(start);
@@ -89,6 +90,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
                 res.add(label);
             }
         }
+
         return res;
 
     }
@@ -141,6 +143,17 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
 
             }
             configurationAsLabelList(configuration,i==path.size()-1).forEach(l -> pane.getChildren().addAll(l));
+            if(configuration.getConfig().stream().allMatch(sym -> sym instanceof Terminal)) {
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                String word =  configuration.getConfig().stream().map(Symbol::getDisplayName).collect(joining(""));
+                alert.setHeaderText("You found a path for the word "+word);
+                alert.setContentText(configuration.getPath("\u22A2 ",""));
+                alert.showAndWait();
+                Printer.printWithTitle("Path for "+word,g);
+                Printer.print("\n \\begin{align*}\n"+configuration.getPath(" &\\vdash  ","\\\\")+"\n \\end{align*}\n");
+            }
         }
     }
 
