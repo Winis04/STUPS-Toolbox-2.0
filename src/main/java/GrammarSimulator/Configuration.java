@@ -25,13 +25,13 @@ public class Configuration {
 
     private final Grammar grammar;
 
-    Configuration(List<Symbol> config, Configuration previous, Grammar grammar) {
+    public Configuration(List<Symbol> config, Configuration previous, Grammar grammar) {
         this.previous = previous;
         this.config = config;
         this.grammar = grammar;
     }
 
-    Configuration(List<Symbol> config, Configuration previous) {
+    public Configuration(List<Symbol> config, Configuration previous) {
         this.previous = previous;
         this.config = config;
         this.grammar = previous.getGrammar();

@@ -241,7 +241,6 @@ public class GUI extends Application{
      * refreshes the complex plugins in the bottom. Is necessary when the type of the object changes.
      * There are different complex plugins for different types
      */
-
     public void refreshPlugins() {
         refreshComplexPlugins();
     }
@@ -249,15 +248,17 @@ public class GUI extends Application{
 
     private void refreshComplexPlugins() {
         complexFunctionsPane.getTabs().clear();
+
         complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
-            Tab current = plugin.getAsTab(content.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
-            if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
-                current.setStyle("-fx-background-color: aqua;");
-            } else {
-                current.setStyle("");
-            }
-            complexFunctionsPane.getTabs().add(current);
-        });
+                Tab current = plugin.getAsTab(content.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
+                if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
+                    current.setStyle("-fx-background-color: aqua;");
+                } else {
+                    current.setStyle("");
+                }
+                complexFunctionsPane.getTabs().add(current);
+            });
+
     }
 
     /**

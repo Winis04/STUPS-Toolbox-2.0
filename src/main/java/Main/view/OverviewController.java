@@ -8,6 +8,8 @@ import Main.Storable;
 import Print.PrintMode;
 import Print.Printer;
 import Print.StringLiterals;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -71,6 +73,7 @@ public class OverviewController {
     public void initialize(GUI gui, Collection<SimpleFunctionPlugin> dynamicMenuContent) {
         this.gui=gui;
         this.dynamicMenuContent=dynamicMenuContent.stream().sorted(sfpComparator).collect(Collectors.toSet());
+
        // this.dynamicMenuContent=dynamicMenuContent;
         makeTree();
     }
@@ -225,6 +228,10 @@ public class OverviewController {
 
     public TreeView<String> getTreeView() {
         return treeView;
+    }
+
+    public double heightTabPane() {
+        return tabPane.getHeight();
     }
 
 

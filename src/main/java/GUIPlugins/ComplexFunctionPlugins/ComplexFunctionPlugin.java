@@ -1,9 +1,12 @@
 package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
+import GrammarSimulator.Symbol;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
 /**
  * A plugin for the GUI, which executes more complicate commands than
@@ -51,7 +54,12 @@ public abstract class ComplexFunctionPlugin {
 
     public Tab getAsTab(Object object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
-        tab.setContent(getFxNode(object,GUI));
+        AnchorPane anchorPane = new AnchorPane();
+        Node node = getFxNode(object,GUI);
+        anchorPane.getChildren().add(node);
+        double height = GUI.getGUI().getOverviewController().heightTabPane();
+        AnchorPane.setTopAnchor(node,height/10);
+        tab.setContent(anchorPane);
         if(GUI.getGUI().getStateController().isTooltips()) {
             tab.setTooltip(new Tooltip(tooltip()));
         } else {
