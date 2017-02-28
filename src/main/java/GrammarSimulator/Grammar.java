@@ -49,7 +49,7 @@ public final class Grammar implements Printable, Storable {
 
     /**
      * The Constructor with every field.
-     * Grammar are immutable, so you can't fill the fields later.
+     * Grammars are immutable, so the fields can't be filled later.
      * @param startSymbol the start{@link Symbol} of the Grammar
      * @param rules a {@link HashSet} of production {@link Rule}s
      * @param name the name of the grammar
@@ -73,7 +73,7 @@ public final class Grammar implements Printable, Storable {
     }
     /**
      * The Constructor with every field.
-     * Grammar are immutable, so you can't fill the fields later.
+     * Grammars are immutable, so the fields can't be filled later.
      * @param startSymbol the start{@link Symbol} of the Grammar
      * @param rules a {@link Set} of production {@link Rule}s
      * @param name the name of the grammar

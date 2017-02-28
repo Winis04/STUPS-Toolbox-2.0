@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
  * @author fabian
  * @since 06.08.16
  */
-
-
 public class GrammarUtil {
 
     /*
@@ -297,7 +295,6 @@ public class GrammarUtil {
      * @throws LexerException {@link LexerException}.
      * @throws IOException {@link IOException}.
      */
-
     public static Grammar parse(String fileInput, String name) throws ParserException, LexerException, IOException {
         StringReader reader = new StringReader(fileInput);
         PushbackReader r = new PushbackReader(reader, 100);
@@ -319,7 +316,6 @@ public class GrammarUtil {
      * @throws LexerException {@link LexerException} an Exception with the {@link Lexer}
      * @throws ParserException {@link ParserException} an Exception with the {@link Parser}
      */
-
     public static Grammar parse(File file) throws IOException, LexerException, ParserException {
         String name = file.getName();
         Grammar grammar;
@@ -341,7 +337,6 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
-
     public static ArrayList<Terminal> getTerminalsInOrder(Grammar grammar) {
         ArrayList<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>(),grammar);
         HashSet<Terminal> missingTerminals = new HashSet<>(grammar.getTerminals());
@@ -356,7 +351,6 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
-
     public static ArrayList<Nonterminal> getNonterminalsInOrder(Grammar grammar) {
         ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(),grammar);
         HashSet<Nonterminal> missingTerminals = new HashSet<>(grammar.getNonterminals());
@@ -372,7 +366,6 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @param onGUI true, if the grammar is printed on the GUI
      */
-
     public static void print(boolean onGUI, Grammar grammar) {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
@@ -401,7 +394,6 @@ public class GrammarUtil {
      * @param grammar the {@link Grammar} that should be saved
      * @param file the {@link File} in which the grammar is saved
      */
-
     public static void save(Grammar grammar, File file) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -430,7 +422,6 @@ public class GrammarUtil {
      * @param fileName The filename.
      * @throws IOException input/output Exception
      */
-
     public static void save(Grammar grammar, String fileName) throws IOException {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
@@ -459,7 +450,6 @@ public class GrammarUtil {
      * @param terminals If true, the grammar's terminals will be written.
      * @param nonterminals If true, the grammar's nonterminals will be written.
      */
-
     public static void writePart(BufferedWriter writer, Grammar grammar, boolean terminals, boolean nonterminals) {
         //Write terminals.
         if(terminals) {
@@ -492,7 +482,6 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return A HashSet containing all nullable nonterminals,
      */
-
     public static HashSet<Nonterminal> calculateNullable(Grammar grammar) {
 
 
@@ -527,7 +516,6 @@ public class GrammarUtil {
      * @return A HashMap, that has an entry for every of the grammar's nonterminals,
      *         which is mapped to a HashSet containing its first-set.
      */
-
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFirst(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -581,7 +569,6 @@ public class GrammarUtil {
      * @return A HashMap, that has an entry for every of the grammar's nonterminals,
      *         which is mapped to a HashSet containing its follow-set.
      */
-
     public static HashMap<Nonterminal, HashSet<Terminal>> calculateFollow(Grammar grammar) {
         HashMap<Nonterminal, HashSet<Terminal>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -697,7 +684,6 @@ public class GrammarUtil {
      *         An entry in the table can be read by calling result.get(nonterminal).get(terminal).
      *         This will return a set of strings that represent this entry's rules.
      */
-
     public static HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> llParsingTable(Grammar grammar) {
         HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> result = new HashMap<>();
         HashSet<Nonterminal> nullable = calculateNullable(grammar);
@@ -851,7 +837,6 @@ public class GrammarUtil {
      * @param g the grammar that should be modified
      * @return the modified grammar, that has no lambda-rules
      */
-
     public static Grammar removeLambdaRules(Grammar g) {
 
         if(GrammarUtil.isLambdaFree(g)) {
@@ -874,9 +859,8 @@ public class GrammarUtil {
     }
 
     /**
-     *
-     * @param g
-     * @return
+     * @param g the grammar on which  {@link #removeLambdaRules_StepTwo(Grammar, HashSet, Grammar)} was already executed
+     * @return a grammar on which step three of the algorithm has been executed
      */
     private static Grammar removeLambdaRules_StepThree(Grammar g) {
         Grammar res = removeLambdaRules_StepThree(g,true);
@@ -1012,7 +996,6 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
-
     public static ArrayList<Printable> eliminateUnitRulesAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(3); //the results
 
@@ -1049,7 +1032,6 @@ public class GrammarUtil {
      * @param grammar the {@link Grammar} to-be-modified grammar
      * @return {@link Grammar} a Grammar, that has the same language as before, but now without unit rules
      */
-
     public static Grammar eliminateUnitRules(Grammar grammar) {
         if(!GrammarUtil.hasUnitRules(grammar)) {
             return grammar;
@@ -1322,7 +1304,6 @@ public class GrammarUtil {
      * @param grammar the grammar, that should be modified
      * @return ArrayList
      */
-
     public static ArrayList<Printable> chomskyNormalFormAsPrintables(Grammar grammar) {
         ArrayList<Printable> res=new ArrayList<>(4);
 
@@ -1366,7 +1347,6 @@ public class GrammarUtil {
      * @param grammar the to-be-modified grammar
      * @return a {@link Grammar} in CNF
      */
-
     public static Grammar chomskyNormalForm(Grammar grammar) {
         if(!GrammarUtil.isLambdaFree(grammar)) {
             return grammar;
@@ -1487,7 +1467,6 @@ public class GrammarUtil {
      * @param grammar a {@link Grammar} the to-be-checked grammar
      * @return true, if the grammar is in CNF
      */
-
     public static boolean isInChomskyNormalForm(Grammar grammar) {
         return grammar.getRules().stream().allMatch(rule -> {
             if(rule.getComingFrom().equals(grammar.getStartSymbol())) {
@@ -1519,7 +1498,6 @@ public class GrammarUtil {
      * @param word the word to be checked for the cyk
      * @return a cyk-{@link Matrix}
      */
-
     public static Matrix cyk(Grammar g, List<String> word) {
        if(!GrammarUtil.isInChomskyNormalForm(g)) {
            System.out.println("Is not in chomsky normal form");
@@ -1567,6 +1545,12 @@ public class GrammarUtil {
 
     }
 
+    /**
+     * Finds a derivation path to the given word, if the grammar is in chomsky normal form
+     * @param grammar the {@link Grammar}
+     * @param word a given word
+     * @return the derivation path as a list of {@link Configuration}s
+     */
     public static List<Configuration> findCYKPath(Grammar grammar, List<String> word ) {
         if(isInChomskyNormalForm(grammar)) {
             return findCYKPath(grammar,cyk(grammar,word));
@@ -1574,6 +1558,13 @@ public class GrammarUtil {
             return new ArrayList<>();
         }
     }
+
+    /**
+     * Finds a derivation path to the given word, if the grammar is in chomsky normal form
+     * @param grammar the {@link Grammar}
+     * @param matrix a {@link Matrix} calculated by {@link #cyk(Grammar, List)}
+     * @return the derivation path as a list of {@link Configuration}s
+     */
     public static List<Configuration> findCYKPath(Grammar grammar, Matrix matrix) {
         int i = 1;
         int j= matrix.getWord().size() - 1;
@@ -1592,7 +1583,7 @@ public class GrammarUtil {
 
     }
 
-    public static Configuration doLeftDerivationRule(Configuration before, Rule rule) {
+    private static Configuration doLeftDerivationRule(Configuration before, Rule rule) {
         List<Symbol> list = new ArrayList<>();
         boolean firstDone = false;
         for(Symbol s : before.getConfig()) {
@@ -1603,7 +1594,7 @@ public class GrammarUtil {
                 list.add(s);
             }
         }
-        return new Configuration(list,before,before.getGrammar());
+        return new Configuration(list,before);
     }
 
     private static List<Rule> leftDerivationRules(Grammar grammar, Matrix matrix, Nonterminal nt, int i, int j) {
@@ -1638,95 +1629,8 @@ public class GrammarUtil {
         return new ArrayList<>();
 
     }
-    public static String findPathAsString(Grammar grammar, Matrix matrix) {
-        return findPath(grammar,matrix).stream().map(Configuration::getConfigAsString).
-                collect(Collectors.joining(" |- "));
-    }
-    private static List<Configuration> findPath(Grammar grammar,Matrix matrix) {
-
-        int i = 1;
-        int j= matrix.getWord().size() - 1;
-        List<Symbol> tmp = new ArrayList<>();
-        tmp.add(grammar.getStartSymbol());
-        Configuration startConfig = new Configuration(tmp,null,grammar);
-        Configuration endConfig = findPath(grammar,matrix,grammar.getStartSymbol(),startConfig,i,j);
-        List<Configuration> result = new ArrayList<>();
-        result.add(endConfig);
-        Configuration current = endConfig;
-        while(current.getPrevious() != null) {
-            current = current.getPrevious();
-            result.add(current);
-        }
-        Collections.reverse(result);
-        return result;
-    }
-
-    private static Configuration findPath(Grammar grammar, Matrix matrix, Nonterminal nt, Configuration old, int i, int j) {
-        Set<Rule> rules = grammar.getRules().stream()
-                .filter(rule -> rule.getComingFrom().equals(nt))
-                .filter(rule -> rule.getRightSide().size()==2)
-                .collect(Collectors.toSet());
-        if(j==0) {
-            List<Symbol> tmp = new ArrayList<>();
-            tmp.add(new Terminal(matrix.getWord().get(i-1)));
-            return new Configuration(tmp,old,grammar);
-        }
-        for(int k=0;k<j;k++) {
-            for(Rule rule : rules) {
-                if(ruleIsHit(matrix,rule,i,j,k)) { //rule A -> BC found
-                    Configuration configRule = new Configuration(rule.getRightSide(),old,grammar);
-                    Configuration start1 = new Configuration(configRule.getConfig().subList(0,1),null,grammar);
-                    Configuration start2 = new Configuration(configRule.getConfig().subList(1,2),null,grammar);
-                    Configuration conf1 = findPath(grammar,matrix, (Nonterminal) rule.getRightSide().get(0),start1,i,k); //derivate first nonterminal
-                    Configuration conf2 = findPath(grammar,matrix, (Nonterminal) rule.getRightSide().get(1),start2,i+k+1,j-k-1); //derivate second nonterminal
-                    append(conf1,old.getConfig().subList(1,2),grammar,configRule);
 
 
-                 //   return res2;
-
-
-                }
-            }
-
-        }
-        return new Configuration(new ArrayList<>(),null,grammar);
-
-    }
-    private static Configuration append(Configuration front, List<Symbol> back, Grammar grammar, Configuration start) {
-        if(front == null) {
-            return start;
-        }
-        List<Symbol> tmp = new ArrayList<>();
-        tmp.addAll(front.getConfig());
-        tmp.addAll(back);
-        return new Configuration(tmp,append(front.getPrevious(),back,grammar,start),grammar);
-
-    }
-
-    private static List<Configuration> getPath(Configuration end) {
-        List<Configuration> res = new ArrayList<>();
-        res.add(end);
-        Configuration current = end;
-        while(current.getPrevious() != null) {
-            current = current.getPrevious();
-            res.add(current);
-        }
-        Collections.reverse(res);
-        return res;
-    }
-
-
-    private static Configuration changeBack(Configuration config, List<Symbol> back, Grammar grammar) {
-        if(config == null) {
-            return null;
-        }
-        List<Symbol> tmp = new ArrayList<>();
-
-        tmp.addAll(config.getConfig());
-        tmp.addAll(back);
-        return new Configuration(tmp,changeBack(config.getPrevious(),back,grammar),grammar);
-
-    }
 
     private static boolean ruleIsHit(Matrix matrix, Rule rule, int i, int j, int k) {
         Set<Nonterminal> bs = matrix.getCell(i,k);
@@ -1744,7 +1648,6 @@ public class GrammarUtil {
      * @param word the word, that should be checked as a List of String (a string for a terminal)
      * @return true, if the language contains the given word
      */
-
     public static boolean languageContainsWord(Grammar grammar, List<String> word) {
         if(word.isEmpty() || (word.size()==1 && word.get(0).equals(""))) {
             return GrammarUtil.languageContainsLambda(grammar);
@@ -1778,7 +1681,6 @@ public class GrammarUtil {
      * @param bound upper bound for the breadth-first search
      * @return a derivation path as a list of {@link Configuration}s
      */
-
     public static List<Configuration> getPath(Grammar g, List<Symbol> word, long bound) {
         Configuration end = getEndConfig(g,word,bound);
         if(end == null) {
@@ -1832,10 +1734,9 @@ public class GrammarUtil {
      */
     /**
      * Returns an PushDownAutomaton constructed from a {@link Grammar}
-     * @param g     the Grammar, from which a pda should be created
-     * @return      the pda to the grammar
+     * @param g  the Grammar, from which a pda should be created
+     * @return  the pda to the grammar
      */
-
     public static PushDownAutomaton toPDA(Grammar g) {
         ArrayList<PDARule> rules;
         PushDownAutomaton tmp = helper(g);
@@ -1854,6 +1755,11 @@ public class GrammarUtil {
         return new PushDownAutomaton(input,stack,new State("z"),new StackLetter(g.getStartSymbol().getName()),new ArrayList<>(),"PDA_"+g.getName(),null);
     }
 
+    /**
+     * like {@link #toPDA(Grammar)}, but returns a list which contains every step of the process
+     * @param g the grammar
+     * @return a list of pda resulting in the final pda
+     */
     public static ArrayList<Printable> toPDAAsPrintables(Grammar g) {
         ArrayList<Printable> res = new ArrayList<>();
         PushDownAutomaton obj1 = helper(g);
@@ -1959,6 +1865,7 @@ public class GrammarUtil {
 
     }
 
+
     /**
      * the special rule for empty word guarantees, that if the start symbol points on lambda,
      * it does not occurs on any right side.
@@ -1966,7 +1873,6 @@ public class GrammarUtil {
      * @param original the original grammar, which functions as the previous version of the newly created grammar
      * @return a grammar, where the special rule vor the empty word has been applied
      */
-
     public static Grammar specialRuleForEmptyWord(Grammar g, Grammar original) {
     //    if(GrammarUtil.startSymbolPointsOnLambda(original) && GrammarUtil.startSymbolOnRightSide(original)) {
 
@@ -2015,6 +1921,11 @@ public class GrammarUtil {
      //   return g;
     }
 
+    /**
+     * renames the nonterminals like in {@link #renameNonterminals(Grammar)}, but returns a printable list
+     * @param g the original grammar
+     * @return a printable list with the orginal and the new grammar
+     */
     public static ArrayList<Printable> renameNonterminalsAsPrintables(Grammar g) {
         ArrayList<Printable> res = new ArrayList<>();
         res.add(0,g);
@@ -2022,6 +1933,11 @@ public class GrammarUtil {
         return res;
     }
 
+    /**
+     * renames the {@link Nonterminal}s of a {@link Grammar} such that the names are short and somewhat alphabetical
+     * @param g the {@link Grammar}
+     * @return a new grammar with short and alphabetical nonterminal names
+     */
     public static Grammar renameNonterminals(Grammar g) {
         Set<Nonterminal> nts = g.getNonterminals();
         Grammar res = g;
@@ -2047,7 +1963,6 @@ public class GrammarUtil {
      * @param g the {@link Grammar}
      * @return true, if the grammar has unit rules
      */
-
     public static boolean hasUnitRules(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().size()==1 && rule.getRightSide().get(0) instanceof Nonterminal);
@@ -2069,7 +1984,6 @@ public class GrammarUtil {
      * @param g the grammar
      * @return true, if the grammar is lambda-free
      */
-
     public static boolean isLambdaFree(Grammar g) {
         //true, if there is a rule A -> lambda with A != S
         boolean check1 = g.getRules().stream().filter(rule -> !rule.getComingFrom().equals(g.getStartSymbol()))
@@ -2086,7 +2000,6 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the language contains lambda
      */
-
     public static boolean languageContainsLambda(Grammar g) {
        return GrammarUtil.calculateNullable(g).contains(g.getStartSymbol());
     }
@@ -2096,7 +2009,6 @@ public class GrammarUtil {
      * @param g the grammar that is checked
      * @return true, if the start symbol points on lambda
      */
-
     private static boolean startSymbolPointsOnLambda(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getComingFrom().equals(g.getStartSymbol()) && rule.getRightSide().stream().allMatch(symbol -> symbol.equals(Terminal.NULLSYMBOL)));
@@ -2117,7 +2029,6 @@ public class GrammarUtil {
      * @param g a {@link Grammar}
      * @return true, if the grammar has nonterminals, which do not appear on any left side
      */
-
     private static boolean hasDeadEnds(Grammar g) {
         return g.getRules().stream()
                 .anyMatch(rule -> rule.getRightSide().stream()
@@ -2129,33 +2040,27 @@ public class GrammarUtil {
         return g.getRules().stream().filter(rule -> rule.getComingFrom().equals(nt)).count() == 0;
     }
 
-
-
-    private static boolean hasRedundantNonterminals(Grammar g) {
-        for(Nonterminal nt1 : g.getNonterminals()) {
-            for(Nonterminal nt2 : g.getNonterminals()) {
-                if(!nt1.equals(nt2)) {
-                    boolean check = compareRules(g.getRules(),nt1,nt2);
-                    if(check) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     /*
         Simplification of grammar
      */
 
-
+    /**
+     * like {@link #simplify(Grammar)}, but returns a printable list
+     * @param g the original {@link Grammar}
+     * @return a printable list with the old and the new grammar
+     */
     public static ArrayList<Printable> simplifyAsPrintable(Grammar g) {
         ArrayList<Printable> res = new ArrayList<>();
         res.add(0,g);
         res.add(1,simplify(g));
         return res;
     }
+
+    /**
+     * simplifys the grammar such that redundant nonterminals, dead ends and unreachable nonterminals are removed
+     * @param g the old {@link Grammar}
+     * @return a simplified {@link Grammar}
+     */
     public static Grammar simplify(Grammar g) {
         Grammar res = removeRedundantNonterminals(removeDeadEnds(removeUnreachableNonterminals(g)));
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
@@ -2166,7 +2071,7 @@ public class GrammarUtil {
      * @return a {@link Grammar} without redundant rules
      */
 
-    public static Grammar removeRedundantNonterminals(Grammar g) {
+    private static Grammar removeRedundantNonterminals(Grammar g) {
         Grammar res = redundantSet(g);
         return new Grammar(res.getStartSymbol(),res.getRules(),res.getName(),g);
 
@@ -2213,7 +2118,6 @@ public class GrammarUtil {
      * @param replacedBy the {@link Nonterminal} that replaces the old Nonterminal
      * @return a {@link Grammar} which is equivalent to to the old grammar
      */
-
     private static Grammar replaceNonterminal(Grammar g, Nonterminal old, Nonterminal replacedBy) {
         Set<Rule> rules1=g.getRules().stream()
                 .map(rule -> {
@@ -2269,7 +2173,6 @@ public class GrammarUtil {
      * @param g a {@link Grammar}
      * @return a {@link Grammar} that does not have Nonterminal that point nowhere
      */
-
     public static Grammar removeDeadEnds(Grammar g) {
         Grammar res = g;
 
@@ -2284,7 +2187,6 @@ public class GrammarUtil {
      * @param g {@link Grammar}
      * @return a {@link Grammar} with one some dead ends removed
      */
-
     private static Grammar removeDeadEnds_helper(Grammar g) {
         HashSet<Rule> rules = new HashSet<>();
         g.getRules().forEach(rule -> {
@@ -2296,13 +2198,5 @@ public class GrammarUtil {
         });
         return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
     }
-
-    public Grammar addRule(Grammar g, Rule rule) {
-        HashSet<Rule> rules = new HashSet<>();
-        rules.addAll(g.getRules());
-        rules.add(rule);
-        return new Grammar(g.getStartSymbol(),rules,g.getName(),g);
-    }
-
 }
 

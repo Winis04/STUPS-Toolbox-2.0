@@ -103,7 +103,7 @@ public class EditTab implements GrammarTab {
         } else {
             cnf.setSelected(false);
         }
-        /*
+
         editPane.setOnMouseClicked(event -> {
             if(event.getTarget().equals(editPane)) {
                 mouseMenu.hide();
@@ -126,7 +126,7 @@ public class EditTab implements GrammarTab {
                 mouseMenu.hide();
             }
         });
-        **/
+
 
         rootPane.setTop(topPane);
 
@@ -360,7 +360,7 @@ public class EditTab implements GrammarTab {
                     });
         }
     }
-    /*
+
 
     private Grammar addRule(Grammar grammar) {
 
@@ -457,7 +457,7 @@ public class EditTab implements GrammarTab {
         }
         return grammar;
     }
-    */
+
 
 
     /**

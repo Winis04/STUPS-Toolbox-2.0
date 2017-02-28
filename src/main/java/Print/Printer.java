@@ -2,7 +2,6 @@ package Print;
 
 
 
-import GUIPlugins.SimpleFunctionPlugins.Print;
 import Main.GUI;
 
 import java.io.BufferedWriter;
@@ -94,8 +93,8 @@ public class Printer {
 
     /**
      * like {@link #print(String, BufferedWriter)} but prints an integer
-     * @param i
-     * @param writer
+     * @param i an Integer i
+     * @param writer the writer
      */
     public static void print(int i, BufferedWriter writer) {
         try {

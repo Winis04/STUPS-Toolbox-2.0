@@ -1,7 +1,5 @@
 package GUIPlugins.ComplexFunctionPlugins;
 
-import CLIPlugins.CLIPlugin;
-import CLIPlugins.GrammarCYK;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
@@ -19,7 +17,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 

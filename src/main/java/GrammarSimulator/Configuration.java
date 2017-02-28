@@ -29,8 +29,12 @@ public class Configuration {
         this.previous = previous;
         this.config = config;
         this.grammar = grammar;
+    }
 
-
+    Configuration(List<Symbol> config, Configuration previous) {
+        this.previous = previous;
+        this.config = config;
+        this.grammar = previous.getGrammar();
     }
 
     /**
@@ -70,8 +74,6 @@ public class Configuration {
         }
         return equalsBuilder.isEquals();
     }
-
-
 
     @Override
     public int hashCode() {
