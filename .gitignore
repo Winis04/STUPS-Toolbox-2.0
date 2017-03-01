@@ -63,5 +63,6 @@ de/
 /build
 /lib
 /test
+/workspace
 
 *.odt
