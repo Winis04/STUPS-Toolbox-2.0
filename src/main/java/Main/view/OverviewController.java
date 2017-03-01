@@ -40,11 +40,17 @@ public class OverviewController {
     BorderPane contentPane;
 
     @FXML
-    AnchorPane rightSide;
-
-    @FXML
     AnchorPane overview;
 
+    @FXML
+    AnchorPane right;
+
+    @FXML
+    AnchorPane left;
+
+
+    @FXML
+    SplitPane root;
 
 
     private final ContextMenu dynamicContextMenu=new ContextMenu();
