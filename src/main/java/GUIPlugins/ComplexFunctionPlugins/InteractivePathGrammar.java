@@ -44,6 +44,10 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
     @Override
     public Node getFxNode(Object object, DisplayPlugin GUI) {
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+
 
         pane = new FlowPane();
         pane.setVgap(8);
@@ -64,6 +68,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
                 updatePane();
             });
         }
+
 
         return pane;
     }

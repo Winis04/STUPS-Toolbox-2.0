@@ -3,6 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GrammarSimulator.Symbol;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -59,7 +60,9 @@ public abstract class ComplexFunctionPlugin {
         anchorPane.getChildren().add(node);
         double height = GUI.getGUI().getOverviewController().heightTabPane();
         AnchorPane.setTopAnchor(node,height/10);
-        tab.setContent(anchorPane);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(anchorPane);
+        tab.setContent(scrollPane);
         if(GUI.getGUI().getStateController().isTooltips()) {
             tab.setTooltip(new Tooltip(tooltip()));
         } else {

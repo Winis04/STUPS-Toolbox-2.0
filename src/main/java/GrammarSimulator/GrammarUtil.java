@@ -1936,13 +1936,13 @@ public class GrammarUtil {
      * @return a new grammar with short and alphabetical nonterminal names
      */
     public static Grammar renameNonterminals(Grammar g) {
-        Set<Nonterminal> nts = g.getNonterminals();
+        ArrayList<Nonterminal> nts = getNonterminalsInOrder(g);
         Grammar res = g;
         for(Nonterminal nt : nts) {
             res=replaceNonterminal(res,nt,new Nonterminal(nt.getName()+"_xxxxx"));
         }
 
-        nts = res.getNonterminals();
+        nts = GrammarUtil.getNonterminalsInOrder(res);
         HashSet<String> excluded = new HashSet<>();
         for(Nonterminal nt: nts) {
             String name = GrammarUtil.chooseName(res,excluded);
