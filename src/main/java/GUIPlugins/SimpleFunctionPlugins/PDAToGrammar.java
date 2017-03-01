@@ -1,12 +1,14 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
 import GrammarSimulator.Grammar;
+import GrammarSimulator.GrammarUtil;
 import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import Print.Printer;
 
 import java.util.Optional;
 

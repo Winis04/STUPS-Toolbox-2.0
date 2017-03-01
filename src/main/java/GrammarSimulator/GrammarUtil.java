@@ -120,23 +120,20 @@ public class GrammarUtil {
     private static void writeTerminals(boolean onGui, BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
         ArrayList<Terminal> terminals = getTerminalsInOrder(grammar);
-        Iterator<Terminal> it = terminals.iterator();
+        String s;
+        if(onGui){
+            s = terminals.stream().filter(terminal -> !terminal.equals(Terminal.NULLSYMBOL))
+                    .map(Terminal::getDisplayName)
+                    .collect(Collectors.joining(", "));
+        } else {
+            s= terminals.stream().filter(terminal -> !terminal.equals(Terminal.NULLSYMBOL))
+                    .map(terminal -> "'"+terminal.getName()+"'")
+                    .collect(Collectors.joining(", "));
+        }
 
         //Write the terminals.
         try {
-            while(it.hasNext()) {
-                Terminal currentTerminal = it.next();
-                if(!currentTerminal.equals(Terminal.NULLSYMBOL)) {
-                    if (onGui) {
-                        writer.write("'" + currentTerminal.getDisplayName() + "'");
-                    } else {
-                        writer.write("'" + currentTerminal.getName() + "'");
-                    }
-                    if (it.hasNext()) {
-                        writer.write(", ");
-                    }
-                }
-            }
+            writer.write(s);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

@@ -179,73 +179,95 @@ public class PushDownAutomatonUtil {
      */
     public static Grammar toGrammar(PushDownAutomaton pda) {
        if(checkIfLengthLesserThenTwo(pda)) {
-
-
-
-           HashSet<Rule> rules = new HashSet<>();
-           Nonterminal startSymbol = new Nonterminal("S");
-           //Step 1
-           for (State state : pda.getStates()) {
-               String name = toNameOfNonterminal(pda.getStartState(), pda.getInitialStackLetter(), state);
-               ArrayList<Symbol> rightSide = new ArrayList<>();
-               rightSide.add(new Nonterminal(name));
-               rules.add(new Rule(startSymbol, rightSide));
-           }
-           //Step 2
-           List<PDARule> step2 = pda.getRules()
-                   .stream()
-                   .filter(rule -> rule.getNewToS().size() == 1 && rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
-                   .collect(toList());
-           for (PDARule pdaRule : step2) {
-               String name = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), pdaRule.getGoingTo());
-               Nonterminal comingFrom = new Nonterminal(name);
-               ArrayList<Symbol> rightSide = new ArrayList<>();
-               rightSide.add(new Terminal(pdaRule.getReadIn().getName()));
-               rules.add(new Rule(comingFrom, rightSide));
-           }
-
-           //Step 3
-           List<PDARule> step3 = pda.getRules()
-                   .stream()
-                   .filter(rule -> rule.getNewToS().size()==1 && !rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
-                   .collect(toList());
-           for(PDARule pdaRule : step3) {
-               for(State z : pda.getStates()) {
-                   String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z);
-                   String nameRight = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z);
-                   ArrayList<Symbol> rightSide = new ArrayList<>();
-                   rightSide.add(0, new Terminal(pdaRule.getReadIn().getName()));
-                   rightSide.add(1, new Nonterminal(nameRight));
-                   rules.add(new Rule(new Nonterminal(nameLeft), rightSide));
-               }
-           }
-
-           //Step 4
-           List<PDARule> step4 = pda.getRules()
-                   .stream()
-                   .filter(rule -> rule.getNewToS().size()==2)
-                   .collect(toList());
-           for(PDARule pdaRule : step4) {
-               for(State z1 : pda.getStates()) {
-                   for(State z2 : pda.getStates()) {
-                       String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z1);
-                       String nameFirst = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z2);
-                        String nameSecond = toNameOfNonterminal(z2,pdaRule.getNewToS().get(1),z1);
-                       ArrayList<Symbol> rightSide = new ArrayList<>();
-                       rightSide.add(0,new Terminal(pdaRule.getReadIn().getName()));
-                       rightSide.add(1,new Nonterminal(nameFirst));
-                       rightSide.add(2,new Nonterminal(nameSecond));
-                       rules.add(new Rule(new Nonterminal(nameLeft),rightSide));
-                   }
-               }
-           }
-           Grammar grammar1 = GrammarUtil.removeDeadEnds(new Grammar(startSymbol, rules, pda.getName() + "_Grammar", null));
-           Grammar grammar2 = GrammarUtil.removeUnnecessaryEpsilons(grammar1);
-           Grammar grammar3= GrammarUtil.removeUnreachableNonterminals(grammar2);
-           return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),null);
+            Grammar grammar1 = toGrammar_StepOne(pda);
+           Grammar grammar2 = toGrammar_StepTwo(pda,grammar1);
+           Grammar grammar3 = toGrammar_StepThree(pda,grammar2);
+           Grammar grammar4 = toGrammar_StepFour(pda,grammar3);
+           return toGrammar_StepFive(grammar4);
        } else {
            return null;
        }
+    }
+
+    private static Grammar toGrammar_StepOne(PushDownAutomaton pda){
+        HashSet<Rule> rules = new HashSet<>();
+        Nonterminal startSymbol = new Nonterminal("S");
+        //Step 1
+        for (State state : pda.getStates()) {
+            String name = toNameOfNonterminal(pda.getStartState(), pda.getInitialStackLetter(), state);
+            ArrayList<Symbol> rightSide = new ArrayList<>();
+            rightSide.add(new Nonterminal(name));
+            rules.add(new Rule(startSymbol, rightSide));
+        }
+        return new Grammar(startSymbol,rules,pda.getName()+"_Grammar",null);
+    }
+
+
+
+
+    private static Grammar toGrammar_StepTwo(PushDownAutomaton pda, Grammar grammar1){
+        HashSet<Rule> rules = new HashSet<>(grammar1.getRules());
+        List<PDARule> step2 = pda.getRules()
+                .stream()
+                .filter(rule -> rule.getNewToS().size() == 1 && rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
+                .collect(toList());
+        for (PDARule pdaRule : step2) {
+            String name = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), pdaRule.getGoingTo());
+            Nonterminal comingFrom = new Nonterminal(name);
+            ArrayList<Symbol> rightSide = new ArrayList<>();
+            rightSide.add(new Terminal(pdaRule.getReadIn().getName()));
+            rules.add(new Rule(comingFrom, rightSide));
+        }
+        return new Grammar(grammar1.getStartSymbol(),rules,grammar1.getName(),grammar1);
+    }
+
+    private static Grammar toGrammar_StepThree(PushDownAutomaton pda, Grammar grammar2){
+        HashSet<Rule> rules = new HashSet<>(grammar2.getRules());
+        List<PDARule> step3 = pda.getRules()
+                .stream()
+                .filter(rule -> rule.getNewToS().size()==1 && !rule.getNewToS().get(0).equals(StackLetter.NULLSYMBOL))
+                .collect(toList());
+        for(PDARule pdaRule : step3) {
+            for(State z : pda.getStates()) {
+                String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z);
+                String nameRight = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z);
+                ArrayList<Symbol> rightSide = new ArrayList<>();
+                rightSide.add(0, new Terminal(pdaRule.getReadIn().getName()));
+                rightSide.add(1, new Nonterminal(nameRight));
+                rules.add(new Rule(new Nonterminal(nameLeft), rightSide));
+            }
+        }
+        return new Grammar(grammar2.getStartSymbol(),rules,grammar2.getName(),grammar2);
+    }
+
+    private static Grammar toGrammar_StepFour(PushDownAutomaton pda, Grammar grammar3){
+        HashSet<Rule> rules = new HashSet<>(grammar3.getRules());
+        List<PDARule> step4 = pda.getRules()
+                .stream()
+                .filter(rule -> rule.getNewToS().size()==2)
+                .collect(toList());
+        for(PDARule pdaRule : step4) {
+            for(State z1 : pda.getStates()) {
+                for(State z2 : pda.getStates()) {
+                    String nameLeft = toNameOfNonterminal(pdaRule.getComingFrom(), pdaRule.getOldToS(), z1);
+                    String nameFirst = toNameOfNonterminal(pdaRule.getGoingTo(), pdaRule.getNewToS().get(0), z2);
+                    String nameSecond = toNameOfNonterminal(z2,pdaRule.getNewToS().get(1),z1);
+                    ArrayList<Symbol> rightSide = new ArrayList<>();
+                    rightSide.add(0,new Terminal(pdaRule.getReadIn().getName()));
+                    rightSide.add(1,new Nonterminal(nameFirst));
+                    rightSide.add(2,new Nonterminal(nameSecond));
+                    rules.add(new Rule(new Nonterminal(nameLeft),rightSide));
+                }
+            }
+        }
+        return new Grammar(grammar3.getStartSymbol(),rules,grammar3.getName(),grammar3);
+    }
+
+    private static Grammar toGrammar_StepFive(Grammar grammar4) {
+        Grammar grammar1 = GrammarUtil.removeDeadEnds(grammar4);
+        Grammar grammar2 = GrammarUtil.removeUnnecessaryEpsilons(grammar1);
+        Grammar grammar3= GrammarUtil.removeUnreachableNonterminals(grammar2);
+        return new Grammar(grammar3.getStartSymbol(),grammar3.getRules(),grammar3.getName(),null);
     }
 
     public static PushDownAutomaton replaceStackSymbol(PushDownAutomaton pda, StackLetter toBeReplaced, StackLetter replacement) {
