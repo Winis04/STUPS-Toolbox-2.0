@@ -60,7 +60,16 @@ public class Printer {
      * @param string the {@link String} which should be printed
      */
     public static void print(String string) {
-        print(string,Printer.writer);
+        switch (printmode) {
+            case NO:
+                break;
+            case LATEX:
+                print(getSpace(deepness)+string,writer);
+                break;
+            case CONSOLE:
+                print(string,writer);
+                break;
+        }
     }
 
     /**
