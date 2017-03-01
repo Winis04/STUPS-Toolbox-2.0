@@ -33,6 +33,7 @@ public class Content {
      * to add an entry to this hashmap.
      */
     private final HashMap<String,Class> lookUpTable =new HashMap<>();
+
     Content() {
         lookUpTable.put("grammar", Grammar.class);
         lookUpTable.put("automaton", Automaton.class);

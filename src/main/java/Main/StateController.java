@@ -5,8 +5,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -202,58 +204,48 @@ public class StateController {
     }
 
 
-
     private void exitWorkspace() {
-        if(validWorkspace) {
-            String name_tmp = "STUPS_TOOLBOX_WORKSPACE_TMP";
-            try {
-                //save copy
-                FileUtils.copyDirectory(new File(path_to_workspace), new File(name_tmp));
-                // now we can go on
+        File workspace = new File(path_to_workspace);
+        List<Class> types = new ArrayList<>();
+        content.getLookUpTable().values().forEach(key -> {
+            if(content.getStore().get(key).isEmpty()) {
                 try {
-                    FileUtils.deleteDirectory(new File(path_to_workspace));
-                    File workspace = new File(path_to_workspace);
-
-                    workspace.mkdir();
-                    content.getStore().keySet().forEach(key -> {
-                        if (!content.getStore().get(key).isEmpty()) {
-                            File subDir = new File(path_to_workspace + key.getSimpleName());
-                            if (!subDir.exists()) {
-                                subDir.mkdir();
-                            }
-                            content.getStore().get(key).values().forEach(storable -> {
-                                String name = storable.getName();
-                                try {
-                                    storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
-                    });
+                    FileUtils.deleteDirectory(new File(path_to_workspace+key.getSimpleName()));
                 } catch (IOException e) {
-                    System.err.println("something went wrong with saving the current workspace!");
-                    FileUtils.copyDirectory(new File(name_tmp), new File(path_to_workspace));
-                    FileUtils.deleteDirectory(new File(name_tmp));
+                    e.printStackTrace();
                 }
-
-            } catch (IOException e) {
-                System.err.println("Can't save the current workspace!");
-            } finally {
-                try {
-                    FileUtils.deleteDirectory(new File(name_tmp));
-                } catch (IOException e) {
-                    System.err.println("something went wrong with restoring workspace!");
-                    //     e.printStackTrace();
+            } else {
+                types.add(key);
+            }
+        });
+        for(Class key : types) {
+            File subdir = new File(path_to_workspace+key.getSimpleName());
+            //delete every file that does not occur
+            File[] filelisting = subdir.listFiles();
+            if(filelisting != null) {
+                for (File file : filelisting) {
+                    String name = file.getName();
+                    if(!content.getStore().get(key).keySet().contains(name)) {
+                        if(!file.delete()) {
+                            System.err.println("Some old files couldn't not be removed!");
+                        }
+                    }
                 }
             }
-
-
+            //overwrite every other file
+            content.getStore().get(key).values().forEach(storable -> {
+                String name = storable.getName();
+                try {
+                    storable.printToSave(path_to_workspace + key.getSimpleName() + "/" + name);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
 
-
     }
+
 
 
     public void setNullsymbol(String nullsymbol) {
