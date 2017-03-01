@@ -75,8 +75,8 @@ public interface Storable extends Printable {
     void savePreviousVersion();
 
     @Override
-    void printLatex(BufferedWriter writer, String space);
+    void printLatex(String space);
 
     @Override
-    void printConsole(BufferedWriter writer);
+    void printConsole();
 }

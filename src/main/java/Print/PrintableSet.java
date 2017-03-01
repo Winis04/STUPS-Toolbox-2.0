@@ -25,35 +25,35 @@ public class PrintableSet extends HashSet<Printable> implements Printable {
     }
 
     @Override
-    public void printConsole(BufferedWriter writer) {
+    public void printConsole() {
 
-        Printer.print("{",writer);
+        Printer.print("{");
         Iterator<Printable> printableIterator=this.iterator();
         while(printableIterator.hasNext()) {
             Printable p=printableIterator.next();
             Printer.print(p);
             if(printableIterator.hasNext()) {
-                Printer.print(", ",writer);
+                Printer.print(", ");
             }
         }
 
 
-        Printer.print("}\n",writer);
+        Printer.print("}\n");
 
     }
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
+    public void printLatex(String space) {
 
-        Printer.print(space+"$\\{",writer);
+        Printer.print(space+"$\\{");
         Iterator<Printable> printableIterator=this.iterator();
         while(printableIterator.hasNext()) {
             Printable p=printableIterator.next();
             Printer.print(p);
             if(printableIterator.hasNext()) {
-                Printer.print(", ",writer);
+                Printer.print(", ");
             }
         }
-        Printer.print("\\}$\n",writer);
+        Printer.print("\\}$\n");
 
 
     }

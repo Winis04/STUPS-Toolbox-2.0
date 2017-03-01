@@ -115,23 +115,23 @@ public final class Grammar implements Printable, Storable {
     }
 
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
+    public void printLatex(String space) {
         ArrayList<ArrayList<String>> header= GrammarUtil.getHeader(this,true);
-        Printer.print(space+"$"+Printer.toLatex(this.getName())+"=(\\{",writer);
-        Printer.print(space+header.get(0).stream().map(Printer::makeToGreek).collect(joining(", ")),writer);
+        Printer.print(space+"$"+Printer.toLatex(this.getName())+"=(\\{");
+        Printer.print(space+header.get(0).stream().map(Printer::makeToGreek).collect(joining(", ")));
 
-        Printer.print("\\},\\;\\{ ",writer);
+        Printer.print("\\},\\;\\{ ");
 
-        Printer.print(header.get(1).stream().collect(joining(", ")),writer);
-        Printer.print("\\},\\;",writer);
+        Printer.print(header.get(1).stream().collect(joining(", ")));
+        Printer.print("\\},\\;");
 
-        Printer.print(header.get(2).get(0),writer);
+        Printer.print(header.get(2).get(0));
 
-        Printer.print(",\\;"+"R)",writer);
-        Printer.print("$ with\n",writer);
-        Printer.print(space+"\\begin{align*}\n",writer);
+        Printer.print(",\\;"+"R)");
+        Printer.print("$ with\n");
+        Printer.print(space+"\\begin{align*}\n");
 
-        Printer.print(space+"\t"+"R"+"=\\{",writer);
+        Printer.print(space+"\t"+"R"+"=\\{");
 
 
         Printer.print(GrammarUtil.getNonterminalsInOrder(this).stream().
@@ -145,43 +145,43 @@ public final class Grammar implements Printable, Storable {
                                     .collect(joining("")))
                             .collect(joining("\\;|\\;"));
                     return start;
-                }).collect(joining(", \\\\ \n"+space)),writer);
+                }).collect(joining(", \\\\ \n"+space)));
 
-        Printer.print("\\}\n",writer);
-        Printer.print(space+"\\end{align*}\n",writer);
+        Printer.print("\\}\n");
+        Printer.print(space+"\\end{align*}\n");
 
 
     }
     @Override
-    public void printConsole(BufferedWriter writer) {
+    public void printConsole() {
 
-        Printer.print(this.getName()+"\n",writer);
+        Printer.print(this.getName()+"\n");
 
         ArrayList<ArrayList<String>> header=GrammarUtil.getHeader(this,false);
 
-        Printer.print("{",writer);
-        Printer.print(header.get(0).stream().collect(joining(", ")),writer);
+        Printer.print("{");
+        Printer.print(header.get(0).stream().collect(joining(", ")));
 
-        Printer.print("; ",writer);
+        Printer.print("; ");
 
-        Printer.print(header.get(1).stream().collect(joining(", ")),writer);
+        Printer.print(header.get(1).stream().collect(joining(", ")));
 
-        Printer.print("; ",writer);
-        Printer.print(header.get(2).get(0),writer);
+        Printer.print("; ");
+        Printer.print(header.get(2).get(0));
 
-        Printer.print("}\n\n",writer);
+        Printer.print("}\n\n");
 
 
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
-            Printer.print(nt.getName() + " --> ",writer);
+            Printer.print(nt.getName() + " --> ");
             Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
                     .map(Rule::getRightSide)
                     .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
-                    .collect(joining(" | ")),writer);
+                    .collect(joining(" | ")));
 //            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
            // HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);
             //Printer.print(tmp.stream().map(list -> list.stream().collect(joining(""))).collect(joining(" | ")));
-            Printer.print("\n",writer);
+            Printer.print("\n");
 
         }
 

@@ -35,17 +35,16 @@ public class Dummy implements Printable {
     /**
      * The Dummy is nothing more than a wrapper for a string. This method
      * prints the string with the given indentation
-     * @param writer the {@link BufferedWriter} writer
      * @param space the deepness of the text written
      */
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
-        Printer.print(space+s,writer);
+    public void printLatex(String space) {
+        Printer.print(space+s);
     }
 
 
     @Override
-    public void printConsole(BufferedWriter writer) {
-        Printer.print(s,writer);
+    public void printConsole() {
+        Printer.print(s);
     }
 }

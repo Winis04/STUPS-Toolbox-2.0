@@ -227,73 +227,73 @@ public class Automaton implements Printable, Storable {
 
 
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
+    public void printLatex(String space) {
         AutomatonUtil.fillLengthsOfEdges(this);
         ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
-        Printer.println("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n",writer);
+        Printer.print("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n\n");
         String space1=space+"\t";
         String before="";
         for(State state : statesSorted) {
-            Printer.print(space1+"\\node[state",writer);
+            Printer.print(space1+"\\node[state");
             if(state.isStart()) {
-                Printer.print(",initial",writer);
+                Printer.print(",initial");
             }
             if(state.isFinal()) {
-                Printer.print(",accepting",writer);
+                Printer.print(",accepting");
             }
-            Printer.print("]\t (",writer);
+            Printer.print("]\t (");
             Printer.print(state);
-            Printer.print(")\t",writer);
+            Printer.print(")\t");
             //position:
             if(!before.isEmpty()) {
-                Printer.print("[right of="+before+"]\t",writer);
+                Printer.print("[right of="+before+"]\t");
                 before=state.getName();
             } else {
                 before=statesSorted.get(0).getName();
             }
-            Printer.print("\t{",writer);
+            Printer.print("\t{");
             Printer.print(state);
-            Printer.print("};\n",writer);
+            Printer.print("};\n");
           //  \node[state,initial] (q_0)   {$q_0$};
         }
-        Printer.println( space+"\\path[->]",writer);
+        Printer.print( space+"\\path[->]\n");
 
         for(State s : statesSorted) {
-            Printer.print(space+"(",writer);
+            Printer.print(space+"(");
             Printer.print(s);
-            Printer.print(") \t",writer);
+            Printer.print(") \t");
             s.getRules().forEach(Printer::print);
         }
-        Printer.println(";",writer);
-        Printer.println("\\end{tikzpicture}\n\n",writer);
+        Printer.print(";\n");
+        Printer.print("\\end{tikzpicture}\n\n\n");
 
     }
     /**
      * Prints a given automaton to stdout.
      */
     @Override
-    public void printConsole(BufferedWriter writer) {
+    public void printConsole() {
         ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
-        Printer.print("{",writer);
-        this.printAllStates_Console(statesSorted,writer,false);
-        Printer.print("; ",writer);
-        Printer.print(this.startState.getName()+"; ",writer);
-        this.printAllStates_Console(statesSorted,writer,true);
-        Printer.print("}\n",writer);
+        Printer.print("{");
+        this.printAllStates_Console(statesSorted,false);
+        Printer.print("; ");
+        Printer.print(this.startState.getName()+"; ");
+        this.printAllStates_Console(statesSorted,true);
+        Printer.print("}\n");
 
         for(State s : statesSorted) {
             for(Rule r : s.getRules()) {
                 Printer.print(s);
                 Printer.print(r);
-                Printer.print("\n",writer);
+                Printer.print("\n");
             }
         }
 
-        Printer.println("",writer);
-        Printer.println(AutomatonUtil.getStatesSorted(this).stream().map(State::getName).collect(joining(", ")),writer);
+        Printer.print("\n");
+        Printer.print(AutomatonUtil.getStatesSorted(this).stream().map(State::getName).collect(joining(", "))+"\n");
     }
 
-    private void printAllStates_Console(ArrayList<State> statesSorted, BufferedWriter writer, boolean onlyFinal) {
+    private void printAllStates_Console(ArrayList<State> statesSorted, boolean onlyFinal) {
         ArrayList<State> states;
         if(onlyFinal) {
             states=(ArrayList<State>) statesSorted.stream().filter(State::isFinal).collect(Collectors.toList());
@@ -305,7 +305,7 @@ public class Automaton implements Printable, Storable {
             State state=iterator.next();
             Printer.print(state);
             if(iterator.hasNext()) {
-                Printer.print(", ",writer);
+                Printer.print(", ");
             }
         }
     }

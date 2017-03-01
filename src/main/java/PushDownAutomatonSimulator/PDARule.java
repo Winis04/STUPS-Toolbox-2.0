@@ -87,24 +87,24 @@ public class PDARule implements Printable{
 
 
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
-        Printer.print(space+"$"+this.getComingFrom().getName(),writer);
-        Printer.print(Printer.checkIfLatexSpecial(this.getReadIn().getName()),writer);
-        Printer.print(Printer.checkIfLatexSpecial(this.getOldToS().getName()),writer);
-        Printer.print(" \\rightarrow ",writer);
-        Printer.print(Printer.checkIfLatexSpecial(this.getGoingTo().getName()),writer);
-        Printer.print(this.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(Collectors.joining(""))+"$",writer);
+    public void printLatex(String space) {
+        Printer.print(space+"$"+this.getComingFrom().getName());
+        Printer.print(Printer.checkIfLatexSpecial(this.getReadIn().getName()));
+        Printer.print(Printer.checkIfLatexSpecial(this.getOldToS().getName()));
+        Printer.print(" \\rightarrow ");
+        Printer.print(Printer.checkIfLatexSpecial(this.getGoingTo().getName()));
+        Printer.print(this.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(Collectors.joining(""))+"$");
     }
 
 
     @Override
-    public void printConsole(BufferedWriter writer) {
-        Printer.print(this.getComingFrom().getName(),writer);
-        Printer.print(this.getReadIn().getName(),writer);
-        Printer.print(this.getOldToS().getName(),writer);
-        Printer.print(" --> ",writer);
-        Printer.print(this.getGoingTo().getName(),writer);
-        Printer.print(this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""))+"\n",writer);
+    public void printConsole() {
+        Printer.print(this.getComingFrom().getName());
+        Printer.print(this.getReadIn().getName());
+        Printer.print(this.getOldToS().getName());
+        Printer.print(" --> ");
+        Printer.print(this.getGoingTo().getName());
+        Printer.print(this.getNewToS().stream().map(StackLetter::getName).collect(Collectors.joining(""))+"\n");
     }
 
 
