@@ -62,6 +62,8 @@ public abstract class ComplexFunctionPlugin {
         AnchorPane.setTopAnchor(node,height/10);
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(anchorPane);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
         tab.setContent(scrollPane);
         if(GUI.getGUI().getStateController().isTooltips()) {
             tab.setTooltip(new Tooltip(tooltip()));
