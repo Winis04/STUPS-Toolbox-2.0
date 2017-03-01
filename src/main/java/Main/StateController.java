@@ -215,6 +215,9 @@ public class StateController {
                     e.printStackTrace();
                 }
             } else {
+                if(!new File(path_to_workspace+key.getSimpleName()).exists()) {
+                    new File(path_to_workspace+key.getSimpleName()).mkdir();
+                }
                 types.add(key);
             }
         });

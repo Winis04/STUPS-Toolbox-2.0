@@ -69,10 +69,13 @@ public class Automaton implements Printable, Storable {
      * It just contains an initial state called "z0".
      */
     public Automaton() {
-        this.startState = new State("z0", true, false, new HashSet<>());
+        this.startState = new State("z0", true, true, new HashSet<>());
         this.states = new HashSet<>();
         this.states.add(this.startState);
         this.allInputs = new HashSet<>();
+        this.allInputs.add("a");
+        Rule rule = new Rule(startState,startState,allInputs);
+        startState.getRules().add(rule);
         this.name="A";
 
     }
