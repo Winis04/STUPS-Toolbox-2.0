@@ -330,7 +330,7 @@ public class Printer {
         }
 
         for(int i=0;i<printables.size();i++) {
-            Printer.printConsole(point_description[i]+": "+texts[i]+"\n");
+            Printer.printConsole("\n"+point_description[i]+": "+texts[i]+"\n");
 
             printables.get(i).printConsole();
 
@@ -363,6 +363,17 @@ public class Printer {
         } else {
             return string;
         }
+    }
+
+    public static String fill(String s, int n) {
+        String res=s;
+        if(n > s.length()) {
+            int k = n-s.length();
+            for(int i=0;i<k;i++) {
+                res+=" ";
+            }
+        }
+        return res;
     }
 
 

@@ -3,6 +3,7 @@ package PushDownAutomatonSimulator;
 
 
 import GrammarSimulator.*;
+import Print.Printable;
 import PushDownAutomatonParser.lexer.Lexer;
 import PushDownAutomatonParser.lexer.LexerException;
 import PushDownAutomatonParser.node.Start;
@@ -187,6 +188,22 @@ public class PushDownAutomatonUtil {
        } else {
            return null;
        }
+    }
+
+    public static ArrayList<Printable> toGrammarAsPrintables(PushDownAutomaton pda) {
+        ArrayList<Printable> res = new ArrayList<>();
+        Grammar g1 = toGrammar_StepOne(pda);
+        Grammar g2 = toGrammar_StepTwo(pda,g1);
+        Grammar g3 = toGrammar_StepThree(pda,g2);
+        Grammar g4 = toGrammar_StepFour(pda,g3);
+        Grammar g5 = toGrammar_StepFive(g4);
+        res.add(pda);
+        res.add(g1);
+        res.add(g2);
+        res.add(g3);
+        res.add(g4);
+        res.add(g5);
+        return res;
     }
 
     private static Grammar toGrammar_StepOne(PushDownAutomaton pda){

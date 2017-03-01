@@ -52,13 +52,13 @@ public final class Nonterminal implements Symbol, Printable {
 
 
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
-        Printer.print(space+this.getName(),writer);
+    public void printLatex(String space) {
+        Printer.print(space+this.getName());
     }
 
     @Override
-    public void printConsole(BufferedWriter writer) {
-        Printer.print(this.getName(),writer);
+    public void printConsole() {
+        Printer.print(this.getName());
     }
 
 

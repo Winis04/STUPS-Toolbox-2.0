@@ -1,6 +1,7 @@
 package GrammarSimulator;
 
 
+import GUIPlugins.SimpleFunctionPlugins.Print;
 import Main.Storable;
 import Print.Printable;
 import Print.Printer;
@@ -171,12 +172,17 @@ public final class Grammar implements Printable, Storable {
 
         Printer.print("}\n\n");
 
+        OptionalInt max = this.nonterminals.stream().mapToInt(nt -> nt.getName().length()).max();
 
         for(Nonterminal nt : GrammarUtil.getNonterminalsInOrder(this)) {
-            Printer.print(nt.getName() + " --> ");
+            if(max.isPresent()) {
+                Printer.print(Printer.fill(nt.getName(),max.getAsInt()) + " --> ");
+            } else {
+                Printer.print(nt.getName() + " --> ");
+            }
             Printer.print(getRules().stream().filter(rule -> rule.getComingFrom().equals(nt))
                     .map(Rule::getRightSide)
-                    .map(list -> list.stream().map(Symbol::getName).collect(joining("")))
+                    .map(list -> list.stream().map(Symbol::getName).collect(joining(" ")))
                     .collect(joining(" | ")));
 //            HashSet<ArrayList<Symbol>> tmp=nt.getSymbolLists();
            // HashSet<ArrayList<String>> tmp=getRulesToNonterminal(grammar,nt);

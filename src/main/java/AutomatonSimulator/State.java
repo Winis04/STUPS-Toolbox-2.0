@@ -111,13 +111,13 @@ public class State implements Printable{
     }
 
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
+    public void printLatex(String space) {
 
-        Printer.print(this.name,writer);
+        Printer.print(this.name);
     }
 
     @Override
-    public void printConsole(BufferedWriter writer) {
-        Printer.print(this.name,writer);
+    public void printConsole() {
+        Printer.print(this.name);
     }
 }

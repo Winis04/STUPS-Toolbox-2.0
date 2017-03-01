@@ -78,14 +78,13 @@ public class Rule implements Printable{
 
     /**
      * the automaton is printed from left to right in alphanumeric order
-     * @param writer the output-write
      * @param space a string of tabs for nice printing
      */
     @Override
-    public void printLatex(BufferedWriter writer, String space) {
-        Printer.print(" edge ",writer);
+    public void printLatex(String space) {
+        Printer.print(" edge ");
         if(this.isLoop()) {
-            Printer.print("[loop below] ",writer);
+            Printer.print("[loop below] ");
         } else {
             int arc;
             if(maxLength==1) {
@@ -94,16 +93,16 @@ public class Rule implements Printable{
                 arc = (90*length)/maxLength;
             }
             String s=""+arc;
-              Printer.print("[bend left="+s+"] ",writer);
+              Printer.print("[bend left="+s+"] ");
         }
-        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(",writer);
+        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(");
         Printer.print(goingTo);
-        Printer.println(")",writer);
+        Printer.print(")\n");
     }
 
     @Override
-    public void printConsole(BufferedWriter writer) {
-        Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ",writer);
+    public void printConsole() {
+        Printer.print(" --'"+acceptedInputs.stream().collect(joining("', '"))+"'--> ");
         Printer.print(goingTo);
 
     }

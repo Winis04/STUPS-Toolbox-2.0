@@ -187,7 +187,7 @@ public class CLI {
                 OptionalInt max = texts.keySet().stream().mapToInt(String::length).max();
                 if(max.isPresent()) {
                     texts.keySet().forEach(key -> {
-                        String freshKey = fill(key,max.getAsInt());
+                        String freshKey = Printer.fill(key,max.getAsInt());
                         toPrint.put(freshKey,linebreak2(texts.get(key),max.getAsInt()+6,75-max.getAsInt()));
                     });
                 }
@@ -220,32 +220,11 @@ public class CLI {
         return true;
     }
 
-    private String fill(String s, int n) {
-        String res=s;
-        if(n > s.length()) {
-            int k = n-s.length();
-            for(int i=0;i<k;i++) {
-                res+=" ";
-            }
-        }
-        return res;
-    }
 
-    private String linebreak(String s, int n, int length) {
-        String space = fill("",n);
-        String res = "";
-        int i=0;
-        int times = s.length()/length;
-        for(int j=0;j<times;j++) {
-            res += s.substring(i,i+length)+"\n"+space;
-            i+=length;
-        }
-        res += s.substring(i,s.length());
-        return res;
-    }
+
 
     private String linebreak2(String s, int n, int length) {
-        String space = fill("",n);
+        String space = Printer.fill("",n);
         String[] array = s.split(" ");
         List<String> lines = new ArrayList<>();
         String tmp;
@@ -422,7 +401,7 @@ public class CLI {
                         if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
                             validCommand = true;
                             ret = plugin.execute(content.getObjects().get(plugin.inputType()), parameters);
-                            if (!plugin.errorFlag()) {
+                            if (!plugin.errorFlag() && ret != null) {
                                 content.getObjects().put(plugin.outputType(), ret);
                                 if(content.getStore().get(plugin.outputType()) != null && content.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
                                     content.getStore().get(plugin.outputType()).put(ret.getName(),ret);

@@ -1,7 +1,6 @@
 package GUIPlugins.SimpleFunctionPlugins;
 
-import GrammarSimulator.Grammar;
-import GrammarSimulator.GrammarUtil;
+
 import Main.Storable;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
@@ -9,6 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import Print.Printer;
+import Print.StringLiterals;
+import GrammarSimulator.Grammar;
 
 import java.util.Optional;
 
@@ -51,6 +52,7 @@ public class PDAToGrammar extends SimpleFunctionPlugin {
                 }
             }
             if(PushDownAutomatonUtil.checkIfLengthLesserThenTwo(pda)) {
+                Printer.printEnumeration(PushDownAutomatonUtil.toGrammarAsPrintables(pda), StringLiterals.TOGRAMMAR_POINT_DESCRIPTIONS, StringLiterals.TOGRAMMAR_TEXTS, StringLiterals.TOGRAMMAR_TITLE);
                 return PushDownAutomatonUtil.toGrammar(pda);
             }
         }

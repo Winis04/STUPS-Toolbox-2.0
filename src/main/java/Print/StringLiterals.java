@@ -58,4 +58,10 @@ public class StringLiterals {
    public static final String TOOLTIP_CHECKSTRING_AUTOMATON = "Checks interactive, if the language of the automaton contains the given word. Separate with space";
    public static final String TOOLTIP_TREEVIEW = "This is your workspace. Open functions via right click on an element";
    public static final String TOOLTIP_GRAMMAR = "edit rules by right clicking on them";
+
+    //toGrammar
+    public static final String[] TOGRAMMAR_POINT_DESCRIPTIONS = new String[]{"PDA", "Step 1","Step 2","Step 3","Step 4","Simplify"};
+    public static final String[] TOGRAMMAR_TEXTS = new String[]{"","","","","",""};
+    public static final String TOGRAMMAR_TITLE = "PDA to Grammar";
+
 }
