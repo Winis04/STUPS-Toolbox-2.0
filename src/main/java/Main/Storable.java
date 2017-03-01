@@ -54,7 +54,6 @@ public interface Storable extends Printable {
      * @return a Storable object
      * @throws Exception every Exception
      */
-
     Storable restoreFromFile(File file) throws Exception;
 
     /**
@@ -64,14 +63,12 @@ public interface Storable extends Printable {
      * a change occurs.
      * @return a Storable of the same subclass as the original
      */
-
     Storable getPreviousVersion();
 
     /**
      * save a previous version manually.
      * becomes redundant once every storable is immutable
      */
-
     void savePreviousVersion();
 
     @Override

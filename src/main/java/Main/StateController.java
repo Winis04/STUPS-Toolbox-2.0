@@ -169,30 +169,29 @@ public class StateController {
                         if (files != null) {
                             for (File file : files) {
                                 // the parsed object
-                                Storable restored = storable.restoreFromFile(file);
+                                try {
+                                    Storable restored = storable.restoreFromFile(file);
 
-                                // store it in the store
-                                HashMap<String, Storable> correctMap = content.getStore().get(clazz);
-                                String i = restored.getName();
-                                if (correctMap == null) {
-                                    HashMap<String, Storable> tmp = new HashMap<>();
-                                    tmp.put(i, restored);
-                                    content.getStore().put(clazz, tmp);
-                                    content.getObjects().putIfAbsent(clazz, restored);
-                                } else {
-                                    correctMap.put(i, restored);
-                                    content.getObjects().putIfAbsent(clazz, restored);
-                                    //    content.getStore().get(clazz).put(i, toBeStored);
+                                    // store it in the store
+                                    HashMap<String, Storable> correctMap = content.getStore().get(clazz);
+                                    String i = restored.getName();
+                                    if (correctMap == null) {
+                                        HashMap<String, Storable> tmp = new HashMap<>();
+                                        tmp.put(i, restored);
+                                        content.getStore().put(clazz, tmp);
+                                        content.getObjects().putIfAbsent(clazz, restored);
+                                    } else {
+                                        correctMap.put(i, restored);
+                                        content.getObjects().putIfAbsent(clazz, restored);
+                                        //    content.getStore().get(clazz).put(i, toBeStored);
+                                    }
+                                } catch (Exception e) {
+                                    System.err.println("A "+clazz.getSimpleName() +" is corrupt!");
                                 }
                             }
                         }
                     } catch (InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
-                    } catch (Exception e) {
-                        System.err.println("error while restoring the workspace. A " + child.getName() + " is corrupt");
-                     //   e.printStackTrace();
-
-
                     }
                 }
             } else {
@@ -201,6 +200,8 @@ public class StateController {
             }
         }
     }
+
+
 
     private void exitWorkspace() {
         if(validWorkspace) {

@@ -213,7 +213,6 @@ public final class Grammar implements Printable, Storable {
 
     @Override
     public Storable restoreFromFile(File file) throws Exception {
-
         return GrammarUtil.parse(file);
 
     }
