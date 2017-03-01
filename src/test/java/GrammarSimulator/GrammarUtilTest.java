@@ -39,13 +39,6 @@ public class GrammarUtilTest {
 
     }
 
-    @Test
-    public void randomName() {
-
-        int big = (int) ((90-65) * Math.random()+65);
-
-        System.out.println((char) big);
-    }
 
     @Test
     public void calculateNullable() {
@@ -137,7 +130,7 @@ public class GrammarUtilTest {
         });
     }
 
-    @Ignore
+    @Test
     public void chomskyNormalForm() {
         files.forEach(file -> {
             try {

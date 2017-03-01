@@ -37,11 +37,6 @@ public class ConfigurationTest {
 
         ArrayList<String> test = new ArrayList<>();
         ArrayList<String> test2 = new ArrayList<>();
-        test.add("Hallo");
-        test.add("Isabel");
-
-        test2.add("JO");
-        test2.add("Ja");
 
         test.addAll(1,test2);
         System.out.println(test.toString());
