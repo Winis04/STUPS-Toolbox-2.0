@@ -47,7 +47,7 @@ public class Print extends SimpleFunctionPlugin {
 
     @Override
     public boolean shouldBeDisabled() {
-        return Printer.printmode != PrintMode.LATEX;
+        return Printer.getPrintmode() != PrintMode.LATEX;
     }
 
 }

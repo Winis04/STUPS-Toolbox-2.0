@@ -24,8 +24,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.*;
 
 
@@ -136,9 +138,8 @@ public class GUI extends Application{
     /**
      * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
-
     void show() {
-        Printer.printmode = PrintMode.NO;
+        Printer.setPrintmode_No();
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
@@ -251,7 +252,7 @@ public class GUI extends Application{
 
         complexFunctionPlugins.stream().filter(plugin -> plugin.getInputType().equals(currentDisplayPlugin.displayType())).forEachOrdered(plugin -> {
                 Tab current = plugin.getAsTab(content.getObjects().get(currentDisplayPlugin.displayType()), currentDisplayPlugin);
-                if (Printer.printmode == PrintMode.LATEX && plugin.createsOutput()) {
+                if (Printer.getPrintmode() == PrintMode.LATEX && plugin.createsOutput()) {
                     current.setStyle("-fx-background-color: aqua;");
                 } else {
                     current.setStyle("");
@@ -343,7 +344,7 @@ public class GUI extends Application{
 
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
-            Printer.printmode=PrintMode.CONSOLE;
+            Printer.setPrintmode_Console();
             primaryStage.close();
         });
 

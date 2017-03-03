@@ -4,9 +4,7 @@ package Print;
 
 import Main.GUI;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +19,7 @@ public class Printer {
     /**
      * the current print mode. Is an Instance of enum {@link PrintMode}
      */
-    public static PrintMode printmode=PrintMode.CONSOLE;
+    private static PrintMode printmode=PrintMode.CONSOLE;
     /**
      * the current file that should be used
      */
@@ -212,13 +210,7 @@ public class Printer {
     }
 
 
-    /**
-     * sets the {@link #writer} of this class
-     * @param writer the given writer
-     */
-    public static void setWriter(BufferedWriter writer) {
-        Printer.writer = writer;
-    }
+
 
     /**
      * closes te current {@link #writer}
@@ -279,10 +271,12 @@ public class Printer {
     public static void printEndOfLatex() {
         if(printmode==PrintMode.LATEX) {
             printLatex("\\end{document}");
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(Printer.writerIsNotNull()) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -377,6 +371,38 @@ public class Printer {
     }
 
 
+    /* GETTER AND SETTER */
+
+    public static PrintMode getPrintmode() {
+        return printmode;
+    }
+
+    public static void setPrintmode_No() {
+        setPrintmode(PrintMode.NO,null);
+    }
+
+    public static void setPrintmode_Console() {
+        Printer.setPrintmode(PrintMode.CONSOLE,new BufferedWriter(new OutputStreamWriter(System.out)));
+    }
+
+    public static void setPrintmode_Latex(File file) {
+        try {
+            Printer.setPrintmode(PrintMode.LATEX,new BufferedWriter(new FileWriter(file)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void setPrintmode(PrintMode printmode, BufferedWriter writer) {
+        if(Printer.printmode==PrintMode.LATEX && Printer.writerIsNotNull()) {
+            Printer.printEndOfLatex();
+           // Printer.closeWriter();
+        }
+        Printer.printmode = printmode;
+        Printer.writer = writer;
+        if(printmode == PrintMode.LATEX) {
+            Printer.printStartOfLatex();
+        }
+    }
 
 
 }

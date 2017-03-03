@@ -199,10 +199,7 @@ public class CLI {
             case "e":
             case "exit":
                 System.out.println("Goodbye!");
-                if (Printer.writerIsNotNull() && Printer.printmode == PrintMode.LATEX) {
-                    Printer.printEndOfLatex();
-                    Printer.closeWriter();
-                }
+                Printer.setPrintmode_No();
                 stateController.exit();
                 System.exit(0);
             case "a":

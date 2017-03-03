@@ -8,6 +8,7 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
 import Main.Storable;
+import Print.Printer;
 import PushDownAutomatonSimulator.PushDownAutomaton;
 import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 import javafx.fxml.FXML;
@@ -87,14 +88,7 @@ public class RootController {
             latexModeOn.setDisable(true);
             latexModeOff.setDisable(false);
             borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
-
-
-            String path = file.getAbsolutePath();
-
-
-
-            PrintModePlugin printModePlugin = new PrintModePlugin();
-            printModePlugin.execute(null, new String[]{"latex", path, "--force"});
+            Printer.setPrintmode_Latex(file);
             if(gui.getCurrentDisplayPlugin() != null) {
                 gui.refreshPlugins();
             }
@@ -108,7 +102,7 @@ public class RootController {
         borderPane.setStyle("");
 
         PrintModePlugin printModePlugin = new PrintModePlugin();
-        printModePlugin.execute(null,new String[]{"no"});
+        Printer.setPrintmode_No();
         if(gui.getCurrentDisplayPlugin() != null) {
             gui.refreshPlugins();
         }

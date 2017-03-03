@@ -190,7 +190,7 @@ public class OverviewController {
                 .filter(sfp -> !sfp.operatesOnAllStorables() && sfp.inputType().equals(parent)  )
                 .map(sfp -> {
                     MenuItem item = sfp.getMenuItem(gui);
-                    if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
+                    if(sfp.createsOutput() && Printer.getPrintmode()== PrintMode.LATEX) {
                         item.setStyle("-fx-border-color: blue");
                     }
                     return item;
@@ -203,7 +203,7 @@ public class OverviewController {
                 .filter(SimpleFunctionPlugin::operatesOnAllStorables)
                 .map(sfp -> {
                     MenuItem item = sfp.getMenuItem(gui);
-                    if(sfp.createsOutput() && Printer.printmode!= PrintMode.NO) {
+                    if(sfp.createsOutput() && Printer.getPrintmode()== PrintMode.LATEX) {
                         item.setStyle("-fx-border-color: blue");
                     }
                     return item;
