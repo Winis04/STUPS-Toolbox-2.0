@@ -1859,7 +1859,6 @@ public class GrammarUtil {
         } else {
             return (ArrayList<String>) nonterminals.stream().map(Nonterminal::getName).collect(Collectors.toList());
         }
-
     }
 
 

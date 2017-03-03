@@ -10,6 +10,7 @@ package Print;
 public interface Printable {
     /**
      * formats the text, so it can be written in a latex file
+     *
      * @param space the deepness of the text written
      */
     void printLatex(String space);
@@ -18,5 +19,4 @@ public interface Printable {
      * formats the code such that it can be written on the terminal
      */
     void printConsole();
-
 }

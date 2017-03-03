@@ -1,7 +1,6 @@
 package Main;
 
 import CLIPlugins.CLIPlugin;
-import Print.PrintMode;
 import Print.Printer;
 import javafx.application.Platform;
 import org.reflections.Reflections;
@@ -199,7 +198,7 @@ public class CLI {
             case "e":
             case "exit":
                 System.out.println("Goodbye!");
-                Printer.setPrintmode_No();
+                Printer.setPrintMode_No();
                 stateController.exit();
                 System.exit(0);
             case "a":

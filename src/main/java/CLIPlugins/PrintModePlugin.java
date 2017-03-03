@@ -1,7 +1,6 @@
 package CLIPlugins;
 
 import Main.Storable;
-import Print.PrintMode;
 import Print.Printer;
 
 import java.io.*;
@@ -38,10 +37,10 @@ public class PrintModePlugin extends CLIPlugin {
 
             switch (parameters[0]) {
                 case "no":
-                    Printer.setPrintmode_No();
+                    Printer.setPrintMode_No();
                     break;
                 case "console":
-                    Printer.setPrintmode_Console();
+                    Printer.setPrintMode_Console();
                     break;
                 default:
                     errorFlag = true;
@@ -54,12 +53,12 @@ public class PrintModePlugin extends CLIPlugin {
                 if(new File(parameters[1]).exists()) {
                     if(!(parameters.length==3 && parameters[2].equals("--force"))) {
                         System.out.println("this file already exists");
-                        Printer.setPrintmode_Console();
+                        Printer.setPrintMode_Console();
                         errorFlag=true;
                         return null;
                     }
                 }
-                Printer.setPrintmode_Latex(new File(parameters[1]));
+                Printer.setPrintMode_Latex(new File(parameters[1]));
 
             } else {
                 errorFlag=true;

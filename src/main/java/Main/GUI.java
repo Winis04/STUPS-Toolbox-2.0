@@ -24,10 +24,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.reflections.Reflections;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.*;
 
 
@@ -139,7 +137,7 @@ public class GUI extends Application{
      * This method is called when 'gui' is entered into the Main.CLI and shows the Main.GUI.
      */
     void show() {
-        Printer.setPrintmode_No();
+        Printer.setPrintMode_No();
         //Set IS_VISIBLE and refresh the currently loaded display-plugin,
         //as the displayed object may have changed since the Main.GUI was last opened.
         IS_VISIBLE = true;
@@ -344,7 +342,7 @@ public class GUI extends Application{
 
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
-            Printer.setPrintmode_Console();
+            Printer.setPrintMode_Console();
             primaryStage.close();
         });
 

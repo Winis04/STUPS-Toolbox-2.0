@@ -3,7 +3,6 @@ package Main.view;
 
 import AutomatonSimulator.Automaton;
 import AutomatonSimulator.AutomatonUtil;
-import CLIPlugins.PrintModePlugin;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import Main.GUI;
@@ -88,7 +87,7 @@ public class RootController {
             latexModeOn.setDisable(true);
             latexModeOff.setDisable(false);
             borderPane.setStyle("-fx-border-color: blue; -fx-border-width: 4;");
-            Printer.setPrintmode_Latex(file);
+            Printer.setPrintMode_Latex(file);
             if(gui.getCurrentDisplayPlugin() != null) {
                 gui.refreshPlugins();
             }
@@ -101,8 +100,7 @@ public class RootController {
         latexModeOff.setDisable(true);
         borderPane.setStyle("");
 
-        PrintModePlugin printModePlugin = new PrintModePlugin();
-        Printer.setPrintmode_No();
+        Printer.setPrintMode_No();
         if(gui.getCurrentDisplayPlugin() != null) {
             gui.refreshPlugins();
         }
