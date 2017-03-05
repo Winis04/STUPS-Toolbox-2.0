@@ -289,11 +289,11 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
 
     private PDARule parseStringToRule(String button) {
-        String[] tmp = button.split("\u2192");
+        String[] tmp = button.split(" \u2192 ");
         String left = tmp[0];
         String right = tmp[1];
         String[] tmp1 = left.split(" ");
-        String[] tmp2 = left.split(" ");
+        String[] tmp2 = right.split(" ");
         if(tmp1.length != 3 || tmp2.length < 3) {
             return null;
         }

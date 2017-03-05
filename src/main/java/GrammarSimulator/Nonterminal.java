@@ -7,6 +7,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.BufferedWriter;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -84,14 +86,14 @@ public final class Nonterminal implements Symbol, Printable {
                         toHashCode();
     }
 
-    public static boolean validName(String name) {
-
-       return name.matches("[a-zA-Z_](\\w*)");
+    public boolean validName(String name) {
+        return name.matches("[a-zA-Z_](\\w*)");
     }
 
 
 
-    public static String makeValid(String name) {
+
+    public String makeValid(String name) {
 
         StringBuilder res = new StringBuilder();
         String start = Character.toString(name.charAt(0));
@@ -111,7 +113,7 @@ public final class Nonterminal implements Symbol, Printable {
 
     }
 
-    public String nameToLatex() {
+    String nameToLatex() {
         String[] splitted = name.split("_");
         String res;
         if(splitted.length>1) {

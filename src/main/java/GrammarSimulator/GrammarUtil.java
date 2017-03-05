@@ -1339,6 +1339,14 @@ public class GrammarUtil {
         return randomName;
     }
 
+    public static boolean validName(String name, Grammar grammar) {
+        Set<String> names = new HashSet<>();
+        if (grammar != null) {
+            names = grammar.getNonterminals().stream().map(Nonterminal::getName).collect(Collectors.toSet());
+        }
+        return name.matches("[a-zA-Z_](\\w*)") &&  !names.contains(name);
+    }
+
     /**
      * transforms the grammar to chomsky normal form without changing its language
      * @param grammar the to-be-modified grammar
@@ -1377,7 +1385,7 @@ public class GrammarUtil {
                 rule.getRightSide().forEach(sym -> {
                     if (sym instanceof Terminal) {
                         Nonterminal newNT;
-                        if(Nonterminal.validName(name+sym.getName())) {
+                        if(GrammarUtil.validName(name+sym.getName(),g)) {
                             newNT =new Nonterminal(name+sym.getName());
                             list.add(newNT);
                         } else {
@@ -1409,23 +1417,21 @@ public class GrammarUtil {
      */
 
     private static Grammar chomskyNormalForm_StepTwo(Grammar g) {
-        String name;
-        if(g.getNonterminals().stream().map(Nonterminal::getName).anyMatch(nt-> nt.startsWith("P"))) {
-            name = chooseName(g, new HashSet<>()) + "_";
-        } else {
-            name = "P_";
-        }
 
 
-        final int[] counter = {0};
+
         Set<Rule> old = new HashSet<>(g.getRules());
+        Set<String> excluded = new HashSet<>();
         while(true) {
             HashSet<Rule> res;
             res=old.stream().reduce(new HashSet<Rule>(), (x, rule) -> {
                 if(rule.getRightSide().stream().allMatch(sym -> sym.equals(Terminal.NULLSYMBOL)) || rule.getRightSide().size()<=2) {
                     x.add(rule);
                 } else {
-                    Nonterminal mod = new Nonterminal(name+ counter[0]++);
+                    String name = chooseName(g,excluded);
+                    excluded.add(name);
+                    Nonterminal mod = new Nonterminal(name);
+
                     Symbol first = rule.getRightSide().get(0);
                     List<Symbol> tmp1 = new ArrayList<>();
                     for(int i = 1; i<rule.getRightSide().size(); i++) {

@@ -342,8 +342,9 @@ public class PushDownAutomatonUtil {
         if(b.equals(StackLetter.NULLSYMBOL.getName())) {
             b = "epsilon";
         }
-        if(!Nonterminal.validName(b)) {
-            b=Nonterminal.makeValid(b);
+        Nonterminal t = new Nonterminal("");
+        if(!t.validName(b)) {
+            b=t.makeValid(b);
         }
         String c = x.getName();
         return a+"_"+b+"_"+c;
