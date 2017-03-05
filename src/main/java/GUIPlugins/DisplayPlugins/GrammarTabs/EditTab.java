@@ -313,7 +313,7 @@ public class EditTab implements GrammarTab {
 
                            field.setOnKeyPressed(event2 -> {
                                if (event2.getCode().equals(KeyCode.ENTER)) {
-                                   Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText());
+                                   Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText().replace("'",""));
                                   refresh(grammar1);
 
                                }
@@ -344,7 +344,7 @@ public class EditTab implements GrammarTab {
 
                        field.setOnKeyPressed(event1 -> {
                            if (event1.getCode().equals(KeyCode.ENTER)) {
-                               Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText());
+                               Grammar grammar1= editRule(grammar, new Rule(nonterminal, symbols), field.getText().replace("'",""));
                              refresh(grammar1);
 
 
@@ -432,7 +432,9 @@ public class EditTab implements GrammarTab {
 
             //Parse the entered symbol list and get the fitting symbols, or create a new terminal
             //if a symbol doesn't exist.
+            symbols = symbols.replace("'","");
             StringTokenizer tokenizer = new StringTokenizer(symbols.replaceAll(" ", ""), ",");
+
             while (tokenizer.hasMoreElements()) {
                 String currentString = tokenizer.nextToken();
                 if(nonterminal.equals(new Nonterminal(currentString))) {
