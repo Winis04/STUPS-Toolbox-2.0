@@ -58,6 +58,7 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
             if(!GrammarUtil.isInChomskyNormalForm(grammar)) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("make to CNF?");
+                alert.initOwner(gui.getPrimaryStage());
                 alert.setHeaderText("This grammar is not in cnf");
                 alert.setContentText("Should the grammar now be converted to CNF?");
 
@@ -90,20 +91,27 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
                 String input = field.getText();
                 List<String> word = Arrays.asList(input.split(" "));
                 Matrix matrix = GrammarUtil.cyk(doCYKWith, word);
-                List<Configuration> configs = GrammarUtil.findCYKPath(doCYKWith,matrix);
-                Printer.printWithTitle("CYK",doCYKWith);
-                Printer.print(matrix);
-                String latex = "\\begin{align*}\n";
-                latex += configs.get(0).getConfigAsString()+" &\\vdash "+configs.get(1).getConfigAsString()+"\\\\ \n &\\vdash ";
-
-                latex +=configs.subList(2,configs.size()).stream().map(config -> config.getConfig().stream()
-                        .map(Symbol::getName)
-                        .collect(joining(" ")))
-                        .collect(joining(" \\\\ \n &\\vdash "));
-                latex += "\n \\end{align*} \n";
-                Printer.print(latex);
 
                 if(matrix != null) {
+
+
+                    List<Configuration> configs = GrammarUtil.findCYKPath(doCYKWith,matrix);
+                    if(configs != null && configs.size() > 1) {
+                        Printer.printWithTitle("CYK", doCYKWith);
+                        Printer.print(matrix);
+                        String latex = "\\begin{align*}\n";
+                        if(configs.size()==2) {
+                            latex += configs.get(0).getConfigAsString() + " &\\vdash " + configs.get(1).getConfigAsString() + "\\\\ \n";
+                        } else {
+                            latex += configs.get(0).getConfigAsString() + " &\\vdash " + configs.get(1).getConfigAsString() + "\\\\ \n &\\vdash ";
+                            latex += configs.subList(2, configs.size()).stream().map(config -> config.getConfig().stream()
+                                    .map(Symbol::getName)
+                                    .collect(joining(" ")))
+                                    .collect(joining(" \\\\ \n &\\vdash "));
+                        }
+                        latex += "\n \\end{align*} \n";
+                        Printer.print(latex);
+                    }
                   //  CLIPlugin cykConsole = new GrammarCYK();
                 //   cykConsole.execute(doCYKWith, new String[]{input});
                     GridPane grid = new GridPane();

@@ -115,7 +115,7 @@ public class PDARule implements Printable{
         s+=" "+this.getOldToS().getDisplayName();
         s+=" \u2192";
         s+=" "+this.getGoingTo().getName();
-        s+=" "+this.getNewToS().stream().map(StackLetter::getDisplayName).collect(Collectors.joining(""));
+        s+=" "+this.getNewToS().stream().map(StackLetter::getDisplayName).collect(Collectors.joining(" "));
 
 
         return s;

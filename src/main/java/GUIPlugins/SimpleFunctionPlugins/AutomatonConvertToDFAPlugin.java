@@ -14,7 +14,10 @@ public class AutomatonConvertToDFAPlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
-        return AutomatonUtil.convertToDFA(automaton);
+        Automaton deepCopy = (Automaton) automaton.deep_copy();
+        Automaton algo = AutomatonUtil.convertToDFA(automaton);
+        algo.setPreviousAutomaton(deepCopy);
+        return algo;
     }
 
     @Override

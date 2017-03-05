@@ -456,6 +456,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         Platform.runLater(() -> {
                             //Show a dialog-window, which asks the user for a new name.
                             TextInputDialog dialog = new TextInputDialog(state);
+                            dialog.initOwner(gui.getPrimaryStage());
                             dialog.setTitle("STUPS-Toolbox");
                             dialog.setHeaderText("Please enter a new name for " + state + "!");
                             dialog.setContentText("Name:");
@@ -482,6 +483,7 @@ public class AutomatonGUI implements DisplayPlugin {
                             Platform.runLater(() -> {
                                 Dialog<String> dialog = new Dialog<>();
                                 dialog.setTitle("STUPS-Toolbox");
+                                dialog.initOwner(gui.getPrimaryStage());
                                 dialog.setHeaderText("Please choose a new start state!");
                                 dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
@@ -568,6 +570,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         Platform.runLater(() -> {
                             Dialog<String[]> dialog = new Dialog<>();
                             dialog.setTitle("STUPS-Toolbox");
+                            dialog.initOwner(gui.getPrimaryStage());
                             dialog.setHeaderText("Please enter the necessary information for the new rule!");
                             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
@@ -614,6 +617,7 @@ public class AutomatonGUI implements DisplayPlugin {
                             } else {
                                 Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("STUPS-Toolbox");
+                                alert.initOwner(gui.getPrimaryStage());
                                 alert.setHeaderText("Please fill in all fields!");
                                 alert.showAndWait();
                             }
@@ -635,6 +639,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         Platform.runLater(() -> {
                             TextInputDialog dialog = new TextInputDialog(AutomatonGUI.this.ruleMap.get(rule).getAcceptedInputs().toString().replace("[", "").replace("]", ""));
                             dialog.setTitle("STUPS-Toolbox");
+                            dialog.initOwner(gui.getPrimaryStage());
                             dialog.setHeaderText("Please enter the new inputs for the selected rule!");
                             dialog.setContentText("Inputs: ");
                             Optional<String> result = dialog.showAndWait();
@@ -681,6 +686,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         Platform.runLater(() -> {
                             TextInputDialog dialog = new TextInputDialog();
                             dialog.setTitle("STUPS-Toolbox");
+                            dialog.initOwner(gui.getPrimaryStage());
                             dialog.setHeaderText("Please enter a new name for the new state!");
                             dialog.setContentText("Name:");
                             Optional<String> result = dialog.showAndWait();
@@ -706,6 +712,7 @@ public class AutomatonGUI implements DisplayPlugin {
                         Platform.runLater(() -> {
                             Dialog<String[]> dialog = new Dialog<>();
                             dialog.setTitle("STUPS-Toolbox");
+                            dialog.initOwner(gui.getPrimaryStage());
                             dialog.setHeaderText("Please enter the necessary information for the new rule!");
                             dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
@@ -758,6 +765,7 @@ public class AutomatonGUI implements DisplayPlugin {
                             } else {
                                 Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("STUPS-Toolbox");
+                                alert.initOwner(gui.getPrimaryStage());
                                 alert.setHeaderText("Please fill in all fields!");
                                 alert.showAndWait();
                             }
@@ -772,6 +780,7 @@ public class AutomatonGUI implements DisplayPlugin {
                             Platform.runLater(() -> {
                                 TextInputDialog dialog = new TextInputDialog("A");
                                 dialog.setTitle("Store this automaton");
+                                dialog.initOwner(gui.getPrimaryStage());
                                 dialog.setContentText("Enter the name of the automaton: ");
                                 Optional<String> result = dialog.showAndWait();
                                 result.ifPresent(name -> {

@@ -51,6 +51,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     private boolean checkStringIsActive = false;
 
+    private Button currentRule = null;
 
     public PushDownAutomatonGUI() {
 
@@ -172,30 +173,24 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         cellLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                         edit.setOnAction(event -> {
 
-                            PushDownAutomaton freshPDA = editRule(pda, rule);
+                            PushDownAutomaton freshPDA = editRule(pda, parseStringToRule(currentRule.getText()));
                             if (freshPDA != null) {
-                                gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
-                                gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
-                                gui.refresh(freshPDA); //switch to new object
-                                gui.refresh(); //refresh the treeView
+                               refresh(freshPDA);
                             }
                         });
 
                         remove.setOnAction(event -> {
                             List<PDARule> rules = new ArrayList<>();
                             rules.addAll(pda.getRules());
-                            rules.remove(rule);
+                            rules.remove(parseStringToRule(currentRule.getText()));
                             PushDownAutomaton freshPDA = new PushDownAutomaton(pda.getStartState(),pda.getInitialStackLetter(),rules,pda.getName(),pda);
-                            gui.getContent().getObjects().put(PushDownAutomaton.class, freshPDA); //add new object as the current object
-                            gui.getContent().getStore().get(PushDownAutomaton.class).put(freshPDA.getName(), freshPDA); //add object to the store
-                            gui.refresh(freshPDA); //switch to new object
-                            gui.refresh(); //refresh the treeView
+                            refresh(freshPDA);
                         });
                         //   cellLabel.setDisable(true);
                         cellLabel.setOnMouseClicked(event -> {
                             mouseMenu.hide();
                             if ((event.getButton().equals(MouseButton.SECONDARY) || event.getClickCount() == 2) && !checkStringIsActive) {
-
+                                currentRule = cellLabel;
                                 contextMenu.show(splitPane, event.getScreenX(), event.getScreenY());
 
 
@@ -203,60 +198,68 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         });
                         //  cellLabel.setStyle("-fx-background-color: gray");
                         cellLabel.setOnAction(event -> {
-                            if (runThroughInfo != null) {
-                                this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule, runThroughInfo));
-                                CheckStringPDAPlugin.path.setText(path(runThroughInfo, " "));
-                                if (this.getRunThroughInfo().getPrevious() == null) {
-                                    undo.setDisable(true);
-                                    //     undo.setStyle("-fx-background-color: lightgray;");
-                                } else {
-                                    undo.setDisable(false);
-                                    //    undo.setStyle("");
-                                }
-                                //  CheckStringPDAPlugin.undo.setDisable(false);
-                                CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(" ")));
-                                flow.setText(runThroughInfo.getStack().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
-                                if (CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                            mouseMenu.hide();
+                            if (!checkStringIsActive) {
 
-                                    Alert alert = new Alert(AlertType.CONFIRMATION);
-                                    alert.setTitle("Success");
-                                    alert.setHeaderText("you found a path that accepts the input");
-                                    alert.setContentText(path(runThroughInfo, "\n") + "\n\ncopy the result?");
-                                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-                                    Optional<ButtonType> result = alert.showAndWait();
-                                    if (result.isPresent() && result.get() == ButtonType.YES) {
-                                        Clipboard clipboard = Clipboard.getSystemClipboard();
-                                        ClipboardContent content = new ClipboardContent();
-                                        content.putString(path(runThroughInfo, "\n"));
-                                        clipboard.setContent(content);
+
+                            } else {
+                                if (runThroughInfo != null) {
+                                    this.setRunThroughInfo(PushDownAutomatonUtil.doRule(rule, runThroughInfo));
+                                    CheckStringPDAPlugin.path.setText(path(runThroughInfo, " "));
+                                    if (this.getRunThroughInfo().getPrevious() == null) {
+                                        undo.setDisable(true);
+                                        //     undo.setStyle("-fx-background-color: lightgray;");
                                     } else {
-                                        Clipboard clipboard = Clipboard.getSystemClipboard();
-                                        ClipboardContent content = new ClipboardContent();
-                                        content.putString("");
-                                        clipboard.setContent(content);
+                                        undo.setDisable(false);
+                                        //    undo.setStyle("");
                                     }
+                                    //  CheckStringPDAPlugin.undo.setDisable(false);
+                                    CheckStringPDAPlugin.field.setText(runThroughInfo.getInput().stream().map(InputLetter::getName).collect(Collectors.joining(" ")));
+                                    flow.setText(runThroughInfo.getStack().stream().map(StackLetter::getName).collect(Collectors.joining(", ")));
+                                    if (CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
 
-                                    CheckStringPDAPlugin.startnew(this);
+                                        Alert alert = new Alert(AlertType.CONFIRMATION);
+                                        alert.setTitle("Success");
+                                        alert.initOwner(gui.getPrimaryStage());
+                                        alert.setHeaderText("you found a path that accepts the input");
+                                        alert.setContentText(path(runThroughInfo, "\n") + "\n\ncopy the result?");
+                                        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                                        Optional<ButtonType> result = alert.showAndWait();
+                                        if (result.isPresent() && result.get() == ButtonType.YES) {
+                                            Clipboard clipboard = Clipboard.getSystemClipboard();
+                                            ClipboardContent content = new ClipboardContent();
+                                            content.putString(path(runThroughInfo, "\n"));
+                                            clipboard.setContent(content);
+                                        } else {
+                                            Clipboard clipboard = Clipboard.getSystemClipboard();
+                                            ClipboardContent content = new ClipboardContent();
+                                            content.putString("");
+                                            clipboard.setContent(content);
+                                        }
 
-                                } else if (noValidRules(runThroughInfo)) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Failure");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("no more valid rules, but input and/or stack not empty");
+                                        CheckStringPDAPlugin.startnew(this);
 
-                                    alert.showAndWait();
-                                    CheckStringPDAPlugin.startnew(this);
-                                } else if (!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Failure");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
+                                    } else if (noValidRules(runThroughInfo)) {
+                                        Alert alert = new Alert(AlertType.INFORMATION);
+                                        alert.setTitle("Failure");
+                                        alert.initOwner(gui.getPrimaryStage());
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("no more valid rules, but input and/or stack not empty");
 
-                                    alert.showAndWait();
-                                    CheckStringPDAPlugin.startnew(this);
+                                        alert.showAndWait();
+                                        CheckStringPDAPlugin.startnew(this);
+                                    } else if (!CheckStringPDAPlugin.field.getText().isEmpty() && runThroughInfo.getStack().isEmpty()) {
+                                        Alert alert = new Alert(AlertType.INFORMATION);
+                                        alert.setTitle("Failure");
+                                        alert.initOwner(gui.getPrimaryStage());
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("this path don't accepts the input, because the input wasn't completely processed");
+
+                                        alert.showAndWait();
+                                        CheckStringPDAPlugin.startnew(this);
+                                    }
                                 }
                             }
-
                         });
                         rulesAsButtons.add(cellLabel);
                         rulesAndButtons.put(rule, cellLabel);
@@ -283,9 +286,28 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
     }
 
+
+
+    private PDARule parseStringToRule(String button) {
+        String[] tmp = button.split("\u2192");
+        String left = tmp[0];
+        String right = tmp[1];
+        String[] tmp1 = left.split(" ");
+        String[] tmp2 = left.split(" ");
+        if(tmp1.length != 3 || tmp2.length < 3) {
+            return null;
+        }
+        String goingTo = tmp2[0];
+        String[] tmp3 = new String[tmp2.length-1];
+        System.arraycopy(tmp2, 1, tmp3, 0, tmp2.length - 1);
+        List<StackLetter> list = Arrays.stream(tmp3).map(StackLetter::new).collect(Collectors.toList());
+        return new PDARule(new State(tmp1[0]),new State(goingTo),new InputLetter(tmp1[1]),new StackLetter(tmp1[2]),list);
+    }
+
     private PushDownAutomaton addRule(PushDownAutomaton pda) {
         Dialog<PDARule> dialog = new Dialog<>();
         dialog.setTitle("add Rule");
+        dialog.initOwner(gui.getPrimaryStage());
         dialog.setHeaderText("enter the information for the new rule");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
         GridPane gridPane = new GridPane();
@@ -359,6 +381,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     private PushDownAutomaton editRule(PushDownAutomaton pda, PDARule oldRule) {
         Dialog<PDARule> dialog = new Dialog<>();
         dialog.setTitle("edit rule "+ oldRule.asString());
+        dialog.initOwner(gui.getPrimaryStage());
         dialog.setHeaderText("enter the information for the new rule");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
         GridPane gridPane = new GridPane();

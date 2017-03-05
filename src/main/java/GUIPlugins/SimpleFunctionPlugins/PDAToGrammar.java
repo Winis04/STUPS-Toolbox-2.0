@@ -23,6 +23,7 @@ public class PDAToGrammar extends SimpleFunctionPlugin {
 
             if(!PushDownAutomatonUtil.checkIfLengthLesserThenTwo(pda)) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initOwner(gui.getPrimaryStage());
                 alert.setTitle("not in the right form");
                 alert.setHeaderText("the algorithm can't be done");
                 alert.setContentText("Should the pda be transformed such that every rule is of form (z,a,A) -> (z',B_1 B_2) ?");

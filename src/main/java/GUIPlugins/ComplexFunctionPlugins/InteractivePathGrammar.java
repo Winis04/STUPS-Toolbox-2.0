@@ -4,6 +4,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
+import Main.GUI;
 import Print.Printer;
 import Print.StringLiterals;
 import javafx.geometry.HPos;
@@ -152,6 +153,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
+                alert.initOwner(gui.getPrimaryStage());
                 String word =  configuration.getConfig().stream().map(Symbol::getDisplayName).collect(joining(""));
                 alert.setHeaderText("You found a path for the word "+word);
                 alert.setContentText(configuration.getPath("\u22A2 ",""));

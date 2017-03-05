@@ -367,6 +367,7 @@ public class EditTab implements GrammarTab {
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("STUPS-Toolbox");
+        dialog.initOwner(gui.getPrimaryStage());
         dialog.setHeaderText("Please enter the necessary information for the new rule!");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
@@ -434,8 +435,9 @@ public class EditTab implements GrammarTab {
             StringTokenizer tokenizer = new StringTokenizer(symbols.replaceAll(" ", ""), ",");
             while (tokenizer.hasMoreElements()) {
                 String currentString = tokenizer.nextToken();
-
-                if (grammar1.getTerminals().contains(new Terminal(currentString))) {
+                if(nonterminal.equals(new Nonterminal(currentString))) {
+                    symbolList.add(nonterminal);
+                } else if (grammar1.getTerminals().contains(new Terminal(currentString))) {
                     symbolList.add(new Terminal(currentString));
                 } else if (grammar1.getNonterminals().contains(new Nonterminal(currentString))) {
                     symbolList.add(new Nonterminal(currentString));
@@ -451,6 +453,7 @@ public class EditTab implements GrammarTab {
             return new Grammar(grammar1.getStartSymbol(),freshRules,grammar1.getName(), (Grammar) grammar1.getPreviousVersion());
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(gui.getPrimaryStage());
             alert.setTitle("STUPS-Toolbox");
             alert.setHeaderText("Please fill in all fields!");
             alert.showAndWait();
@@ -586,9 +589,11 @@ public class EditTab implements GrammarTab {
         if(newSymbols.isEmpty()) {
             newList.add(Terminal.NULLSYMBOL);
         } else {
-            if(symbolsTokenizer.countTokens()==1) {
+            if(symbolsTokenizer.countTokens()==1 && newSymbols.length() > 1) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Dialog");
+                alert.initOwner(gui.getPrimaryStage());
+                alert.setHeaderText("Confirmation");
                 alert.setContentText("Did you mean "+assumeSymbolsAsString(newSymbols)+"?");
 
                 ButtonType yes = new ButtonType("Yes");

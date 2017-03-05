@@ -50,6 +50,8 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
      */
     public static final Button undo = new Button("undo");
 
+    public static final Button end = new Button("end");
+
     @Override
     public Class getInputType() {
         return PushDownAutomaton.class;
@@ -84,6 +86,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
             if(pdaGUI.noValidRules(runThroughInfo)) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Failure");
+                alert.initOwner(gui.getPrimaryStage());
                 alert.setHeaderText(null);
                 alert.setContentText("no more valid rules, but input and/or stack not empty");
 

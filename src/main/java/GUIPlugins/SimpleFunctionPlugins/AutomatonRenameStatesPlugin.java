@@ -14,7 +14,10 @@ public class AutomatonRenameStatesPlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
-        return AutomatonUtil.renameStates(automaton);
+        Automaton deepCopy = (Automaton) automaton.deep_copy();
+        Automaton algo = AutomatonUtil.renameStates(automaton);
+        algo.setPreviousAutomaton(deepCopy);
+        return algo;
     }
 
     @Override

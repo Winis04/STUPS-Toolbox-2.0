@@ -92,6 +92,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
                         }
 
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.initOwner(automatonGUI.getGUI().getPrimaryStage());
                         alert.setTitle("STUPS-Toolbox");
                         if(accept) {
                             alert.setHeaderText("The automaton accepts the input!");

@@ -65,11 +65,6 @@ public interface Storable extends Printable {
      */
     Storable getPreviousVersion();
 
-    /**
-     * save a previous version manually.
-     * becomes redundant once every storable is immutable
-     */
-    void savePreviousVersion();
 
     @Override
     void printLatex(String space);

@@ -22,6 +22,7 @@ public class Rename extends SimpleFunctionPlugin {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         TextInputDialog dialog = new TextInputDialog(selectedItem.getValue());
         dialog.setTitle("Rename "+selectedItem.getParent().getValue());
+        dialog.initOwner(gui.getPrimaryStage());
         dialog.setContentText("Please enter new Name:");
 
 
@@ -43,6 +44,7 @@ public class Rename extends SimpleFunctionPlugin {
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error Dialog");
+                alert.initOwner(gui.getPrimaryStage());
                 alert.setHeaderText("Name already taken!");
                 alert.setContentText("Please choose another name!");
 

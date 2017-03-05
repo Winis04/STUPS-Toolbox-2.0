@@ -79,6 +79,7 @@ public class RootController {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("choose latex file");
+
         ExtensionFilter extFilter = new ExtensionFilter("latex","*.tex");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(gui.getPrimaryStage());
@@ -124,6 +125,7 @@ public class RootController {
     public void changeNullSymbol() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("choose Nullsymbol");
+        alert.initOwner(gui.getPrimaryStage());
         alert.setHeaderText(null);
         alert.setContentText("choose, which presentation of the nullsymbol you want");
 
@@ -171,6 +173,7 @@ public class RootController {
     private void changeStyle() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("change css-style");
+        alert.initOwner(gui.getPrimaryStage());
         alert.setHeaderText(null);
         alert.setContentText("choose a premade style or your own .css");
 
@@ -210,7 +213,9 @@ public class RootController {
         if(file != null) {
             BufferedReader reader;
             TextInputDialog dialog = new TextInputDialog(file.getName());
+            dialog.initOwner(gui.getPrimaryStage());
             dialog.setTitle("Choose a name");
+            dialog.initOwner(gui.getPrimaryStage());
             dialog.setContentText("Please enter Name:");
             Optional<String> result = dialog.showAndWait();
             if(result.isPresent() && !result.get().isEmpty()) {
@@ -344,11 +349,13 @@ public class RootController {
    private String chooseName(Class clazz) {
        TextInputDialog dialog = new TextInputDialog("new"+clazz.getSimpleName());
        dialog.setTitle("Choose name");
+       dialog.initOwner(gui.getPrimaryStage());
        dialog.setHeaderText("Please choose a name for the new "+clazz.getSimpleName());
        dialog.setContentText("Please enter the name:");
 
        Alert alert = new Alert(Alert.AlertType.ERROR);
        alert.setTitle("error");
+       alert.initOwner(gui.getPrimaryStage());
        alert.setHeaderText("Name already taken!");
 
 

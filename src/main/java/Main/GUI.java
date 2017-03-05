@@ -308,6 +308,7 @@ public class GUI extends Application{
             ComplexFunctionPlugin plugin = null;
             try {
                 plugin = cfp.newInstance();
+                plugin.setGUI(this);
                 complexFunctionPlugins.add(plugin);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -388,6 +389,7 @@ public class GUI extends Application{
     public File loadFile(String string) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load "+string);
+
         return fileChooser.showOpenDialog(primaryStage);
     }
 
@@ -498,9 +500,11 @@ public class GUI extends Application{
                 }
             } else if(clazz.equals(PushDownAutomaton.class)) {
                 currentDisplayPlugin = displayPlugins.get(PushDownAutomaton.class);
+
                 if(currentDisplayPlugin==null) {
                     currentDisplayPlugin = new PushDownAutomatonGUI();
                 }
+                ((PushDownAutomatonGUI) currentDisplayPlugin).setCheckStringIsActive(false);
             }
                 //TODO: if you create a new storable you must add the matching gui here
             refreshComplexPlugins();
@@ -517,6 +521,7 @@ public class GUI extends Application{
     public void dialog(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+        alert.initOwner(primaryStage);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
@@ -529,6 +534,7 @@ public class GUI extends Application{
     public void errorDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Dialog");
+        alert.initOwner(primaryStage);
         alert.setHeaderText(string);
         alert.showAndWait();
     }
@@ -540,6 +546,7 @@ public class GUI extends Application{
     public void infoDialog(String string) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
+        alert.initOwner(primaryStage);
         alert.setHeaderText(string);
 
         alert.showAndWait();

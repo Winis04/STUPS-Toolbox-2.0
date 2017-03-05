@@ -70,6 +70,7 @@ public final class Grammar implements Printable, Storable {
                 nonterminals.add((Nonterminal) sym);
             }
         }));
+        nonterminals.add(startSymbol);
         this.rules.stream().map(Rule::getComingFrom).forEach(nonterminals::add);
     }
     /**
@@ -233,10 +234,7 @@ public final class Grammar implements Printable, Storable {
         }
     }
 
-    @Override
-    public void savePreviousVersion() {
 
-    }
 
     /* GETTER **/
     /**

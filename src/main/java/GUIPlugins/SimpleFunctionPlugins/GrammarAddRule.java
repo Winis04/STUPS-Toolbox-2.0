@@ -16,6 +16,7 @@ public class GrammarAddRule extends SimpleFunctionPlugin {
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("STUPS-Toolbox");
+        dialog.initOwner(gui.getPrimaryStage());
         dialog.setHeaderText("Please enter the necessary information for the new rule!");
         dialog.getDialogPane().getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
@@ -102,6 +103,7 @@ public class GrammarAddRule extends SimpleFunctionPlugin {
                 return new Grammar(grammar1.getStartSymbol(), freshRules, grammar1.getName(), (Grammar) grammar1.getPreviousVersion());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.initOwner(gui.getPrimaryStage());
                 alert.setTitle("STUPS-Toolbox");
                 alert.setHeaderText("Please fill in all fields!");
                 alert.showAndWait();

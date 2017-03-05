@@ -14,7 +14,10 @@ public class AutomatonCompletePlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
-        return AutomatonUtil.completeDFA(automaton);
+        Automaton deepCopy = (Automaton) automaton.deep_copy();
+        Automaton algo = AutomatonUtil.completeDFA(automaton);
+        algo.setPreviousAutomaton(deepCopy);
+        return algo;
     }
 
     @Override

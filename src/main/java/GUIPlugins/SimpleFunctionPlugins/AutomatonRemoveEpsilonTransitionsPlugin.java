@@ -15,7 +15,10 @@ public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugi
     @Override
     public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
-        return AutomatonUtil.removeEpsilonTransitions(automaton);
+        Automaton deepCopy = (Automaton) automaton.deep_copy();
+        Automaton algo = AutomatonUtil.removeEpsilonTransitions(automaton);
+        algo.setPreviousAutomaton(deepCopy);
+        return algo;
     }
 
     @Override

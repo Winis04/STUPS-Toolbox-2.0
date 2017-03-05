@@ -171,10 +171,7 @@ public class PushDownAutomaton implements Printable, Storable{
     }
 
 
-    @Override
-    public void savePreviousVersion() {
 
-    }
 
 
     @Override

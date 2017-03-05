@@ -11,7 +11,10 @@ public class AutomatonMinimizePlugin extends SimpleFunctionPlugin {
     @Override
     public Storable execute(Object object) {
         Automaton automaton = (Automaton) object;
-        return AutomatonUtil.minimizeDFA(automaton);
+        Automaton deepCopy = (Automaton) automaton.deep_copy();
+        Automaton algo = AutomatonUtil.minimizeDFA(automaton);
+        algo.setPreviousAutomaton(deepCopy);
+        return algo;
     }
 
     @Override

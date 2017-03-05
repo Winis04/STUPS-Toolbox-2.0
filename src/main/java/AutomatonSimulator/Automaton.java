@@ -102,7 +102,7 @@ public class Automaton implements Printable, Storable {
         });
         this.allInputs=oldAutomaton.allInputs;
         this.previousAutomaton = (Automaton) oldAutomaton.getPreviousVersion();
-        this.name="A";
+        this.name=oldAutomaton.getName();
     }
 
     /**
@@ -233,8 +233,6 @@ public class Automaton implements Printable, Storable {
     public void printLatex(String space) {
         AutomatonUtil.fillLengthsOfEdges(this);
         ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
-        Printer.print("\\begin{figure}[htbp]\n" +
-                "\\centering\n");
         Printer.print("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n\n");
         String space1=space+"\t";
         String before="";
@@ -259,7 +257,7 @@ public class Automaton implements Printable, Storable {
             Printer.print("\t{");
             Printer.print(state);
             Printer.print("};\n");
-            //  \node[state,initial] (q_0)   {$q_0$};
+          //  \node[state,initial] (q_0)   {$q_0$};
         }
         Printer.print( space+"\\path[->]\n");
 
@@ -271,8 +269,6 @@ public class Automaton implements Printable, Storable {
         }
         Printer.print(";\n");
         Printer.print("\\end{tikzpicture}\n\n\n");
-        Printer.print("\\caption{Automaton "+this.name+"}\n" +
-                "\\end{figure}\n");
 
     }
     /**
@@ -355,9 +351,8 @@ public class Automaton implements Printable, Storable {
 
     }
 
-    @Override
-    public void savePreviousVersion() {
-        this.previousAutomaton = (Automaton) this.deep_copy();
+    public void setPreviousAutomaton(Automaton a) {
+        this.previousAutomaton = a;
     }
 
     @Override

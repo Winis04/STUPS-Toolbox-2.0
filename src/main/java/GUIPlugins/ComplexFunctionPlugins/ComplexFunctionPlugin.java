@@ -2,6 +2,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GrammarSimulator.Symbol;
+import Main.GUI;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -19,12 +20,12 @@ import javafx.scene.layout.BorderPane;
 
 public abstract class ComplexFunctionPlugin {
 
+    protected GUI gui;
+
     /**
      * Every  ComplexFunctionPlugin can process one type of objects.
      * @return the class of the object this ComplexFunctionPlugin processes
      */
-    //TODO better javadoc
-
     public abstract Class getInputType();
 
     /**
@@ -35,7 +36,6 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI The currently loaded display-plugin. This can be used, to interact with the plugin.
      * @return The JavaFX-{@link Node}.
      */
-
     abstract Node getFxNode(Object object, DisplayPlugin GUI);
 
     /**
@@ -43,7 +43,6 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return This plugin's name.
      */
-
     protected abstract String getName();
 
     /**
@@ -52,7 +51,6 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI the {@link DisplayPlugin} which displays the class belonging to object
      * @return a {@link Tab} which contains the content of {@link #getFxNode}
      */
-
     public Tab getAsTab(Object object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
         AnchorPane anchorPane = new AnchorPane();
@@ -79,7 +77,6 @@ public abstract class ComplexFunctionPlugin {
      *
      * @return The object-type.
      */
-
     public abstract Class displayPluginType();
 
     /**
@@ -92,4 +89,8 @@ public abstract class ComplexFunctionPlugin {
     }
 
     public abstract String tooltip();
+
+    public void setGUI(GUI gui) {
+        this.gui=gui;
+    }
 }

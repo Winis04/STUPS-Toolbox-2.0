@@ -662,7 +662,6 @@ public class AutomatonUtil {
      * @return The changed automaton.
      */
     public static Automaton renameStates(Automaton automaton) {
-        automaton.savePreviousVersion();
         //Initialize a HashMap, that maps a state to a boolean, to keep track of which states have already been renamed.
         HashMap<State, Boolean> visitedStates = new HashMap<>();
         for(State state : automaton.getStates()) {
@@ -703,7 +702,6 @@ public class AutomatonUtil {
         if(isEpsilonFree(automaton)) {
             return  automaton;
         }
-        automaton.savePreviousVersion();
         //Reset branches, so checkInput works properly.
         branches = new Stack<>();
 
@@ -755,7 +753,7 @@ public class AutomatonUtil {
         if(isDFA(automaton)) {
             return automaton;
         }
-        automaton.savePreviousVersion();
+
         //First, we need to make sure, that there are no epsilon-transitions in this automaton.
         Automaton epsilonFreeAutomaton = removeEpsilonTransitions(automaton);
 
@@ -839,7 +837,7 @@ public class AutomatonUtil {
         if(isComplete(automaton)) {
             return automaton;
         }
-        automaton.savePreviousVersion();
+
         //First, we need to convert the automaton into a DFA.
         Automaton dfa = convertToDFA(automaton);
 
@@ -894,7 +892,6 @@ public class AutomatonUtil {
         if(isMinimal(automaton)) {
             return automaton;
         }
-        automaton.savePreviousVersion();
         Automaton dfa = completeDFA(renameStates(convertToDFA(removeEpsilonTransitions(automaton))));
         State startState = dfa.getStartState();
 
