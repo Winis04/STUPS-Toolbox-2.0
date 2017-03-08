@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+dependencies{
+	
+
+}
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.github.csabasulyok', name: 'gradle-latex', version: '1.0'
+    }
+}
+
+// include latex plugin on classpath
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.github.csabasulyok', name: 'gradle-latex', version: '1.0'
+    }
+}
+
+
+apply plugin: 'latex'
+
+latex {
+	tex(tex: 'ba.tex', bib: 'references.bib', pdf: 'Bachelorarbeit.pdf')
+}

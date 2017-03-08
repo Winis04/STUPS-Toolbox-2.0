@@ -22,6 +22,9 @@ dependencies{
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 
 }
+
+//for fat jar
+
 buildscript {
     repositories {
         jcenter()
@@ -33,34 +36,6 @@ buildscript {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'com.github.csabasulyok', name: 'gradle-latex', version: '1.0'
-    }
-}
-
-// include latex plugin on classpath
-
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'com.github.csabasulyok', name: 'gradle-latex', version: '1.0'
-    }
-}
-
-
-apply plugin: 'latex'
-
-latex {
-	tex(tex: 'Text/ba.tex', bib: 'Text/references.bib', pdf: 'Text/output.pdf')
-}
 
 jar {
   manifest {
@@ -71,11 +46,13 @@ jar {
   }
 }
 
+//gets SableCC.jar, so it can be executed
 task copyDepJars(type: Copy) {
   from configurations.compile
   into 'lib'
 }
 
+//runs sableCC
 task runSableCC() {
 	doLast {
 		new File("src/main/sablecc") . eachFile ( ) { file ->
@@ -88,6 +65,7 @@ task runSableCC() {
 	}
 }
 
+//does some necessary adjustments
 task doAdjustments() {
 	doLast{
 		new File("src/main/sablecc") . eachFile ( ) { file -> 
@@ -111,9 +89,32 @@ task doAdjustments() {
 	}
 }
 
+//this is the task, that should be called
 task sableCC() {
 	doLast{
 		println("sableCC complete!")
+	}
+}
+
+//
+task pdfLatex() {
+	doLast {
+		project(':tex').tasks.pdfLatex.execute()
+	}
+}
+
+task copyBA() {
+	doLast {
+		copy{
+			 from 'tex/Bachelorarbeit.pdf'
+			 into 'build/docs/'
+		}
+  }
+}
+
+task latex() {
+	doLast{
+		println("BA created!")
 	}
 }
 
@@ -122,6 +123,11 @@ runSableCC.mustRunAfter copyDepJars
 runSableCC.dependsOn copyDepJars
 doAdjustments.mustRunAfter runSableCC
 doAdjustments.dependsOn runSableCC
+
+copyBA.dependsOn pdfLatex
+copyBA.mustRunAfter pdfLatex
+latex.dependsOn copyBA
+latex.mustRunAfter copyBA
 
 
 
