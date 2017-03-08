@@ -62,7 +62,6 @@ public class RootController {
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
-    @SuppressWarnings({"EmptyMethod", "unused"})
     @FXML
     private void initialize() {
     }

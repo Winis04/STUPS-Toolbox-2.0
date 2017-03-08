@@ -57,10 +57,7 @@ public interface Storable extends Printable {
     Storable restoreFromFile(File file) throws Exception;
 
     /**
-     * Every time before the program changes the storable object, a copy is/should be saved.
-     * Note: Due to the Immutability of {@link GrammarSimulator.Grammar}s and
-     * {@link PushDownAutomatonSimulator.PushDownAutomaton}s a previous version is automatically saved when
-     * a change occurs.
+     * the previous version of this object.
      * @return a Storable of the same subclass as the original
      */
     Storable getPreviousVersion();

@@ -39,6 +39,7 @@ public class Rule implements Printable{
      * The constructor.
      *
      * @param goingTo The state, to which the rule is pointing.
+     * @param  comingFrom the state, from which the rule starts
      * @param acceptedInputs The inputs, which this rule accepts.
      */
     public Rule(State comingFrom, State goingTo, HashSet<String> acceptedInputs) {
