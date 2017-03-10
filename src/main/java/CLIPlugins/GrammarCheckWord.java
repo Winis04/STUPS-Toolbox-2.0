@@ -28,7 +28,7 @@ public class GrammarCheckWord extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "checks, if the current Grammar contains the word that is given as the second parameter";
+        return "Checks, if the current grammar contains the word that is given as the first parameter.";
     }
 
     @Override
@@ -61,5 +61,11 @@ public class GrammarCheckWord extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

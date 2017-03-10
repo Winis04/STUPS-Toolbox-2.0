@@ -24,7 +24,7 @@ public class GrammarNamePlugin extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "sets the name of the current grammar to the parameter";
+        return "Sets the name of the current grammar to the parameter";
     }
 
     @Override

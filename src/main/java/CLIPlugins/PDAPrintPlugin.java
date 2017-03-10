@@ -25,7 +25,7 @@ public class PDAPrintPlugin extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "prints the current PDA";
+        return "Prints the current pda.";
     }
 
     @Override
@@ -54,5 +54,10 @@ public class PDAPrintPlugin extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

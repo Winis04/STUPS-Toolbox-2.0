@@ -67,5 +67,9 @@ public abstract class CLIPlugin {
      */
     public abstract boolean errorFlag();
 
+    public boolean createsOutput() {
+        return false;
+    }
+
 
 }

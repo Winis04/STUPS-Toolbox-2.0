@@ -57,4 +57,9 @@ public class GrammarPrintPlugin extends CLIPlugin {
     public boolean errorFlag() {
         return errorFlag;
     }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
+    }
 }

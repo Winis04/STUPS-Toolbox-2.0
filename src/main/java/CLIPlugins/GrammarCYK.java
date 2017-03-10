@@ -30,7 +30,7 @@ public class GrammarCYK extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "does the cyk-algorithm. Takes a word of the language as a parameter";
+        return "Does the cyk-algorithm. Takes a word of the current grammar's language as a parameter.";
     }
 
     @Override
@@ -67,5 +67,11 @@ public class GrammarCYK extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

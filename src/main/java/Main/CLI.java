@@ -167,6 +167,9 @@ public class CLI {
                         s += "'" + plugin.getNames()[i] + "'";
                     }
                     String t = plugin.getHelpText();
+                    if(plugin.createsOutput()) {
+                        t += " Creates output.";
+                    }
                     texts.put(s, t);
                 });
 
@@ -193,6 +196,7 @@ public class CLI {
 
                 toPrint.keySet().stream().sorted(String::compareTo).
                         forEach(key -> System.out.println(key+"  --  "+toPrint.get(key)));
+
 
                 break;
             case "e":

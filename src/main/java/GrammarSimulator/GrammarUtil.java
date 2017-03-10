@@ -249,7 +249,7 @@ public class GrammarUtil {
      * @return A HashSet containing all nullable nonterminals,
      */
 
-    private static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
+    public static PrintableSet calculateNullableAsPrintable(Grammar grammar) {
         HashSet<Nonterminal> res = calculateNullable(grammar);
         PrintableSet result = new PrintableSet(res.size());
         res.forEach(result::add);

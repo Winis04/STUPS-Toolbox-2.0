@@ -31,7 +31,7 @@ public class GrammarRemoveLambdaPlugin extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "removes lambda-rules of the loaded grammar. Doesn't take any parameters";
+        return "Removes lambda-rules of the loaded grammar. Doesn't take any parameters.";
     }
 
     @Override
@@ -78,5 +78,10 @@ public class GrammarRemoveLambdaPlugin extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

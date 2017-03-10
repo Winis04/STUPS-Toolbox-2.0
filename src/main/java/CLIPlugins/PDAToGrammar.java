@@ -30,7 +30,7 @@ public class PDAToGrammar extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "transforms the current pda into a grammar";
+        return "Transforms the current pda into a grammar.";
     }
 
     @Override
@@ -60,5 +60,10 @@ public class PDAToGrammar extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

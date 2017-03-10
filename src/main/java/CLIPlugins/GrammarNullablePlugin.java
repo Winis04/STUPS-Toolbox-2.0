@@ -4,6 +4,9 @@ import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
 import GrammarSimulator.Nonterminal;
 import Main.Storable;
+import Print.Printable;
+import Print.PrintableSet;
+import Print.Printer;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,21 +46,8 @@ public class GrammarNullablePlugin extends CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        HashSet<Nonterminal> result = GrammarUtil.calculateNullable(grammar);
-
-        System.out.print("nullable = {");
-
-        Iterator<Nonterminal> it = result.iterator();
-        while(it.hasNext()) {
-            Nonterminal currentNonterminal = it.next();
-            System.out.print(currentNonterminal.getName());
-
-            if(it.hasNext()) {
-                System.out.print(", ");
-            }
-        }
-
-        System.out.println("}");
+        PrintableSet result = GrammarUtil.calculateNullableAsPrintable(grammar);
+        Printer.print(result);
 
         return null;
     }
@@ -75,6 +65,12 @@ public class GrammarNullablePlugin extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }
 

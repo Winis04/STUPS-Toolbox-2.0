@@ -30,7 +30,7 @@ public class GrammarSimplify extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "simplifies a grammar";
+        return "Simplifies a grammar.";
     }
 
     @Override
@@ -59,5 +59,10 @@ public class GrammarSimplify extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

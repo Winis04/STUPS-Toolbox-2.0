@@ -28,7 +28,7 @@ public class GrammarToPDA extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "transforms the current grammar into a pda";
+        return "Transforms the current grammar into a pda.";
     }
 
     @Override
@@ -57,5 +57,10 @@ public class GrammarToPDA extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

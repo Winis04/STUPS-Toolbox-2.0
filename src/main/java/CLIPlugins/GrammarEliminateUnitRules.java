@@ -28,7 +28,7 @@ public class GrammarEliminateUnitRules extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "eliminates unit Rules (A -> B) from the loaded grammar.";
+        return "Eliminates unit Rules (A -> B) from the loaded grammar.";
     }
 
     @Override
@@ -65,5 +65,11 @@ public class GrammarEliminateUnitRules extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

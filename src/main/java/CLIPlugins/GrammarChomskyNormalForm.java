@@ -28,7 +28,7 @@ public class GrammarChomskyNormalForm extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "calculates the chomsky normal form";
+        return "calculates the chomsky normal form.";
     }
 
     @Override
@@ -78,5 +78,11 @@ public class GrammarChomskyNormalForm extends CLIPlugin {
     @Override
     public boolean errorFlag() {
         return errorFlag;
+    }
+
+
+    @Override
+    public boolean createsOutput() {
+        return true;
     }
 }

@@ -38,7 +38,7 @@ public class GrammarLoadPlugin extends CLIPlugin {
 
     @Override
     public String getHelpText() {
-        return "Loads a grammar from a text file. Takes a file as parameter.";
+        return "Loads a grammar from a text file. Takes a path to a file as parameter.";
     }
 
     @Override
