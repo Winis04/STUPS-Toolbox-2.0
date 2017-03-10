@@ -16,7 +16,7 @@ You can build this project using the provided gradle executables
 How to use this program
 ==============
 
-You can start this program by calling the .jar. 
+You can start this program by starting the .jar. 
 View all command by calling *help*.
 Start the gui by calling *gui*
 exit the programm by calling *exit*
@@ -43,8 +43,3 @@ If you want to further develope this project, follow these steps
 How to further develope this project without using SableCC
 ==============
 If you want to further develope this project without using SableCC simply skip the step with the .scc*
-
-
-
-
-
