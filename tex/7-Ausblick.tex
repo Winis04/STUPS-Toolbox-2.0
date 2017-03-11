@@ -1,0 +1,63 @@
+\section{Fazit und Ausblick}\raggedbottom
+
+\subsection{Herausforderungen}
+Die Weiterentwicklung eines bereits bestehenden Programmes unterscheidet sich stark von der eigenen Entwicklung eines komplett neuen Programmes.
+Obwohl der Aufbau der Arbeit modular ist, war es trotzdem nötig, sich in den fremden Code einzuarbeiten. Besonders die Umstrukturierung der GUI
+machte dies notwendig. Totz der guten Vorarbeit und umfangreichen Dokumentation, 
+war der fremde Code nicht immer leicht zu verstehen. Vor Allem benötigt das Einarbeiten in Legacy-Code
+viel Zeit.
+Auch musste man mit Designentscheidungen arbeiten, die man so selber nicht getroffen hätte.
+
+
+Der Arbeitsaufwand, welcher neben dem eigentlichen Programmieren anfällt, wurde zunächst unterschätzt und war unerwartet hoch.
+Die Umstellung auf Gradle erzwang eine intensive Auseinandersetzung mit gängigen Programmierpraktiken,
+dazu gehörte insbesondere die Trennung von Source-Code und Resourcen.
+Auch ist es bei so einem großen Projekt wichtig, den Überblick zu bewahren. Hierzu gehörte es, eine größere Kapselung zu erreichen, d.h.
+jeder Klasse nur eine Aufgabe zuzuweisen.
+Diese war vorher nicht in dem Maße gegeben, wie sie jetzt vorhanden ist. Als Beispiel sei hierfür die Klasse \textit{CLI} genannt, 
+die vorher auch die Daten enthielt und verwaltete, was jetzt von der Klasse \textit{Content} übernomment wurde.
+
+\subsection{Ausblick}
+Auf Grund der begrenzten Zeit konnten leider nicht alle wünschenswerten
+Features umgesetzt werden. Da die Toolbox weiterhin modular und leicht
+erweiterbar ist, besteht eine Fülle von Funktionen, die noch implementiert
+werden können. Die hervorgehobenen Punkte werden als besonders wichtig erarchtet.
+\begin{itemize}
+  \item Turing-Maschinen
+  \begin{itemize}
+    \item Speichern und Laden
+    \item \textbf{Visualisierung}
+    \item \textbf{animierter Durchlauf}
+    \item Algorithmen
+    \item Komplexitätsberechnung
+  \end{itemize}
+  \item Grammatiken
+  \begin{itemize}
+    \item Kontextsensitive Grammatiken (erfordert eine Umstrukturierung der
+    Klassen ``Rule'' und ``Grammatik' und eine Anpassung des Parsers')
+    \item reguläre Ausdrücke zu Grammatik umwandeln
+  \end{itemize}
+  \item Sonstiges
+  \begin{itemize}
+    \item Automaten unmodifizierbar machen
+    \item für die Algorithmen von Automaten \LaTeX -Ausgabe erzeugen
+    \item reine GUI-Funktionen für die Konsole umsetzen
+    \item \textbf{Programm mit Parametern aufrufen}, so dass die übergebenen
+    Kommandos direkt ausgeführt werden können. Ermöglicht automatisiertes Ausführen.
+    \item Notizen zu Objekten anlegen
+    \item Autovervollständigung von Befehlen
+    \item \LaTeX-Generierung: Einstellung, ob \textit{Section}, \textit{Subsection} oder \textit{Paragraph}
+  \end{itemize}
+\end{itemize}
+
+\subsection{Fazit}
+Diese Arbeit setzt die von Herrn Ruhland nahtlos fort. Das Ziel war es, die Toolbox komfortabler in der Benutzung zu machen und
+den Funktionsumfang bezüglich Grammatiken zu erweitern. Dies ist gelungen.\hfill \\
+
+Weiterhin gilt jedoch, dass die Toolbox konstruktiv beim Lernen von Grammatiken und Automaten angewendet werden muss.
+Die \LaTeX-Funktion und die schrittweise Durchführung der Algorithmen ermöglichen es, ein größeres Verständnis
+für diese zu erlangen. Auch das Berechnen eines Pfades einer Grammatik ist hilfreich.
+Auf Grund der recht umfangreichen Features lässt sie sich leicht missbrauchen; diese Toolbox liefert, bis auf Turing-Maschinen, beinahe alles,
+was in der Vorlesung \textit{Theoretische Informatik} im Bereich der formalen Sprachen gelehrt wird.
+
+

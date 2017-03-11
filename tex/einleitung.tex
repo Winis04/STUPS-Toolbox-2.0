@@ -1,0 +1,65 @@
+\section{Einleitung}
+\subsection{Motivation}
+Dieser Bachelorarbeit liegt eine von Fabian Ruhland im Zuge seiner
+Bachelorarbeit im Sommersemester 2016 entwickelte Toolbox \cite{Ruh16} (im
+Folgenden als Version 1.0 bezeichnet) zur Visualisierung von Automaten und Grammatiken zu Grunde.
+Der Fokus dieser Arbeit lag auf Automaten und der Entwicklung eines Systems, das leicht erweiterbar ist.
+Die Toolbox 1.0 stellte außerdem einige Algorithmen, die für die Entwicklung eines Compilers hilfreich sind, zur Verfügung.
+
+
+In dieser Arbeit wird die Toolbox nun erweitert. Die Toolbox 1.0 stellte nur einen kleinen Teil der Algorithmen auf dem Gebiet der formalen Sprache zur Verfügung. Es der Wunsch, diesen Funktionsumfang in dem Maße zu vergrößern, dass die Toolbox als unterstützendes Mittel in der Lehre der Vorlesung \textit{Einführung in die theoretische Informatik} eingesetzt werden kann. Außerdem sollte die Benutzerfreundlichkeit erhöht werden. 
+Die Toolbox soll zum Verständnis der Studierenden beitragen. Hierzu wäre eine nachvollziehbare und schrittweise Durchführung der Algorithmen wünschenswert.
+Es soll Spaß machen, die Toolbox zu benutzen. Ohne viel Aufwand soll es möglich sein, zu experimentieren und auszuprobieren, wie die Algorithmen sich auswirken.
+Zu diesem Zwecke soll die Toolbox eine Möglichkeit zur Verfügung stellen, Änderungen rückgängig zu machen.
+Eine Überarbeitung der Benutzeroberfläche soll zu mehr Komfort beitragen.
+
+\subsection{Theoretische Grundlagen}\raggedbottom 
+In diesem Abschnitt werden zunächst grob die theoretischen Grundlagen der formalen Sprachen erläutert,
+die zum Verständnis der Toolbox beitragen. Für eine genauere Ausführung sei auf \cite{Rot16} verwiesen.
+
+\subsubsection{Alphabet und Wörter}
+Ein Alphabet ist eine endliche, nichtleere Menge von Symbolen \cite{Rot16}. Ein Wort über einem Alphabet ist eine endliche Kombination aus
+Symbolen aus dem Alphabet.
+\subsubsection{Formale Sprache}
+Eine \textit{formale Sprache} über einem Alphabet $\Sigma$ ist eine Menge von Wörtern über $\Sigma$.
+\subsubsection{Grammatik}
+Eine kontextfreie \textit{Grammatik} ist ein Quadrupel $G=(N,\Sigma,S,R)$.
+Hierbei sei
+\begin{description}
+	\item[$\Sigma$] ein Alphabet. Elemente aus diesem Alphabet werden \textit{Terminale} genannt,
+	\item[N] eine Menge von Nichtterminalen. Dies sind Symbole, die nicht in $\Sigma$ sind und die durch andere Terminale und Nichtterminale ersetzt werden können,
+	\item[R] eine Menge von \textit{Produktionsregeln}.$P \subset (N \cup \Sigma)^{+} \times (N \cup \Sigma)^{*}$
+	\item[S] das \textit{Startsymbol} einer Grammatik, $S \in N$.
+\end{description}
+Das Anwenden einer Regel wird \textit{Ableiten} genannt und durch $\vdash$ beschrieben. Eine Folge von Nichtterminalen und Terminalen ist eine \textit{Konfiguration}.
+Man startet mit dem Startsymbol $S$. Durch Ableiten erhält man die nächste Konfiguration. Durch Ableiten von Symbolen in einer Konfiguration, erhält man eine neue Konfiguration. Sobald diese nur noch Terminale enthält, wurde ein Wort in der von $G$ erzeugten Sprache gefunden. 
+
+Die durchlaufenen Konfigurationen sind der \textit{Ableitunspfad} dieses Wortes.
+
+Die von G erzeugte Sprache wird mit $L(G)$ bezeichnet.
+
+Eine Grammatik heißt \textit{kontextfrei}, falls für jede Regel $(p,q) \in P$ gilt: $p \in N$.
+
+Die Menge der Sprachen, die von kontextfreien Grammatiken erzeugt werden, ist die
+Menge der kontextfreien Sprachen.
+\subsubsection{Kellerautomat}
+Ein Kellerautomat besteht aus
+\begin{itemize}
+\item einer Menge von Zuständen,
+\item einem Eingabe-Alphabet,
+\item einem Stack,
+\item einem Stack-Alphabet,
+\item einem initialen Stacksymbol,
+\item und einer Überführungsfunktion $\delta$.
+\end{itemize}
+Ein Kellerautomat befindet sich immer in einem Zustand und bekommt ein Wort als Eingabe. Durch die Überführungsfunktion kann er in einen anderen Zustand übergehen und dabei ein Symbol der Eingabe lesen und den Stack verändern.
+Ein Kellerautomat akzeptiert ein Wort, falls der Stack leer ist, nachdem die Eingabe komplett abgearbeitet wurde.
+
+\subsubsection{Äquivalenz}
+Zu jeder kontextfreien Grammatik G gibt es einen äquivalenten Kellerautomaten M, d.h. M akzeptiert die von G erzeugte Sprache,
+und umgekehrt.
+
+
+
+
+

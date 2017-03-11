@@ -1,0 +1,32 @@
+\begin{description}
+	\item[Before] \hfill \\ 
+		$G=(\{	0, 1\},\;\{ S, D, B, A, E\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow D\;|\;BD\;|\;ABD, \\ 
+		D &\rightarrow 0, \\ 
+		B &\rightarrow A, \\ 
+		A &\rightarrow B\;|\;ED\;|\;BB, \\ 
+		E &\rightarrow 1\}
+	\end{align*}
+	\item[Step 1] \hfill \\ 
+	Remove circles.\\ 
+	$G=(\{	0, 1\},\;\{ S, D, A, E\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow D\;|\;AD\;|\;AAD, \\ 
+		D &\rightarrow 0, \\ 
+		A &\rightarrow ED\;|\;AA, \\ 
+		E &\rightarrow 1\}
+	\end{align*}
+	\item[Step 2] \hfill \\ 
+	Number the nonterminals.\\ 
+	D=2 S=1 
+	\item[Step 3] \hfill \\ 
+	Remove unit rules beginning by the highest number.\\ 
+	$G=(\{	0, 1\},\;\{ S, A, D, E\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow AD\;|\;0\;|\;AAD, \\ 
+		A &\rightarrow ED\;|\;AA, \\ 
+		D &\rightarrow 0, \\ 
+		E &\rightarrow 1\}
+	\end{align*}
+\end{description}

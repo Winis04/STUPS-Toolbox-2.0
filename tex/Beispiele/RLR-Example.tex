@@ -1,0 +1,36 @@
+\begin{description}
+	\item[Before] \hfill \\ 
+		$G=(\{	0, 1\},\;\{ S, A, B, D, E, C\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow ABD, \\ 
+		A &\rightarrow ED\;|\;BB, \\ 
+		B &\rightarrow AC\;|\;\lambda, \\ 
+		D &\rightarrow 0, \\ 
+		E &\rightarrow 1, \\ 
+		C &\rightarrow \lambda\}
+	\end{align*}
+	\item[Step 1] \hfill \\ 
+	Calculate the nullable set.\\ 
+	$\{	A, 	B, 	C\}$
+	\item[Step 2] \hfill \\ 
+	For every rule that contains a nullable nonterminal, add that rule without this nonterminal.\\ 
+	$G=(\{	0, 1\},\;\{ S, D, B, A, E, C\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow D\;|\;BD\;|\;ABD, \\ 
+		D &\rightarrow 0, \\ 
+		B &\rightarrow \lambda\;|\;C\;|\;AC, \\ 
+		A &\rightarrow \lambda\;|\;ED\;|\;BB\;|\;B, \\ 
+		E &\rightarrow 1, \\ 
+		C &\rightarrow \lambda\}
+	\end{align*}
+	\item[Step 3] \hfill \\ 
+	Remove lambda-rules.\\ 
+	$G=(\{	0, 1\},\;\{ S, D, B, A, E\},\;S,\;R)$ with
+	\begin{align*}
+		R=\{	S &\rightarrow D\;|\;BD\;|\;ABD, \\ 
+		D &\rightarrow 0, \\ 
+		B &\rightarrow A, \\ 
+		A &\rightarrow B\;|\;ED\;|\;BB, \\ 
+		E &\rightarrow 1\}
+	\end{align*}
+\end{description}

@@ -1,0 +1,455 @@
+\section{Entwicklung}\raggedbottom
+Wie schon am Anfang erwähnt, ist dies ein fortgeführtes Projekt. Die Weiterentwicklung eines bereits bestehenden Programmes bietet andere Herausforderungen als 
+die alleinige Entwicklung. Einige Aspekte des Programmes waren nicht mit den Anforderungen dieser Arbeit kompatibel und mussten geändert werden. Im Folgenden wird auf einige notwendige Änderungen und Verbesserungen eingegangen
+
+\subsection{Aufbau der Toolbox}
+Der Aufbau der Packages war nicht optimal. Wie oben erwähnt, benötigt Gradle eine strikte Trennung von Source und Resource. Dies wurde durch Anpassung der Packages erreicht. Außerdem war es nötig, \textit{CLI} und \textit{GUI} aus dem Wurzelverzeichnis in ein eigenes Package zu verschieben, sodass diese Klasse von anderen importiert werden können. Im Folgenden wird kurz auf die einzelnen Packages und ihre Aufgaben eingegangen.
+\begin{description}
+\item[Automaton Simulator]
+Dieses Package beeinhaltet die Modelle, die benötigt werden, um Automaten
+darzustellen. Die Logik befindet sich in der Klasse \textit{AutomatonUtil}.
+Die Klasse \textit{Visitor} stellt die Schnittstelle zu SableCC her und ist für das Parsen von
+Automaten aus Dateien zuständig.
+\item[Grammar Simulator]
+Dieses Package beinhaltet die Modelle, die benötigt werden, Grammatiken
+darzustellen und Algorithmen auf diesen duchrzuführen. Genau wie bei den
+Automaten stellt \textit{Visitor} die Verbindung zu SableCC her und \textit{GrammarUtil} beinhaltet die Logik.
+\item[PushDownSimulator]
+Dieses Package beinhaltet die Modelle für Kellerautomaten (Pushdown Automatons).
+\textit{PushDownAutomatonUtil} enthält Funktionen für Kellerautomaten und \textit{Visitor}
+ist für das Parsen von Kellerautomaten aus Dateien zuständig.
+\item[CLIPlugins]
+In diesem Package finden sich die Kommandozeilenprogramme. Jedes der Plugins
+muss die abstrakte Klasse \textit{CLIPlugin} erweitern, damit es automatisch
+eingebunden wird. Genaueres dazu findet sich in \cite{Ruh16}.
+\item[GUIPlugins] \hfill
+	\begin{description}
+	\item[ComplexFunctionPlugins]
+	Hier finden sich GUIPlugins, die eine Benutzereingabe benötigen. 
+	\item[DisplayPlugins]
+	Die Klassen in diesem Package sind für die Darstellung der Modelle zuständig.
+	\item[SimpleFunctionplugins]
+	SimpleFunctionPlugins operieren auf einem Objekt und benötigen keine weitere
+	Nutzereingabe
+	\end{description}
+\item[Main]
+Das Package \textit{Main} beinhaltet unter Anderem die Klassen \textit{CLI} und \textit{GUI}, welche
+vorher im Wurzelverzeichnis waren. Diese beiden Klassen sind das Herzstück des
+Programmes.
+Außerdem findet sich in dem Package die Klasse \textit{StateController}, die dafür
+sorgt, dass sich das Programm nach Neustart im selben Zustand befindet wie es beendet wurde, und die Klasse \textit{Content}, die die gespeicherten Objekte
+enthält und verwaltet.
+Durch diese beiden neuen Klassen wurde versucht, eine größere Aufgabentrennung zu
+erreichen. 
+\item[Print]
+In diesem Package ist die Hauptklasse die Klassen \textit{Printer}, die für jegliche
+Art von Schreiboperationen zuständig ist.
+Die Enumeration \textit{Printmode} enthält die Typen \textit{NO}, für kein Drucken,
+\textit{CONSOLE} für Ausgabe auf das Terminal und \textit{LATEX} für die Ausgabe in eine
+\LaTeX-Datei.
+\end{description}
+
+\subsection{Umgang mit Objekten}
+Vor der Arbeit bestand der Wunsch, die vollführten Änderungen rückgängig machen
+zu können. Hierzu ist es nötig, dass Objekt in seinem \textit{Vorher-Zustand} zu
+speichern. Leider hatte die Toolbox 1.0 diese Möglichkeit nicht, da jeder
+Algorithmus auf dem selben Objekt arbeitete und dieses veränderte. Es war also
+nicht (einfach) möglich, eine \textit{Vorher-Version} zu speichern.
+
+Um dies zu ändern, wurde zunächst eine Methode eingeführt, die eine
+\textit{deep-copy} des Objektes anlegt, also ein Objekt, welches die gleichen
+Eigenschaften, aber nicht die selben Referenzen hat.
+Der Nachteil hieran war, dass vor jeder Änderung manuell eine frühere Version
+gespeichert werden musste.
+Daher wurden im nächsten Schritt die Objekte `\textit{immutable}
+gemacht.\footnote{Link}, d.h. die Objekte sind nach ihrer Erstellen %todo% besseres Wort
+nicht mehr veränderbar. Der Programmierer wird gezwungen, für jede Änderung ein
+neues Objekt anzulegen. Dies erscheint auf den ersten Blick unpraktisch, stellte
+sich jedoch als keine große Unannehmlichkeit heraus.
+Diese Veränderung liefert direkt mehrere Vorteile: 
+
+
+\begin{minipage}{\textwidth}
+\begin{itemize}
+  \item eine Objektreferenz auf die Vorgängerversion muss direkt im Konstruktor
+  bestimmt werden
+  \item beim Verändern der Regelmenge einer Grammatik oder eines
+  Kellerautomaten ist es nun nicht mehr nötig, die Menge der Terminale und
+  Nichtterminale anzupassen, da diese automatisch im Konstruktor aus der Regelmenge bestimmt werden
+  \item es kommt zu keinen Konflikten mehr mit der Hashcode-Berechnung.
+  Verändert sich ein Objekt, so verändert sich auch sein Hashcode. Daher sollten Objekte
+  in HashSets nicht mehr verändert werden. Dies war in der alten Toolbox nicht
+  gewährleistet
+\end{itemize}
+\end{minipage} \\
+
+Es war nicht nur nötig, die Variablen der Klasse mit dem Kennwort \textit{final} zu kennzeichnen und die Setter-Methoden zu entfernen, es musste auch dafür gesorgt werden, dass bestehenden Listen oder Sets keine Elemente hinzugefügt oder gelöscht werden. Hierfür wurde in den Getter-Methoden mithilfe von \textit{Collections.unmodifiableSet} bzw \textit{Collections.unmodifiableList}\footnote{\url{https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html}} unmodifizierbare Mengen bzw. Listen zurückgegeben.
+
+
+Aufgrund der recht komplexen, bestehenden Algorithmen auf Automaten, die häufig
+auf die Setter-Methoden zugreifen, war es nicht möglich in der gegebenen Zeit, die Automaten
+unmodifizierbar zu machen. Daher wird weiterhin bei Automaten mit der
+\textit{deep-copy}-Methode gearbeitet.
+
+
+Als weiteres Feature ist nun das parallele Arbeiten mit mehren Objekten eines
+Types möglich. Dazu wurde ein sogenannter \textit{Store} eingeführt, der die Objekte
+für den Nutzer aufbewahrt und verwaltet. Die Objekte, die im Store gespeichert
+werden, müssen das Interface \textit{Storable} implementieren.
+
+\begin{minipage}{\textwidth}
+\lstinputlisting[frame=single, basicstyle=\small, caption=Das Interface
+\textit{Storable}]{Code/Storable.java}
+\end{minipage} 
+
+Durch das Plugin wird gewährleistet, dass jede Klasse eine
+\textit{deep-copy}-Methode hat. Bei Grammar und PushDownAutomaten wird hier
+einfach ein neues Objekt erstellt. Dieses ist automatisch wegen der
+Unmodifizierbarkeit eine echte Kopie.
+Die Methoden \textit{printToSave} und \textit{restoreFromFile} kümmern sich um das Laden und Speichern des Objektes.
+Wie im vorherigen Abschnitt erklärt, liefert die Methode \textit{getPreviousVersion} die Vorgängerversion des Objektes.
+\textit{printLatex} und \textit{printConsole} sind Methoden aus dem Interface Printable und werden genauer in Abschnitt \ref{sec:Printer} erklärt.
+
+Das Interface hat auch den großen Vorteil, dass Grammar, PushDownAutomaten,
+Automaten, \ldots einen gemeinsamen Typ haben. Außerdem fiel bei vielen Funktionen die Fallunterscheidung weg, da eine generische Ausführung möglich geworden ist.
+
+Beim Laden eines Objektes in der Konsole muss es
+zunächst manuell im Store gespeichert werden. Es gibt weiterhin genau
+ein aktuelles Objekt jeden Types, der Nutzer kann diese jedoch mit dem Befehl \textit{switch type name}
+(bzw in der GUI durch den Baum) ändern. Die Plugin operieren immer noch auf
+diesem aktuellen Element.
+
+Im Zuge dieser Änderungen wurde gleichzeitig die Vergleichbarkeit von Komponenten von Grammatiken, Automaten und
+Kellerautomaten ermöglicht.
+Hierfür wurden die \textit{equals}- und \textit{hashCode}-Methode mit Hilfe der Bibliothek Apache Commons-lang\footnote{\url{https://commons.apache.org/proper/commons-lang/}} überschrieben. Das Überschreiben der \textit{hashCode}-Methode ist wichtig, da es sonst zu Unregelmäßigkeiten im Verhalten von \textit{HashSets} kommt.
+
+Bei einigen Objekten war dies technisch jedoch zunächst gar nicht möglich.
+So zum Beispiel bei Nichtterminalen, die Referenzen auf die Regeln,
+bei denen sie auf der linken Seite stehen, enthielten. Dadurch gab es zyklische Referenzen und ein sinnvolles Überschreiben der \textit{equals}-Methode war nicht möglich. Daher wurde die Klasse \textit{Rule} eingeführt, die eine Produktionsregel einer Grammatik beschreibt und die Grammatik selbst enthält jetzt ein \textit{Set} mit allen ihren Regeln. Die Nichtterminale selbst enthalten keine Regeln mehr.
+Hierdurch ist der Vergleicht von zwei Nichtterminalen sehr einfach geworden. Sie sind genau dann gleich, wenn sie den 
+gleichen Namen haben.
+
+Diese Vergleichbarkeit erleichterte die Durchführung vieler Algorithmen, da es nicht mehr wichtig war, genau die richtige Referenz zu haben.
+Hierzu ein kleines Beispiel:
+
+Wollte man eine neue Regel $A \rightarrow a, B, C$, mit $A,B,C$ Nichtterminal und $a$ Terminal, zu einer Grammatik hinzufügen, musste man zunächst aus der Menge der Nichtterminale das Objekt suchen, dass den gewünschten Namen "`A"' hat. Nun muss jedes Element auf der rechten Seite in der Menge der Terminale und Nichtterminal gesucht und genau dieses Objekt einer Liste hinzugefügt werden.
+Diese Liste wird dann dann der Regelmenge von Nichtterminal "`A"' hinzugefügt.
+
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[frame=single,caption={Das Erstellen einer Regel},label=lst:rule]
+public Grammar addRule(Grammar g) {
+	List<Symbol> tmp = new ArrayList<>();
+	tmp.add(new Terminal("a"));
+	tmp.add(new Nonterminal("B"));
+	tmp.add(new Nonterminal("C"));
+	Rule rule = new Rule(new Nonterminal("A"),tmp)
+	Set<Rule> rules = new HashSet<Rule>(grammar.getRules());
+	rules.add(rule);
+	return new Grammar(grammar.getStartsymbol,rules,grammar.getName(),grammar);
+}
+\end{lstlisting}
+\end{minipage}
+
+Mit den Änderung ist dies viel einfacher geworden. Mit dem Code in \ref{lst:rule} wird eine neue Regel erstellt und der Grammatik hinzugefügt.
+Wie man sieht, ist es nicht nötig, die Referenz der Symbole herausfinden; man kann einfach neue Objekte erstellen.\\
+
+Hier wird nochmal die Unmodifizierbarkeit deutlich. Es ist nicht möglich, die Regel direkt der Menge der Regeln hinzuzufügen. Stattdessen wird eine temporäre Regelmenge
+erstellt und dann eine neue Grammatik, die diese neue Regelmenge hat.
+
+\subsection{Persistierung der Objekte}
+Wie man im vorherigen Abschnitt gesehen hat, stellt das Interface \textit{Storable}
+Methoden zum Speichern und Laden zur Verfügung. Beim Beenden des Programmes
+werden die vollführten Änderung automatisch gespeichert und beim nächsten Start
+wieder geladen.
+
+Das Programm \textit{merkt} sich Änderungen in einer \textit{config}-Datei.
+Die \textit{config}-Datei sorgt dafür, dass das Programm im selben Zustand
+startet, wie es beendet wurde.
+In ihr wird unter Anderem der Ordner des aktuellen Workspaces, der Name des
+Nullsymbols, dass der User ausgewählt hat und das aktuelle css-Stylesheet
+gespeichert. Den Aufbau der \textit{config}-Datei sieht man in \ref{config}.
+
+\begin{minipage}{\textwidth}
+\lstinputlisting[frame=single, basicstyle=\small, caption=Die
+\textit{Config}-Datei,label=config]{Code/config.config} 
+\end{minipage}
+
+Um einen zentralen Ort für die Speicherung der Objekte zu haben, wurde ein sogenannter \textit{Workspace} eingeführt. Auch hier wurde sich wieder an einer IDE orientiert.
+Alle Dateien des Workspaces sind in der GUI im Baum sichtbar. Der Workspace hat ein Pendant auf der
+Festplatte. Standardmäßig ist dies der Ordner \textit{workspace} im Verzeichnis des Programms.
+Auf Wunsch kann der Workspace, momentan nur in der GUI, gewechselt werden. 
+
+Um eine problemlose Persistierung zu ermöglichen, wird bereits in der GUI verhindert,
+dass ungültige Namen für Terminale und Nichtterminale eingegeben werden.
+Hierzu gehören bei Terminalen der Gebrauch von des Hochkomma \grq{} und bei Nichtterminalen alles außer Buchstaben, Zahlen und \_.
+
+\subsection{Kellerautomaten}
+Kellerautomaten (PDA) wurden als neuer Datentyp implementiert. Ein Kellerautomat
+besteht aus einer Menge von Zuständen (states), einem Eingabe-Alphabet
+(inputAlphabet), einem Stack-Alphabet (stackAlphabet), einem Startzustand
+(startState), einem Bottom-Symbol für den Stack (initialStackLetter), einer
+Menge von Produktionsregeln (rules) und dem aktuellen Zustand, in dem sich der
+PDA befindet (currentState). Ein PDA akzeptiert in dieser Implementierung ein
+Wort, wenn der Stack leer ist.\\
+Die Darstellung der Klasse in \ref{lst:pda} ist stark verkürzt, um nur die wichtigsten Aspekte zu zeigen.
+
+Wie man sieht, ist es nicht nötig, dem PDA Zustände, Input- und Stack-Alphabet zu übergeben, da 
+diese im Konstruktor bestimmt werden. Dies ist nur dank der Unmodifizierbarkeit möglich, da sich die genannten Mengen
+nach Erstellung des Objekts nicht mehr verändern.
+
+\begin{minipage}{\textwidth}
+\noindent
+\lstinputlisting[frame=single, basicstyle=\small, label=lst:pda, caption=Die Klasse
+\textit{Pushdownautomaton}]{Code/PushDownAutomaton.java}
+\end{minipage}
+
+
+ Die Unmodifizierbarkeit wird auch bei der Betrachtung der Getter- und Setter-Methoden deutlich: \hfill \\
+Aufgrund der fehlenden Setter-Methoden ist es nicht möglich, einzelne Werte zu verändern.
+Auch das Hinzufügen in \textit{List} und \textit{Set} wurde durch den
+Aufruf von
+\textit{Collections.unmodifiableList} bzw. \textit{Collections.unmodifiableSet}
+in den Getter-Methoden verhindert.
+
+\subsection{Ausführbare JAR}
+
+\begin{figure}[htbp]\label{reflections}
+	\begin{minipage}[t]{0.45\textwidth}
+\begin{lstlisting}[frame=single, basicstyle=\tiny, caption={ Toolbox 1.0}]
+ try {
+  String packagePath = Thread.currentThread()
+    .getContextClassLoader()
+    .getResources("CLIPlugins")
+    .nextElement().getFile().replace("%20", " ");
+  File[] classes = new File(packagePath).listFiles();
+  URLClassLoader urlClassLoader = URLClassLoader
+    .newInstance(new URL[]{new URL("file://" + packagePath)});
+  for(File file : classes) {
+    if(file.getName().endsWith(".class") 
+       && !file.getName().equals("CLIPlugin.class") 
+       && !file.getName().contains("$")) {
+        plugins.add((CLIPlugin) urlClassLoader
+        .loadClass("CLIPlugins." + file.getName()
+        .substring(0, file.getName().length() - 6))
+        .newInstance());
+    }
+  }
+} catch(Exception e) {
+ e.printStackTrace();
+}
+\end{lstlisting}
+	\end{minipage}
+\hfill
+	\begin{minipage}[t]{0.45\textwidth} 
+\begin{lstlisting}[frame=single, basicstyle=\tiny, caption={Toolbox 2.0}]
+Reflections refl=new Reflections("CLIPlugins");
+Set<Class<? extends CLIPlugin>> s=refl.
+	getSubTypesOf(CLIPlugin.class);
+s.forEach(r -> {
+  try {
+    CLIPlugin plugin = r.newInstance();
+     plugins.add(plugin);
+  } catch (InstantiationException | IllegalAccessException e) {
+    e.printStackTrace();
+  }
+});
+	\end{lstlisting}
+	\end{minipage}
+\end{figure}
+Es war bei der Toolbox 1.0 unter Anderem wegen der Erzeugung von Objekten zur Laufzeit mit Hilfe des \textit{URLClassLoaders}\footnote{Link} nicht möglich, eine ausführbare JAR zu erzeugen.
+Dies ist durch die Verwendung von Reflections und die im Abschnitt \ref{Gradle} erwähnten Änderungen möglich geworden.
+
+Der Codeausschnitte \ref{reflections} aus der Klasse \textit{CLI} zeigt beispielsweise die
+Veränderung beim Laden der CLI-Plugins. 
+Der Code ermöglicht nicht nur die Ausführugn als JAR, er ist auch kürzer und übersichtlicher
+
+\subsection{Ausgabe} \label{sec:Printer}
+
+Die bisherige Toolbox besaß eine Ausgabe auf die Konsole. Diese war starr geregelt und daher nicht erweiterbar. Da aber nun auch eine Ausgabe in .tex-Datein möglich sein sollte, musste die Ausgabe überarbeitet werden, und zwar so, dass in Zukunft auch andere Ausgabe-Modi (html, xml) leicht hinzu programmiert werden können.
+Dazu wurde die Ausgabe zunächst gekapselt an das Package \textit{Print} abgegeben, welches für die richtige Ausgabe sorgt. 
+\subsubsection{Das Interface \textit{Printable}}
+Wenn man ein Objekt drucken möchte, soll man sich keine Gedanken darüber machen, in welcher Form das geschieht. Man möchte die Ausgabe nicht selber formatieren. Es wäre wünschenswert, wenn das Objekt selbst weiß, wie es zu drucken ist. Daher wurde das Interface \textit{Printable} eingeführt. Dieses stellt zwei Methoden zur Verfügung: \textit{printConsole}, welches für die Ausgabe auf die Konsole zuständig ist, und \textit{printLatex}, welches für die \LaTeX-konforme Ausgabe sorgt.
+
+Das Interface \textit{Storable} erweitert \textit{Printable}, da alle speicherbaren Objekte auch druckbar seien sollen. 
+
+\subsubsection{Die Klasse \textit{Printer}}
+Die \textit{Printer}-Klasse ist für die Ausgabe von Objekten und Umformungen zuständig und stellt einen wichtigen Teil des Programmes dar.
+In diesem Abschnitt werden kurz die wichtigsten Funktionen erläutert.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single,caption={Die Klasse \textit{Printer}},label=lst:print]
+public class Printer {
+    private static PrintMode printmode=PrintMode.CONSOLE;
+    private static BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void print(Printable printable) {
+        switch (printmode) {
+            case NO:
+                break;
+            case LATEX:
+                printable.printLatex(getSpace(deepness));
+                break;
+            case CONSOLE:
+                printable.printConsole();
+                break;
+        }
+    }
+    public static void printEnumeration(ArrayList<Printable> printables, String[] pointdescriptions, String[] texts, String title) {
+        switch(printmode) {
+            case NO:
+                break;
+            case CONSOLE:
+                printEnumerationConsole(printables,pointdescriptions,texts);
+                break;
+            case LATEX:
+                printEnumerationLatex(printables,toLatex(pointdescriptions),toLatex(texts),toLatex(title));
+                break;
+        }
+    }
+   //...
+}
+\end{lstlisting}
+\end{minipage}
+
+Listing \ref{lst:print} stellt die zentralen Komponenten der Klasse dar. Die Klasse \textit{Printer} besitzt ein \textit{PrintMode printmode}, dies gibt an,
+in welchem Printmodus der Printer sich momentan befindet.
+Dazu gibt es einen \textit{BufferedWriter writer}, der passend initialisiert wird. Idealerweise sollte der writer auf die Konsole schreiben, wenn der Printmodus
+\textit{CONSOLE} ist und in eine Datei, wenn der Printmodus \textit{LATEX} ist.
+Dies ist jedoch nicht festgelegt, sodass beispielsweise die Möglichkeit besteht, Konsolenausgabe in eine Datei zu schreiben.
+
+Die Methode \textit{print(Printable printable)} sollte zum Schreiben von \textit{printable} Objekten genutzt werden. Anhand des printmodes wird entschieden, welche der Methoden \textit{printConsole()} und \textit{printLatex(String space)} des Printables aufgerufen werden soll.
+Diese Art der Ausgabe ist vor dem direkten Aufruf von  \textit{printConsole()} und \textit{printLatex(String space)} zu bevorzugen, da so die Verantwortung des richtigen Druckens an den Printer abgegeben wird.
+
+
+
+Eine weitere Methode ist  \textit{printEnumeration}. Dies gibt eine Aufzählung aus. Auch hier gibt es wieder eine Version für die Konsole und eine für Latex. 
+Es soll eine Aufzählung geschrieben werden, deren einzelne Punkte die Überschriften in \textit{pointdescriptions} haben. Dann folgt die Ausgabe eines beschreibenden Textes aus dem dritten Argument \textit{texts} und die Ausgabe eines Elementes aus dem ersten Argument \textit{printables}. Der Titel der Aufzählung ist \textit{title}.
+
+\subsection{Generierung \LaTeX}\label{latex}
+Ein weitere Funktion der Toolbox ist das Generieren von \LaTeX -Code, welcher die
+vom Nutzer durchgeführten Schritte darstellt.
+
+Wichtig hierbei war, darauf zu achten, dass \LaTeX-Sonderzeichen erkannt und angepasst werden, damit die entstandene \LaTeX-Datei kompilierbar ist.
+
+Die \LaTeX -Generierung ist nicht automatisch aktiviert. Der Nutzer muss den
+\textit{\LaTeX}-Modus starten.
+Durch Starten des \LaTeX - Modus wird die Präambel \ref{pre} geschrieben.
+
+
+\begin{figure}[htbp]
+\lstinputlisting[frame=single, basicstyle=\small, caption=Die Präambel, language=TeX, label=pre]{Code/Praeambel.tex}
+\end{figure}
+Die Datei muss nun noch beendet werden. Dies geschieht wieder nicht automatisch
+nach Beendigung eines Befehls, sondern es wurde sich bewusst dafür entschieden,
+dass der Nutzer den \LaTeX -Modus manuell beenden
+muss. Hierdurch ist es möglich, mehrere Algorithmen oder Objekte in eine Datei
+zu schreiben.
+
+Erst das Beenden des \LaTeX-Modus beendet die Datei mit \ref{lst:ende} und schließt den BufferedWriter.
+
+\lstinputlisting[frame=single, basicstyle=\small, caption={Ende \LaTeX}, language=TeX, label=lst:ende]{Code/Ende.tex}
+
+
+Ein Herausforderung stellte die Ausgabe von Automaten dar. Die Automaten sollten möglichst automatisch so dargestellt werden, 
+dass sie gut und übersichtlich aussehen und nicht mehr viel nachträgliche Verbesserung nötig ist. \hfill \\
+Zur Darstellung der Automaten wird das Paket TikZ\footnote{hier Link} genutzt. Die Zustände sind Knoten und die Übergänge beschriftete Kanten. TikZ erwartet zuerst eine Aufzählung aller Knoten.
+Die Positionen werden relativ zueinander angegeben. Um ein gutes Ergebnis zu erhalten, werden die Zustände von der Toolbox alphanumerisch sortiert,
+da dies häufig eine sinnvolle Reihenfolge ist.
+
+Dann müssen die Kanten angegeben werden.
+Hierbei gibt es für Kanten von einem Knoten zu sich selbst, die Option \textit{loop below} oder \textit{loop above}. Es wurde sich für \textit{loop below} entschieden.
+Bei Kanten, die von einem Zustand zu einem anderen Zustand gehen, muss eine Richtung, in die sich die Kante beugt, angegeben werden und ein Winkel.
+Als Richtung wurde \textit{bend left} gewählt. Dies bewirkt, dass "'Vorwärtskanten"', also Kanten, die zu einem Knoten weiter hinten in der Aufzählung gehen, über den Knoten sind und "'Rückwärtskanten"' unterhalb.
+Die Winkel werden mit Hilfe der Länge der Kante $length$ und der maximalen Länge $maxLength$ berechnet.
+Hierbei gibt es zwei Fälle:
+\begin{enumerate}
+\item $maxLength=1$. Der Winkel jeder Kante wird auf $45^\circ$ gesetzt
+\item $maxLength>1$. Der Winkel einer Kante wird auf 
+	\[ length * 90/maxLength^\circ \]
+gesetzt. Dies bewirkt eine gleichmäßige Fächerung auf dem Winkelintervall $[90/maxLength,90]$.
+\end{enumerate}
+
+\begin{figure}[hptb]
+	% minipage mit (Blind-)Text
+	\begin{minipage}[b]{0.48\textwidth} 
+	\lstinputlisting[frame=single, basicstyle=\tiny, language=TeX, nolol]{Code/automat.tex}
+	\caption{\LaTeX -Code für Automaten}
+	\end{minipage}
+	% Auffüllen des Zwischenraums
+	\hfill
+	% minipage mit Grafik
+	\begin{minipage}[b]{0.48\textwidth}
+	
+	\begin{tikzpicture}[shorten >=1pt,on grid,node distance=1.5cm,auto]
+
+  \node[state,initial]   (z0)    {z0};
+  \node[state]   (z1)  [right of=z0]    {z1};
+  \node[state]   (z2)  [right of=z1]    {z2};
+  \node[state,accepting]   (z3)  [right of=z2]    {z3};
+\path[->]
+(z0)    edge [bend left=60] node {b}  (z2)
+        edge [bend left=90] node {b}  (z3)
+        edge [bend left=30] node {a}  (z1)
+(z1)    edge [bend left=30] node {b}  (z2)
+        edge [bend left=60] node {c}  (z3)
+(z2)    edge [bend left=30] node {b}  (z3)
+        edge [bend left=60] node {b}  (z0)
+(z3)    edge [loop below]   node {d}  (z3)
+        edge [bend left=60] node {a}  (z1)
+;
+\end{tikzpicture}
+	\caption{Ergebnis}
+	\end{minipage}
+\label{abb:autbspl}
+\end{figure}
+
+\subsection{Testen}
+Das Testen beanspruchte einen großen Teil der Arbeitszeit, da das Testen
+größtenteils manuell durchgeführt werden musste.
+Dies hatte mehrere Gründe. Zum Einen ist schwer bis gar nicht möglich,
+rechnerisch zu überprüfen, ob zwei Grammatiken äquivalent sind.
+Die Umformungen, wie z.B. Entfernen von einfachen Regeln, Entfernen von
+$\lambda$-Regeln, mussten manuell auf ihre Korrektheit bzgl. der Äquivalenz
+überprüft werden.
+Zum Anderen erwies sich der \LaTeX -Code als große Fehlerquelle. Es mussten alle
+Eventualitäten bedacht werden, so dass keine Zeichen geschrieben werden, mit
+denen \LaTeX nicht umgehen kann. Das reine Überprüfen des Kompilieren reichte
+nicht aus, es musste weiterhin auf die korrekte und ästhetische Schreibweise
+geachtet werden.
+
+Jedoch wurden, soweit wie möglich, JUnit-Test verwendet.
+Methoden, die eine Grammatik auf gewisse Eigenschaften, wie keine einfache
+Regeln oder $\lambda$ - Freiheit überprüfen, konnten getestet werden.
+Ebenso, ob Algorithmen, die diese Eigenschaften herbei führen sollen, dies auch
+tatsächlich tun.
+
+Das Verhalten von \textit{equal} und \textit{toHash} wurde ausführlich per JUnit
+getestet.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

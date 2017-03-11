@@ -1,0 +1,47 @@
+\section{Die Toolbox}\raggedbottom %TODO besserer Titel
+\subsection{Typen}
+Die Toolbox 1.0 konnte mit Grammatiken und Automaten umgehen. Hierzu gehören
+insbesondere, aber nicht ausschließlich
+\begin{itemize}
+  \item die Entwicklung eines eigenen Datentypes für Grammatiken und Automaten
+  \item das Parsen von Grammatiken und Automaten mittels SableCC\footnote{hier
+  Referenz}
+  \item das Speichern von Grammatiken und Automaten in Datein
+  \item First- und Follow-Set einer Grammatik
+  \item Vervollständigung und Entfernen von$\lambda$-Übergängen von Automaten
+\end{itemize}
+\subsection{Erweiterbarkeit}
+Das von Herrn Ruhland entwickelte System legt Wert darauf, leicht
+weiterentwickelbar zu sein. Hierfür wurde ein Plugin-System entwickelt, das es
+einem anderen Programmieren erleichtert, neue Features hinzu zu entwickeln,
+ohne sich mit dem bereits bestehenden Code vertraut zu machen.
+Es gibt hierbei verschiedene Arten von Plugins, die automatisch eingebunden
+werden
+\begin{itemize}
+  \item CLI-Plugins - Kommandozeilenprogramme
+  \item SimpleFunction Plugins - GUI-Funktionen, die keine Nutzereingabe
+  benötigen.
+  \item ComplexFunction Plugins - GUI-Funktionen, die Nutzerinteraktion
+  benötigen
+  \item DisplayPlugins - werden dazu benutzt, Datentypen darzustellen
+\end{itemize}
+\subsection{Mechanismen}
+Das Programm sollte sowohl über die Konsole als auch über eine Benutzeroberfläche bedient werden können.
+Hierfür gibt es die beiden zentralen Klassen \textit{CLI} für die Konsole und \textit{GUI} für die grafische Benutzeroberfläche.
+Die Plugins haben die Methoden \textit{getInputType} und \textit{getOutputType}. Diese lieferen eine Klasse,
+von der das Plugin eine Instanz als Eingabe bekommt bzw. als Ausgabe zurückgibt.
+Sobald der Nutzer ein Kommando in der Konsole (oder der GUI) durchführt, ruft
+die Klasse CLI (oder die Klasse GUI) die \textit{execute}-Methode des jeweiligen
+Plugins auf und übergibt das aktuelle Objektder passende Klassen.
+Von jeder Klasse ist immer nur ein Objekt gespeichert.
+Das von der \textit{execute}-Methode zurückgelieferte Objekt überschreibt das
+bisherige.
+\subsection{GUI}
+Dies ist die Benutzeroberfläche der Toolbox 1.0 im Grammar-Modus. Die aktuelle Grammatik wird zum Bearbeiten angezeigt. Um Automaten zu bearbeiten, muss man unter \textit{Choose Plugin} \textit{Automaton} wählen.
+\begin{figure}[hbtp]
+	\centering
+	\includegraphics[width=1\textwidth]{bilder/gui_alt.png}
+	\caption{Die GUI der Toolbox 1.0}
+	\label{img:oldgui}
+\end{figure}
+
