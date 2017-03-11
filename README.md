@@ -16,7 +16,7 @@ You can build this project using the provided gradle executables
 How to use this program
 ==============
 
-You can start this program by calling the .jar. 
+You can start this program by starting the .jar. 
 View all command by calling *help*.
 Start the gui by calling *gui*
 exit the programm by calling *exit*
@@ -35,7 +35,7 @@ If you want to further develope this project, follow these steps
 	+ it is very important, that the file has exactly this name, because otherwise the sablecc-gradle-workaround won't work
 	+ create a package *TuringSimulator* (optional)
 	+ and in this package a class *Turing.class*
-	+ at the beginning of the *start()*-method of Main.CLI add your new type to the lookup-table, otherwise the GUI won't work
+	+ at the beginning of the *init*-method of Main.Content add your new type to the lookup-table, otherwise the GUI won't work
 	+ to do so, call *lookUpTable.put("turing",Turing.class)*
 	+ to enable the gui to display your new type, create a *TuringGUI.class* inside the package *GUIPlugins.DisplayPlugins* and
 	let it extend *DisplayPlugin*.
@@ -43,8 +43,3 @@ If you want to further develope this project, follow these steps
 How to further develope this project without using SableCC
 ==============
 If you want to further develope this project without using SableCC simply skip the step with the .scc*
-
-
-
-
-
