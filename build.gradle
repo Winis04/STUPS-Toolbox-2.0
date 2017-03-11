@@ -96,38 +96,14 @@ task sableCC() {
 	}
 }
 
-//
-task pdfLatex() {
-	doLast {
-		project(':tex').tasks.pdfLatex.execute()
-	}
-}
-
-task copyBA() {
-	doLast {
-		copy{
-			 from 'tex/Bachelorarbeit.pdf'
-			 into 'build/docs/'
-		}
-  }
-}
-
-task latex() {
-	doLast{
-		println("BA created!")
-	}
-}
 
 sableCC.dependsOn doAdjustments
 runSableCC.mustRunAfter copyDepJars
 runSableCC.dependsOn copyDepJars
 doAdjustments.mustRunAfter runSableCC
 doAdjustments.dependsOn runSableCC
-
-copyBA.dependsOn pdfLatex
-copyBA.mustRunAfter pdfLatex
-latex.dependsOn copyBA
-latex.mustRunAfter copyBA
+compileJava.mustRunAfter sableCC
+compileJava.dependsOn sableCC
 
 
 

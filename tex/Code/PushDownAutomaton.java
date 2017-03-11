@@ -7,7 +7,6 @@ public class PushDownAutomaton {
     private final String name;
     private final PushDownAutomaton previousPDA;
     private final List<PDARule> rules;
-
     public PushDownAutomaton(State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
         states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
@@ -24,11 +23,8 @@ public class PushDownAutomaton {
         this.name = name;
         this.previousPDA = previousPDA;
     }
-
     public List<PDARule> getRules() {
         return Collections.unmodifiableList(new ArrayList<>(rules));
     }
-	
-	//weitere Getter
-
+    //weitere Getter
 }

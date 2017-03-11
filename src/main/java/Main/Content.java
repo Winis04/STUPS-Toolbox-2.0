@@ -35,13 +35,7 @@ public class Content {
     private final HashMap<String,Class> lookUpTable =new HashMap<>();
 
     Content() {
-        lookUpTable.put("grammar", Grammar.class);
-        lookUpTable.put("automaton", Automaton.class);
-        lookUpTable.put("pda", PushDownAutomaton.class);
-        lookUpTable.put("pushdownautomaton",PushDownAutomaton.class);
-
-
-        lookUpTable.values().forEach(clazz -> store.putIfAbsent(clazz, new HashMap<>()));
+       init();
 
     }
 
