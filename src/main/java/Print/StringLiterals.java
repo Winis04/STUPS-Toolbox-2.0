@@ -28,7 +28,7 @@ public class StringLiterals {
     //Literals for chomsky normal form
     public static final String[] CNF_TEXTS=new String[]{"","Rules in form A -> a are " +
             "already in chomsky normal form and we keep them.",
-            "In every other rule replace every appearance of a terminal a through a new nonterminal.",
+            "In every other rule replace every appearance of a terminal a with a new nonterminal.",
             "In every rule that contain more than two nonterminals, add a new nonterminal that points to the " +
                     "end of the rule."};
     public static final String[] CNF_POINT_DESCRIPTIONS=new String[]{"Before","Step 1", "Step 2", "Step 3"};
