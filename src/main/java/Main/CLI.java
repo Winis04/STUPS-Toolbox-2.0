@@ -83,11 +83,6 @@ public class CLI {
                     System.out.println("Please enter a storable type as a parameter for this command!");
                 }
                 break;
-            case "clear_store":
-                content.getStore().clear();
-                //} else if(command.equals("switch_workspace")) { //TODO
-
-                break;
             case "remove":
             case "rmv":
                 if(parameters.length==2) {
@@ -214,6 +209,7 @@ public class CLI {
                 System.out.println("JUNG2 is licensed under the BSD open-source license.");
                 System.out.println("See http://jung.sourceforge.net/site/license.html or the file \"lib/JUNG2/JUNG-license.txt\" for more information.");
                 break;
+
             default:
                 return false;
         }
@@ -380,40 +376,43 @@ public class CLI {
 
 
                 input = inputReader.readLine();
-                StringTokenizer inputTokenizer = new StringTokenizer(input, " ");
-                if(inputTokenizer.hasMoreElements()) {
-                    command = inputTokenizer.nextToken();
-                }
+                if(input != null) {
+                    StringTokenizer inputTokenizer = new StringTokenizer(input, " ");
+                    if (inputTokenizer.hasMoreElements()) {
+                        command = inputTokenizer.nextToken();
+                    }
 
-                parameters = new String[inputTokenizer.countTokens()];
-                for (int i = 0; inputTokenizer.hasMoreElements(); i++) {
-                    parameters[i] = inputTokenizer.nextToken();
-                }
+                    parameters = new String[inputTokenizer.countTokens()];
+                    for (int i = 0; inputTokenizer.hasMoreElements(); i++) {
+                        parameters[i] = inputTokenizer.nextToken();
+                    }
 
-                //Execute the entered command. "gui" and "help" are hardcoded, all the other commands come from plugins.
-                //If a plugin returns an object, it is put into the objects-Hashmap. If an object of this type already exists, it will be overwritten.
-                Storable ret;
-                boolean validCommand = false;
-                if(buildIn(command,parameters,plugins)) {
-                    validCommand=true;
-                } else {
-                    for (CLIPlugin plugin : plugins) {
-                        if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
-                            validCommand = true;
-                            ret = plugin.execute(content.getObjects().get(plugin.inputType()), parameters);
-                            if (!plugin.errorFlag() && ret != null) {
-                                content.getObjects().put(plugin.outputType(), ret);
-                                if(content.getStore().get(plugin.outputType()) != null && content.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
-                                    content.getStore().get(plugin.outputType()).put(ret.getName(),ret);
+                    //Execute the entered command. "gui" and "help" are hardcoded, all the other commands come from plugins.
+                    //If a plugin returns an object, it is put into the objects-Hashmap. If an object of this type already exists, it will be overwritten.
+                    Storable ret;
+                    boolean validCommand = false;
+                    if (buildIn(command, parameters, plugins)) {
+                        validCommand = true;
+                    } else {
+                        for (CLIPlugin plugin : plugins) {
+                            if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
+                                validCommand = true;
+                                ret = plugin.execute(content.getObjects().get(plugin.inputType()), parameters);
+                                if (!plugin.errorFlag() && ret != null) {
+                                    content.getObjects().put(plugin.outputType(), ret);
+                                    if (content.getStore().get(plugin.outputType()) != null && content.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
+                                        content.getStore().get(plugin.outputType()).put(ret.getName(), ret);
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
-                }
 
-                if(!validCommand && !command.isEmpty()) {
-                    System.out.println("Wrong input!");
+
+                    if (!validCommand && !command.isEmpty()) {
+                        System.out.println("Wrong input!");
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Fatal error! Exiting program...\n");

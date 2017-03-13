@@ -348,7 +348,7 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stateController.save_current_state()));
+    //    Runtime.getRuntime().addShutdownHook(new Thread(() -> stateController.save_current_state()));
 
      //   setStyleSheet(defaultStyle);
 
