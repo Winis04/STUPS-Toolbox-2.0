@@ -17,9 +17,9 @@ How to use this program
 ==============
 
 You can start this program by starting the .jar. 
-View all command by calling *help*. 
-Start the gui by calling *gui*. 
-exit the programm by calling *exit*. 
+- View all command by calling *help*. 
+- Start the gui by calling *gui*. 
+- Exit the programm by calling *exit*. 
 
 
 How to further develope this project using SableCC
