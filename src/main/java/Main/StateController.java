@@ -95,7 +95,7 @@ public class StateController {
 
     public boolean switchWorkspace(File newWorkspace) {
         if (newWorkspace != null && isValidWorkspace(newWorkspace)) {
-            gui.getStateController().exitWorkspace();
+            gui.getStateController().save_current_Workspace();
             String path = newWorkspace.getAbsolutePath();
             if (!path.endsWith("/") && !path.endsWith("\\")) {
                 path += "/";
@@ -118,7 +118,7 @@ public class StateController {
     /**
      * saves the current workspace
      */
-    void exit() {
+    void save_current_state() {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("config"));
             writer.write("WORKSPACE = "+path_to_workspace+"\n");
@@ -127,7 +127,7 @@ public class StateController {
             writer.write("TOOLTIPS = "+tooltips+"\n");
             writer.close();
 
-            exitWorkspace();
+            save_current_Workspace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,7 +204,7 @@ public class StateController {
     }
 
 
-    private void exitWorkspace() {
+    private void save_current_Workspace() {
         File workspace = new File(path_to_workspace);
         List<Class> types = new ArrayList<>();
         content.getLookUpTable().values().forEach(key -> {

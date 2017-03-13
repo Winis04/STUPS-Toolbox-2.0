@@ -203,7 +203,7 @@ public class CLI {
             case "exit":
                 System.out.println("Goodbye!");
                 Printer.setPrintMode_No();
-                stateController.exit();
+                stateController.save_current_state();
                 System.exit(0);
             case "a":
             case "about":

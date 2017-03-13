@@ -359,21 +359,24 @@ public class Printer {
     }
 
     public static void setPrintMode_No() {
-        setPrintMode(PrintMode.NO,null);
+        initiatePrintModeAndWriter(PrintMode.NO,null);
     }
 
     public static void setPrintMode_Console() {
-        Printer.setPrintMode(PrintMode.CONSOLE,new BufferedWriter(new OutputStreamWriter(System.out)));
+        Printer.initiatePrintModeAndWriter(PrintMode.CONSOLE,new BufferedWriter(new OutputStreamWriter(System.out)));
     }
 
     public static void setPrintMode_Latex(File file) {
         try {
-            Printer.setPrintMode(PrintMode.LATEX,new BufferedWriter(new FileWriter(file)));
+            Printer.initiatePrintModeAndWriter(PrintMode.LATEX,new BufferedWriter(new FileWriter(file)));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private static void setPrintMode(PrintMode printmode, BufferedWriter writer) {
+    private static void setPrintMode(PrintMode printmode) {
+        Printer.printmode = printmode;
+    }
+    private static void initiatePrintModeAndWriter(PrintMode printmode, BufferedWriter writer) {
         if(Printer.printmode==PrintMode.LATEX && Printer.writer != null) {
             Printer.printEndOfLatex();
            // Printer.closeWriter();
