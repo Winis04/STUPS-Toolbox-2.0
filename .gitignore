@@ -51,7 +51,6 @@ toolbox.sh
 *.snm
 *.vrb
 *.synctex.gz
-*.pdf
 *.xml
 de/*
 de/
