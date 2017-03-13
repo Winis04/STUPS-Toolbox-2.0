@@ -294,7 +294,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         String right = tmp[1];
         String[] tmp1 = left.split(" ");
         String[] tmp2 = right.split(" ");
-        if(tmp1.length != 3 || tmp2.length < 3) {
+        if(tmp1.length != 3 || tmp2.length < 2) {
             return null;
         }
         String goingTo = tmp2[0];
