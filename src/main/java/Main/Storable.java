@@ -68,4 +68,5 @@ public interface Storable extends Printable {
 
     @Override
     void printConsole();
+    
 }
