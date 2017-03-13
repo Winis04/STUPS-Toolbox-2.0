@@ -327,6 +327,8 @@ public class CLI {
 
     public void start() {
 
+        Runtime.getRuntime().addShutdownHook(new Thread(stateController::save_current_state));
+
         List<String> list = content.getLookUpTable().keySet().stream().filter(x -> !x.equals("pda"))
                 .map(s -> "'"+s+"'")
                 .sorted()
