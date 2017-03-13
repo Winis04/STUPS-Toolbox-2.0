@@ -206,6 +206,9 @@ public class StateController {
 
     private void save_current_Workspace() {
         File workspace = new File(path_to_workspace);
+        if(!workspace.exists()) {
+            workspace.mkdir();
+        }
         List<Class> types = new ArrayList<>();
         content.getLookUpTable().values().forEach(key -> {
             if(content.getStore().get(key).isEmpty()) {

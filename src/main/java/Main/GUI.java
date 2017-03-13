@@ -348,6 +348,8 @@ public class GUI extends Application{
             primaryStage.close();
         });
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stateController.save_current_state()));
+
      //   setStyleSheet(defaultStyle);
 
         //Now, that everything is loaded, we can start the Main.CLI in a different Thread.
