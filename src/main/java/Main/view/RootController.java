@@ -352,18 +352,27 @@ public class RootController {
        dialog.setHeaderText("Please choose a name for the new "+clazz.getSimpleName());
        dialog.setContentText("Please enter the name:");
 
-       Alert alert = new Alert(Alert.AlertType.ERROR);
-       alert.setTitle("error");
-       alert.initOwner(gui.getPrimaryStage());
-       alert.setHeaderText("Name already taken!");
+       Alert alert_double = new Alert(Alert.AlertType.ERROR);
+       alert_double.setTitle("error");
+       alert_double.initOwner(gui.getPrimaryStage());
+       alert_double.setHeaderText("Name already taken!");
+
+       Alert alert_empty = new Alert(Alert.AlertType.ERROR);
+       alert_empty.setTitle("error");
+       alert_empty.initOwner(gui.getPrimaryStage());
+       alert_empty.setHeaderText("Please choose a name!");
 
 
 // Traditional way to get the response value.
        Optional<String> result = dialog.showAndWait();
        if(result.isPresent()) {
-           while(result.isPresent() && gui.getContent().getStore().get(clazz).get(result.get()) != null) {
+           while(result.isPresent() && (result.get().isEmpty() || gui.getContent().getStore().get(clazz).get(result.get()) != null)) {
                //name already taken
-               alert.showAndWait();
+               if (gui.getContent().getStore().get(clazz).get(result.get()) != null) {
+                   alert_double.showAndWait();
+               } else if(result.get().isEmpty()) {
+                   alert_empty.showAndWait();
+               }
                result = dialog.showAndWait();
            }
            if(result.isPresent()) {
