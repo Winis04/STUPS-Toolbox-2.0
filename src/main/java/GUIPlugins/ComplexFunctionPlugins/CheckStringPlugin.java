@@ -6,6 +6,7 @@ import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
+import Main.Storable;
 import Print.StringLiterals;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -43,7 +44,7 @@ public class CheckStringPlugin extends ComplexFunctionPlugin {
     }
 
     @Override
-    public Node getFxNode(Object object, DisplayPlugin GUI) {
+    public Node getFxNode(Storable object, DisplayPlugin GUI) {
         Automaton automaton = (Automaton) object;
         AutomatonGUI automatonGUI = (AutomatonGUI) GUI;
 

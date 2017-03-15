@@ -10,7 +10,7 @@ import Print.StringLiterals;
 
 public class GrammarChomskyNormalForm extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         Grammar grammar = (Grammar) object;
         if(object == null) {
             gui.errorDialog("Please load a Grammar before using this command");

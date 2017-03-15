@@ -62,6 +62,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         return new AnchorPane();
     }
 
+    /**
     private void refresh(Storable storable) {
         if(storable != null) {
             Class clazz = storable.getClass();
@@ -74,9 +75,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
         }
     }
-
+    **/
     @Override
-    public Node display(Object object) {
+    public Node display(Storable object) {
         if(object != null) {
 
             //init
@@ -488,9 +489,8 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
         this.checkStringIsActive=r;
     }
 
-
     @Override
-    public Node refresh(Object object) {
+    public Node refresh(Storable object) {
         return this.display(object);
     }
 

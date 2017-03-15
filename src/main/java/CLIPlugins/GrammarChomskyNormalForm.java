@@ -32,7 +32,7 @@ public class GrammarChomskyNormalForm extends CLIPlugin {
     }
 
     @Override
-    public Storable execute(Object object, String[] parameters) {
+    public Storable execute(Storable object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please load a grammar before using this command!");

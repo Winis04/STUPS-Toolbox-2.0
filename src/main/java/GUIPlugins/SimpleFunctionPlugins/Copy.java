@@ -12,7 +12,7 @@ public class Copy extends SimpleFunctionPlugin {
         return true;
     }
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
 
         Storable storable = (Storable) object;
 

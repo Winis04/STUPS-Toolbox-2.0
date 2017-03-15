@@ -261,7 +261,7 @@ public class CLI {
                             case "str":
                             case "copy":
 
-                                Object object = content.getObjects().get(clazz);
+                                Storable object = content.getObjects().get(clazz);
                                 if (object == null) {
                                     System.out.println("Please load an object of type " + parameter1 + " before using this command!");
                                 } else {
@@ -424,6 +424,29 @@ public class CLI {
         }
     }
 
+
+    public Storable execute(String command, String[] parameters,  List<CLIPlugin> plugins) throws InterruptedException {
+        Storable ret = null;
+        boolean validCommand = false;
+        if (buildIn(command, parameters, plugins)) {
+            validCommand = true;
+        } else {
+            for (CLIPlugin plugin : plugins) {
+                if (Arrays.asList(plugin.getNames()).contains(command) && plugin.checkParameters(parameters)) {
+                    validCommand = true;
+                    ret = plugin.execute(content.getObjects().get(plugin.inputType()), parameters);
+                    if (!plugin.errorFlag() && ret != null) {
+                        content.getObjects().put(plugin.outputType(), ret);
+                        if (content.getStore().get(plugin.outputType()) != null && content.getStore().get(plugin.outputType()).keySet().contains(ret.getName())) {
+                            content.getStore().get(plugin.outputType()).put(ret.getName(), ret);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
 
 
    

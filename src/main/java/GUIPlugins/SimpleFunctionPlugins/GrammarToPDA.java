@@ -13,7 +13,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
 
 public class GrammarToPDA extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         if(object == null) {
             gui.errorDialog("Please load a grammar before using this command!");
             return null;

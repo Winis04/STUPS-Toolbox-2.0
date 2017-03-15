@@ -5,6 +5,7 @@ import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
+import Main.Storable;
 import Print.Printer;
 import Print.StringLiterals;
 import javafx.scene.Node;
@@ -38,7 +39,7 @@ public class CheckStringGrammarPlugin extends ComplexFunctionPlugin {
     }
 
     @Override
-    public Node getFxNode(Object object, DisplayPlugin GUI) {
+    public Node getFxNode(Storable object, DisplayPlugin GUI) {
         Grammar grammar = (Grammar) object;
         GrammarGUI grammarGUI = (GrammarGUI) GUI;
 

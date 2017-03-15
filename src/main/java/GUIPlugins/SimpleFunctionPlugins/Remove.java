@@ -13,7 +13,7 @@ public class Remove extends SimpleFunctionPlugin {
         return true;
     }
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         TreeItem<String> selectedItem = gui.getOverviewController().getTreeView().getSelectionModel().getSelectedItem();
         TreeItem<String> sibling=selectedItem.nextSibling();
         if(sibling!=null) {

@@ -30,7 +30,7 @@ public class PrintModePlugin extends CLIPlugin {
     }
 
     @Override
-    public Storable execute(Object object, String[] parameters) {
+    public Storable execute(Storable object, String[] parameters) {
         errorFlag = false;
         if(parameters.length==1) {
 

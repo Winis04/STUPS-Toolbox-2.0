@@ -11,7 +11,7 @@ import java.util.*;
 
 public class GrammarAddRule extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         Grammar grammar = (Grammar) object;
         //Show a dialog that lets the user enter a nonterminal and a list of symbols for the new rule.
         Dialog<String[]> dialog = new Dialog<>();

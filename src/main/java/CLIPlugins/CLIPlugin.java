@@ -42,28 +42,28 @@ public abstract class CLIPlugin {
      * @param parameters The parameters, that the user has entered.
      * @return The changed object.
      */
-    public abstract Storable execute(Object object, String[] parameters);
+    public abstract Storable execute(Storable storable, String[] parameters);
 
     /**
-     * Returns the desired object-type, needed by {@link #execute(Object, String[])}.
-     * For example: If {@link #execute(Object, String[])} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
+     * Returns the desired object-type, needed by {@link #execute(Storable, String[])}.
+     * For example: If {@link #execute(Storable, String[])} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
      *
      * @return The object-type.
      */
    public abstract Class inputType();
 
     /**
-     * Returns the type of the object that {@link #execute(Object, String[])} returns.
-     * For example: If {@link #execute(Object, String[])} returns an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
+     * Returns the type of the object that {@link #execute(Storable, String[])} returns.
+     * For example: If {@link #execute(Storable, String[])} returns an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
      *
      * @return The object-type.
      */
     public abstract Class outputType();
 
     /**
-     * After calling {@link #execute(Object, String[])}, the main program calls this method to evaluate, whether an error has occurred, or not.
+     * After calling {@link #execute(Storable, String[])}, the main program calls this method to evaluate, whether an error has occurred, or not.
      *
-     * @return true, if an error has occurred, during the execution of {@link #execute(Object, String[])}.
+     * @return true, if an error has occurred, during the execution of {@link #execute(Storable, String[])}.
      */
     public abstract boolean errorFlag();
 

@@ -5,6 +5,7 @@ import AutomatonSimulator.AutomatonUtil;
 import AutomatonSimulator.Rule;
 import AutomatonSimulator.State;
 import Main.GUI;
+import Main.Storable;
 import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -172,9 +173,9 @@ public class AutomatonGUI implements DisplayPlugin {
     }
 
     @Override
-    public Node display(Object object) {
+    public Node display(Storable storable) {
         //Cast object to an automaton and create the JUNG-graph.
-        this.automaton = (Automaton) object;
+        this.automaton = (Automaton) storable;
         this.parseAutomatonToGraph();
 
         //Create a new layout and initialize visualizationViewer.
@@ -343,7 +344,7 @@ public class AutomatonGUI implements DisplayPlugin {
 
 
     @Override
-    public Node refresh(Object object) {
+    public Node refresh(Storable object) {
         this.automaton = (Automaton) object;
         display(this.automaton);
         this.parseAutomatonToGraph();

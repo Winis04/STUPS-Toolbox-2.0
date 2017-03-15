@@ -42,7 +42,7 @@ public class GrammarLoadPlugin extends CLIPlugin {
     }
 
     @Override
-    public Storable execute(Object object, String[] parameters) {
+    public Storable execute(Storable object, String[] parameters) {
         errorFlag = false;
         Grammar grammar = null;
         try {

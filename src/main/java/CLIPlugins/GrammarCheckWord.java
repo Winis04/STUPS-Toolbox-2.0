@@ -32,7 +32,7 @@ public class GrammarCheckWord extends CLIPlugin {
     }
 
     @Override
-    public Storable execute(Object object, String[] parameters) {
+    public Storable execute(Storable object, String[] parameters) {
         if(object == null) {
             System.out.println("please load a grammar before using this command");
             errorFlag = true;

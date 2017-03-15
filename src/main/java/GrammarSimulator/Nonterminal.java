@@ -91,6 +91,9 @@ public final class Nonterminal implements Symbol, Printable {
 
 
     public String makeValid(String name) {
+        if(name.equals("")) {
+            return "TMP";
+        }
 
         StringBuilder res = new StringBuilder();
         String start = Character.toString(name.charAt(0));

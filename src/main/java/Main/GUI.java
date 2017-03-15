@@ -459,7 +459,7 @@ public class GUI extends Application{
      * @param object the object that is displayed
      */
 
-    public void refresh(Object object) {
+    public void refresh(Storable object) {
         switchDisplayGui(object.getClass());
         functionsPane.setCenter(currentDisplayPlugin.refresh(object));
         refreshComplexPlugins();

@@ -10,7 +10,7 @@ import Print.StringLiterals;
 
 public class RenameNonterminals extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         if(object != null) {
             Grammar grammar = (Grammar) object;
             Printer.printEnumeration(GrammarUtil.renameNonterminalsAsPrintables(grammar), StringLiterals.RENAME_POINT_DESCRIPTIONS,StringLiterals.RENAME_TEXTS,StringLiterals.RENAME_TITLE);

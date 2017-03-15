@@ -3,6 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.AutomatonGUI;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.PushDownAutomatonGUI;
+import Main.Storable;
 import Print.StringLiterals;
 import PushDownAutomatonSimulator.InputLetter;
 import PushDownAutomatonSimulator.PDARule;
@@ -58,7 +59,7 @@ public class CheckStringPDAPlugin extends ComplexFunctionPlugin {
     }
 
     @Override
-    public Node getFxNode(Object object, DisplayPlugin GUI) {
+    public Node getFxNode(Storable object, DisplayPlugin GUI) {
         PushDownAutomaton pda = (PushDownAutomaton) object;
         PushDownAutomatonGUI pdaGUI = (PushDownAutomatonGUI) GUI;
 

@@ -3,6 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GrammarSimulator.*;
+import Main.Storable;
 import Print.Printer;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -36,7 +37,7 @@ public class InteractivePathGrammar extends ComplexFunctionPlugin {
     }
 
     @Override
-    public Node getFxNode(Object object, DisplayPlugin GUI) {
+    public Node getFxNode(Storable object, DisplayPlugin GUI) {
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);

@@ -276,7 +276,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentGrammar() {
-        Object object = gui.getContent().getObjects().get(Grammar.class);
+        Storable object = gui.getContent().getObjects().get(Grammar.class);
         if(object != null) {
             Grammar grammar = (Grammar) object;
             File file = gui.openFileToSave("Grammar");
@@ -289,7 +289,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentAutomaton() {
-        Object object = gui.getContent().getObjects().get(Automaton.class);
+        Storable object = gui.getContent().getObjects().get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFileToSave("Automaton");
@@ -302,7 +302,7 @@ public class RootController {
 
     @FXML
     public void saveCurrentPushDownAutomaton() {
-        Object object = gui.getContent().getObjects().get(PushDownAutomaton.class);
+        Storable object = gui.getContent().getObjects().get(PushDownAutomaton.class);
         if(object != null) {
             PushDownAutomaton pda= (PushDownAutomaton) object;
             File file = gui.openFileToSave("PDA");
@@ -319,7 +319,7 @@ public class RootController {
 
     @FXML
     public void toGraphViz() {
-        Object object = gui.getContent().getObjects().get(Automaton.class);
+        Storable object = gui.getContent().getObjects().get(Automaton.class);
         if(object != null) {
             Automaton automaton = (Automaton) object;
             File file = gui.openFileToSave("Automaton");

@@ -31,7 +31,7 @@ public abstract class SimpleFunctionPlugin {
      * @return The changed object.
      */
 
-    protected abstract Storable execute(Object object);
+    protected abstract Storable execute(Storable object);
 
     /**
      * Returns the plugin's name.
@@ -42,8 +42,8 @@ public abstract class SimpleFunctionPlugin {
     public abstract String getName();
 
     /**
-     * Returns the desired object-type, needed by {@link #execute(Object)}.
-     * For example: If {@link #execute(Object)} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
+     * Returns the desired object-type, needed by {@link #execute(Storable)}.
+     * For example: If {@link #execute(Storable)} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
      *
      * @return The object-type.
      */
@@ -51,8 +51,8 @@ public abstract class SimpleFunctionPlugin {
     public abstract Class inputType();
 
     /**
-     * Returns the type of the object that {@link #execute(Object)} returns.
-     * For example: If {@link #execute(Object)} returns an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
+     * Returns the type of the object that {@link #execute(Storable)} returns.
+     * For example: If {@link #execute(Storable)} returns an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
      *
      * @return The object-type.
      */
@@ -81,14 +81,13 @@ public abstract class SimpleFunctionPlugin {
             item.setDisable(true);
         }
         item.setOnAction(t -> {
-            Object ret= plugin. execute(gui.getContent().getObjects().get(plugin.inputType()));
-            Storable storable = (Storable) ret;
-            if(ret != null) {
-                Class clazz = ret.getClass();
+            Storable storable= plugin.execute(gui.getContent().getObjects().get(plugin.inputType()));
+            if(storable != null) {
+                Class clazz = storable.getClass();
 
                 gui.getContent().getObjects().put(clazz,storable); //add new object as the current object
                 gui.getContent().getStore().get(clazz).put(storable.getName(),storable); //add object to the store
-                gui.refresh(ret); //switch to new object
+                gui.refresh(storable); //switch to new object
                 gui.refresh(); //refresh the treeView
 
             }

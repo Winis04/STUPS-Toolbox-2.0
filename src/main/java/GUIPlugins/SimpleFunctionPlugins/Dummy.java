@@ -8,7 +8,7 @@ import PushDownAutomatonSimulator.PushDownAutomatonUtil;
 
 public class Dummy extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         if(object != null) {
             PushDownAutomaton pda = (PushDownAutomaton) object;
             return PushDownAutomatonUtil.splitRules(pda);

@@ -3,6 +3,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
+import Main.Storable;
 import Print.Printer;
 import Print.StringLiterals;
 import javafx.geometry.Insets;
@@ -43,7 +44,7 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
     }
 
     @Override
-    Node getFxNode(Object object, DisplayPlugin GUI) {
+    Node getFxNode(Storable object, DisplayPlugin GUI) {
         Grammar grammar = (Grammar) object;
         AnchorPane root = new AnchorPane();
         FlowPane pane = new FlowPane();

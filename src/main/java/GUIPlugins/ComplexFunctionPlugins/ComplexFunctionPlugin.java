@@ -2,6 +2,7 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
 import Main.GUI;
+import Main.Storable;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -34,7 +35,7 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI The currently loaded display-plugin. This can be used, to interact with the plugin.
      * @return The JavaFX-{@link Node}.
      */
-    abstract Node getFxNode(Object object, DisplayPlugin GUI);
+    abstract Node getFxNode(Storable object, DisplayPlugin GUI);
 
     /**
      * Returns this plugin's name.
@@ -49,7 +50,7 @@ public abstract class ComplexFunctionPlugin {
      * @param GUI the {@link DisplayPlugin} which displays the class belonging to object
      * @return a {@link Tab} which contains the content of {@link #getFxNode}
      */
-    public Tab getAsTab(Object object, DisplayPlugin GUI) {
+    public Tab getAsTab(Storable object, DisplayPlugin GUI) {
         Tab tab=new Tab(this.getName());
         AnchorPane anchorPane = new AnchorPane();
         Node node = getFxNode(object,GUI);
@@ -74,7 +75,7 @@ public abstract class ComplexFunctionPlugin {
 
     /**
      * Returns the object-type, that this plugin works with.
-     * For example: If {@link #getFxNode(Object, DisplayPlugin)} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
+     * For example: If {@link #getFxNode(Storable, DisplayPlugin)} needs an automaton, this method returns {@link AutomatonSimulator.Automaton}.class.
      *
      * @return The object-type.
      */

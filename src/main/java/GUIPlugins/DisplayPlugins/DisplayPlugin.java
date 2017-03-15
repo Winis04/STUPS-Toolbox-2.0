@@ -1,6 +1,7 @@
 package GUIPlugins.DisplayPlugins;
 
 import Main.GUI;
+import Main.Storable;
 import javafx.scene.Node;
 
 //TODO better javadoc
@@ -23,7 +24,7 @@ public interface DisplayPlugin {
      * @return The JavaFX-{@link Node}.
      */
 
-    Node display(Object object);
+    Node display(Storable object);
 
 
 
@@ -36,7 +37,7 @@ public interface DisplayPlugin {
      * @return Node the Node that contains the object
      */
 
-    Node refresh(Object object);
+    Node refresh(Storable object);
 
 
     /**

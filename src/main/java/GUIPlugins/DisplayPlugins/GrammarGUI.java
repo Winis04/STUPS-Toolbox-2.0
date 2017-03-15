@@ -5,6 +5,7 @@ import GUIPlugins.DisplayPlugins.GrammarTabs.FirstFollowTab;
 import GUIPlugins.DisplayPlugins.GrammarTabs.LLParsingTableTab;
 import GrammarSimulator.Grammar;
 import Main.GUI;
+import Main.Storable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -25,7 +26,7 @@ public class GrammarGUI implements DisplayPlugin {
     private GUI gui;
 
     @Override
-    public Node display(Object object) {
+    public Node display(Storable object) {
         /*
       The grammar, that is being displayed.
      */
@@ -91,7 +92,7 @@ public class GrammarGUI implements DisplayPlugin {
     }
 
     @Override
-    public Node refresh(Object object) {
+    public Node refresh(Storable object) {
         return this.display(object);
     }
 

@@ -29,7 +29,7 @@ public class AutomatonCompletePlugin extends CLIPlugin {
     }
 
     @Override
-    public Storable execute(Object object, String[] parameters) {
+    public Storable execute(Storable object, String[] parameters) {
         errorFlag = false;
         if(object == null) {
             System.out.println("Please use 'la', or 'load-automaton' to load an automaton before using this command!");

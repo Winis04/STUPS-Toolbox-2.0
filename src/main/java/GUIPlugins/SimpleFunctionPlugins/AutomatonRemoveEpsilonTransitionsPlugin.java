@@ -13,7 +13,7 @@ import Main.Storable;
 public class AutomatonRemoveEpsilonTransitionsPlugin extends SimpleFunctionPlugin {
 
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         Automaton automaton = (Automaton) object;
         Automaton deepCopy = (Automaton) automaton.deep_copy();
         Automaton algo = AutomatonUtil.removeEpsilonTransitions(automaton);

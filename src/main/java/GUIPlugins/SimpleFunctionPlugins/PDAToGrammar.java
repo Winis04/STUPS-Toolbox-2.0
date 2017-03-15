@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class PDAToGrammar extends SimpleFunctionPlugin {
     @Override
-    public Storable execute(Object object) {
+    public Storable execute(Storable object) {
         if(object != null) {
             PushDownAutomaton pda = (PushDownAutomaton) object;
 
