@@ -57,7 +57,10 @@ public abstract class ComplexFunctionPlugin {
         Node node = getFxNode(object,GUI);
         anchorPane.getChildren().add(node);
         double height = GUI.getGUI().getOverviewController().heightTabPane();
-        AnchorPane.setTopAnchor(node,height/10);
+        AnchorPane.setTopAnchor(node,0.0);
+        AnchorPane.setBottomAnchor(node,0.0);
+        AnchorPane.setRightAnchor(node,0.0);
+        AnchorPane.setLeftAnchor(node,0.0);
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(anchorPane);
         scrollPane.setFitToHeight(true);

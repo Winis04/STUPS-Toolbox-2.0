@@ -168,8 +168,8 @@ public class CYKGrammarPlugin extends ComplexFunctionPlugin {
         pane.setVgap(10);
 
 
-        root.getChildren().add(pane);
-        return root;
+       // root.getChildren().add(pane);
+        return pane;
     }
 
     @Override

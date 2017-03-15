@@ -119,6 +119,10 @@ BorderPane{
      -fx-text-fill: b3;
 }
 
+FlowPane{
+     -fx-background-color: b4;
+}
+
 .tree-view{
  -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;

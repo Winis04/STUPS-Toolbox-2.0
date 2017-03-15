@@ -66,8 +66,8 @@ task runSableCC() {
 }
 
 //does some necessary adjustments
-task doAdjustments() {
-	doLast{
+task doAdjustments() << {
+	//doLast{
 		new File("src/main/sablecc") . eachFile ( ) { file -> 
 			 String name = file.getName().split("\\.")[0]
 			 String contents = new File('generated-src/main/java/'+name+'/lexer/Lexer.java').getText( 'UTF-8' ) 
@@ -86,7 +86,7 @@ task doAdjustments() {
 			 into 'generated-src/main/resources/'+name
 			 }
 		}
-	}
+	//}
 }
 
 //this is the task, that should be called

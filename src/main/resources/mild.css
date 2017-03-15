@@ -1,38 +1,50 @@
-/** tab pane **/
-/** design of the tabs **/
+
+
+.root {
+   r: #847e89;      //color selected
+   b1: #afbfc0;     // tree view
+   b2: #56494c;     //tab header background
+   b3: black;      //textcolor
+   b4: #c2d3cd;        //background
+
+}
+
 .tab:top{
     -fx-padding: 0 30 0 30;
-
+     -fx-text-fill: b3;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
-    -fx-background-color: #56494c;
-    -fx-border-color: gray;
+    -fx-background-color: b2;
+    -fx-border-color: b3;
     -fx-border-widht: 0.5px;
  }
 
  .tab:top:selected{
-     -fx-background-color: #847e89;
+     -fx-background-color: r;
+      -fx-text-fill: b3;
  }
 
 /** textcolor tabs **/
 .tab-pane:top .tab-header-area .headers-region .tab:top:selected .tab-container .tab-label{
-    -fx-text-fill: #575a5d;
+    -fx-text-fill: b3;
 }
 .tab-pane:top .tab-header-area .headers-region .tab:top .tab-container .tab-label{
-    -fx-text-fill: #9fa4a9;
+    -fx-text-fill: b3;
 }
 
 /** tab area **/
 .tab-pane:top .tab-header-area .tab-header-background{
-    -fx-background-color: #56494c;
+    -fx-background-color: b2;
+     -fx-text-fill: b3;
 
 }
 
 .tab-pane:top .tab-content-area{
-    -fx-padding: 30 30 30 30;
-     -fx-background-color: #c2d3cd;
-    -fx-border-color: gray;
+    -fx-padding: 0 0 0 30;
+     -fx-background-color: b4;
+    -fx-border-color: b3;
     -fx-border-width: 0.5px;
+     -fx-text-fill: b3;
 }
 
 
@@ -40,27 +52,19 @@
 .tab-pane:top{
     -fx-close-tab-animation: none;
        -fx-open-tab-animation: none;
+        -fx-text-fill: b3;
 }
 
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
  /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
     -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+     -fx-text-fill: b3;
 }
 
 
-.tree-view{
- -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-.tree-view .tree-cell {
-    -fx-background-color: #afbfc0 ;
-    -fx-text-fill: #56494c ;
-}
 
-.tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
-        -fx-background-color: #9fa4a9;
-}
+
 
 
 
@@ -74,42 +78,75 @@
 }
 
 .scroll-pane{
-    -fx-padding: 5 5 5 5;
+    -fx-padding: 0 0 0 0;
+     -fx-text-fill: b3;
 }
 
 
-/** Background **/
+/** scroll pane **/
 
 .scroll-pane{
-     -fx-background-color: #c2d3cd;
+     -fx-background-color: b4;
+      -fx-text-fill: b3;
 }
 
 .scroll-pane .scroll-bar:vertical{
-    -fx-background-color: #c2d3cd;
+    -fx-background-color: b4;
+     -fx-text-fill: b3;
 }
 .scroll-pane .scroll-bar:vertical .track-background{
-    -fx-background-color: #c2d3cd;
+    -fx-background-color: b4;
+     -fx-text-fill: b3;
 }
 .anchor-pane{
-     -fx-background-color: #c2d3cd;
+     -fx-background-color: b4;
+      -fx-text-fill: b3;
 }
 
 #contentPane{
-      -fx-background-color: #c2d3cd;
+      -fx-background-color: b4;
+      -fx-text-fill: b3;
 }
 
 GridPane{
-    -fx-background-color: #c2d3cd;
+    -fx-background-color: b4;
+     -fx-text-fill: b3;
+}
+
+BorderPane{
+
+    -fx-background-color: b4;
+     -fx-text-fill: b3;
+}
+
+FlowPane{
+     -fx-background-color: b4;
+}
+
+.tree-view{
+ -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tree-view .tree-cell {
+    -fx-background-color: b1 ;
+    -fx-text-fill: b3 ;
+}
+
+.tree-view .virtual-flow .clipped-container .sheet .tree-cell:selected{
+        -fx-background-color: r;
 }
 
 .button:disabled{
     -fx-opacity: 1.0 ;
-    -fx-background-color: #afbfc0;
+    -fx-background-color: b1;
+     -fx-text-fill: b3;
 }
 
 .button{
-    -fx-background-color: #9fa4a9;
+    -fx-background-color: r;
     -fx-padding: 5 5 5 5;
     -fx-min-width: 30;
     -fx-min-height: 30;
+     -fx-text-fill: b3;
 }

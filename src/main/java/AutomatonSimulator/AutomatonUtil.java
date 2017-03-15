@@ -15,13 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -664,17 +658,25 @@ public class AutomatonUtil {
     public static Automaton renameStates(Automaton automaton) {
         //Initialize a HashMap, that maps a state to a boolean, to keep track of which states have already been renamed.
         HashMap<State, Boolean> visitedStates = new HashMap<>();
+
+
+
         for(State state : automaton.getStates()) {
+
             visitedStates.put(state, false);
         }
 
+
+
         int counter = 0;
-        ArrayList<State> states = new ArrayList<>();
+        Set<State> states = new HashSet<>();
         states.add(automaton.getStartState());
+
+
 
         //Rename states, as long as there are still false-entries in visitedStates.
         while(visitedStates.values().contains(false)) {
-            ArrayList<State> nextStates = new ArrayList<>();
+            Set<State> nextStates = new HashSet<>();
 
             //Go through every entry in visited states and rename it, if it has not already been renamed.
             //Then add all its successors to nextStates.
