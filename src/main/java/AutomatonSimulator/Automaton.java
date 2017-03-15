@@ -4,12 +4,9 @@ import Main.Storable;
 import Print.Printable;
 import Print.Printer;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
@@ -52,8 +49,8 @@ public class Automaton implements Printable, Storable {
      * @param allInputs A set of input-strings.
      * @param name name of the automaton
      */
-    public Automaton(HashSet<State> states, State startState, HashSet<String> allInputs, String name) {
-        this.states = states;
+    public Automaton(Set<State> states, State startState, HashSet<String> allInputs, String name) {
+        this.states = new HashSet<>(states);
         this.startState = startState;
         this.allInputs = allInputs;
         removeEpsilonCycles();
@@ -133,7 +130,7 @@ public class Automaton implements Printable, Storable {
      * @param visitedStates Contains all states, that have already been visited. It is empty initially.
      * @param cycleFound true, if an epsilon-cycle has been found.
      */
-    private void removeEpsilonCycles(State startState, HashSet<State> visitedStates, boolean cycleFound) {
+    private void removeEpsilonCycles(State startState, Set<State> visitedStates, boolean cycleFound) {
         //Get all states, that are reachable with an empty word as input, from startState and startState to visitedStates.
         HashSet<State> nextStates = AutomatonUtil.nextStates(startState, "lambda");
         visitedStates.add(startState);
@@ -296,12 +293,12 @@ public class Automaton implements Printable, Storable {
         Printer.print(AutomatonUtil.getStatesSorted(this).stream().map(State::getName).collect(joining(", "))+"\n");
     }
 
-    private void printAllStates_Console(ArrayList<State> statesSorted, boolean onlyFinal) {
-        ArrayList<State> states;
+    private void printAllStates_Console(List<State> statesSorted, boolean onlyFinal) {
+        List<State> states;
         if(onlyFinal) {
-            states=(ArrayList<State>) statesSorted.stream().filter(State::isFinal).collect(Collectors.toList());
+            states=statesSorted.stream().filter(State::isFinal).collect(Collectors.toList());
         } else {
-            states=(ArrayList<State>) statesSorted.stream().collect(Collectors.toList());
+            states= statesSorted.stream().collect(Collectors.toList());
         }
         Iterator<State> iterator=states.iterator();
         while(iterator.hasNext()) {

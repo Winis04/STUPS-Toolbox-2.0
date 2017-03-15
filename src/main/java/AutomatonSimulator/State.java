@@ -3,8 +3,8 @@ package AutomatonSimulator;
 import Print.Printable;
 import Print.Printer;
 
-import java.io.BufferedWriter;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A state of an {@link Automaton}.
@@ -40,11 +40,11 @@ public class State implements Printable{
      * @param isFinal True, if this state is a final state.
      * @param rules The state's rules.
      */
-    public State(String name, boolean isStart, boolean isFinal, HashSet<Rule> rules) {
+    public State(String name, boolean isStart, boolean isFinal, Set<Rule> rules) {
         this.name = name;
         this.isStart = isStart;
         this.isFinal = isFinal;
-        this.rules = rules;
+        this.rules = new HashSet<>(rules);
     }
 
     /**

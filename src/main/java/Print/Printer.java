@@ -5,7 +5,6 @@ package Print;
 import Main.GUI;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,7 +94,7 @@ public class Printer {
      * @param texts the texts printed before the printable object
      * @param title the title of the enumeration
      */
-    public static void printEnumeration(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
+    public static void printEnumeration(List<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         switch(printmode) {
             case NO:
                 break;
@@ -215,7 +214,7 @@ public class Printer {
 
     }
 
-    private static void printEnumerationLatex(ArrayList<Printable> printables, String[] point_descriptions, String[] texts, String title) {
+    private static void printEnumerationLatex(List<Printable> printables, String[] point_descriptions, String[] texts, String title) {
         if(printables.size()!=texts.length || printables.size()!=point_descriptions.length) {
             return;
         }
@@ -299,7 +298,7 @@ public class Printer {
 
 
 
-    private static void printEnumerationConsole(ArrayList<Printable> printables, String[] point_description, String[] texts) {
+    private static void printEnumerationConsole(List<Printable> printables, String[] point_description, String[] texts) {
         if(printables.size()!=texts.length || printables.size()!=point_description.length) {
             return;
         }

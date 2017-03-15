@@ -2,26 +2,19 @@ package GUIPlugins.ComplexFunctionPlugins;
 
 
 import GUIPlugins.DisplayPlugins.DisplayPlugin;
-import GUIPlugins.DisplayPlugins.GrammarGUI;
 import GrammarSimulator.*;
-import Main.GUI;
 import Print.Printer;
-import Print.StringLiterals;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
 /**

@@ -24,7 +24,7 @@ public class LLParsingTableTab implements GrammarTab {
         GridPane rootPane = new GridPane();
         //if(GrammarUtil.isLambdaFree(grammar)) {
             HashMap<Nonterminal, HashMap<Terminal, HashSet<String>>> llTable = GrammarUtil.llParsingTable(grammar);
-            ArrayList<Terminal> terminalList = GrammarUtil.getTerminalsInOrder(grammar);
+            List<Terminal> terminalList = GrammarUtil.getTerminalsInOrder(grammar);
         terminalList.addAll(llTable.get(grammar.getStartSymbol()).keySet().stream().filter(terminal -> terminal.getName().equals("$")).collect(Collectors.toList()));
 
             //Add a column for every terminal.

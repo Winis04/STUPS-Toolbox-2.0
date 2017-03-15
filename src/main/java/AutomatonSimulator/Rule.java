@@ -3,8 +3,8 @@ package AutomatonSimulator;
 import Print.Printable;
 import Print.Printer;
 
-import java.io.BufferedWriter;
 import java.util.HashSet;
+import java.util.Set;
 
 import static java.util.stream.Collectors.joining;
 
@@ -42,10 +42,10 @@ public class Rule implements Printable{
      * @param  comingFrom the state, from which the rule starts
      * @param acceptedInputs The inputs, which this rule accepts.
      */
-    public Rule(State comingFrom, State goingTo, HashSet<String> acceptedInputs) {
+    public Rule(State comingFrom, State goingTo, Set<String> acceptedInputs) {
         this.comingFrom = comingFrom;
         this.goingTo = goingTo;
-        this.acceptedInputs = acceptedInputs;
+        this.acceptedInputs = new HashSet<>(acceptedInputs);
         this.length=1;
     }
 

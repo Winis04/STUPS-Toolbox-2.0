@@ -2,14 +2,9 @@ package CLIPlugins;
 
 import GrammarSimulator.Grammar;
 import GrammarSimulator.GrammarUtil;
-import GrammarSimulator.Nonterminal;
 import Main.Storable;
-import Print.Printable;
 import Print.PrintableSet;
 import Print.Printer;
-
-import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Prints the nullable-set of the current {@link Grammar}.

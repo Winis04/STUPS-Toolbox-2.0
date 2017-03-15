@@ -42,7 +42,7 @@ public class GrammarUtil {
      * @return The ArrayList.
      */
 
-    private static ArrayList<Terminal> getTerminalsInOrder(Nonterminal comingFrom, ArrayList<Terminal> terminals, HashSet<Nonterminal> visitedSymbols, Grammar grammar) {
+    private static List<Terminal> getTerminalsInOrder(Nonterminal comingFrom, List<Terminal> terminals, Set<Nonterminal> visitedSymbols, Grammar grammar) {
         if (!visitedSymbols.contains(comingFrom)) {
             HashSet<Nonterminal> nextSymbols = new HashSet<>();
 
@@ -78,7 +78,7 @@ public class GrammarUtil {
      * @return The ArrayList.
      */
 
-    private static ArrayList<Nonterminal> getNonterminalsInOrder(Nonterminal comingFrom, ArrayList<Nonterminal> nonterminals, Grammar grammar) {
+    private static List<Nonterminal> getNonterminalsInOrder(Nonterminal comingFrom, List<Nonterminal> nonterminals, Grammar grammar) {
         HashSet<Nonterminal> nextSymbols = new HashSet<>();
 
         try {
@@ -119,7 +119,7 @@ public class GrammarUtil {
 
     private static void writeTerminals(boolean onGui, BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
-        ArrayList<Terminal> terminals = getTerminalsInOrder(grammar);
+        List<Terminal> terminals = getTerminalsInOrder(grammar);
         String s;
         if(onGui){
             s = terminals.stream().filter(terminal -> !terminal.equals(Terminal.NULLSYMBOL))
@@ -143,7 +143,7 @@ public class GrammarUtil {
 
 
     private static void writeNonterminals(BufferedWriter writer, Grammar grammar) {
-        ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
+        List<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
         Iterator<Nonterminal> it = nonterminals.iterator();
 
         try {
@@ -169,7 +169,7 @@ public class GrammarUtil {
 
     private static void writeRules(BufferedWriter writer, Grammar grammar) {
         //Get all of the grammar's nonterminal symbols in order of their appearance in the rules.
-        ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
+        List<Nonterminal> nonterminals = getNonterminalsInOrder(grammar);
 
         //Iterate through all symbol lists of every nonterminal and print them.
         try {
@@ -212,7 +212,7 @@ public class GrammarUtil {
      * @return The first-set.
      */
 
-    private static HashSet<Terminal> calculateFirstOfList(List<Symbol> symbolList, HashSet<Nonterminal> nullable, HashMap<Nonterminal, HashSet<Terminal>> firsts, Grammar grammar) {
+    private static HashSet<Terminal> calculateFirstOfList(List<Symbol> symbolList, Set<Nonterminal> nullable, HashMap<Nonterminal, HashSet<Terminal>> firsts, Grammar grammar) {
         HashSet<Terminal> result = new HashSet<>();
 
         for (Symbol aSymbolList : symbolList)
@@ -334,8 +334,8 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
-    public static ArrayList<Terminal> getTerminalsInOrder(Grammar grammar) {
-        ArrayList<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>(),grammar);
+    public static List<Terminal> getTerminalsInOrder(Grammar grammar) {
+        List<Terminal> terminals = getTerminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(), new HashSet<>(),grammar);
         HashSet<Terminal> missingTerminals = new HashSet<>(grammar.getTerminals());
         missingTerminals.removeAll(terminals);
         terminals.addAll(missingTerminals);
@@ -348,8 +348,8 @@ public class GrammarUtil {
      * @param grammar The grammar.
      * @return The ArrayList.
      */
-    public static ArrayList<Nonterminal> getNonterminalsInOrder(Grammar grammar) {
-        ArrayList<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(),grammar);
+    public static List<Nonterminal> getNonterminalsInOrder(Grammar grammar) {
+        List<Nonterminal> nonterminals = getNonterminalsInOrder(grammar.getStartSymbol(), new ArrayList<>(),grammar);
         HashSet<Nonterminal> missingTerminals = new HashSet<>(grammar.getNonterminals());
         missingTerminals.removeAll(nonterminals);
         nonterminals.addAll(missingTerminals);
@@ -856,7 +856,7 @@ public class GrammarUtil {
     }
 
     /**
-     * @param g the grammar on which  {@link #removeLambdaRules_StepTwo(Grammar, HashSet, Grammar)} was already executed
+     * @param g the grammar on which  {@link #removeLambdaRules_StepTwo(Grammar, Set, Grammar)} was already executed
      * @return a grammar on which step three of the algorithm has been executed
      */
     private static Grammar removeLambdaRules_StepThree(Grammar g) {
@@ -919,7 +919,7 @@ public class GrammarUtil {
     }
 
 
-    private static boolean containsNullable(Rule rule, HashSet<Nonterminal> nullable) {
+    private static boolean containsNullable(Rule rule, Set<Nonterminal> nullable) {
         return rule.getRightSide().stream()
                 .anyMatch(symbol -> nullable.stream().anyMatch(elem -> elem.equals(symbol)));
     }
@@ -931,7 +931,7 @@ public class GrammarUtil {
      * @param nullable The set, which contains all the nullable terminals
      */
 
-    private static Grammar removeLambdaRules_StepTwo(Grammar g, HashSet<Nonterminal> nullable, Grammar original) {
+    private static Grammar removeLambdaRules_StepTwo(Grammar g, Set<Nonterminal> nullable, Grammar original) {
 
         Grammar grammar = GrammarUtil.removeUnnecessaryEpsilons(g);
         Queue<Rule> queue = new LinkedList<>();
@@ -1152,7 +1152,7 @@ public class GrammarUtil {
      * @return an ArrayList with two objects that represent backwards edge in a dept-first-search //TODO
      */
 
-    private static ArrayList<Node> findBackwardsEdge(HashSet<Node> unitRules) { //TODO guck Auf Weikipedia, wie da die Zykelerkennung gemacht wurde. Besser?
+    private static ArrayList<Node> findBackwardsEdge(Set<Node> unitRules) { //TODO guck Auf Weikipedia, wie da die Zykelerkennung gemacht wurde. Besser?
         if(unitRules.stream().allMatch(rule -> rule.getDfe()!=0)) {
             for (Node node : unitRules) {
                 for (Node child : node.getChildren()) {
@@ -1171,7 +1171,7 @@ public class GrammarUtil {
 
 
 
-    private static void dfs(HashSet<Node> unitRules) {
+    private static void dfs(Set<Node> unitRules) {
         int[] df = new int[2];
         df[0]=1;
         df[1]=1;
@@ -1210,7 +1210,7 @@ public class GrammarUtil {
      * @param g the grammar g
      */
 
-    private static Grammar removeUnitRules(HashSet<Node> nodes, Grammar g) {
+    private static Grammar removeUnitRules(Set<Node> nodes, Grammar g) {
         ArrayList<Node> sorted=GrammarUtil.bringNonterminalsInOrder(nodes);
 
         //add every rule of the child as a rule of the parent
@@ -1251,7 +1251,7 @@ public class GrammarUtil {
      * @return an arrayList of nodes in the right order
      */
 
-    private static ArrayList<Node> bringNonterminalsInOrder(HashSet<Node> nodes) {
+    private static ArrayList<Node> bringNonterminalsInOrder(Set<Node> nodes) {
 
 
         ArrayList<Node> result = new ArrayList<>();
@@ -1853,13 +1853,13 @@ public class GrammarUtil {
 
     private static ArrayList<String> getTerminalsAsStrings(Grammar grammar) {
         //Get all of the grammar's terminals in order of their appearance in the rules.
-        ArrayList<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
+        List<Terminal> terminals = GrammarUtil.getTerminalsInOrder(grammar);
         return (ArrayList<String>) terminals.stream().filter(terminal -> !terminal.equals(Terminal.NULLSYMBOL)).map(Terminal::getName).collect(Collectors.toList());
     }
 
 
     private static ArrayList<String> getNonterminalsAsStrings(Grammar grammar, boolean latex) {
-        ArrayList<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
+        List<Nonterminal> nonterminals = GrammarUtil.getNonterminalsInOrder(grammar);
         if (latex) {
             return (ArrayList<String>) nonterminals.stream().map(Nonterminal::nameToLatex).collect(Collectors.toList());
         } else {
@@ -1941,7 +1941,7 @@ public class GrammarUtil {
      * @return a new grammar with short and alphabetical nonterminal names
      */
     public static Grammar renameNonterminals(Grammar g) {
-        ArrayList<Nonterminal> nts = getNonterminalsInOrder(g);
+        List<Nonterminal> nts = getNonterminalsInOrder(g);
         Grammar res = g;
         for(Nonterminal nt : nts) {
             res=replaceNonterminal(res,nt,new Nonterminal(nt.getName()+"_xxxxx"));

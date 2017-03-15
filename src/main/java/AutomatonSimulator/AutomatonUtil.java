@@ -28,36 +28,36 @@ import static java.util.stream.Collectors.toList;
 public class AutomatonUtil {
 
     /**
-     * This variable is used by {@link #checkInput(ArrayList, State)} to determine,
+     * This variable is used by {@link #checkInput(List, State)} to determine,
      * whether the given input is accepted, or not.
      */
     private static boolean accepted;
 
     /**
-     * This variable is used to store the recursion depth of {@link #checkInput(ArrayList, State)}.
+     * This variable is used to store the recursion depth of {@link #checkInput(List, State)}.
      */
     private static int recDepth;
 
     /**
-     * This stack stores the way that {@link #checkInput(ArrayList, State)} has taken.
+     * This stack stores the way that {@link #checkInput(List, State)} has taken.
      */
     private static Stack<String> takenWay;
 
     /**
-     * A backup of {@link #takenWay}. It will store the longest way that {@link #checkInput(ArrayList, State)} can take
+     * A backup of {@link #takenWay}. It will store the longest way that {@link #checkInput(List, State)} can take
      * if the given input string is not accepted by the automaton.
      */
     private static ArrayList<String> longestWay;
 
     /**
-     * This stack is used by {@link #checkInput(ArrayList, State)} to temporarily store {@link #recDepth},
+     * This stack is used by {@link #checkInput(List, State)} to temporarily store {@link #recDepth},
      * whenever it comes to branch of possible rules to take.
      */
     private static Stack<Integer> branches;
 
     /**
      * States, that have a rule with the empty word as accepted input pointing to them, will be added to this list.
-     * This is needed by {@link #checkInput(ArrayList, State)}.
+     * This is needed by {@link #checkInput(List, State)}.
      */
     private static HashSet<State> emptyWordStates = new HashSet<>();
 
@@ -220,7 +220,7 @@ public class AutomatonUtil {
      * @param returnSet Should be empty initially.
      * @return A HashSet, that contains the reachable states.
      */
-    private static HashSet<State> epsilonReachableStates(State currentState, HashSet<State> returnSet) {
+    private static Set<State> epsilonReachableStates(State currentState, Set<State> returnSet) {
         //Get all states, that can be reached with just one epsilon-, or lambda-transition.
         HashSet<State> nextStates = nextStates(currentState, "lambda");
         returnSet.addAll(nextStates);
@@ -246,7 +246,7 @@ public class AutomatonUtil {
      */
     private static HashMap<String, HashSet<State>> epsilonFreeTransitions(Automaton automaton, State currentState) {
         //Get all states, that can be reached from currentState with just the empty word.
-        HashSet<State> epsilonStates = epsilonReachableStates(currentState, new HashSet<>());
+        HashSet<State> epsilonStates = new HashSet<>(epsilonReachableStates(currentState, new HashSet<>()));
         epsilonStates.add(currentState);
 
         //Initialize the HashMap with empty HashSets.
@@ -271,7 +271,7 @@ public class AutomatonUtil {
      * @param startState The automaton's start state.
      * @return True, if the input is accepted.
      */
-    private static boolean checkInput(ArrayList<String> input, State startState) {
+    private static boolean checkInput(List<String> input, State startState) {
         //Increase the recursion depth and create a local copy of input.
         recDepth++;
         ArrayList<String> localInput = new ArrayList<>(input);
@@ -626,14 +626,14 @@ public class AutomatonUtil {
     }
 
     /**
-     * This is just a simple-to-use wrapper method for {@link #checkInput(ArrayList, State)}.
+     * This is just a simple-to-use wrapper method for {@link #checkInput(List, State)}.
      * It returns true, if a given automaton accepts a given input-
      *
      * @param automaton The automaton.
      * @param input The input-list.
      * @return True, if the automaton accepts the input.
      */
-    public static boolean checkInput(Automaton automaton, ArrayList<String> input) {
+    public static boolean checkInput(Automaton automaton, List<String> input) {
         recDepth = 0;
         takenWay = new Stack<>();
         longestWay = new ArrayList<>();

@@ -1,8 +1,6 @@
 package Print;
 
 
-import java.io.BufferedWriter;
-
 /**
  * A Dummy-class for printable objects. Used, if nothing should be printed
  * or a given string. The dummy class is a wrapper for a string.

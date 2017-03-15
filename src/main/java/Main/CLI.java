@@ -55,7 +55,7 @@ public class CLI {
     }
 
 
-    private boolean buildIn(String command, String[] parameters, ArrayList<CLIPlugin> plugins) throws InterruptedException {
+    private boolean buildIn(String command, String[] parameters, List<CLIPlugin> plugins) throws InterruptedException {
         switch (command) {
             case "gui":
 

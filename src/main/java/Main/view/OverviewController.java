@@ -8,8 +8,6 @@ import Main.Storable;
 import Print.PrintMode;
 import Print.Printer;
 import Print.StringLiterals;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
