@@ -18,6 +18,9 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 
+/**
+ * The logic for PDA. Every function operating on PDA is in this class.
+ */
 public class PushDownAutomatonUtil {
 
 

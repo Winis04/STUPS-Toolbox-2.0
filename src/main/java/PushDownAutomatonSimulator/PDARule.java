@@ -11,14 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
-
+/**
+ * Describes a production rule of an {@link PushDownAutomaton}.
+ */
 public class PDARule implements Printable{
     /**
      * the state that rule comes from
      */
-
-
     private final State comingFrom;
     /**
      * the current Letter to be read in
@@ -42,6 +41,14 @@ public class PDARule implements Printable{
     private final List<StackLetter> newToS;
 
 
+    /**
+     * Constructs a rule of a pda.
+     * @param comingFrom the old {@link State} of the {@link PushDownAutomaton}
+     * @param goingTo the new {@link State} of the {@link PushDownAutomaton}
+     * @param readIn the {@link InputLetter} that this rule reads in
+     * @param oldToS the {@link StackLetter} on top of the stack
+     * @param newToS the {@link StackLetter}s this rule will push onto the stack
+s     */
     public PDARule(State comingFrom, State goingTo, InputLetter readIn, StackLetter oldToS, List<StackLetter> newToS) {
         this.comingFrom = comingFrom;
         this.goingTo = goingTo;
@@ -51,6 +58,9 @@ public class PDARule implements Printable{
     }
 
 
+    /**
+     * constructs an empty PDARule
+     */
     public PDARule() {
         this.comingFrom = new State("z0");
         this.goingTo = new State("z0");
@@ -60,26 +70,42 @@ public class PDARule implements Printable{
     }
 
 
+    /**
+     * Getter-Method for {@link #goingTo}
+     * @return {@link #goingTo}
+     */
     public State getGoingTo() {
         return goingTo;
     }
 
-
+    /**
+     * Getter-Method for {@link #readIn}
+     * @return {@link #readIn}
+     */
     public InputLetter getReadIn() {
         return readIn;
     }
 
-
+    /**
+     * Getter-Method for {@link #oldToS}
+     * @return {@link #oldToS}
+     */
     public StackLetter getOldToS() {
         return oldToS;
     }
 
-
+    /**
+     * Getter-Method for {@link #newToS}
+     * @return a unmodifiableList of the elements of {@link #newToS}
+     */
     public List<StackLetter> getNewToS() {
         return Collections.unmodifiableList(new ArrayList<>(newToS));
     }
 
-
+    /**
+     * Getter-Method for {@link #comingFrom}
+     * @return {@link #comingFrom}
+     */
     public State getComingFrom() {
         return comingFrom;
     }
@@ -107,6 +133,10 @@ public class PDARule implements Printable{
     }
 
 
+    /**
+     * returns the rule as a String
+     * @return a String describing the rule
+     */
     public String asString() {
         String s="";
         s += this.getComingFrom().getName();

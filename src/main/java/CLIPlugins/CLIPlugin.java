@@ -38,7 +38,7 @@ public abstract class CLIPlugin {
      *              Then, the algorithm can be executed on it, and then this method returns the changed automaton.
      *              It is also possible, to return an object, that is of a completely different type, than the input object.
      *
-     * @param object The object.
+     * @param storable The object.
      * @param parameters The parameters, that the user has entered.
      * @return The changed object.
      */

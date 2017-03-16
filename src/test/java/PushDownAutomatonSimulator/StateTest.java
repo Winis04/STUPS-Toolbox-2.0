@@ -1,6 +1,0 @@
-package PushDownAutomatonSimulator;
-
-
-class StateTest {
-
-}

@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * every symbol or string a {@link PushDownAutomaton} reads in, is an instance of this class.
+ * Every symbol or string a {@link PushDownAutomaton} reads in is an instance of this class.
  * @author Isabel
  * @since 29.10.2016
  */
@@ -35,6 +35,10 @@ public final class InputLetter {
         return name;
     }
 
+    /**
+     * Getter-Method for the ASCII-Name displayed on the GUI
+     * @return a ASCII-Name
+     */
     public String getDisplayName() {
         if(name.equals("epsilon")) {
             return GUI.nameOfNullSymbol;

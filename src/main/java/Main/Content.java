@@ -7,7 +7,7 @@ import PushDownAutomatonSimulator.PushDownAutomaton;
 import java.util.HashMap;
 
 /**
- * This class holds the actual content. Stored Grammars, Automaton, ...
+ * This class contains and manages the actual content. Stored Grammars, Automaton, ...
  * @author Isabel
  * @since 30.01.2017
  */

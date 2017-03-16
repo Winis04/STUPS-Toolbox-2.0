@@ -12,58 +12,60 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 
 
-
-
+/**
+ * Model-Class for pushdown automatons.
+ */
 public class PushDownAutomaton implements Printable, Storable{
     /**
      * contains the states of this PDA
      */
-
     private final HashSet<State> states;
+
     /**
      * the input alphabet
      */
-
     private final HashSet<InputLetter> inputAlphabet;
+
     /**
      * the stack alphabet;
      */
-
     private final HashSet<StackLetter> stackAlphabet;
+
     /**
      * the PDA's start state
      */
-
     private final State startState;
+
     /**
      * the initial stack letter
      */
-
     private final StackLetter initialStackLetter;
 
     /**
      * the name of the pda
      */
-
     private final String name;
 
     /** the previous PDA **/
-
     private final PushDownAutomaton previousPDA;
 
     /** the rules **/
-
     private final List<PDARule> rules;
 
     /**
      * the current state of this automaton
      */
-
     private final State currentState;
 
 
-
-
+    /**
+     * Constructs a new pushdown automaton (pda). Constructs the alphabets from the set of rules
+     * @param startState the initial state of the pda
+     * @param initialStackLetter the bottom {@link StackLetter} of the stack
+     * @param rules a set of {@link PDARule}s
+     * @param name the name of the pda
+     * @param previousPDA a previous version (null if there isn't any)
+     */
     public PushDownAutomaton(State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
         states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
@@ -82,9 +84,18 @@ public class PushDownAutomaton implements Printable, Storable{
         this.previousPDA = previousPDA;
         // mutable:
         this.currentState=startState;
-
-
     }
+
+    /**
+     * @see #PushDownAutomaton(State, StackLetter, List, String, PushDownAutomaton)
+     * @param input the input alphabet, a set of {@link InputLetter}
+     * @param stack the stack alphabet, a set of {@link StackLetter}
+     * @param startState the initial state of the pda
+     * @param initialStackLetter the bottom {@link StackLetter} of the stack
+     * @param rules a set of {@link PDARule}s
+     * @param name the name of the pda
+     * @param previousPDA a previous version (null if there isn't any)
+     */
     public PushDownAutomaton(Set<InputLetter> input, Set<StackLetter> stack,State startState, StackLetter initialStackLetter, List<PDARule> rules, String name, PushDownAutomaton previousPDA) {
         this.states = new HashSet<>(rules.stream().map(PDARule::getComingFrom).collect(Collectors.toSet()));
         states.addAll(new HashSet<>(rules.stream().map(PDARule::getGoingTo).collect(Collectors.toSet())));
@@ -107,7 +118,9 @@ public class PushDownAutomaton implements Printable, Storable{
 
     }
 
-
+    /**
+     * Empty constructor for a very minimal pda.
+     */
     public PushDownAutomaton() {
         this.states=new HashSet<>();
         this.inputAlphabet=new HashSet<>();

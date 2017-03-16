@@ -1,5 +1,5 @@
 /**
- * Classed for describing PushDownAutomatons.
+ * Classes for describing PushDownAutomatons.
  *
  * @author Isabel Wingen
  */

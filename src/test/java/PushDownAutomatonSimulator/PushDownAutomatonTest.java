@@ -1,6 +1,6 @@
 package PushDownAutomatonSimulator;
 
 
-class PushDownAutomatonTest {
+public class PushDownAutomatonTest {
 
 }

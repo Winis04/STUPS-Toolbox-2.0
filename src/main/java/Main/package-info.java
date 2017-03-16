@@ -1,4 +1,4 @@
 /**
- * the main classes
+ * The main classes
  */
 package Main;

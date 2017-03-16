@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * An Interface, which has to be implemented by the classes that should be displayed and handled by this ToolBox.
+ * An Interface, which has to be implemented by classes that should be displayed and handled by this ToolBox.
  * The Toolbox has a workspace, a "store". Every Grammar, Automaton, etc. on which some kind of algorithm should
  * be run is of type "storable".
  * @author Isabel
