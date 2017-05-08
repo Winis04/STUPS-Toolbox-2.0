@@ -244,19 +244,19 @@ public class Automaton implements Printable, Storable {
                 Printer.print(",accepting");
             }
             Printer.print("]\t (");
-            Printer.print(Printer.remove_underscore(state.getName()));
+            Printer.print(Printer.replace_underscore(state.getName()));
             Printer.print(")\t");
             //position:
             if(i==0) {
 
             } else if(i % 6 == 0) {
-                Printer.print("[below of="+Printer.remove_underscore(statesSorted.get(i-6).getName())+"]\t");
+                Printer.print("[below of="+Printer.replace_underscore(statesSorted.get(i-6).getName())+"]\t");
             } else {
-                Printer.print("[right of="+Printer.remove_underscore(statesSorted.get(i-1).getName())+"]\t");
+                Printer.print("[right of="+Printer.replace_underscore(statesSorted.get(i-1).getName())+"]\t");
             }
 
             Printer.print("\t{");
-            Printer.print("$"+state.getName()+"$");
+            Printer.print("$"+Printer.toLatex(state.getName())+"$");
             Printer.print("};\n");
           //  \node[state,initial] (q_0)   {$q_0$};
         }
@@ -265,7 +265,7 @@ public class Automaton implements Printable, Storable {
         for(State s : statesSorted) {
             if(!s.getRules().isEmpty()) {
                 Printer.print(space + "(");
-                Printer.print(Printer.remove_underscore(s.getName()));
+                Printer.print(Printer.replace_underscore(s.getName()));
                 Printer.print(") \t");
                 s.getRules().forEach(Printer::print);
             }

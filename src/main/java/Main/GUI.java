@@ -344,7 +344,7 @@ public class GUI extends Application{
         primaryStage.setOnCloseRequest(event -> {
             IS_VISIBLE = false;
             stateController.save_current_state();
-            Printer.setPrintMode_Console();
+            rootController.latexModeOff();
             primaryStage.close();
         });
 

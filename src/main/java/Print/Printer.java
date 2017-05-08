@@ -403,7 +403,7 @@ public class Printer {
         }
     }
 
-    public static String remove_underscore(String s) {
+    public static String replace_underscore(String s) {
        return Arrays.stream(s.split("_")).collect(Collectors.joining(""));
     }
 

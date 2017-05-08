@@ -95,7 +95,7 @@ public class RootController {
     }
 
     @FXML
-    private void latexModeOff() {
+    public void latexModeOff() {
         latexModeOn.setDisable(false);
         latexModeOff.setDisable(true);
         borderPane.setStyle("");

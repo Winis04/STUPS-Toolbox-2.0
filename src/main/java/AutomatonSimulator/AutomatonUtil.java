@@ -1080,7 +1080,7 @@ public class AutomatonUtil {
 
     }
     static ArrayList<State> getStatesSorted(Automaton automaton) {
-        return (ArrayList<State>) automaton.getStates().stream().sorted((s1,s2) -> Printer.remove_underscore(s1.getName()).compareTo(Printer.remove_underscore(s2.getName()))).collect(toList());
+        return (ArrayList<State>) automaton.getStates().stream().sorted((s1,s2) -> Printer.replace_underscore(s1.getName()).compareTo(Printer.replace_underscore(s2.getName()))).collect(toList());
     }
 
 

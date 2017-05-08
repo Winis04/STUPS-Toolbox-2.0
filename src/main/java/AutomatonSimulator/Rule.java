@@ -97,7 +97,7 @@ public class Rule implements Printable{
               Printer.print("[bend left="+s+"] ");
         }
         Printer.print("node {"+acceptedInputs.stream().map(Printer::checkIfLatexSpecial).collect(joining(", "))+"}\t(");
-        Printer.print(Printer.remove_underscore(goingTo.getName()));
+        Printer.print(Printer.replace_underscore(goingTo.getName()));
         Printer.print(")\n");
     }
 
