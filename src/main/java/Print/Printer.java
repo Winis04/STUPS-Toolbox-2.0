@@ -7,6 +7,7 @@ import Main.GUI;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -402,8 +403,8 @@ public class Printer {
         }
     }
 
-    private String remove_underscore(String s) {
-       return s.chars().filter(c -> c!='_').map(c -> (char) c).toString();
+    public static String remove_underscore(String s) {
+       return Arrays.stream(s.split("_")).collect(Collectors.joining(""));
     }
 
 

@@ -96,8 +96,8 @@ public class Rule implements Printable{
             String s=""+arc;
               Printer.print("[bend left="+s+"] ");
         }
-        Printer.print("node {"+acceptedInputs.stream().collect(joining(", "))+"}\t(");
-        Printer.print(goingTo);
+        Printer.print("node {"+acceptedInputs.stream().map(Printer::checkIfLatexSpecial).collect(joining(", "))+"}\t(");
+        Printer.print(Printer.remove_underscore(goingTo.getName()));
         Printer.print(")\n");
     }
 
