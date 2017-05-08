@@ -39,7 +39,7 @@ public class GrammarPrintPlugin extends CLIPlugin {
             return null;
         }
         Grammar grammar = (Grammar) object;
-        Printer.print(grammar);
+        Printer.printWithTitle(grammar.getName(),grammar);
         return null;
     }
 

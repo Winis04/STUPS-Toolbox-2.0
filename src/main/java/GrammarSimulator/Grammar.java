@@ -118,14 +118,19 @@ public final class Grammar implements Printable, Storable {
     public void printLatex(String space) {
         ArrayList<ArrayList<String>> header= GrammarUtil.getHeader(this,true);
         Printer.print(space+"$"+Printer.toLatex(this.getName())+"=(\\{");
-        Printer.print(space+header.get(0).stream().map(Printer::makeToGreek).collect(joining(", ")));
+        Printer.print(space+header.get(0).stream().
+                map(Printer::checkIfLatexSpecial).
+               // map(Printer::makeToGreek).
+                collect(joining(", ")));
 
         Printer.print("\\},\\;\\{ ");
 
-        Printer.print(header.get(1).stream().collect(joining(", ")));
+        Printer.print(header.get(1).stream().
+                map(Printer::checkIfLatexSpecial).
+                collect(joining(", ")));
         Printer.print("\\},\\;");
 
-        Printer.print(header.get(2).get(0));
+        Printer.print(Printer.checkIfLatexSpecial(header.get(2).get(0)));
 
         Printer.print(",\\;"+"R)");
         Printer.print("$ with\n");

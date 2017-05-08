@@ -39,7 +39,7 @@ public class AutomatonPrintPlugin extends CLIPlugin {
             return null;
         }
         Automaton automaton = (Automaton) object;
-        Printer.print(automaton);
+        Printer.printWithTitle(automaton.getName(),automaton);
         return null;
     }
 

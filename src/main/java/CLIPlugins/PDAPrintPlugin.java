@@ -37,7 +37,7 @@ public class PDAPrintPlugin extends CLIPlugin {
             return null;
         }
         PushDownAutomaton pushDownAutomaton = (PushDownAutomaton) object;
-        Printer.print(pushDownAutomaton);
+        Printer.printWithTitle(pushDownAutomaton.getName(),pushDownAutomaton);
         return null;
     }
 

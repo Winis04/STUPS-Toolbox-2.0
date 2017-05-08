@@ -126,6 +126,10 @@ public class Printer {
      * @return the transformed string
      */
     public static String toLatex(String string) {
+        if(string.length()==1) {
+            return checkIfLatexSpecial(string);
+        }
+
         //replaces "->" through the latex rightarrow symbol
         String res = Arrays.stream(string.split("->")).collect(joining(" $\\rightarrow$ "));
         // split at "_"
@@ -144,7 +148,7 @@ public class Printer {
             System.arraycopy(tmp2, 1, arr, 0, tmp2.length - 1);
             res = tmp[0]+"_{"+checkIfLatexSpecial(tmp2[0])+"} "+Arrays.stream(arr).map(Printer::checkIfLatexSpecial).collect(joining(" "));
         }
-        return makeToGreek(res);
+        return /**makeToGreek(**/res;//);
 
     }
 
@@ -203,13 +207,13 @@ public class Printer {
     /** LATEX **/
 
     private static void printWithTitleLatex(String title, Printable printable) {
-        Printer.print("\\section{"+title+"}\n\n");
+        Printer.print("\\section{$"+toLatex(title)+"$}\n\n");
         printable.printLatex(getSpace(deepness));
 
     }
 
     private static void printWithTitleLatex(String title, String string) {
-        Printer.print("\\section{"+title+"}\n\n");
+        Printer.print("\\section{$"+toLatex(title)+"$}\n\n");
         Printer.print(getSpace(deepness)+string);
 
     }
@@ -218,11 +222,11 @@ public class Printer {
         if(printables.size()!=texts.length || printables.size()!=point_descriptions.length) {
             return;
         }
-        Printer.printLatex("\\section{"+title+"}\n\n");
+        Printer.printLatex("\\section{"+toLatex(title)+"}\n\n");
         Printer.printLatex("\\begin{description}\n");
         Printer.deepness++;
         for(int i=0;i<printables.size();i++) {
-            writeItem(point_descriptions[i],texts[i]);
+            writeItem(toLatex(point_descriptions[i]),toLatex(texts[i]));
             printables.get(i).printLatex(getSpace(deepness));
 
         }
@@ -330,13 +334,24 @@ public class Printer {
      * @return a string that is ok in LaTex
      */
     public static String checkIfLatexSpecial(String string) {
+        if(string.length() > 1) {
+            if (string.equals("lambda") || string.equals("epsilon")) {
+                return "\\" + string;
+            }
+        } else {
+            if (!string.matches("[0-9a-zA-Z]")) {
+                return "\\" + string;
+            }
+        }
+        return string;
+        /**
         String[] special = new String[]{"#","epsilon","lambda","alpha","beta","$","%","{","}","&","_",""};
         List<String> list = Arrays.asList(special);
         if(Printer.printmode==PrintMode.LATEX && list.contains(string)) {
             return "\\"+string;
         } else {
             return string;
-        }
+        } **/
     }
 
     public static String fill(String s, int n) {
@@ -385,6 +400,10 @@ public class Printer {
         if(printmode == PrintMode.LATEX) {
             Printer.printStartOfLatex();
         }
+    }
+
+    private String remove_underscore(String s) {
+       return s.chars().filter(c -> c!='_').map(c -> (char) c).toString();
     }
 
 

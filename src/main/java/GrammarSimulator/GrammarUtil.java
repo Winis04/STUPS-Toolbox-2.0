@@ -1344,7 +1344,7 @@ public class GrammarUtil {
         if (grammar != null) {
             names = grammar.getNonterminals().stream().map(Nonterminal::getName).collect(Collectors.toSet());
         }
-        return name.matches("[a-zA-Z_](\\w*)") &&  !names.contains(name);
+        return name.matches("[a-zA-Z]*_[a-zA-Z0-9]*") &&  !names.contains(name);
     }
 
     /**

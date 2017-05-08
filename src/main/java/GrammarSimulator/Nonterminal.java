@@ -97,7 +97,7 @@ public final class Nonterminal implements Symbol, Printable {
 
         StringBuilder res = new StringBuilder();
         String start = Character.toString(name.charAt(0));
-        if(start.matches("[a-zA-Z_]")) {
+        if(start.matches("[0-9a-zA-Z_]")) {
             res.append(start);
         } else {
             res.append((int)name.charAt(0));
