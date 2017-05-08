@@ -105,7 +105,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
             info.setVgap(10);
             bottom.setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
-                    refresh(PushDownAutomatonUtil.replaceStackSymbol(pda,pda.getInitialStackLetter(),new StackLetter(bottom.getText())));
+                    refresh2(PushDownAutomatonUtil.replaceStackSymbol(pda,pda.getInitialStackLetter(),new StackLetter(bottom.getText())));
                 }
             });
 
@@ -119,9 +119,9 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if(pda.getStates().contains(new State(start.getText()))) {
                         //the states exists already
-                        refresh(new PushDownAutomaton(new State(start.getText()),pda.getInitialStackLetter(),pda.getRules(),pda.getName(),pda));
+                        refresh2(new PushDownAutomaton(new State(start.getText()),pda.getInitialStackLetter(),pda.getRules(),pda.getName(),pda));
                     } else {
-                        refresh(PushDownAutomatonUtil.replaceState(pda, pda.getStartState(), new State(start.getText())));
+                        refresh2(PushDownAutomatonUtil.replaceState(pda, pda.getStartState(), new State(start.getText())));
                     }
                 }
             });
@@ -134,7 +134,10 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
                         //that gives him the opportunity to create a new rule.
                         MenuItem addItem = new MenuItem("Add Rule");
 
-                        addItem.setOnAction(event1 -> refresh(addRule(pda)));
+                        addItem.setOnAction(event1 -> {
+                            PushDownAutomaton newPDA = addRule(pda);
+                            refresh2(newPDA);
+                        });
                         contextMenu.hide();
 
 
@@ -176,7 +179,7 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
 
                             PushDownAutomaton freshPDA = editRule(pda, parseStringToRule(currentRule.getText()));
                             if (freshPDA != null) {
-                               refresh(freshPDA);
+                               refresh2(freshPDA);
                             }
                         });
 
@@ -492,6 +495,19 @@ public class PushDownAutomatonGUI implements DisplayPlugin {
     @Override
     public Node refresh(Storable object) {
         return this.display(object);
+    }
+
+    private void refresh2(Storable storable) {
+        if(storable != null) {
+            Class clazz = storable.getClass();
+            refresh(storable);
+            gui.getContent().getObjects().put(clazz,storable); //add new object as the current object
+            gui.getContent().getStore().get(clazz).put(storable.getName(),storable); //add object to the store
+            gui.refresh(storable); //switch to new object
+            gui.refresh(); //refresh the treeView
+
+
+        }
     }
 
     @Override

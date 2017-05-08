@@ -191,23 +191,23 @@ public class PushDownAutomaton implements Printable, Storable{
         String in = "\\{ "+inputAlphabet.stream()
                 .filter(ia -> !ia.equals(InputLetter.NULLSYMBOL))
                 .map(InputLetter::getName)
-                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
+                .map(Printer::toLatex).collect(joining(", "))+" \\}";
         String stack = "\\{ "+stackAlphabet.stream()
                 .filter(sa -> !sa.equals(StackLetter.NULLSYMBOL))
                 .map(StackLetter::getName)
-                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
+                .map(Printer::toLatex).collect(joining(", "))+" \\}";
         String stateNames = "\\{ "+states.stream()
                 .map(State::getName)
-                .map(Printer::checkIfLatexSpecial).collect(joining(", "))+" \\}";
-        String start = Printer.checkIfLatexSpecial(startState.getName());
-        String init = Printer.checkIfLatexSpecial(initialStackLetter.getName());
+                .map(Printer::toLatex).collect(joining(", "))+" \\}";
+        String start = Printer.toLatex(startState.getName());
+        String init = Printer.toLatex(initialStackLetter.getName());
         String modName;
         if(this.getName().contains("_")) {
             String[] splitted = this.getName().split("_");
             String[] subArray = new String[splitted.length-1];
             System.arraycopy(splitted, 1, subArray, 0, splitted.length - 1);
             modName=splitted[0]+"_";
-            modName+= Arrays.stream(subArray).map(s -> "{"+s).collect(joining("_"));
+            modName+= Arrays.stream(subArray).map(s -> "{"+s).collect(joining("-"));
             for (String aSubarray : subArray) {
                 modName += "}";
             }
@@ -232,22 +232,22 @@ public class PushDownAutomaton implements Printable, Storable{
                 Printer.print(space + "\t\t\\hline\n");
                 current = this.rules.get(i);
                 Printer.print(space + "\t\t $");
-                Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()) + " ");
-                Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()) + " ");
-                Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()) + " ");
+                Printer.print(Printer.toLatex(current.getComingFrom().getName()) + " ");
+                Printer.print(Printer.toLatex(current.getReadIn().getName()) + " ");
+                Printer.print(Printer.toLatex(current.getOldToS().getName()) + " ");
                 Printer.print("$ & $ \\rightarrow $ & $");
-                Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()) + " ");
-                Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining(" ")));
+                Printer.print(Printer.toLatex(current.getGoingTo().getName()) + " ");
+                Printer.print(current.getNewToS().stream().map(t -> Printer.toLatex(t.getName())).collect(joining(" ")));
 
                 if (i + 1 < ruleNumber) {
                     Printer.print("$ & $");
                     current = this.rules.get(i + 1);
-                    Printer.print(Printer.checkIfLatexSpecial(current.getComingFrom().getName()) + " ");
-                    Printer.print(Printer.checkIfLatexSpecial(current.getReadIn().getName()) + " ");
-                    Printer.print(Printer.checkIfLatexSpecial(current.getOldToS().getName()) + " ");
+                    Printer.print(Printer.toLatex(current.getComingFrom().getName()) + " ");
+                    Printer.print(Printer.toLatex(current.getReadIn().getName()) + " ");
+                    Printer.print(Printer.toLatex(current.getOldToS().getName()) + " ");
                     Printer.print("$ & $ \\rightarrow $ & $");
-                    Printer.print(Printer.checkIfLatexSpecial(current.getGoingTo().getName()) + " ");
-                    Printer.print(current.getNewToS().stream().map(t -> Printer.checkIfLatexSpecial(t.getName())).collect(joining(" ")));
+                    Printer.print(Printer.toLatex(current.getGoingTo().getName()) + " ");
+                    Printer.print(current.getNewToS().stream().map(t -> Printer.toLatex(t.getName())).collect(joining(" ")));
                     Printer.print("$ \\\\\n");
                 } else {
                     Printer.print("$ & & &\\\\\n");
