@@ -427,6 +427,17 @@ public class RootController {
         }
     }
 
+    @FXML
+    public void help() {
+        gui.dialog(Alert.AlertType.INFORMATION,"Overview","How to use this toolbox",
+                "-- To import an external file, use File -> Open -> ...\n" +
+                        "-- To create a new object, use File -> New -> ...\n" +
+                        "-- When the GUI is closed, the current workspace will be saved in a directory \"workspace\"\n"+
+                        "-- To switch to an existing workspace, use File -> Switch Workspace\n\n" +
+                        "-- To run a function on an object, select it in the tree on the left. Some functions are accessible via the right click, other via the panel on the bottom right"
+        );
+    }
+
 
 
 

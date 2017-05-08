@@ -58,6 +58,7 @@
            <Menu fx:id="Help" mnemonicParsing="false" text="Help">
                <items>
                    <MenuItem mnemonicParsing="false" onAction="#setTooltips" text="Tooltips On/Off" />
+               <MenuItem mnemonicParsing="false" onAction="#help" text="Help" />
                </items>
            </Menu>
        </MenuBar>

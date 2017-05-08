@@ -78,7 +78,7 @@ public class Printer {
     }
     private static void printLatex(String string) {
         try {
-            writer.write(toLatex(string));
+            writer.write(string);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
