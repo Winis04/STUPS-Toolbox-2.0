@@ -232,8 +232,10 @@ public class Automaton implements Printable, Storable {
         ArrayList<State> statesSorted=AutomatonUtil.getStatesSorted(this);
         Printer.print("\\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]\n\n");
         String space1=space+"\t";
-        String before="";
-        for(State state : statesSorted) {
+        for(int i=0; i<statesSorted.size();i++) {
+            State state = statesSorted.get(i);
+       // for(State state : statesSorted) {
+            // list the nodes
             Printer.print(space1+"\\node[state");
             if(state.isStart()) {
                 Printer.print(",initial");
@@ -245,12 +247,14 @@ public class Automaton implements Printable, Storable {
             Printer.print(state);
             Printer.print(")\t");
             //position:
-            if(!before.isEmpty()) {
-                Printer.print("[right of="+before+"]\t");
-                before=state.getName();
+            if(i==0) {
+
+            } else if(i % 6 == 0) {
+                Printer.print("[below of="+statesSorted.get(i-6).getName()+"]\t");
             } else {
-                before=statesSorted.get(0).getName();
+                Printer.print("[right of="+statesSorted.get(i-1).getName()+"]\t");
             }
+
             Printer.print("\t{");
             Printer.print(state);
             Printer.print("};\n");

@@ -102,7 +102,7 @@ public class Printer {
                 printEnumerationConsole(printables,point_descriptions,texts);
                 break;
             case LATEX:
-                printEnumerationLatex(printables,toLatex(point_descriptions),toLatex(texts),toLatex(title));
+                printEnumerationLatex(printables,point_descriptions,texts,title);
                 break;
         }
     }
@@ -161,7 +161,7 @@ public class Printer {
                 printWithTitleConsole(title,printable);
                 break;
             case LATEX:
-                printWithTitleLatex(toLatex(title), printable);
+                printWithTitleLatex(title, printable);
                 break;
         }
 
