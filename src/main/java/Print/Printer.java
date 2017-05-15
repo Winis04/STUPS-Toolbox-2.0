@@ -130,6 +130,9 @@ public class Printer {
         if(string.length()==1) {
             return checkIfLatexSpecial(string);
         }
+        if(string.equals("epsilon") || string.equals("lambda")) {
+            return checkIfLatexSpecial(string);
+        }
 
         //replaces "->" through the latex rightarrow symbol
         String res = Arrays.stream(string.split("->")).collect(joining(" $\\rightarrow$ "));

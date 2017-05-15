@@ -588,7 +588,7 @@ public class EditTab implements GrammarTab {
         StringTokenizer symbolsTokenizer = new StringTokenizer(newSymbols, ",");
         ArrayList<Symbol> newList = new ArrayList<>();
         HashSet<Rule> freshRules = new HashSet<>();
-        if(newSymbols.isEmpty()) {
+        if(newSymbols.isEmpty() || newSymbols.equals("lambda") || newSymbols.equals("epsilon")) {
             newList.add(Terminal.NULLSYMBOL);
         } else {
             if(symbolsTokenizer.countTokens()==1 && newSymbols.length() > 1) {
